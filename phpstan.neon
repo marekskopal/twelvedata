@@ -1,0 +1,9 @@
+parameters:
+    level: 9
+    phpVersion: 80300
+    parallel:
+        processTimeout: 300.0
+    typeAliases:
+        uuid: string
+    paths:
+       - src

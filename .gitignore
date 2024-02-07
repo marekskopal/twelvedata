@@ -1,0 +1,4 @@
+vendor
+ray.php
+.phpunit.cache
+.idea

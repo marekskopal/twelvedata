@@ -1,0 +1,8 @@
+<?xml version="1.0"?>
+<ruleset name="MarekSkopal PSR12"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:noNamespaceSchemaLocation="vendor/squizlabs/php_codesniffer/phpcs.xsd">
+    <file>src/</file>
+    <file>tests/</file>
+    <rule ref="ruleset.xml"/>
+</ruleset>
