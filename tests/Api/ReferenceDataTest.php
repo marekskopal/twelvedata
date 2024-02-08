@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace MarekSkopal\TwelveData\Tests\Api;
 
 use MarekSkopal\TwelveData\Api\ReferenceData;
+use MarekSkopal\TwelveData\Dto\BondsList;
 use MarekSkopal\TwelveData\Dto\CryptocurrenciesList;
 use MarekSkopal\TwelveData\Dto\EtfList;
 use MarekSkopal\TwelveData\Dto\Exchanges;
@@ -76,6 +77,16 @@ class ReferenceDataTest extends TestCase
         $this->assertInstanceOf(
             FundsList::class,
             $referenceData->fundsList('0P00000AMH'),
+        );
+    }
+
+    public function testBondsList(): void
+    {
+        $referenceData = new ReferenceData(ClientFixture::createDemo());
+
+        $this->assertInstanceOf(
+            BondsList::class,
+            $referenceData->bondsList('AJXA'),
         );
     }
 

@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace MarekSkopal\TwelveData\Api;
 
 use MarekSkopal\TwelveData\Client\Client;
+use MarekSkopal\TwelveData\Dto\BondsList;
 use MarekSkopal\TwelveData\Dto\CryptocurrenciesList;
 use MarekSkopal\TwelveData\Dto\EtfList;
 use MarekSkopal\TwelveData\Dto\Exchanges;
@@ -171,6 +172,35 @@ class ReferenceData extends TwelveDataApi
         );
 
         return FundsList::fromJson($this->getResponseContents($response));
+    }
+
+    public function bondsList(
+        string $symbol,
+        ?string $exchange = null,
+        ?string $country = null,
+        ?string $type = null,
+        ?FormatEnum $format = null,
+        ?string $delimiter = null,
+        ?bool $includeDelisted = null,
+        ?int $page = null,
+        ?int $outputsize = null,
+    ): BondsList {
+        $response = $this->client->get(
+            path: '/bonds',
+            queryParams: [
+                'symbol' => $symbol,
+                'exchange' => $exchange,
+                'country' => $country,
+                'type' => $type,
+                'format' => $format?->value,
+                'delimiter' => $delimiter,
+                'include_delisted' => $includeDelisted !== null ? QueryParamsUtils::booleanAsString($includeDelisted) : null,
+                'page' => $page !== null ? (string) $page : null,
+                'outputsize' => $outputsize !== null ? (string) $outputsize : null,
+            ],
+        );
+
+        return BondsList::fromJson($this->getResponseContents($response));
     }
 
     public function exchanges(
