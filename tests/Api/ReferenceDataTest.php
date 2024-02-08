@@ -9,6 +9,8 @@ use MarekSkopal\TwelveData\Dto\CryptocurrenciesList;
 use MarekSkopal\TwelveData\Dto\EtfList;
 use MarekSkopal\TwelveData\Dto\Exchanges;
 use MarekSkopal\TwelveData\Dto\ForexPairsList;
+use MarekSkopal\TwelveData\Dto\FundsList;
+use MarekSkopal\TwelveData\Dto\IndicesList;
 use MarekSkopal\TwelveData\Dto\StockList;
 use MarekSkopal\TwelveData\Tests\Fixtures\Client\ClientFixture;
 use PHPUnit\Framework\Attributes\CoversClass;
@@ -54,6 +56,26 @@ class ReferenceDataTest extends TestCase
         $this->assertInstanceOf(
             EtfList::class,
             $referenceData->etfList('QQQ'),
+        );
+    }
+
+    public function testIndicesList(): void
+    {
+        $referenceData = new ReferenceData(ClientFixture::createDemo());
+
+        $this->assertInstanceOf(
+            IndicesList::class,
+            $referenceData->indicesList('IXIC'),
+        );
+    }
+
+    public function testFundsList(): void
+    {
+        $referenceData = new ReferenceData(ClientFixture::createDemo());
+
+        $this->assertInstanceOf(
+            FundsList::class,
+            $referenceData->fundsList('0P00000AMH'),
         );
     }
 

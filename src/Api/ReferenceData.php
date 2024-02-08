@@ -9,6 +9,8 @@ use MarekSkopal\TwelveData\Dto\CryptocurrenciesList;
 use MarekSkopal\TwelveData\Dto\EtfList;
 use MarekSkopal\TwelveData\Dto\Exchanges;
 use MarekSkopal\TwelveData\Dto\ForexPairsList;
+use MarekSkopal\TwelveData\Dto\FundsList;
+use MarekSkopal\TwelveData\Dto\IndicesList;
 use MarekSkopal\TwelveData\Dto\StockList;
 use MarekSkopal\TwelveData\Enum\FormatEnum;
 use MarekSkopal\TwelveData\Utils\QueryParamsUtils;
@@ -115,6 +117,60 @@ class ReferenceData extends TwelveDataApi
         );
 
         return EtfList::fromJson($this->getResponseContents($response));
+    }
+
+    public function indicesList(
+        string $symbol,
+        ?string $exchange = null,
+        ?string $micCode = null,
+        ?string $country = null,
+        ?FormatEnum $format = null,
+        ?string $delimiter = null,
+        ?bool $includeDelisted = null,
+    ): IndicesList {
+        $response = $this->client->get(
+            path: '/indices',
+            queryParams: [
+                'symbol' => $symbol,
+                'exchange' => $exchange,
+                'mic_code' => $micCode,
+                'country' => $country,
+                'format' => $format?->value,
+                'delimiter' => $delimiter,
+                'include_delisted' => $includeDelisted !== null ? QueryParamsUtils::booleanAsString($includeDelisted) : null,
+            ],
+        );
+
+        return IndicesList::fromJson($this->getResponseContents($response));
+    }
+
+    public function fundsList(
+        string $symbol,
+        ?string $exchange = null,
+        ?string $country = null,
+        ?string $type = null,
+        ?FormatEnum $format = null,
+        ?string $delimiter = null,
+        ?bool $includeDelisted = null,
+        ?int $page = null,
+        ?int $outputsize = null,
+    ): FundsList {
+        $response = $this->client->get(
+            path: '/funds',
+            queryParams: [
+                'symbol' => $symbol,
+                'exchange' => $exchange,
+                'country' => $country,
+                'type' => $type,
+                'format' => $format?->value,
+                'delimiter' => $delimiter,
+                'include_delisted' => $includeDelisted !== null ? QueryParamsUtils::booleanAsString($includeDelisted) : null,
+                'page' => $page !== null ? (string) $page : null,
+                'outputsize' => $outputsize !== null ? (string) $outputsize : null,
+            ],
+        );
+
+        return FundsList::fromJson($this->getResponseContents($response));
     }
 
     public function exchanges(
