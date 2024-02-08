@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace MarekSkopal\TwelveData\Api;
 
 use MarekSkopal\TwelveData\Client\Client;
+use MarekSkopal\TwelveData\Dto\ForexPairsList;
 use MarekSkopal\TwelveData\Dto\StockList;
 use MarekSkopal\TwelveData\Enum\FormatEnum;
 use MarekSkopal\TwelveData\Utils\QueryParamsUtils;
@@ -44,5 +45,26 @@ class ReferenceData
         );
 
         return StockList::fromJson($response->getBody()->getContents());
+    }
+
+    public function forexPairsList(
+        string $symbol,
+        ?string $currencyBase = null,
+        ?string $currencyQuote = null,
+        ?FormatEnum $format = null,
+        ?string $delimiter = null,
+    ): ForexPairsList {
+        $response = $this->client->get(
+            path: '/forex_pairs',
+            queryParams: [
+                'symbol' => $symbol,
+                'currency_base' => $currencyBase,
+                'currency_quote' => $currencyQuote,
+                'format' => $format?->value,
+                'delimiter' => $delimiter,
+            ],
+        );
+
+        return ForexPairsList::fromJson($response->getBody()->getContents());
     }
 }
