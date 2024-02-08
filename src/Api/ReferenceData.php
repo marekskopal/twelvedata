@@ -7,6 +7,7 @@ namespace MarekSkopal\TwelveData\Api;
 use MarekSkopal\TwelveData\Client\Client;
 use MarekSkopal\TwelveData\Dto\CryptocurrenciesList;
 use MarekSkopal\TwelveData\Dto\EtfList;
+use MarekSkopal\TwelveData\Dto\Exchanges;
 use MarekSkopal\TwelveData\Dto\ForexPairsList;
 use MarekSkopal\TwelveData\Dto\StockList;
 use MarekSkopal\TwelveData\Enum\FormatEnum;
@@ -114,5 +115,28 @@ class ReferenceData
         );
 
         return EtfList::fromJson($response->getBody()->getContents());
+    }
+
+    public function exchanges(
+        ?string $type = null,
+        ?string $name = null,
+        ?string $code = null,
+        ?string $country = null,
+        ?FormatEnum $format = null,
+        ?string $delimiter = null,
+    ): Exchanges {
+        $response = $this->client->get(
+            path: '/exchanges',
+            queryParams: [
+                'type' => $type,
+                'name' => $name,
+                'code' => $code,
+                'country' => $country,
+                'format' => $format?->value,
+                'delimiter' => $delimiter,
+            ],
+        );
+
+        return Exchanges::fromJson($response->getBody()->getContents());
     }
 }

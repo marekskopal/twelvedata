@@ -7,6 +7,7 @@ namespace MarekSkopal\TwelveData\Tests\Api;
 use MarekSkopal\TwelveData\Api\ReferenceData;
 use MarekSkopal\TwelveData\Dto\CryptocurrenciesList;
 use MarekSkopal\TwelveData\Dto\EtfList;
+use MarekSkopal\TwelveData\Dto\Exchanges;
 use MarekSkopal\TwelveData\Dto\ForexPairsList;
 use MarekSkopal\TwelveData\Dto\StockList;
 use MarekSkopal\TwelveData\Tests\Fixtures\Client\ClientFixture;
@@ -53,6 +54,16 @@ class ReferenceDataTest extends TestCase
         $this->assertInstanceOf(
             EtfList::class,
             $referenceData->etfList('QQQ'),
+        );
+    }
+
+    public function testExchanges(): void
+    {
+        $referenceData = new ReferenceData(ClientFixture::createDemo());
+
+        $this->assertInstanceOf(
+            Exchanges::class,
+            $referenceData->exchanges('etf'),
         );
     }
 }
