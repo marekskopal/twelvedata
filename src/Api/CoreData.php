@@ -4,10 +4,15 @@ declare(strict_types=1);
 
 namespace MarekSkopal\TwelveData\Api;
 
+use DateTimeImmutable;
 use MarekSkopal\TwelveData\Client\Client;
 use MarekSkopal\TwelveData\Dto\TimeSeries;
+use MarekSkopal\TwelveData\Enum\AdjustEnum;
 use MarekSkopal\TwelveData\Enum\FormatEnum;
 use MarekSkopal\TwelveData\Enum\IntervalEnum;
+use MarekSkopal\TwelveData\Enum\OrderEnum;
+use MarekSkopal\TwelveData\Enum\PrepostEnum;
+use MarekSkopal\TwelveData\Utils\QueryParamsUtils;
 
 class CoreData extends TwelveDataApi
 {
@@ -15,6 +20,7 @@ class CoreData extends TwelveDataApi
     {
     }
 
+    /** @param list<AdjustEnum>|null $adjust */
     public function timeSeries(
         string $symbol,
         IntervalEnum $interval = IntervalEnum::OneDay,
@@ -25,6 +31,15 @@ class CoreData extends TwelveDataApi
         ?string $outputSize = null,
         ?FormatEnum $format = null,
         ?string $delimiter = null,
+        ?PrepostEnum $prepost = null,
+        ?int $dp = null,
+        ?OrderEnum $order = null,
+        ?string $timezone = null,
+        ?DateTimeImmutable $date = null,
+        ?DateTimeImmutable $startDate = null,
+        ?DateTimeImmutable $endDate = null,
+        ?bool $previousClose = null,
+        ?array $adjust = null,
     ): TimeSeries {
         $response = $this->client->get(
             path: '/time_series',
@@ -38,6 +53,15 @@ class CoreData extends TwelveDataApi
                 'outputSize' => $outputSize,
                 'format' => $format?->value,
                 'delimiter' => $delimiter,
+                'prepost' => $prepost?->value,
+                'dp' => $dp !== null ? (string) $dp : null,
+                'order' => $order?->value,
+                'timezone' => $timezone,
+                'date' => $date?->format('Y-m-d'),
+                'start_date' => $startDate?->format('Y-m-d h:i:s'),
+                'end_date' => $endDate?->format('Y-m-d h:i:s'),
+                'previous_close' => $previousClose !== null ? QueryParamsUtils::booleanAsString($previousClose) : null,
+                'adjust' => $adjust !== null ? QueryParamsUtils::enumArrayAsString($adjust) : null,
             ],
         );
 
