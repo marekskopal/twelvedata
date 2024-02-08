@@ -7,7 +7,7 @@ namespace MarekSkopal\TwelveData\Api;
 use MarekSkopal\TwelveData\Client\Client;
 use MarekSkopal\TwelveData\Dto\TimeSeries;
 use MarekSkopal\TwelveData\Enum\FormatEnum;
-use MarekSkopal\TwelveData\Enum\TimeSeriesIntervalEnum;
+use MarekSkopal\TwelveData\Enum\IntervalEnum;
 
 class CoreData extends TwelveDataApi
 {
@@ -17,7 +17,7 @@ class CoreData extends TwelveDataApi
 
     public function timeSeries(
         string $symbol,
-        TimeSeriesIntervalEnum $interval = TimeSeriesIntervalEnum::OneDay,
+        IntervalEnum $interval = IntervalEnum::OneDay,
         ?string $exchange = null,
         ?string $micCode = null,
         ?string $country = null,

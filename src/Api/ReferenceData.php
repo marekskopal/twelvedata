@@ -8,13 +8,16 @@ use MarekSkopal\TwelveData\Client\Client;
 use MarekSkopal\TwelveData\Dto\BondsList;
 use MarekSkopal\TwelveData\Dto\CryptocurrenciesList;
 use MarekSkopal\TwelveData\Dto\CryptocurrencyExchanges;
+use MarekSkopal\TwelveData\Dto\EarliestTimestamp;
 use MarekSkopal\TwelveData\Dto\EtfList;
 use MarekSkopal\TwelveData\Dto\Exchanges;
 use MarekSkopal\TwelveData\Dto\ForexPairsList;
 use MarekSkopal\TwelveData\Dto\FundsList;
 use MarekSkopal\TwelveData\Dto\IndicesList;
 use MarekSkopal\TwelveData\Dto\StockList;
+use MarekSkopal\TwelveData\Dto\SymbolSearch;
 use MarekSkopal\TwelveData\Enum\FormatEnum;
+use MarekSkopal\TwelveData\Enum\IntervalEnum;
 use MarekSkopal\TwelveData\Utils\QueryParamsUtils;
 
 class ReferenceData extends TwelveDataApi
@@ -238,5 +241,39 @@ class ReferenceData extends TwelveDataApi
         );
 
         return CryptocurrencyExchanges::fromJson($this->getResponseContents($response));
+    }
+
+    public function symbolSearch(string $symbol, ?int $outputsize = null,): SymbolSearch
+    {
+        $response = $this->client->get(
+            path: '/symbol_search',
+            queryParams: [
+                'symbol' => $symbol,
+                'outputsize' => $outputsize !== null ? (string) $outputsize : null,
+            ],
+        );
+
+        return SymbolSearch::fromJson($this->getResponseContents($response));
+    }
+
+    public function earliestTimestamp(
+        string $symbol,
+        IntervalEnum $interval,
+        ?string $exchange = null,
+        ?string $micCode = null,
+        ?string $timezone = null,
+    ): EarliestTimestamp {
+        $response = $this->client->get(
+            path: '/earliest_timestamp',
+            queryParams: [
+                'symbol' => $symbol,
+                'interval' => $interval->value,
+                'exchange' => $exchange,
+                'micCode' => $micCode,
+                'timezone' => $timezone,
+            ],
+        );
+
+        return EarliestTimestamp::fromJson($this->getResponseContents($response));
     }
 }

@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace MarekSkopal\TwelveData\Enum;
 
-enum TimeSeriesIntervalEnum: string
+enum IntervalEnum: string
 {
     case OneMinute = '1min';
     case FiveMinutes = '5min';

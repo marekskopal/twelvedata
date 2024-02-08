@@ -8,12 +8,15 @@ use MarekSkopal\TwelveData\Api\ReferenceData;
 use MarekSkopal\TwelveData\Dto\BondsList;
 use MarekSkopal\TwelveData\Dto\CryptocurrenciesList;
 use MarekSkopal\TwelveData\Dto\CryptocurrencyExchanges;
+use MarekSkopal\TwelveData\Dto\EarliestTimestamp;
 use MarekSkopal\TwelveData\Dto\EtfList;
 use MarekSkopal\TwelveData\Dto\Exchanges;
 use MarekSkopal\TwelveData\Dto\ForexPairsList;
 use MarekSkopal\TwelveData\Dto\FundsList;
 use MarekSkopal\TwelveData\Dto\IndicesList;
 use MarekSkopal\TwelveData\Dto\StockList;
+use MarekSkopal\TwelveData\Dto\SymbolSearch;
+use MarekSkopal\TwelveData\Enum\IntervalEnum;
 use MarekSkopal\TwelveData\Tests\Fixtures\Client\ClientFixture;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
@@ -108,6 +111,26 @@ class ReferenceDataTest extends TestCase
         $this->assertInstanceOf(
             CryptocurrencyExchanges::class,
             $referenceData->cryptocurrencyExchanges(),
+        );
+    }
+
+    public function testSymbolSearch(): void
+    {
+        $referenceData = new ReferenceData(ClientFixture::createDemo());
+
+        $this->assertInstanceOf(
+            SymbolSearch::class,
+            $referenceData->symbolSearch('AA'),
+        );
+    }
+
+    public function testEarliestTimestamp(): void
+    {
+        $referenceData = new ReferenceData(ClientFixture::createDemo());
+
+        $this->assertInstanceOf(
+            EarliestTimestamp::class,
+            $referenceData->earliestTimestamp('AAPL', IntervalEnum::OneDay),
         );
     }
 }

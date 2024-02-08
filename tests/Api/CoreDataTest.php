@@ -6,7 +6,7 @@ namespace MarekSkopal\TwelveData\Tests\Api;
 
 use MarekSkopal\TwelveData\Api\CoreData;
 use MarekSkopal\TwelveData\Dto\TimeSeries;
-use MarekSkopal\TwelveData\Enum\TimeSeriesIntervalEnum;
+use MarekSkopal\TwelveData\Enum\IntervalEnum;
 use MarekSkopal\TwelveData\Tests\Fixtures\Client\ClientFixture;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
@@ -20,7 +20,7 @@ class CoreDataTest extends TestCase
 
         $this->assertInstanceOf(
             TimeSeries::class,
-            $referenceData->timeSeries('AAPL', TimeSeriesIntervalEnum::OneMinute),
+            $referenceData->timeSeries('AAPL', IntervalEnum::OneMinute),
         );
     }
 }
