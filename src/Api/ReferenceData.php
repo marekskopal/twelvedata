@@ -7,6 +7,7 @@ namespace MarekSkopal\TwelveData\Api;
 use MarekSkopal\TwelveData\Client\Client;
 use MarekSkopal\TwelveData\Dto\BondsList;
 use MarekSkopal\TwelveData\Dto\CryptocurrenciesList;
+use MarekSkopal\TwelveData\Dto\CryptocurrencyExchanges;
 use MarekSkopal\TwelveData\Dto\EtfList;
 use MarekSkopal\TwelveData\Dto\Exchanges;
 use MarekSkopal\TwelveData\Dto\ForexPairsList;
@@ -224,5 +225,18 @@ class ReferenceData extends TwelveDataApi
         );
 
         return Exchanges::fromJson($this->getResponseContents($response));
+    }
+
+    public function cryptocurrencyExchanges(?FormatEnum $format = null, ?string $delimiter = null,): CryptocurrencyExchanges
+    {
+        $response = $this->client->get(
+            path: '/cryptocurrency_exchanges',
+            queryParams: [
+                'format' => $format?->value,
+                'delimiter' => $delimiter,
+            ],
+        );
+
+        return CryptocurrencyExchanges::fromJson($this->getResponseContents($response));
     }
 }
