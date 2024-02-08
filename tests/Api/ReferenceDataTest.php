@@ -14,6 +14,7 @@ use MarekSkopal\TwelveData\Dto\Exchanges;
 use MarekSkopal\TwelveData\Dto\ForexPairsList;
 use MarekSkopal\TwelveData\Dto\FundsList;
 use MarekSkopal\TwelveData\Dto\IndicesList;
+use MarekSkopal\TwelveData\Dto\MarketState;
 use MarekSkopal\TwelveData\Dto\StockList;
 use MarekSkopal\TwelveData\Dto\SymbolSearch;
 use MarekSkopal\TwelveData\Enum\IntervalEnum;
@@ -132,5 +133,15 @@ class ReferenceDataTest extends TestCase
             EarliestTimestamp::class,
             $referenceData->earliestTimestamp('AAPL', IntervalEnum::OneDay),
         );
+    }
+
+    public function testMarketState(): void
+    {
+        $referenceData = new ReferenceData(ClientFixture::createDemo());
+
+        $marketState = $referenceData->marketState('NYSE');
+
+        $this->assertIsArray($marketState);
+        $this->assertInstanceOf(MarketState::class, $marketState[0]);
     }
 }

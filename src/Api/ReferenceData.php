@@ -14,6 +14,7 @@ use MarekSkopal\TwelveData\Dto\Exchanges;
 use MarekSkopal\TwelveData\Dto\ForexPairsList;
 use MarekSkopal\TwelveData\Dto\FundsList;
 use MarekSkopal\TwelveData\Dto\IndicesList;
+use MarekSkopal\TwelveData\Dto\MarketState;
 use MarekSkopal\TwelveData\Dto\StockList;
 use MarekSkopal\TwelveData\Dto\SymbolSearch;
 use MarekSkopal\TwelveData\Enum\FormatEnum;
@@ -275,5 +276,35 @@ class ReferenceData extends TwelveDataApi
         );
 
         return EarliestTimestamp::fromJson($this->getResponseContents($response));
+    }
+
+    /** @return list<MarketState> */
+    public function marketState(?string $exchange = null, ?string $code = null, ?string $country = null,): array
+    {
+        $response = $this->client->get(
+            path: '/market_state',
+            queryParams: [
+                'exchange' => $exchange,
+                'code' => $code,
+                'country' => $country,
+            ],
+        );
+
+        $responseContents = $this->getResponseContents($response);
+
+        /**
+         * @var list<array{
+         *     name: string,
+         *     code: string,
+         *     country: string,
+         *     is_market_open: bool,
+         *     time_after_open: string,
+         *     time_to_open: string,
+         *     time_to_close: string,
+         *  }> $data
+         */
+        $data = json_decode($responseContents, associative: true);
+
+        return array_map(fn (array $item): MarketState => MarketState::fromArray($item), $data);
     }
 }
