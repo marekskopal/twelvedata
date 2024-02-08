@@ -11,6 +11,35 @@ readonly class TimeSeries
     {
     }
 
+    public static function fromJson(string $json): self
+    {
+        /**
+         * @var array{
+         *     meta: array{
+         *         symbol: string,
+         *         interval: string,
+         *         currency: string,
+         *         exchange_timezone: string,
+         *         exchange: string,
+         *         mic_code: string,
+         *         type: string,
+         *     },
+         *     values: list<array{
+         *         datetime: string,
+         *         open: string,
+         *         high: string,
+         *         low: string,
+         *         close: string,
+         *         volume: string,
+         *     }>,
+         *     status: string,
+         *  } $responseContents
+         */
+        $responseContents = json_decode($json, associative: true);
+
+        return self::fromArray($responseContents);
+    }
+
     /**
      * @param array{
      *     meta: array{

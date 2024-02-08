@@ -5,19 +5,18 @@ declare(strict_types=1);
 namespace MarekSkopal\TwelveData\Api;
 
 use MarekSkopal\TwelveData\Client\Client;
-use MarekSkopal\TwelveData\Dto\TimeSeries;
+use MarekSkopal\TwelveData\Dto\StockList;
 use MarekSkopal\TwelveData\Enum\FormatEnum;
-use MarekSkopal\TwelveData\Enum\TimeSeriesIntervalEnum;
+use MarekSkopal\TwelveData\Utils\QueryParamsUtils;
 
-class CoreData
+class ReferenceData
 {
     public function __construct(private readonly Client $client)
     {
     }
 
-    public function timeSeries(
+    public function stockList(
         string $symbol,
-        TimeSeriesIntervalEnum $interval = TimeSeriesIntervalEnum::OneDay,
         ?string $exchange = null,
         ?string $micCode = null,
         ?string $country = null,
@@ -25,12 +24,13 @@ class CoreData
         ?string $outputSize = null,
         ?FormatEnum $format = null,
         ?string $delimiter = null,
-    ): TimeSeries {
+        ?bool $showPlan = null,
+        ?bool $includeDelisted = null,
+    ): StockList {
         $response = $this->client->get(
-            path: '/time_series',
+            path: '/stocks',
             queryParams: [
                 'symbol' => $symbol,
-                'interval' => $interval->value,
                 'exchange' => $exchange,
                 'mic_code' => $micCode,
                 'country' => $country,
@@ -38,9 +38,11 @@ class CoreData
                 'outputSize' => $outputSize,
                 'format' => $format?->value,
                 'delimiter' => $delimiter,
+                'show_plan' => $showPlan !== null ? QueryParamsUtils::booleanAsString($showPlan) : null,
+                'include_delisted' => $includeDelisted !== null ? QueryParamsUtils::booleanAsString($includeDelisted) : null,
             ],
         );
 
-        return TimeSeries::fromJson($response->getBody()->getContents());
+        return StockList::fromJson($response->getBody()->getContents());
     }
 }

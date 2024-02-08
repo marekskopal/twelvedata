@@ -4,15 +4,15 @@ declare(strict_types=1);
 
 namespace MarekSkopal\TwelveData\Dto;
 
-readonly class TimeSeriesMeta
+readonly class StockListData
 {
     public function __construct(
         public string $symbol,
-        public string $interval,
+        public string $name,
         public string $currency,
-        public string $exchangeTimezone,
         public string $exchange,
         public string $micCode,
+        public string $country,
         public string $type,
     ) {
     }
@@ -20,23 +20,23 @@ readonly class TimeSeriesMeta
     /**
      * @param array{
      *     symbol: string,
-     *     interval: string,
+     *     name: string,
      *     currency: string,
-     *     exchange_timezone: string,
      *     exchange: string,
      *     mic_code: string,
+     *     country: string,
      *     type: string,
-     * } $data
+     *  } $data
      */
     public static function fromArray(array $data): self
     {
         return new self(
             symbol: $data['symbol'],
-            interval: $data['interval'],
+            name: $data['name'],
             currency: $data['currency'],
-            exchangeTimezone: $data['exchange_timezone'],
             exchange: $data['exchange'],
             micCode: $data['mic_code'],
+            country: $data['country'],
             type: $data['type'],
         );
     }

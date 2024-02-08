@@ -6,7 +6,7 @@ namespace MarekSkopal\TwelveData\Dto;
 
 use DateTimeImmutable;
 
-class TimeSeriesValue
+readonly class TimeSeriesValue
 {
     public function __construct(
         public DateTimeImmutable $datetime,
