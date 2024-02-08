@@ -9,7 +9,7 @@ use MarekSkopal\TwelveData\Dto\TimeSeries;
 use MarekSkopal\TwelveData\Enum\TimeSeriesFormatEnum;
 use MarekSkopal\TwelveData\Enum\TimeSeriesIntervalEnum;
 
-class ReferenceData
+class CoreData
 {
     public function __construct(private readonly Client $client)
     {
