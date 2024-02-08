@@ -6,6 +6,7 @@ namespace MarekSkopal\TwelveData\Api;
 
 use DateTimeImmutable;
 use MarekSkopal\TwelveData\Client\Client;
+use MarekSkopal\TwelveData\Dto\ExchangeRate;
 use MarekSkopal\TwelveData\Dto\TimeSeries;
 use MarekSkopal\TwelveData\Enum\AdjustEnum;
 use MarekSkopal\TwelveData\Enum\FormatEnum;
@@ -66,5 +67,28 @@ class CoreData extends TwelveDataApi
         );
 
         return TimeSeries::fromJson($this->getResponseContents($response));
+    }
+
+    public function exchangeRate(
+        string $symbol,
+        ?DateTimeImmutable $date = null,
+        ?FormatEnum $format = null,
+        ?string $delimiter = null,
+        ?int $dp = null,
+        ?string $timezone = null,
+    ): ExchangeRate {
+        $response = $this->client->get(
+            path: '/exchange_rate',
+            queryParams: [
+                'symbol' => $symbol,
+                'date' => $date?->format('Y-m-d'),
+                'format' => $format?->value,
+                'delimiter' => $delimiter,
+                'dp' => $dp !== null ? (string) $dp : null,
+                'timezone' => $timezone,
+            ],
+        );
+
+        return ExchangeRate::fromJson($this->getResponseContents($response));
     }
 }
