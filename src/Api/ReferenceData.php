@@ -6,6 +6,7 @@ namespace MarekSkopal\TwelveData\Api;
 
 use MarekSkopal\TwelveData\Client\Client;
 use MarekSkopal\TwelveData\Dto\CryptocurrenciesList;
+use MarekSkopal\TwelveData\Dto\EtfList;
 use MarekSkopal\TwelveData\Dto\ForexPairsList;
 use MarekSkopal\TwelveData\Dto\StockList;
 use MarekSkopal\TwelveData\Enum\FormatEnum;
@@ -26,7 +27,6 @@ class ReferenceData
         ?string $outputSize = null,
         ?FormatEnum $format = null,
         ?string $delimiter = null,
-        ?bool $showPlan = null,
         ?bool $includeDelisted = null,
     ): StockList {
         $response = $this->client->get(
@@ -40,7 +40,6 @@ class ReferenceData
                 'outputSize' => $outputSize,
                 'format' => $format?->value,
                 'delimiter' => $delimiter,
-                'show_plan' => $showPlan !== null ? QueryParamsUtils::booleanAsString($showPlan) : null,
                 'include_delisted' => $includeDelisted !== null ? QueryParamsUtils::booleanAsString($includeDelisted) : null,
             ],
         );
@@ -90,5 +89,30 @@ class ReferenceData
         );
 
         return CryptocurrenciesList::fromJson($response->getBody()->getContents());
+    }
+
+    public function etfList(
+        string $symbol,
+        ?string $exchange = null,
+        ?string $micCode = null,
+        ?string $country = null,
+        ?FormatEnum $format = null,
+        ?string $delimiter = null,
+        ?bool $includeDelisted = null,
+    ): EtfList {
+        $response = $this->client->get(
+            path: '/etf',
+            queryParams: [
+                'symbol' => $symbol,
+                'exchange' => $exchange,
+                'mic_code' => $micCode,
+                'country' => $country,
+                'format' => $format?->value,
+                'delimiter' => $delimiter,
+                'include_delisted' => $includeDelisted !== null ? QueryParamsUtils::booleanAsString($includeDelisted) : null,
+            ],
+        );
+
+        return EtfList::fromJson($response->getBody()->getContents());
     }
 }

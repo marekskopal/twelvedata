@@ -8,8 +8,10 @@ use MarekSkopal\TwelveData\Api\CoreData;
 use MarekSkopal\TwelveData\Dto\TimeSeries;
 use MarekSkopal\TwelveData\Enum\TimeSeriesIntervalEnum;
 use MarekSkopal\TwelveData\Tests\Fixtures\Client\ClientFixture;
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 
+#[CoversClass(CoreData::class)]
 class CoreDataTest extends TestCase
 {
     public function testTimeSeries(): void
