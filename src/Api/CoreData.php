@@ -9,7 +9,7 @@ use MarekSkopal\TwelveData\Dto\TimeSeries;
 use MarekSkopal\TwelveData\Enum\FormatEnum;
 use MarekSkopal\TwelveData\Enum\TimeSeriesIntervalEnum;
 
-class CoreData
+class CoreData extends TwelveDataApi
 {
     public function __construct(private readonly Client $client)
     {
@@ -41,6 +41,6 @@ class CoreData
             ],
         );
 
-        return TimeSeries::fromJson($response->getBody()->getContents());
+        return TimeSeries::fromJson($this->getResponseContents($response));
     }
 }

@@ -13,7 +13,7 @@ use MarekSkopal\TwelveData\Dto\StockList;
 use MarekSkopal\TwelveData\Enum\FormatEnum;
 use MarekSkopal\TwelveData\Utils\QueryParamsUtils;
 
-class ReferenceData
+class ReferenceData extends TwelveDataApi
 {
     public function __construct(private readonly Client $client)
     {
@@ -45,7 +45,7 @@ class ReferenceData
             ],
         );
 
-        return StockList::fromJson($response->getBody()->getContents());
+        return StockList::fromJson($this->getResponseContents($response));
     }
 
     public function forexPairsList(
@@ -66,7 +66,7 @@ class ReferenceData
             ],
         );
 
-        return ForexPairsList::fromJson($response->getBody()->getContents());
+        return ForexPairsList::fromJson($this->getResponseContents($response));
     }
 
     public function cryptocurrenciesList(
@@ -89,7 +89,7 @@ class ReferenceData
             ],
         );
 
-        return CryptocurrenciesList::fromJson($response->getBody()->getContents());
+        return CryptocurrenciesList::fromJson($this->getResponseContents($response));
     }
 
     public function etfList(
@@ -114,7 +114,7 @@ class ReferenceData
             ],
         );
 
-        return EtfList::fromJson($response->getBody()->getContents());
+        return EtfList::fromJson($this->getResponseContents($response));
     }
 
     public function exchanges(
@@ -137,6 +137,6 @@ class ReferenceData
             ],
         );
 
-        return Exchanges::fromJson($response->getBody()->getContents());
+        return Exchanges::fromJson($this->getResponseContents($response));
     }
 }
