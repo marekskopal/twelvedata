@@ -9,6 +9,7 @@ use MarekSkopal\TwelveData\Client\Client;
 use MarekSkopal\TwelveData\Dto\Dividends;
 use MarekSkopal\TwelveData\Dto\Logo;
 use MarekSkopal\TwelveData\Dto\Profile;
+use MarekSkopal\TwelveData\Dto\Splits;
 use MarekSkopal\TwelveData\Enum\RangeEnum;
 
 class Fundamentals extends TwelveDataApi
@@ -70,5 +71,30 @@ class Fundamentals extends TwelveDataApi
         );
 
         return Dividends::fromJson($this->getResponseContents($response));
+    }
+
+    public function splits(
+        string $symbol,
+        ?string $exchange = null,
+        ?string $micCode = null,
+        ?string $country = null,
+        ?RangeEnum $range = null,
+        ?DateTimeImmutable $startDate = null,
+        ?DateTimeImmutable $endDate = null,
+    ): Splits {
+        $response = $this->client->get(
+            path: '/splits',
+            queryParams: [
+                'symbol' => $symbol,
+                'exchange' => $exchange,
+                'mic_code' => $micCode,
+                'country' => $country,
+                'range' => $range?->value,
+                'start_date' => $startDate?->format('Y-m-d'),
+                'end_date' => $endDate?->format('Y-m-d'),
+            ],
+        );
+
+        return Splits::fromJson($this->getResponseContents($response));
     }
 }

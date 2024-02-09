@@ -12,19 +12,6 @@ readonly class DividendsDividend
     {
     }
 
-    public static function fromJson(string $json): self
-    {
-        /**
-         * @var array{
-         *     ex_date: string,
-         *     amount: float,
-         *  } $responseContents
-         */
-        $responseContents = json_decode($json, associative: true);
-
-        return self::fromArray($responseContents);
-    }
-
     /**
      * @param array{
      *     ex_date: string,
