@@ -7,8 +7,10 @@ namespace MarekSkopal\TwelveData\Api;
 use DateTimeImmutable;
 use MarekSkopal\TwelveData\Client\Client;
 use MarekSkopal\TwelveData\Dto\CurrencyConversion;
+use MarekSkopal\TwelveData\Dto\EndOfDayPrice;
 use MarekSkopal\TwelveData\Dto\ExchangeRate;
 use MarekSkopal\TwelveData\Dto\Quote;
+use MarekSkopal\TwelveData\Dto\RealTImePrice;
 use MarekSkopal\TwelveData\Dto\TimeSeries;
 use MarekSkopal\TwelveData\Enum\AdjustEnum;
 use MarekSkopal\TwelveData\Enum\FormatEnum;
@@ -156,5 +158,59 @@ class CoreData extends TwelveDataApi
         );
 
         return Quote::fromJson($this->getResponseContents($response));
+    }
+
+    public function realTimePrice(
+        string $symbol,
+        ?string $exchange = null,
+        ?string $micCode = null,
+        ?string $country = null,
+        ?string $type = null,
+        ?FormatEnum $format = null,
+        ?string $delimiter = null,
+        ?PrepostEnum $prepost = null,
+        ?int $dp = null,
+    ): RealTImePrice {
+        $response = $this->client->get(
+            path: '/price',
+            queryParams: [
+                'symbol' => $symbol,
+                'exchange' => $exchange,
+                'mic_code' => $micCode,
+                'country' => $country,
+                'type' => $type,
+                'format' => $format?->value,
+                'delimiter' => $delimiter,
+                'prepost' => $prepost?->value,
+                'dp' => $dp !== null ? (string) $dp : null,
+            ],
+        );
+
+        return RealTImePrice::fromJson($this->getResponseContents($response));
+    }
+
+    public function endOfDayPrice(
+        string $symbol,
+        ?string $exchange = null,
+        ?string $micCode = null,
+        ?string $country = null,
+        ?string $type = null,
+        ?PrepostEnum $prepost = null,
+        ?int $dp = null,
+    ): EndOfDayPrice {
+        $response = $this->client->get(
+            path: '/eod',
+            queryParams: [
+                'symbol' => $symbol,
+                'exchange' => $exchange,
+                'mic_code' => $micCode,
+                'country' => $country,
+                'type' => $type,
+                'prepost' => $prepost?->value,
+                'dp' => $dp !== null ? (string) $dp : null,
+            ],
+        );
+
+        return EndOfDayPrice::fromJson($this->getResponseContents($response));
     }
 }

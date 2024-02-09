@@ -6,8 +6,10 @@ namespace MarekSkopal\TwelveData\Tests\Api;
 
 use MarekSkopal\TwelveData\Api\CoreData;
 use MarekSkopal\TwelveData\Dto\CurrencyConversion;
+use MarekSkopal\TwelveData\Dto\EndOfDayPrice;
 use MarekSkopal\TwelveData\Dto\ExchangeRate;
 use MarekSkopal\TwelveData\Dto\Quote;
+use MarekSkopal\TwelveData\Dto\RealTImePrice;
 use MarekSkopal\TwelveData\Dto\TimeSeries;
 use MarekSkopal\TwelveData\Enum\IntervalEnum;
 use MarekSkopal\TwelveData\Tests\Fixtures\Client\ClientFixture;
@@ -54,6 +56,26 @@ class CoreDataTest extends TestCase
         $this->assertInstanceOf(
             Quote::class,
             $referenceData->quote('AAPL'),
+        );
+    }
+
+    public function testRealTimePrice(): void
+    {
+        $referenceData = new CoreData(ClientFixture::createDemo());
+
+        $this->assertInstanceOf(
+            RealTImePrice::class,
+            $referenceData->realTimePrice('AAPL'),
+        );
+    }
+
+    public function testEndOfDayPrice(): void
+    {
+        $referenceData = new CoreData(ClientFixture::createDemo());
+
+        $this->assertInstanceOf(
+            EndOfDayPrice::class,
+            $referenceData->endOfDayPrice('AAPL'),
         );
     }
 }
