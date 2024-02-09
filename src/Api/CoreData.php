@@ -8,6 +8,7 @@ use DateTimeImmutable;
 use MarekSkopal\TwelveData\Client\Client;
 use MarekSkopal\TwelveData\Dto\CurrencyConversion;
 use MarekSkopal\TwelveData\Dto\ExchangeRate;
+use MarekSkopal\TwelveData\Dto\Quote;
 use MarekSkopal\TwelveData\Dto\TimeSeries;
 use MarekSkopal\TwelveData\Enum\AdjustEnum;
 use MarekSkopal\TwelveData\Enum\FormatEnum;
@@ -116,5 +117,44 @@ class CoreData extends TwelveDataApi
         );
 
         return CurrencyConversion::fromJson($this->getResponseContents($response));
+    }
+
+    public function quote(
+        string $symbol,
+        IntervalEnum $interval = IntervalEnum::OneDay,
+        ?string $exchange = null,
+        ?string $micCode = null,
+        ?string $country = null,
+        ?int $volumeTypePeriod = null,
+        ?string $type = null,
+        ?FormatEnum $format = null,
+        ?string $delimiter = null,
+        ?PrepostEnum $prepost = null,
+        ?bool $eod = null,
+        ?int $rollingPeriod = null,
+        ?int $dp = null,
+        ?string $timezone = null,
+    ): Quote {
+        $response = $this->client->get(
+            path: '/quote',
+            queryParams: [
+                'symbol' => $symbol,
+                'interval' => $interval->value,
+                'exchange' => $exchange,
+                'mic_code' => $micCode,
+                'country' => $country,
+                'volume_time_period' => $volumeTypePeriod !== null ? (string) $volumeTypePeriod : null,
+                'type' => $type,
+                'format' => $format?->value,
+                'delimiter' => $delimiter,
+                'prepost' => $prepost?->value,
+                'eod' => $eod !== null ? QueryParamsUtils::booleanAsString($eod) : null,
+                'rolling_period' => $rollingPeriod !== null ? (string) $rollingPeriod : null,
+                'dp' => $dp !== null ? (string) $dp : null,
+                'timezone' => $timezone,
+            ],
+        );
+
+        return Quote::fromJson($this->getResponseContents($response));
     }
 }
