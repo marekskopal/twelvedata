@@ -7,6 +7,7 @@ namespace MarekSkopal\TwelveData\Tests\Api;
 use MarekSkopal\TwelveData\Api\CoreData;
 use MarekSkopal\TwelveData\Api\Fundamentals;
 use MarekSkopal\TwelveData\Dto\CurrencyConversion;
+use MarekSkopal\TwelveData\Dto\Dividends;
 use MarekSkopal\TwelveData\Dto\EndOfDayPrice;
 use MarekSkopal\TwelveData\Dto\ExchangeRate;
 use MarekSkopal\TwelveData\Dto\Logo;
@@ -39,6 +40,16 @@ class FundamentalsTest extends TestCase
         $this->assertInstanceOf(
             Profile::class,
             $fundamentals->profile('AAPL'),
+        );
+    }
+
+    public function testDividends(): void
+    {
+        $fundamentals = new Fundamentals(ClientFixture::createDemo());
+
+        $this->assertInstanceOf(
+            Dividends::class,
+            $fundamentals->dividends('AAPL'),
         );
     }
 }
