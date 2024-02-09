@@ -6,20 +6,16 @@ namespace MarekSkopal\TwelveData\Dto;
 
 readonly class Dividends
 {
-    /**
-     * @param list<DividendsDividend> $dividends
-     */
-    public function __construct(
-        public Meta $meta,
-        public array $dividends,
-    ) {
+    /** @param list<DividendsDividend> $dividends */
+    public function __construct(public Meta $meta, public array $dividends,)
+    {
     }
 
     public static function fromJson(string $json): self
     {
         /**
          * @var array{
-         *     meta: array {
+         *     meta: array{
          *         symbol: string,
          *         name: string,
          *         currency: string,
@@ -30,7 +26,7 @@ readonly class Dividends
          *     dividends: list<array{
          *         ex_date: string,
          *         amount: float,
-         *     }
+         *     }>
          *  } $responseContents
          */
         $responseContents = json_decode($json, associative: true);
@@ -40,7 +36,7 @@ readonly class Dividends
 
     /**
      * @param array{
-     *     meta: array {
+     *     meta: array{
      *         symbol: string,
      *         name: string,
      *         currency: string,
@@ -51,7 +47,7 @@ readonly class Dividends
      *     dividends: list<array{
      *         ex_date: string,
      *         amount: float,
-     *     }
+     *     }>
      *  } $data
      */
     public static function fromArray(array $data): self

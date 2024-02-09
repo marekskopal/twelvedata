@@ -4,8 +4,6 @@ declare(strict_types=1);
 
 namespace MarekSkopal\TwelveData\Dto;
 
-use DateTimeImmutable;
-
 readonly class Profile
 {
     public function __construct(

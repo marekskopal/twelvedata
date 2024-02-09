@@ -4,15 +4,10 @@ declare(strict_types=1);
 
 namespace MarekSkopal\TwelveData\Dto;
 
-use DateTimeImmutable;
-
 readonly class Logo
 {
-    public function __construct(
-        public ?string $url,
-        public ?string $logoBase,
-        public ?string $logoQuote,
-    ) {
+    public function __construct(public ?string $url, public ?string $logoBase, public ?string $logoQuote,)
+    {
     }
 
     public static function fromJson(string $json): self
@@ -38,10 +33,6 @@ readonly class Logo
      */
     public static function fromArray(array $data): self
     {
-        return new self(
-            url: $data['url'],
-            logoBase: $data['logo_base'],
-            logoQuote: $data['logo_quote'],
-        );
+        return new self(url: $data['url'] ?? null, logoBase: $data['logo_base'] ?? null, logoQuote: $data['logo_quote'] ?? null);
     }
 }

@@ -6,16 +6,9 @@ namespace MarekSkopal\TwelveData\Tests\Api;
 
 use MarekSkopal\TwelveData\Api\CoreData;
 use MarekSkopal\TwelveData\Api\Fundamentals;
-use MarekSkopal\TwelveData\Dto\CurrencyConversion;
 use MarekSkopal\TwelveData\Dto\Dividends;
-use MarekSkopal\TwelveData\Dto\EndOfDayPrice;
-use MarekSkopal\TwelveData\Dto\ExchangeRate;
 use MarekSkopal\TwelveData\Dto\Logo;
 use MarekSkopal\TwelveData\Dto\Profile;
-use MarekSkopal\TwelveData\Dto\Quote;
-use MarekSkopal\TwelveData\Dto\RealTImePrice;
-use MarekSkopal\TwelveData\Dto\TimeSeries;
-use MarekSkopal\TwelveData\Enum\IntervalEnum;
 use MarekSkopal\TwelveData\Tests\Fixtures\Client\ClientFixture;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
