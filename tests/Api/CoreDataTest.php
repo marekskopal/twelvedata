@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace MarekSkopal\TwelveData\Tests\Api;
 
 use MarekSkopal\TwelveData\Api\CoreData;
+use MarekSkopal\TwelveData\Dto\CurrencyConversion;
 use MarekSkopal\TwelveData\Dto\ExchangeRate;
 use MarekSkopal\TwelveData\Dto\TimeSeries;
 use MarekSkopal\TwelveData\Enum\IntervalEnum;
@@ -32,6 +33,16 @@ class CoreDataTest extends TestCase
         $this->assertInstanceOf(
             ExchangeRate::class,
             $referenceData->exchangeRate('USD/JPY'),
+        );
+    }
+
+    public function testCurrencyConversion(): void
+    {
+        $referenceData = new CoreData(ClientFixture::createDemo());
+
+        $this->assertInstanceOf(
+            CurrencyConversion::class,
+            $referenceData->currencyConversion('USD/JPY', 122),
         );
     }
 }

@@ -6,6 +6,7 @@ namespace MarekSkopal\TwelveData\Api;
 
 use DateTimeImmutable;
 use MarekSkopal\TwelveData\Client\Client;
+use MarekSkopal\TwelveData\Dto\CurrencyConversion;
 use MarekSkopal\TwelveData\Dto\ExchangeRate;
 use MarekSkopal\TwelveData\Dto\TimeSeries;
 use MarekSkopal\TwelveData\Enum\AdjustEnum;
@@ -90,5 +91,30 @@ class CoreData extends TwelveDataApi
         );
 
         return ExchangeRate::fromJson($this->getResponseContents($response));
+    }
+
+    public function currencyConversion(
+        string $symbol,
+        float $amount,
+        ?DateTimeImmutable $date = null,
+        ?FormatEnum $format = null,
+        ?string $delimiter = null,
+        ?int $dp = null,
+        ?string $timezone = null,
+    ): CurrencyConversion {
+        $response = $this->client->get(
+            path: '/currency_conversion',
+            queryParams: [
+                'symbol' => $symbol,
+                'amount' => (string) $amount,
+                'date' => $date?->format('Y-m-d'),
+                'format' => $format?->value,
+                'delimiter' => $delimiter,
+                'dp' => $dp !== null ? (string) $dp : null,
+                'timezone' => $timezone,
+            ],
+        );
+
+        return CurrencyConversion::fromJson($this->getResponseContents($response));
     }
 }
