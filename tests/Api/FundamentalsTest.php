@@ -10,6 +10,7 @@ use MarekSkopal\TwelveData\Dto\Earnings;
 use MarekSkopal\TwelveData\Dto\Logo;
 use MarekSkopal\TwelveData\Dto\Profile;
 use MarekSkopal\TwelveData\Dto\Splits;
+use MarekSkopal\TwelveData\Dto\Statistics;
 use MarekSkopal\TwelveData\Tests\Fixtures\Client\ClientFixture;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
@@ -64,6 +65,16 @@ class FundamentalsTest extends TestCase
         $this->assertInstanceOf(
             Earnings::class,
             $fundamentals->earnings('AAPL'),
+        );
+    }
+
+    public function testStatistics(): void
+    {
+        $fundamentals = new Fundamentals(ClientFixture::createDemo());
+
+        $this->assertInstanceOf(
+            Statistics::class,
+            $fundamentals->statistics('AAPL'),
         );
     }
 }

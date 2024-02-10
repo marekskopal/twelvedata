@@ -11,6 +11,7 @@ use MarekSkopal\TwelveData\Dto\Earnings;
 use MarekSkopal\TwelveData\Dto\Logo;
 use MarekSkopal\TwelveData\Dto\Profile;
 use MarekSkopal\TwelveData\Dto\Splits;
+use MarekSkopal\TwelveData\Dto\Statistics;
 use MarekSkopal\TwelveData\Enum\FormatEnum;
 use MarekSkopal\TwelveData\Enum\PeriodEnum;
 use MarekSkopal\TwelveData\Enum\RangeEnum;
@@ -134,5 +135,20 @@ class Fundamentals extends TwelveDataApi
         );
 
         return Earnings::fromJson($this->getResponseContents($response));
+    }
+
+    public function statistics(string $symbol, ?string $exchange = null, ?string $micCode = null, ?string $country = null,): Statistics
+    {
+        $response = $this->client->get(
+            path: '/statistics',
+            queryParams: [
+                'symbol' => $symbol,
+                'exchange' => $exchange,
+                'mic_code' => $micCode,
+                'country' => $country,
+            ],
+        );
+
+        return Statistics::fromJson($this->getResponseContents($response));
     }
 }
