@@ -94,4 +94,4 @@ More endpoints will be covered in future versions.
 ### Advanced
 
 * Complex Data ❌
-* Usage        ❌
+* Usage        ✅
