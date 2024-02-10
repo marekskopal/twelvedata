@@ -8,11 +8,13 @@ use DateTimeImmutable;
 use MarekSkopal\TwelveData\Client\Client;
 use MarekSkopal\TwelveData\Dto\Dividends;
 use MarekSkopal\TwelveData\Dto\Earnings;
+use MarekSkopal\TwelveData\Dto\IncomeStatement;
 use MarekSkopal\TwelveData\Dto\InsiderTransactions;
 use MarekSkopal\TwelveData\Dto\Logo;
 use MarekSkopal\TwelveData\Dto\Profile;
 use MarekSkopal\TwelveData\Dto\Splits;
 use MarekSkopal\TwelveData\Dto\Statistics;
+use MarekSkopal\TwelveData\Enum\EarningsPeriodEnum;
 use MarekSkopal\TwelveData\Enum\FormatEnum;
 use MarekSkopal\TwelveData\Enum\PeriodEnum;
 use MarekSkopal\TwelveData\Enum\RangeEnum;
@@ -109,7 +111,7 @@ class Fundamentals extends TwelveDataApi
         ?string $micCode = null,
         ?string $country = null,
         ?string $type = null,
-        ?PeriodEnum $period = null,
+        ?EarningsPeriodEnum $period = null,
         ?string $outputSize = null,
         ?FormatEnum $format = null,
         ?string $delimiter = null,
@@ -158,8 +160,7 @@ class Fundamentals extends TwelveDataApi
         ?string $exchange = null,
         ?string $micCode = null,
         ?string $country = null,
-    ): InsiderTransactions
-    {
+    ): InsiderTransactions {
         $response = $this->client->get(
             path: '/insider_transactions',
             queryParams: [
@@ -171,5 +172,30 @@ class Fundamentals extends TwelveDataApi
         );
 
         return InsiderTransactions::fromJson($this->getResponseContents($response));
+    }
+
+    public function incomeStatement(
+        string $symbol,
+        ?string $exchange = null,
+        ?string $micCode = null,
+        ?string $country = null,
+        ?PeriodEnum $period = null,
+        ?DateTimeImmutable $startDate = null,
+        ?DateTimeImmutable $endDate = null,
+    ): IncomeStatement {
+        $response = $this->client->get(
+            path: '/income_statement',
+            queryParams: [
+                'symbol' => $symbol,
+                'exchange' => $exchange,
+                'mic_code' => $micCode,
+                'country' => $country,
+                'period' => $period?->value,
+                'start_date' => $startDate?->format('Y-m-d'),
+                'end_date' => $endDate?->format('Y-m-d'),
+            ],
+        );
+
+        return IncomeStatement::fromJson($this->getResponseContents($response));
     }
 }

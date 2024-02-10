@@ -6,6 +6,6 @@ namespace MarekSkopal\TwelveData\Enum;
 
 enum PeriodEnum: string
 {
-    case Latest = 'latest';
-    case Next = 'next';
+    case Annual = 'annual';
+    case Quarterly = 'quarterly';
 }

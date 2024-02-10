@@ -7,6 +7,7 @@ namespace MarekSkopal\TwelveData\Tests\Api;
 use MarekSkopal\TwelveData\Api\Fundamentals;
 use MarekSkopal\TwelveData\Dto\Dividends;
 use MarekSkopal\TwelveData\Dto\Earnings;
+use MarekSkopal\TwelveData\Dto\IncomeStatement;
 use MarekSkopal\TwelveData\Dto\InsiderTransactions;
 use MarekSkopal\TwelveData\Dto\Logo;
 use MarekSkopal\TwelveData\Dto\Profile;
@@ -86,6 +87,16 @@ class FundamentalsTest extends TestCase
         $this->assertInstanceOf(
             InsiderTransactions::class,
             $fundamentals->insiderTransactions('AAPL'),
+        );
+    }
+
+    public function testIncomeStatement(): void
+    {
+        $fundamentals = new Fundamentals(ClientFixture::createDemo());
+
+        $this->assertInstanceOf(
+            IncomeStatement::class,
+            $fundamentals->incomeStatement('AAPL'),
         );
     }
 }
