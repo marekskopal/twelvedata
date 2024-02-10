@@ -8,6 +8,7 @@ use DateTimeImmutable;
 use MarekSkopal\TwelveData\Client\Client;
 use MarekSkopal\TwelveData\Dto\Dividends;
 use MarekSkopal\TwelveData\Dto\Earnings;
+use MarekSkopal\TwelveData\Dto\InsiderTransactions;
 use MarekSkopal\TwelveData\Dto\Logo;
 use MarekSkopal\TwelveData\Dto\Profile;
 use MarekSkopal\TwelveData\Dto\Splits;
@@ -150,5 +151,25 @@ class Fundamentals extends TwelveDataApi
         );
 
         return Statistics::fromJson($this->getResponseContents($response));
+    }
+
+    public function insiderTransactions(
+        string $symbol,
+        ?string $exchange = null,
+        ?string $micCode = null,
+        ?string $country = null,
+    ): InsiderTransactions
+    {
+        $response = $this->client->get(
+            path: '/insider_transactions',
+            queryParams: [
+                'symbol' => $symbol,
+                'exchange' => $exchange,
+                'mic_code' => $micCode,
+                'country' => $country,
+            ],
+        );
+
+        return InsiderTransactions::fromJson($this->getResponseContents($response));
     }
 }
