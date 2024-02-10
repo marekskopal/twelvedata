@@ -6,12 +6,12 @@ namespace MarekSkopal\TwelveData\Api;
 
 use DateTimeImmutable;
 use MarekSkopal\TwelveData\Client\Client;
-use MarekSkopal\TwelveData\Dto\CurrencyConversion;
-use MarekSkopal\TwelveData\Dto\EndOfDayPrice;
-use MarekSkopal\TwelveData\Dto\ExchangeRate;
-use MarekSkopal\TwelveData\Dto\Quote;
-use MarekSkopal\TwelveData\Dto\RealTImePrice;
-use MarekSkopal\TwelveData\Dto\TimeSeries;
+use MarekSkopal\TwelveData\Dto\CoreData\CurrencyConversion;
+use MarekSkopal\TwelveData\Dto\CoreData\EndOfDayPrice;
+use MarekSkopal\TwelveData\Dto\CoreData\ExchangeRate;
+use MarekSkopal\TwelveData\Dto\CoreData\Quote;
+use MarekSkopal\TwelveData\Dto\CoreData\RealTImePrice;
+use MarekSkopal\TwelveData\Dto\CoreData\TimeSeries;
 use MarekSkopal\TwelveData\Enum\AdjustEnum;
 use MarekSkopal\TwelveData\Enum\FormatEnum;
 use MarekSkopal\TwelveData\Enum\IntervalEnum;

@@ -5,12 +5,12 @@ declare(strict_types=1);
 namespace MarekSkopal\TwelveData\Tests\Api;
 
 use MarekSkopal\TwelveData\Api\CoreData;
-use MarekSkopal\TwelveData\Dto\CurrencyConversion;
-use MarekSkopal\TwelveData\Dto\EndOfDayPrice;
-use MarekSkopal\TwelveData\Dto\ExchangeRate;
-use MarekSkopal\TwelveData\Dto\Quote;
-use MarekSkopal\TwelveData\Dto\RealTImePrice;
-use MarekSkopal\TwelveData\Dto\TimeSeries;
+use MarekSkopal\TwelveData\Dto\CoreData\CurrencyConversion;
+use MarekSkopal\TwelveData\Dto\CoreData\EndOfDayPrice;
+use MarekSkopal\TwelveData\Dto\CoreData\ExchangeRate;
+use MarekSkopal\TwelveData\Dto\CoreData\Quote;
+use MarekSkopal\TwelveData\Dto\CoreData\RealTImePrice;
+use MarekSkopal\TwelveData\Dto\CoreData\TimeSeries;
 use MarekSkopal\TwelveData\Enum\IntervalEnum;
 use MarekSkopal\TwelveData\Tests\Fixtures\Client\ClientFixture;
 use PHPUnit\Framework\Attributes\CoversClass;
