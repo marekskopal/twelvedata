@@ -56,16 +56,16 @@ More endpoints will be covered in future versions.
 
 ### Fundamentals
 
-* Logo                  ❌
-* Profile               ❌
-* Dividends             ❌
-* Splits                ❌
-* Earnings              ❌
+* Logo                  ✅
+* Profile               ✅
+* Dividends             ✅
+* Splits                ✅
+* Earnings              ✅
 * Earnings Calendar     ❌
 * IPO Calendar          ❌
-* Statistics            ❌
-* Insider Transactions  ❌
-* Income Statement      ❌
+* Statistics            ✅
+* Insider Transactions  ✅
+* Income Statement      ✅
 * Balance Sheet         ❌
 * Cash Flow             ❌
 * Options Expiration    ❌
@@ -75,6 +75,17 @@ More endpoints will be covered in future versions.
 * Fund Holders          ❌
 * Direct Holders        ❌
 * Last changes          ❌
+
+### Analysis
+* Earnings Estimate             ❌
+* Revenue Estimate              ❌
+* EPS Trend                     ❌
+* EPS Revisions                 ❌
+* Growth Estimates              ❌
+* Recommendations               ❌
+* Price Target                  ❌
+* Analyst Ratings - Light       ❌
+* Analyst Ratings - US Equities ❌
 
 ### WebSocket
 
