@@ -18,10 +18,12 @@ readonly class TimeSeries
          *     meta: array{
          *         symbol: string,
          *         interval: string,
-         *         currency: string,
-         *         exchange_timezone: string,
-         *         exchange: string,
-         *         mic_code: string,
+         *         currency?: string,
+         *         exchange_timezone?: string,
+         *         exchange?: string,
+         *         mic_code?: string,
+         *         currency_base?: string,
+         *         currency_quote?: string,
          *         type: string,
          *     },
          *     values: list<array{
@@ -30,7 +32,7 @@ readonly class TimeSeries
          *         high: string,
          *         low: string,
          *         close: string,
-         *         volume: string,
+         *         volume?: string,
          *     }>,
          *     status: string,
          *  } $responseContents
@@ -45,10 +47,12 @@ readonly class TimeSeries
      *     meta: array{
      *         symbol: string,
      *         interval: string,
-     *         currency: string,
-     *         exchange_timezone: string,
-     *         exchange: string,
-     *         mic_code: string,
+     *         currency?: string,
+     *         exchange_timezone?: string,
+     *         exchange?: string,
+     *         mic_code?: string,
+     *         currency_base?: string,
+     *         currency_quote?: string,
      *         type: string,
      *     },
      *     values: list<array{
@@ -57,7 +61,7 @@ readonly class TimeSeries
      *         high: string,
      *         low: string,
      *         close: string,
-     *         volume: string,
+     *         volume?: string,
      *     }>,
      *     status: string,
      *  } $data

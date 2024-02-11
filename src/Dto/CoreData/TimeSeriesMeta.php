@@ -9,10 +9,12 @@ readonly class TimeSeriesMeta
     public function __construct(
         public string $symbol,
         public string $interval,
-        public string $currency,
-        public string $exchangeTimezone,
-        public string $exchange,
-        public string $micCode,
+        public ?string $currency,
+        public ?string $exchangeTimezone,
+        public ?string $exchange,
+        public ?string $micCode,
+        public ?string $currencyBase,
+        public ?string $currencyQuote,
         public string $type,
     ) {
     }
@@ -21,10 +23,12 @@ readonly class TimeSeriesMeta
      * @param array{
      *     symbol: string,
      *     interval: string,
-     *     currency: string,
-     *     exchange_timezone: string,
-     *     exchange: string,
-     *     mic_code: string,
+     *     currency?: string,
+     *     exchange_timezone?: string,
+     *     exchange?: string,
+     *     mic_code?: string,
+     *     currency_base?: string,
+     *     currency_quote?: string,
      *     type: string,
      * } $data
      */
@@ -33,10 +37,12 @@ readonly class TimeSeriesMeta
         return new self(
             symbol: $data['symbol'],
             interval: $data['interval'],
-            currency: $data['currency'],
-            exchangeTimezone: $data['exchange_timezone'],
-            exchange: $data['exchange'],
-            micCode: $data['mic_code'],
+            currency: $data['currency'] ?? null,
+            exchangeTimezone: $data['exchange_timezone'] ?? null,
+            exchange: $data['exchange'] ?? null,
+            micCode: $data['mic_code'] ?? null,
+            currencyBase: $data['currency_base'] ?? null,
+            currencyQuote: $data['currency_quote'] ?? null,
             type: $data['type'],
         );
     }

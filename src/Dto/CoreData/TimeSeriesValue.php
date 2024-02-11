@@ -14,7 +14,7 @@ readonly class TimeSeriesValue
         public string $high,
         public string $low,
         public string $close,
-        public string $volume,
+        public ?string $volume,
     ) {
     }
 
@@ -25,7 +25,7 @@ readonly class TimeSeriesValue
      *     high: string,
      *     low: string,
      *     close: string,
-     *     volume: string,
+     *     volume?: string,
      * } $data
      */
     public static function fromArray(array $data): self
@@ -36,7 +36,7 @@ readonly class TimeSeriesValue
             high: $data['high'],
             low: $data['low'],
             close: $data['close'],
-            volume: $data['volume'],
+            volume: $data['volume'] ?? null,
         );
     }
 }
