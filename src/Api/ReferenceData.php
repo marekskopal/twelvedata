@@ -28,7 +28,7 @@ class ReferenceData extends TwelveDataApi
     }
 
     public function stockList(
-        string $symbol,
+        ?string $symbol,
         ?string $exchange = null,
         ?string $micCode = null,
         ?string $country = null,
@@ -57,7 +57,7 @@ class ReferenceData extends TwelveDataApi
     }
 
     public function forexPairsList(
-        string $symbol,
+        ?string $symbol,
         ?string $currencyBase = null,
         ?string $currencyQuote = null,
         ?FormatEnum $format = null,
@@ -78,7 +78,7 @@ class ReferenceData extends TwelveDataApi
     }
 
     public function cryptocurrenciesList(
-        string $symbol,
+        ?string $symbol,
         ?string $exchange = null,
         ?string $currencyBase = null,
         ?string $currencyQuote = null,
@@ -101,7 +101,7 @@ class ReferenceData extends TwelveDataApi
     }
 
     public function etfList(
-        string $symbol,
+        ?string $symbol,
         ?string $exchange = null,
         ?string $micCode = null,
         ?string $country = null,
@@ -126,7 +126,7 @@ class ReferenceData extends TwelveDataApi
     }
 
     public function indicesList(
-        string $symbol,
+        ?string $symbol,
         ?string $exchange = null,
         ?string $micCode = null,
         ?string $country = null,
@@ -151,7 +151,7 @@ class ReferenceData extends TwelveDataApi
     }
 
     public function fundsList(
-        string $symbol,
+        ?string $symbol,
         ?string $exchange = null,
         ?string $country = null,
         ?string $type = null,
@@ -180,7 +180,7 @@ class ReferenceData extends TwelveDataApi
     }
 
     public function bondsList(
-        string $symbol,
+        ?string $symbol,
         ?string $exchange = null,
         ?string $country = null,
         ?string $type = null,
