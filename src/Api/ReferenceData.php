@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace MarekSkopal\TwelveData\Api;
 
-use MarekSkopal\TwelveData\Client\Client;
 use MarekSkopal\TwelveData\Dto\ReferenceData\BondsList;
 use MarekSkopal\TwelveData\Dto\ReferenceData\CryptocurrenciesList;
 use MarekSkopal\TwelveData\Dto\ReferenceData\CryptocurrencyExchanges;
@@ -23,10 +22,6 @@ use MarekSkopal\TwelveData\Utils\QueryParamsUtils;
 
 class ReferenceData extends TwelveDataApi
 {
-    public function __construct(private readonly Client $client)
-    {
-    }
-
     public function stockList(
         ?string $symbol = null,
         ?string $exchange = null,
@@ -53,7 +48,7 @@ class ReferenceData extends TwelveDataApi
             ],
         );
 
-        return StockList::fromJson($this->getResponseContents($response));
+        return StockList::fromJson($response);
     }
 
     public function forexPairsList(
@@ -74,7 +69,7 @@ class ReferenceData extends TwelveDataApi
             ],
         );
 
-        return ForexPairsList::fromJson($this->getResponseContents($response));
+        return ForexPairsList::fromJson($response);
     }
 
     public function cryptocurrenciesList(
@@ -97,7 +92,7 @@ class ReferenceData extends TwelveDataApi
             ],
         );
 
-        return CryptocurrenciesList::fromJson($this->getResponseContents($response));
+        return CryptocurrenciesList::fromJson($response);
     }
 
     public function etfList(
@@ -122,7 +117,7 @@ class ReferenceData extends TwelveDataApi
             ],
         );
 
-        return EtfList::fromJson($this->getResponseContents($response));
+        return EtfList::fromJson($response);
     }
 
     public function indicesList(
@@ -147,7 +142,7 @@ class ReferenceData extends TwelveDataApi
             ],
         );
 
-        return IndicesList::fromJson($this->getResponseContents($response));
+        return IndicesList::fromJson($response);
     }
 
     public function fundsList(
@@ -176,7 +171,7 @@ class ReferenceData extends TwelveDataApi
             ],
         );
 
-        return FundsList::fromJson($this->getResponseContents($response));
+        return FundsList::fromJson($response);
     }
 
     public function bondsList(
@@ -205,7 +200,7 @@ class ReferenceData extends TwelveDataApi
             ],
         );
 
-        return BondsList::fromJson($this->getResponseContents($response));
+        return BondsList::fromJson($response);
     }
 
     public function exchanges(
@@ -228,7 +223,7 @@ class ReferenceData extends TwelveDataApi
             ],
         );
 
-        return Exchanges::fromJson($this->getResponseContents($response));
+        return Exchanges::fromJson($response);
     }
 
     public function cryptocurrencyExchanges(?FormatEnum $format = null, ?string $delimiter = null,): CryptocurrencyExchanges
@@ -241,7 +236,7 @@ class ReferenceData extends TwelveDataApi
             ],
         );
 
-        return CryptocurrencyExchanges::fromJson($this->getResponseContents($response));
+        return CryptocurrencyExchanges::fromJson($response);
     }
 
     public function symbolSearch(string $symbol, ?int $outputsize = null,): SymbolSearch
@@ -254,7 +249,7 @@ class ReferenceData extends TwelveDataApi
             ],
         );
 
-        return SymbolSearch::fromJson($this->getResponseContents($response));
+        return SymbolSearch::fromJson($response);
     }
 
     public function earliestTimestamp(
@@ -275,7 +270,7 @@ class ReferenceData extends TwelveDataApi
             ],
         );
 
-        return EarliestTimestamp::fromJson($this->getResponseContents($response));
+        return EarliestTimestamp::fromJson($response);
     }
 
     /** @return list<MarketState> */
@@ -290,7 +285,7 @@ class ReferenceData extends TwelveDataApi
             ],
         );
 
-        $responseContents = $this->getResponseContents($response);
+        $responseContents = $response;
 
         /**
          * @var list<array{

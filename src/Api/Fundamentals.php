@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace MarekSkopal\TwelveData\Api;
 
 use DateTimeImmutable;
-use MarekSkopal\TwelveData\Client\Client;
 use MarekSkopal\TwelveData\Dto\Fundamentals\Dividends;
 use MarekSkopal\TwelveData\Dto\Fundamentals\Earnings;
 use MarekSkopal\TwelveData\Dto\Fundamentals\IncomeStatement;
@@ -21,10 +20,6 @@ use MarekSkopal\TwelveData\Enum\RangeEnum;
 
 class Fundamentals extends TwelveDataApi
 {
-    public function __construct(private readonly Client $client)
-    {
-    }
-
     public function logo(string $symbol, ?string $exchange = null, ?string $micCode = null, ?string $country = null,): Logo
     {
         $response = $this->client->get(
@@ -37,7 +32,7 @@ class Fundamentals extends TwelveDataApi
             ],
         );
 
-        return Logo::fromJson($this->getResponseContents($response));
+        return Logo::fromJson($response);
     }
 
     public function profile(string $symbol, ?string $exchange = null, ?string $micCode = null, ?string $country = null,): Profile
@@ -52,7 +47,7 @@ class Fundamentals extends TwelveDataApi
             ],
         );
 
-        return Profile::fromJson($this->getResponseContents($response));
+        return Profile::fromJson($response);
     }
 
     public function dividends(
@@ -77,7 +72,7 @@ class Fundamentals extends TwelveDataApi
             ],
         );
 
-        return Dividends::fromJson($this->getResponseContents($response));
+        return Dividends::fromJson($response);
     }
 
     public function splits(
@@ -102,7 +97,7 @@ class Fundamentals extends TwelveDataApi
             ],
         );
 
-        return Splits::fromJson($this->getResponseContents($response));
+        return Splits::fromJson($response);
     }
 
     public function earnings(
@@ -137,7 +132,7 @@ class Fundamentals extends TwelveDataApi
             ],
         );
 
-        return Earnings::fromJson($this->getResponseContents($response));
+        return Earnings::fromJson($response);
     }
 
     public function statistics(string $symbol, ?string $exchange = null, ?string $micCode = null, ?string $country = null,): Statistics
@@ -152,7 +147,7 @@ class Fundamentals extends TwelveDataApi
             ],
         );
 
-        return Statistics::fromJson($this->getResponseContents($response));
+        return Statistics::fromJson($response);
     }
 
     public function insiderTransactions(
@@ -171,7 +166,7 @@ class Fundamentals extends TwelveDataApi
             ],
         );
 
-        return InsiderTransactions::fromJson($this->getResponseContents($response));
+        return InsiderTransactions::fromJson($response);
     }
 
     public function incomeStatement(
@@ -196,6 +191,6 @@ class Fundamentals extends TwelveDataApi
             ],
         );
 
-        return IncomeStatement::fromJson($this->getResponseContents($response));
+        return IncomeStatement::fromJson($response);
     }
 }

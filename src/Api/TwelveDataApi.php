@@ -4,24 +4,11 @@ declare(strict_types=1);
 
 namespace MarekSkopal\TwelveData\Api;
 
-use MarekSkopal\TwelveData\Exception\ApiException;
-use Psr\Http\Message\ResponseInterface;
+use MarekSkopal\TwelveData\Client\Client;
 
 abstract class TwelveDataApi
 {
-    protected function getResponseContents(ResponseInterface $response): string
+    public function __construct(protected readonly Client $client)
     {
-        $responseContents = $response->getBody()->getContents();
-
-        /** @var array{status?: string, code?: int, message?: string} $data */
-        $data = json_decode($responseContents, associative: true);
-
-        $status = $data['status'] ?? null;
-
-        if ($status === 'error') {
-            throw ApiException::fromCode($data['message'] ?? 'Internal Server Error', $data['code'] ?? 500);
-        }
-
-        return $responseContents;
     }
 }

@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace MarekSkopal\TwelveData\Api;
 
 use DateTimeImmutable;
-use MarekSkopal\TwelveData\Client\Client;
 use MarekSkopal\TwelveData\Dto\CoreData\CurrencyConversion;
 use MarekSkopal\TwelveData\Dto\CoreData\EndOfDayPrice;
 use MarekSkopal\TwelveData\Dto\CoreData\ExchangeRate;
@@ -21,10 +20,6 @@ use MarekSkopal\TwelveData\Utils\QueryParamsUtils;
 
 class CoreData extends TwelveDataApi
 {
-    public function __construct(private readonly Client $client)
-    {
-    }
-
     /** @param list<AdjustEnum>|null $adjust */
     public function timeSeries(
         string $symbol,
@@ -70,7 +65,7 @@ class CoreData extends TwelveDataApi
             ],
         );
 
-        return TimeSeries::fromJson($this->getResponseContents($response));
+        return TimeSeries::fromJson($response);
     }
 
     public function exchangeRate(
@@ -93,7 +88,7 @@ class CoreData extends TwelveDataApi
             ],
         );
 
-        return ExchangeRate::fromJson($this->getResponseContents($response));
+        return ExchangeRate::fromJson($response);
     }
 
     public function currencyConversion(
@@ -118,7 +113,7 @@ class CoreData extends TwelveDataApi
             ],
         );
 
-        return CurrencyConversion::fromJson($this->getResponseContents($response));
+        return CurrencyConversion::fromJson($response);
     }
 
     public function quote(
@@ -157,7 +152,7 @@ class CoreData extends TwelveDataApi
             ],
         );
 
-        return Quote::fromJson($this->getResponseContents($response));
+        return Quote::fromJson($response);
     }
 
     public function realTimePrice(
@@ -186,7 +181,7 @@ class CoreData extends TwelveDataApi
             ],
         );
 
-        return RealTImePrice::fromJson($this->getResponseContents($response));
+        return RealTImePrice::fromJson($response);
     }
 
     public function endOfDayPrice(
@@ -211,6 +206,6 @@ class CoreData extends TwelveDataApi
             ],
         );
 
-        return EndOfDayPrice::fromJson($this->getResponseContents($response));
+        return EndOfDayPrice::fromJson($response);
     }
 }

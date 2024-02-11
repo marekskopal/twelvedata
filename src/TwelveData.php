@@ -8,6 +8,7 @@ use MarekSkopal\TwelveData\Api\CoreData;
 use MarekSkopal\TwelveData\Api\Fundamentals;
 use MarekSkopal\TwelveData\Api\ReferenceData;
 use MarekSkopal\TwelveData\Client\Client;
+use MarekSkopal\TwelveData\Config\Config;
 
 class TwelveData
 {
@@ -19,9 +20,9 @@ class TwelveData
 
     private Fundamentals $fundamentals;
 
-    public function __construct(string $apiKey)
+    public function __construct(Config $config)
     {
-        $this->client = new Client($apiKey);
+        $this->client = new Client($config);
     }
 
     public function getReferenceData(): ReferenceData
