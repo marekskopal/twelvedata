@@ -81,7 +81,7 @@ class ReferenceData extends TwelveDataApi
         ?string $delimiter = null,
     ): CryptocurrenciesList {
         $response = $this->client->get(
-            path: '/forex_pairs',
+            path: '/cryptocurrencies',
             queryParams: [
                 'symbol' => $symbol,
                 'exchange' => $exchange,
