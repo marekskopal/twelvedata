@@ -3,3 +3,4 @@ ray.php
 .phpunit.cache
 .phpunit.result.cache
 .idea
+composer.lock
