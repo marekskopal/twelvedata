@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace MarekSkopal\TwelveData\Dto\CoreData;
 
-readonly class RealTImePrice
+readonly class RealTimePrice
 {
     public function __construct(public string $price)
     {

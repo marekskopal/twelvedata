@@ -9,7 +9,7 @@ use MarekSkopal\TwelveData\Dto\CoreData\CurrencyConversion;
 use MarekSkopal\TwelveData\Dto\CoreData\EndOfDayPrice;
 use MarekSkopal\TwelveData\Dto\CoreData\ExchangeRate;
 use MarekSkopal\TwelveData\Dto\CoreData\Quote;
-use MarekSkopal\TwelveData\Dto\CoreData\RealTImePrice;
+use MarekSkopal\TwelveData\Dto\CoreData\RealTimePrice;
 use MarekSkopal\TwelveData\Dto\CoreData\TimeSeries;
 use MarekSkopal\TwelveData\Enum\AdjustEnum;
 use MarekSkopal\TwelveData\Enum\FormatEnum;
@@ -165,7 +165,7 @@ class CoreData extends TwelveDataApi
         ?string $delimiter = null,
         ?PrepostEnum $prepost = null,
         ?int $dp = null,
-    ): RealTImePrice {
+    ): RealTimePrice {
         $response = $this->client->get(
             path: '/price',
             queryParams: [
@@ -181,7 +181,7 @@ class CoreData extends TwelveDataApi
             ],
         );
 
-        return RealTImePrice::fromJson($response);
+        return RealTimePrice::fromJson($response);
     }
 
     public function endOfDayPrice(
