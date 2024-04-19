@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace MarekSkopal\TwelveData\Api;
 
 use DateTimeImmutable;
+use MarekSkopal\TwelveData\Dto\Fundamentals\BalanceSheet;
 use MarekSkopal\TwelveData\Dto\Fundamentals\Dividends;
 use MarekSkopal\TwelveData\Dto\Fundamentals\Earnings;
 use MarekSkopal\TwelveData\Dto\Fundamentals\IncomeStatement;
@@ -192,5 +193,30 @@ class Fundamentals extends TwelveDataApi
         );
 
         return IncomeStatement::fromJson($response);
+    }
+
+    public function balanceSheet(
+        string $symbol,
+        ?string $exchange = null,
+        ?string $micCode = null,
+        ?string $country = null,
+        ?PeriodEnum $period = null,
+        ?DateTimeImmutable $startDate = null,
+        ?DateTimeImmutable $endDate = null,
+    ): BalanceSheet {
+        $response = $this->client->get(
+            path: '/balance_sheet',
+            queryParams: [
+                'symbol' => $symbol,
+                'exchange' => $exchange,
+                'mic_code' => $micCode,
+                'country' => $country,
+                'period' => $period?->value,
+                'start_date' => $startDate?->format('Y-m-d'),
+                'end_date' => $endDate?->format('Y-m-d'),
+            ],
+        );
+
+        return BalanceSheet::fromJson($response);
     }
 }

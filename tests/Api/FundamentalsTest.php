@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace MarekSkopal\TwelveData\Tests\Api;
 
 use MarekSkopal\TwelveData\Api\Fundamentals;
+use MarekSkopal\TwelveData\Dto\Fundamentals\BalanceSheet;
 use MarekSkopal\TwelveData\Dto\Fundamentals\Dividends;
 use MarekSkopal\TwelveData\Dto\Fundamentals\Earnings;
 use MarekSkopal\TwelveData\Dto\Fundamentals\IncomeStatement;
@@ -97,6 +98,16 @@ class FundamentalsTest extends TestCase
         $this->assertInstanceOf(
             IncomeStatement::class,
             $fundamentals->incomeStatement('AAPL'),
+        );
+    }
+
+    public function testBalanceSheet(): void
+    {
+        $fundamentals = new Fundamentals(ClientFixture::createDemo());
+
+        $this->assertInstanceOf(
+            BalanceSheet::class,
+            $fundamentals->balanceSheet('AAPL'),
         );
     }
 }
