@@ -63,7 +63,7 @@ readonly class CashFlowCashFlow
     {
         return new self(
             fiscalDate: $data['fiscal_date'],
-            quarter: $data['quarter'],
+            quarter: $data['quarter'] ?? null,
             operatingActivities: CashFlowOperatingActivities::fromArray($data['operating_activities']),
             investingActivities: CashFlowInvestingActivities::fromArray($data['investing_activities']),
             financingActivities: CashFlowFinancingActivities::fromArray($data['financing_activities']),
