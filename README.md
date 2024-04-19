@@ -21,7 +21,7 @@ $twelveData = new TwelveData('<yourApiKey');
 // Get the one minute time series for the AAPL symbol
 $response = $twelveData->getCoreData()->timeSeries(
     symbol: 'AAPL',
-    interval: => IntervalEnum::OneMinute,
+    interval: IntervalEnum::OneMinute,
 );
 ```
 
