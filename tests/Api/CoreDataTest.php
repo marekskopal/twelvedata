@@ -5,18 +5,37 @@ declare(strict_types=1);
 namespace MarekSkopal\TwelveData\Tests\Api;
 
 use MarekSkopal\TwelveData\Api\CoreData;
+use MarekSkopal\TwelveData\Api\TwelveDataApi;
+use MarekSkopal\TwelveData\Client\Client;
+use MarekSkopal\TwelveData\Config\Config;
 use MarekSkopal\TwelveData\Dto\CoreData\CurrencyConversion;
 use MarekSkopal\TwelveData\Dto\CoreData\EndOfDayPrice;
 use MarekSkopal\TwelveData\Dto\CoreData\ExchangeRate;
 use MarekSkopal\TwelveData\Dto\CoreData\Quote;
-use MarekSkopal\TwelveData\Dto\CoreData\RealTImePrice;
+use MarekSkopal\TwelveData\Dto\CoreData\QuoteFiftyTwoWeek;
+use MarekSkopal\TwelveData\Dto\CoreData\RealTimePrice;
 use MarekSkopal\TwelveData\Dto\CoreData\TimeSeries;
+use MarekSkopal\TwelveData\Dto\CoreData\TimeSeriesMeta;
+use MarekSkopal\TwelveData\Dto\CoreData\TimeSeriesValue;
 use MarekSkopal\TwelveData\Enum\IntervalEnum;
 use MarekSkopal\TwelveData\Tests\Fixtures\Client\ClientFixture;
 use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\UsesClass;
 use PHPUnit\Framework\TestCase;
 
 #[CoversClass(CoreData::class)]
+#[UsesClass(TwelveDataApi::class)]
+#[UsesClass(Client::class)]
+#[UsesClass(Config::class)]
+#[UsesClass(CurrencyConversion::class)]
+#[UsesClass(EndOfDayPrice::class)]
+#[UsesClass(ExchangeRate::class)]
+#[UsesClass(Quote::class)]
+#[UsesClass(QuoteFiftyTwoWeek::class)]
+#[UsesClass(RealTimePrice::class)]
+#[UsesClass(TimeSeries::class)]
+#[UsesClass(TimeSeriesMeta::class)]
+#[UsesClass(TimeSeriesValue::class)]
 class CoreDataTest extends TestCase
 {
     public function testTimeSeries(): void
@@ -64,7 +83,7 @@ class CoreDataTest extends TestCase
         $referenceData = new CoreData(ClientFixture::createDemo());
 
         $this->assertInstanceOf(
-            RealTImePrice::class,
+            RealTimePrice::class,
             $referenceData->realTimePrice('AAPL'),
         );
     }
