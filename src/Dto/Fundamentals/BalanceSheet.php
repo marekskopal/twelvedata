@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace MarekSkopal\TwelveData\Dto\Fundamentals;
 
-class BalanceSheet
+readonly class BalanceSheet
 {
     /** @param list<BalanceSheetBalanceSheet> $balanceSheet */
     public function __construct(public Meta $meta, public array $balanceSheet)

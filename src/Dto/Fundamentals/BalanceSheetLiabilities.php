@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace MarekSkopal\TwelveData\Dto\Fundamentals;
 
-class BalanceSheetLiabilities
+readonly class BalanceSheetLiabilities
 {
     public function __construct(
         public BalanceSheetCurrentLiabilities $currentLiabilities,

@@ -6,7 +6,7 @@ namespace MarekSkopal\TwelveData\Dto\Fundamentals;
 
 use DateTimeImmutable;
 
-class BalanceSheetBalanceSheet
+readonly class BalanceSheetBalanceSheet
 {
     public function __construct(
         public DateTimeImmutable $fiscalDate,
