@@ -16,7 +16,7 @@ use MarekSkopal\TwelveData\TwelveData;
 use MarekSkopal\TwelveData\Enum\IntervalEnum;
 
 // Create TwelveData instance
-$twelveData = new TwelveData('<yourApiKey');
+$twelveData = new TwelveData('<yourApiKey>');
 
 // Get the one minute time series for the AAPL symbol
 $response = $twelveData->getCoreData()->timeSeries(
@@ -66,14 +66,14 @@ More endpoints will be covered in future versions.
 * Statistics            ✅
 * Insider Transactions  ✅
 * Income Statement      ✅
-* Balance Sheet         ❌
-* Cash Flow             ❌
-* Options Expiration    ❌
-* Options Chain         ❌
-* Key Executives        ❌
-* Institutional Holders ❌
-* Fund Holders          ❌
-* Direct Holders        ❌
+* Balance Sheet         ✅
+* Cash Flow             ✅
+* Options Expiration    ✅
+* Options Chain         ✅
+* Key Executives        ✅
+* Institutional Holders ✅
+* Fund Holders          ✅
+* Direct Holders        ✅
 * Last changes          ❌
 
 ### Analysis
