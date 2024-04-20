@@ -12,6 +12,7 @@ use MarekSkopal\TwelveData\Dto\Fundamentals\Earnings;
 use MarekSkopal\TwelveData\Dto\Fundamentals\IncomeStatement;
 use MarekSkopal\TwelveData\Dto\Fundamentals\InsiderTransactions;
 use MarekSkopal\TwelveData\Dto\Fundamentals\Logo;
+use MarekSkopal\TwelveData\Dto\Fundamentals\OptionsExpiration;
 use MarekSkopal\TwelveData\Dto\Fundamentals\Profile;
 use MarekSkopal\TwelveData\Dto\Fundamentals\Splits;
 use MarekSkopal\TwelveData\Dto\Fundamentals\Statistics;
@@ -244,5 +245,24 @@ class Fundamentals extends TwelveDataApi
         );
 
         return CashFlow::fromJson($response);
+    }
+
+    public function optionsExpiration(
+        string $symbol,
+        ?string $exchange = null,
+        ?string $micCode = null,
+        ?string $country = null,
+    ): OptionsExpiration {
+        $response = $this->client->get(
+            path: '/options/expiration',
+            queryParams: [
+                'symbol' => $symbol,
+                'exchange' => $exchange,
+                'mic_code' => $micCode,
+                'country' => $country,
+            ],
+        );
+
+        return OptionsExpiration::fromJson($response);
     }
 }

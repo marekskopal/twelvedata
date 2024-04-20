@@ -34,6 +34,7 @@ use MarekSkopal\TwelveData\Dto\Fundamentals\InsiderTransactions;
 use MarekSkopal\TwelveData\Dto\Fundamentals\InsiderTransactionsInsiderTransaction;
 use MarekSkopal\TwelveData\Dto\Fundamentals\Logo;
 use MarekSkopal\TwelveData\Dto\Fundamentals\Meta;
+use MarekSkopal\TwelveData\Dto\Fundamentals\OptionsExpiration;
 use MarekSkopal\TwelveData\Dto\Fundamentals\Profile;
 use MarekSkopal\TwelveData\Dto\Fundamentals\Splits;
 use MarekSkopal\TwelveData\Dto\Fundamentals\SplitsSplit;
@@ -82,6 +83,7 @@ use PHPUnit\Framework\TestCase;
 #[UsesClass(InsiderTransactionsInsiderTransaction::class)]
 #[UsesClass(Logo::class)]
 #[UsesClass(Meta::class)]
+#[UsesClass(OptionsExpiration::class)]
 #[UsesClass(Profile::class)]
 #[UsesClass(Splits::class)]
 #[UsesClass(SplitsSplit::class)]
@@ -194,6 +196,16 @@ class FundamentalsTest extends TestCase
         $this->assertInstanceOf(
             CashFlow::class,
             $fundamentals->cashFlow('AAPL'),
+        );
+    }
+
+    public function testOptionsExpiration(): void
+    {
+        $fundamentals = new Fundamentals(ClientFixture::createDemo());
+
+        $this->assertInstanceOf(
+            OptionsExpiration::class,
+            $fundamentals->optionsExpiration('AAPL'),
         );
     }
 }
