@@ -23,16 +23,20 @@ use MarekSkopal\TwelveData\Dto\Fundamentals\CashFlowCashFlow;
 use MarekSkopal\TwelveData\Dto\Fundamentals\CashFlowFinancingActivities;
 use MarekSkopal\TwelveData\Dto\Fundamentals\CashFlowInvestingActivities;
 use MarekSkopal\TwelveData\Dto\Fundamentals\CashFlowOperatingActivities;
+use MarekSkopal\TwelveData\Dto\Fundamentals\DirectHolders;
 use MarekSkopal\TwelveData\Dto\Fundamentals\Dividends;
 use MarekSkopal\TwelveData\Dto\Fundamentals\DividendsDividend;
 use MarekSkopal\TwelveData\Dto\Fundamentals\Earnings;
 use MarekSkopal\TwelveData\Dto\Fundamentals\EarningsEarning;
+use MarekSkopal\TwelveData\Dto\Fundamentals\FundHolders;
+use MarekSkopal\TwelveData\Dto\Fundamentals\Holder;
 use MarekSkopal\TwelveData\Dto\Fundamentals\IncomeStatement;
 use MarekSkopal\TwelveData\Dto\Fundamentals\IncomeStatementIncomeStatement;
 use MarekSkopal\TwelveData\Dto\Fundamentals\IncomeStatementNonOperatingInterest;
 use MarekSkopal\TwelveData\Dto\Fundamentals\IncomeStatementOperationExpense;
 use MarekSkopal\TwelveData\Dto\Fundamentals\InsiderTransactions;
 use MarekSkopal\TwelveData\Dto\Fundamentals\InsiderTransactionsInsiderTransaction;
+use MarekSkopal\TwelveData\Dto\Fundamentals\InstitutionalHolders;
 use MarekSkopal\TwelveData\Dto\Fundamentals\KeyExecutives;
 use MarekSkopal\TwelveData\Dto\Fundamentals\KeyExecutivesKeyExecutive;
 use MarekSkopal\TwelveData\Dto\Fundamentals\Logo;
@@ -76,16 +80,19 @@ use PHPUnit\Framework\TestCase;
 #[UsesClass(CashFlowFinancingActivities::class)]
 #[UsesClass(CashFlowInvestingActivities::class)]
 #[UsesClass(CashFlowOperatingActivities::class)]
+#[UsesClass(DirectHolders::class)]
 #[UsesClass(Dividends::class)]
 #[UsesClass(DividendsDividend::class)]
 #[UsesClass(Earnings::class)]
 #[UsesClass(EarningsEarning::class)]
+#[UsesClass(Holder::class)]
 #[UsesClass(IncomeStatement::class)]
 #[UsesClass(IncomeStatementIncomeStatement::class)]
 #[UsesClass(IncomeStatementNonOperatingInterest::class)]
 #[UsesClass(IncomeStatementOperationExpense::class)]
 #[UsesClass(InsiderTransactions::class)]
 #[UsesClass(InsiderTransactionsInsiderTransaction::class)]
+#[UsesClass(InstitutionalHolders::class)]
 #[UsesClass(KeyExecutives::class)]
 #[UsesClass(KeyExecutivesKeyExecutive::class)]
 #[UsesClass(Logo::class)]
@@ -235,6 +242,36 @@ class FundamentalsTest extends TestCase
         $this->assertInstanceOf(
             KeyExecutives::class,
             $fundamentals->keyExecutives('AAPL'),
+        );
+    }
+
+    public function testInstitutionalHolders(): void
+    {
+        $fundamentals = new Fundamentals(ClientFixture::createDemo());
+
+        $this->assertInstanceOf(
+            InstitutionalHolders::class,
+            $fundamentals->institutionalHolders('AAPL'),
+        );
+    }
+
+    public function testFundHolders(): void
+    {
+        $fundamentals = new Fundamentals(ClientFixture::createDemo());
+
+        $this->assertInstanceOf(
+            FundHolders::class,
+            $fundamentals->fundHolders('AAPL'),
+        );
+    }
+
+    public function testDirectHolders(): void
+    {
+        $fundamentals = new Fundamentals(ClientFixture::createDemo());
+
+        $this->assertInstanceOf(
+            DirectHolders::class,
+            $fundamentals->directHolders('AAPL'),
         );
     }
 }
