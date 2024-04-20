@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace MarekSkopal\TwelveData\Tests\Api;
 
+use DateTimeImmutable;
 use MarekSkopal\TwelveData\Api\Fundamentals;
 use MarekSkopal\TwelveData\Api\TwelveDataApi;
 use MarekSkopal\TwelveData\Client\Client;
@@ -34,6 +35,8 @@ use MarekSkopal\TwelveData\Dto\Fundamentals\InsiderTransactions;
 use MarekSkopal\TwelveData\Dto\Fundamentals\InsiderTransactionsInsiderTransaction;
 use MarekSkopal\TwelveData\Dto\Fundamentals\Logo;
 use MarekSkopal\TwelveData\Dto\Fundamentals\Meta;
+use MarekSkopal\TwelveData\Dto\Fundamentals\OptionsChain;
+use MarekSkopal\TwelveData\Dto\Fundamentals\OptionsChainOption;
 use MarekSkopal\TwelveData\Dto\Fundamentals\OptionsExpiration;
 use MarekSkopal\TwelveData\Dto\Fundamentals\Profile;
 use MarekSkopal\TwelveData\Dto\Fundamentals\Splits;
@@ -83,6 +86,8 @@ use PHPUnit\Framework\TestCase;
 #[UsesClass(InsiderTransactionsInsiderTransaction::class)]
 #[UsesClass(Logo::class)]
 #[UsesClass(Meta::class)]
+#[UsesClass(OptionsChain::class)]
+#[UsesClass(OptionsChainOption::class)]
 #[UsesClass(OptionsExpiration::class)]
 #[UsesClass(Profile::class)]
 #[UsesClass(Splits::class)]
@@ -206,6 +211,16 @@ class FundamentalsTest extends TestCase
         $this->assertInstanceOf(
             OptionsExpiration::class,
             $fundamentals->optionsExpiration('AAPL'),
+        );
+    }
+
+    public function testOptionsChain(): void
+    {
+        $fundamentals = new Fundamentals(ClientFixture::createDemo());
+
+        $this->assertInstanceOf(
+            OptionsChain::class,
+            $fundamentals->optionsChain('AAPL', expirationDate: new DateTimeImmutable('2022-01-21')),
         );
     }
 }
