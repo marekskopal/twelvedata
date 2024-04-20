@@ -1,6 +1,6 @@
-# TwelveData API client library for PHP
+# Twelve Data API client library for PHP
 
-Unofficial PHP API client library for the [TwelveData](https://twelvedata.com) API service. 
+Unofficial PHP API client library for the [Twelve Data](https://twelvedata.com) API service. 
 
 
 ## Install
@@ -95,3 +95,9 @@ More endpoints will be covered in future versions.
 
 * Complex Data ❌
 * Usage        ✅
+
+## Notice
+This is NOT an official Twelve Data library, and the authors of this library are not affiliated with Twelve Data in any way, shape or form. Twelve Data APIs and data are Copyright © 2024 Twelve Data Pte. Ltd.
+
+## Contributing
+If you want to contribute, feel free to submit a pull request.
