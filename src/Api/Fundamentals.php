@@ -11,6 +11,7 @@ use MarekSkopal\TwelveData\Dto\Fundamentals\Dividends;
 use MarekSkopal\TwelveData\Dto\Fundamentals\Earnings;
 use MarekSkopal\TwelveData\Dto\Fundamentals\IncomeStatement;
 use MarekSkopal\TwelveData\Dto\Fundamentals\InsiderTransactions;
+use MarekSkopal\TwelveData\Dto\Fundamentals\KeyExecutives;
 use MarekSkopal\TwelveData\Dto\Fundamentals\Logo;
 use MarekSkopal\TwelveData\Dto\Fundamentals\OptionsChain;
 use MarekSkopal\TwelveData\Dto\Fundamentals\OptionsExpiration;
@@ -290,5 +291,24 @@ class Fundamentals extends TwelveDataApi
         );
 
         return OptionsChain::fromJson($response);
+    }
+
+    public function keyExecutives(
+        string $symbol,
+        ?string $exchange = null,
+        ?string $micCode = null,
+        ?string $country = null,
+    ): KeyExecutives {
+        $response = $this->client->get(
+            path: '/key_executives',
+            queryParams: [
+                'symbol' => $symbol,
+                'exchange' => $exchange,
+                'mic_code' => $micCode,
+                'country' => $country,
+            ],
+        );
+
+        return KeyExecutives::fromJson($response);
     }
 }

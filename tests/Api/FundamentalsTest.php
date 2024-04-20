@@ -33,6 +33,8 @@ use MarekSkopal\TwelveData\Dto\Fundamentals\IncomeStatementNonOperatingInterest;
 use MarekSkopal\TwelveData\Dto\Fundamentals\IncomeStatementOperationExpense;
 use MarekSkopal\TwelveData\Dto\Fundamentals\InsiderTransactions;
 use MarekSkopal\TwelveData\Dto\Fundamentals\InsiderTransactionsInsiderTransaction;
+use MarekSkopal\TwelveData\Dto\Fundamentals\KeyExecutives;
+use MarekSkopal\TwelveData\Dto\Fundamentals\KeyExecutivesKeyExecutive;
 use MarekSkopal\TwelveData\Dto\Fundamentals\Logo;
 use MarekSkopal\TwelveData\Dto\Fundamentals\Meta;
 use MarekSkopal\TwelveData\Dto\Fundamentals\OptionsChain;
@@ -84,6 +86,8 @@ use PHPUnit\Framework\TestCase;
 #[UsesClass(IncomeStatementOperationExpense::class)]
 #[UsesClass(InsiderTransactions::class)]
 #[UsesClass(InsiderTransactionsInsiderTransaction::class)]
+#[UsesClass(KeyExecutives::class)]
+#[UsesClass(KeyExecutivesKeyExecutive::class)]
 #[UsesClass(Logo::class)]
 #[UsesClass(Meta::class)]
 #[UsesClass(OptionsChain::class)]
@@ -221,6 +225,16 @@ class FundamentalsTest extends TestCase
         $this->assertInstanceOf(
             OptionsChain::class,
             $fundamentals->optionsChain('AAPL', expirationDate: new DateTimeImmutable('2022-01-21')),
+        );
+    }
+
+    public function testKeyExecutives(): void
+    {
+        $fundamentals = new Fundamentals(ClientFixture::createDemo());
+
+        $this->assertInstanceOf(
+            KeyExecutives::class,
+            $fundamentals->keyExecutives('AAPL'),
         );
     }
 }
