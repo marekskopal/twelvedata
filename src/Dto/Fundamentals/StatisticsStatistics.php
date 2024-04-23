@@ -20,7 +20,7 @@ readonly class StatisticsStatistics
      *     valuations_metrics: array{
      *         market_capitalization: int,
      *         enterprise_value: int,
-     *         trailing_pe: float,
+     *         trailing_pe: float|null,
      *         forward_pe: float,
      *         peg_ratio: float,
      *         price_to_sales_ttm: float,

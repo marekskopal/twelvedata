@@ -9,7 +9,7 @@ readonly class StatisticsValuationsMetrics
     public function __construct(
         public int $marketCapitalization,
         public int $enterpriseValue,
-        public float $trailingPe,
+        public ?float $trailingPe,
         public float $forwardPe,
         public float $pegRatio,
         public float $priceToSalesTtm,
@@ -23,7 +23,7 @@ readonly class StatisticsValuationsMetrics
      * @param array{
      *     market_capitalization: int,
      *     enterprise_value: int,
-     *     trailing_pe: float,
+     *     trailing_pe: float|null,
      *     forward_pe: float,
      *     peg_ratio: float,
      *     price_to_sales_ttm: float,
