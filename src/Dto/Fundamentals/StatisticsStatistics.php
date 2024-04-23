@@ -73,7 +73,7 @@ readonly class StatisticsStatistics
      *         fifty_two_week_low: float,
      *         fifty_two_week_high: float,
      *         fifty_two_week_change: float,
-     *         beta: float,
+     *         beta: float|null,
      *         day_50_ma: float,
      *         day_200_ma: float,
      *     },

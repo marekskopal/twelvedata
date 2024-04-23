@@ -10,7 +10,7 @@ readonly class StatisticsStockPriceSummary
         public float $fiftyTwoWeekLow,
         public float $fiftyTwoWeekHigh,
         public float $fiftyTwoWeekChange,
-        public float $beta,
+        public ?float $beta,
         public float $day50Ma,
         public float $day200Ma,
     ) {
@@ -21,7 +21,7 @@ readonly class StatisticsStockPriceSummary
      *     fifty_two_week_low: float,
      *     fifty_two_week_high: float,
      *     fifty_two_week_change: float,
-     *     beta: float,
+     *     beta: float|null,
      *     day_50_ma: float,
      *     day_200_ma: float,
      *  } $data
