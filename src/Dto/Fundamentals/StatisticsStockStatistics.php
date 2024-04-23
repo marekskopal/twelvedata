@@ -13,7 +13,7 @@ readonly class StatisticsStockStatistics
         public int $avg90Volume,
         public int $sharesShort,
         public float $shortRatio,
-        public float $shortPercentOfSharesOutstanding,
+        public ?float $shortPercentOfSharesOutstanding,
         public float $percentHeldByInsiders,
         public float $percentHeldByInstitutions,
     ) {
@@ -27,7 +27,7 @@ readonly class StatisticsStockStatistics
      *     avg_90_volume: int,
      *     shares_short: int,
      *     short_ratio: float,
-     *     short_percent_of_shares_outstanding: float,
+     *     short_percent_of_shares_outstanding: float|null,
      *     percent_held_by_insiders: float,
      *     percent_held_by_institutions: float,
      *  } $data
