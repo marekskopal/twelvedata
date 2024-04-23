@@ -11,7 +11,7 @@ readonly class Holder
         public string $dateReported,
         public int $shares,
         public int $value,
-        public float $percentHeld
+        public float $percentHeld,
     ) {
     }
 

@@ -334,12 +334,8 @@ class Fundamentals extends TwelveDataApi
         return InstitutionalHolders::fromJson($response);
     }
 
-    public function fundHolders(
-        string $symbol,
-        ?string $exchange = null,
-        ?string $micCode = null,
-        ?string $country = null,
-    ): FundHolders {
+    public function fundHolders(string $symbol, ?string $exchange = null, ?string $micCode = null, ?string $country = null,): FundHolders
+    {
         $response = $this->client->get(
             path: '/fund_holders',
             queryParams: [
