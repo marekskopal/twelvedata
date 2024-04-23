@@ -13,7 +13,7 @@ readonly class StatisticsValuationsMetrics
         public float $forwardPe,
         public float $pegRatio,
         public float $priceToSalesTtm,
-        public float $priceToBookMrq,
+        public ?float $priceToBookMrq,
         public float $enterpriseToRevenue,
         public float $enterpriseToEbitda,
     ) {
@@ -27,7 +27,7 @@ readonly class StatisticsValuationsMetrics
      *     forward_pe: float,
      *     peg_ratio: float,
      *     price_to_sales_ttm: float,
-     *     price_to_book_mrq: float,
+     *     price_to_book_mrq: float|null,
      *     enterprise_to_revenue: float,
      *     enterprise_to_ebitda: float,
      *  } $data

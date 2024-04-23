@@ -24,7 +24,7 @@ readonly class StatisticsStatistics
      *         forward_pe: float,
      *         peg_ratio: float,
      *         price_to_sales_ttm: float,
-     *         price_to_book_mrq: float,
+     *         price_to_book_mrq: float|null,
      *         enterprise_to_revenue: float,
      *         enterprise_to_ebitda: float,
      *     },
