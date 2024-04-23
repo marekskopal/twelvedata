@@ -14,7 +14,7 @@ readonly class StatisticsIncomeStatement
         public int $ebitda,
         public int $netIncomeToCommonTtm,
         public float $dilutedEpsTtm,
-        public float $quarterlyEarningsGrowthYoy,
+        public ?float $quarterlyEarningsGrowthYoy,
     ) {
     }
 
@@ -27,7 +27,7 @@ readonly class StatisticsIncomeStatement
      *     ebitda: int,
      *     net_income_to_common_ttm: int,
      *     diluted_eps_ttm: float,
-     *     quarterly_earnings_growth_yoy: float,
+     *     quarterly_earnings_growth_yoy: float|null,
      *  } $data
      */
     public static function fromArray(array $data): self

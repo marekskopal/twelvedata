@@ -37,7 +37,7 @@ readonly class StatisticsFinancials
      *          ebitda: int,
      *          net_income_to_common_ttm: int,
      *          diluted_eps_ttm: float,
-     *          quarterly_earnings_growth_yoy: float,
+     *          quarterly_earnings_growth_yoy: float|null,
      *     },
      *     balance_sheet: array{
      *          total_cash_mrq: int,
