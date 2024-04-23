@@ -15,7 +15,7 @@ readonly class StatisticsValuationsMetrics
         public float $priceToSalesTtm,
         public ?float $priceToBookMrq,
         public float $enterpriseToRevenue,
-        public float $enterpriseToEbitda,
+        public ?float $enterpriseToEbitda,
     ) {
     }
 
@@ -29,7 +29,7 @@ readonly class StatisticsValuationsMetrics
      *     price_to_sales_ttm: float,
      *     price_to_book_mrq: float|null,
      *     enterprise_to_revenue: float,
-     *     enterprise_to_ebitda: float,
+     *     enterprise_to_ebitda: float|null,
      *  } $data
      */
     public static function fromArray(array $data): self

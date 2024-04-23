@@ -32,7 +32,7 @@ readonly class Statistics
          *             price_to_sales_ttm: float,
          *             price_to_book_mrq: float|null,
          *             enterprise_to_revenue: float,
-         *             enterprise_to_ebitda: float,
+         *             enterprise_to_ebitda: float|null,
          *         },
          *         financials: array{
          *             fiscal_year_ends: string,
@@ -66,7 +66,7 @@ readonly class Statistics
          *         },
          *         stock_statistics: array{
          *             shares_outstanding: int,
-         *             float_shares: int,
+         *             float_shares: int|null,
          *             avg_10_volume: int,
          *             avg_90_volume: int,
          *             shares_short: int,
@@ -123,7 +123,7 @@ readonly class Statistics
      *             price_to_sales_ttm: float,
      *             price_to_book_mrq: float|null,
      *             enterprise_to_revenue: float,
-     *             enterprise_to_ebitda: float,
+     *             enterprise_to_ebitda: float|null,
      *         },
      *         financials: array{
      *             fiscal_year_ends: string,
@@ -157,7 +157,7 @@ readonly class Statistics
      *         },
      *         stock_statistics: array{
      *             shares_outstanding: int,
-     *             float_shares: int,
+     *             float_shares: int|null,
      *             avg_10_volume: int,
      *             avg_90_volume: int,
      *             shares_short: int,
