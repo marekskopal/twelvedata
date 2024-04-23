@@ -11,8 +11,8 @@ readonly class StatisticsDividendsAndSplits
     public function __construct(
         public ?float $forwardAnnualDividendRate,
         public ?float $forwardAnnualDividendYield,
-        public float $trailingAnnualDividendRate,
-        public float $trailingAnnualDividendYield,
+        public ?float $trailingAnnualDividendRate,
+        public ?float $trailingAnnualDividendYield,
         public ?float $fiveYearAverageDividendYield,
         public float $payoutRatio,
         public ?DateTimeImmutable $dividendDate,
@@ -26,8 +26,8 @@ readonly class StatisticsDividendsAndSplits
      * @param array{
      *     forward_annual_dividend_rate: float|null,
      *     forward_annual_dividend_yield: float|null,
-     *     trailing_annual_dividend_rate: float,
-     *     trailing_annual_dividend_yield: float,
+     *     trailing_annual_dividend_rate: float|null,
+     *     trailing_annual_dividend_yield: float|null,
      *     "5_year_average_dividend_yield": float|null,
      *     payout_ratio: float,
      *     dividend_date: string|null,

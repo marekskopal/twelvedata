@@ -80,8 +80,8 @@ readonly class StatisticsStatistics
      *     dividends_and_splits: array{
      *         forward_annual_dividend_rate: float|null,
      *         forward_annual_dividend_yield: float|null,
-     *         trailing_annual_dividend_rate: float,
-     *         trailing_annual_dividend_yield: float,
+     *         trailing_annual_dividend_rate: float|null,
+     *         trailing_annual_dividend_yield: float|null,
      *         "5_year_average_dividend_yield": float|null,
      *         payout_ratio: float,
      *         dividend_date: string|null,
