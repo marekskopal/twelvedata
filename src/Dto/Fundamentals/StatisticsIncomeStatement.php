@@ -13,7 +13,7 @@ readonly class StatisticsIncomeStatement
         public int $grossProfitTtm,
         public int $ebitda,
         public int $netIncomeToCommonTtm,
-        public float $dilutedEpsTtm,
+        public ?float $dilutedEpsTtm,
         public ?float $quarterlyEarningsGrowthYoy,
     ) {
     }
@@ -26,7 +26,7 @@ readonly class StatisticsIncomeStatement
      *     gross_profit_ttm: int,
      *     ebitda: int,
      *     net_income_to_common_ttm: int,
-     *     diluted_eps_ttm: float,
+     *     diluted_eps_ttm: float|null,
      *     quarterly_earnings_growth_yoy: float|null,
      *  } $data
      */

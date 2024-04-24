@@ -48,7 +48,7 @@ readonly class Statistics
          *                 gross_profit_ttm: int,
          *                 ebitda: int,
          *                 net_income_to_common_ttm: int,
-         *                 diluted_eps_ttm: float,
+         *                 diluted_eps_ttm: float|null,
          *                 quarterly_earnings_growth_yoy: float|null,
          *             },
          *             balance_sheet: array{
@@ -139,7 +139,7 @@ readonly class Statistics
      *                 gross_profit_ttm: int,
      *                 ebitda: int,
      *                 net_income_to_common_ttm: int,
-     *                 diluted_eps_ttm: float,
+     *                 diluted_eps_ttm: float|null,
      *                 quarterly_earnings_growth_yoy: float|null,
      *             },
      *             balance_sheet: array{
