@@ -12,7 +12,7 @@ readonly class StatisticsBalanceSheet
         public int $totalDebtMrq,
         public float $totalDebtToEquityMrq,
         public float $currentRatioMrq,
-        public float $bookValuePerShareMrq,
+        public ?float $bookValuePerShareMrq,
     ) {
     }
 
@@ -23,7 +23,7 @@ readonly class StatisticsBalanceSheet
      *     total_debt_mrq: int,
      *     total_debt_to_equity_mrq: float,
      *     current_ratio_mrq: float,
-     *     book_value_per_share_mrq: float,
+     *     book_value_per_share_mrq: float|null,
      *  } $data
      */
     public static function fromArray(array $data): self

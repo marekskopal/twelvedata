@@ -45,7 +45,7 @@ readonly class StatisticsFinancials
      *          total_debt_mrq: int,
      *          total_debt_to_equity_mrq: float,
      *          current_ratio_mrq: float,
-     *          book_value_per_share_mrq: float,
+     *          book_value_per_share_mrq: float|null,
      *     },
      *     cash_flow: array{
      *          operating_cash_flow_ttm: int,
