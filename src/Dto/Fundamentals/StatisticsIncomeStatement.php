@@ -8,8 +8,8 @@ readonly class StatisticsIncomeStatement
 {
     public function __construct(
         public int $revenueTtm,
-        public float $revenuePerShareTtm,
-        public float $quarterlyRevenueGrowth,
+        public ?float $revenuePerShareTtm,
+        public ?float $quarterlyRevenueGrowth,
         public int $grossProfitTtm,
         public int $ebitda,
         public int $netIncomeToCommonTtm,
@@ -21,8 +21,8 @@ readonly class StatisticsIncomeStatement
     /**
      * @param array{
      *     revenue_ttm: int,
-     *     revenue_per_share_ttm: float,
-     *     quarterly_revenue_growth: float,
+     *     revenue_per_share_ttm: float|null,
+     *     quarterly_revenue_growth: float|null,
      *     gross_profit_ttm: int,
      *     ebitda: int,
      *     net_income_to_common_ttm: int,

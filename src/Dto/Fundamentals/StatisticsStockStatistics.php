@@ -7,29 +7,29 @@ namespace MarekSkopal\TwelveData\Dto\Fundamentals;
 readonly class StatisticsStockStatistics
 {
     public function __construct(
-        public int $sharesOutstanding,
+        public ?int $sharesOutstanding,
         public ?int $floatShares,
         public int $avg10Volume,
         public int $avg90Volume,
         public ?int $sharesShort,
         public ?float $shortRatio,
         public ?float $shortPercentOfSharesOutstanding,
-        public float $percentHeldByInsiders,
-        public float $percentHeldByInstitutions,
+        public ?float $percentHeldByInsiders,
+        public ?float $percentHeldByInstitutions,
     ) {
     }
 
     /**
      * @param array{
-     *     shares_outstanding: int,
+     *     shares_outstanding: int|null,
      *     float_shares: int|null,
      *     avg_10_volume: int,
      *     avg_90_volume: int,
      *     shares_short: int|null,
      *     short_ratio: float|null,
      *     short_percent_of_shares_outstanding: float|null,
-     *     percent_held_by_insiders: float,
-     *     percent_held_by_institutions: float,
+     *     percent_held_by_insiders: float|null,
+     *     percent_held_by_institutions: float|null,
      *  } $data
      */
     public static function fromArray(array $data): self

@@ -9,12 +9,12 @@ use DateTimeImmutable;
 readonly class StatisticsFinancials
 {
     public function __construct(
-        public DateTimeImmutable $fiscalYearEnds,
-        public DateTimeImmutable $mostRecentQuarter,
-        public float $profitMargin,
-        public float $operatingMargin,
-        public float $returnOnAssetsTtm,
-        public float $returnOnEquityTtm,
+        public ?DateTimeImmutable $fiscalYearEnds,
+        public ?DateTimeImmutable $mostRecentQuarter,
+        public ?float $profitMargin,
+        public ?float $operatingMargin,
+        public ?float $returnOnAssetsTtm,
+        public ?float $returnOnEquityTtm,
         public StatisticsIncomeStatement $incomeStatement,
         public StatisticsBalanceSheet $balanceSheet,
         public StatisticsCashFlow $cashFlow,
@@ -23,16 +23,16 @@ readonly class StatisticsFinancials
 
     /**
      * @param array{
-     *     fiscal_year_ends: string,
-     *     most_recent_quarter: string,
-     *     profit_margin: float,
-     *     operating_margin: float,
-     *     return_on_assets_ttm: float,
-     *     return_on_equity_ttm: float,
+     *     fiscal_year_ends: string|null,
+     *     most_recent_quarter: string|null,
+     *     profit_margin: float|null,
+     *     operating_margin: float|null,
+     *     return_on_assets_ttm: float|null,
+     *     return_on_equity_ttm: float|null,
      *     income_statement: array{
      *          revenue_ttm: int,
-     *          revenue_per_share_ttm: float,
-     *          quarterly_revenue_growth: float,
+     *          revenue_per_share_ttm: float|null,
+     *          quarterly_revenue_growth: float|null,
      *          gross_profit_ttm: int,
      *          ebitda: int,
      *          net_income_to_common_ttm: int,
@@ -41,10 +41,10 @@ readonly class StatisticsFinancials
      *     },
      *     balance_sheet: array{
      *          total_cash_mrq: int,
-     *          total_cash_per_share_mrq: float,
+     *          total_cash_per_share_mrq: float|null,
      *          total_debt_mrq: int,
-     *          total_debt_to_equity_mrq: float,
-     *          current_ratio_mrq: float,
+     *          total_debt_to_equity_mrq: float|null,
+     *          current_ratio_mrq: float|null,
      *          book_value_per_share_mrq: float|null,
      *     },
      *     cash_flow: array{
@@ -56,8 +56,8 @@ readonly class StatisticsFinancials
     public static function fromArray(array $data): self
     {
         return new self(
-            fiscalYearEnds: new DateTimeImmutable($data['fiscal_year_ends']),
-            mostRecentQuarter: new DateTimeImmutable($data['most_recent_quarter']),
+            fiscalYearEnds: $data['fiscal_year_ends'] !== null ? new DateTimeImmutable($data['fiscal_year_ends']) : null,
+            mostRecentQuarter: $data['most_recent_quarter'] !== null ? new DateTimeImmutable($data['most_recent_quarter']) : null,
             profitMargin: $data['profit_margin'],
             operatingMargin: $data['operating_margin'],
             returnOnAssetsTtm: $data['return_on_assets_ttm'],

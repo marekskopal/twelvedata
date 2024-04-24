@@ -12,9 +12,9 @@ readonly class StatisticsValuationsMetrics
         public ?float $trailingPe,
         public ?float $forwardPe,
         public ?float $pegRatio,
-        public float $priceToSalesTtm,
+        public ?float $priceToSalesTtm,
         public ?float $priceToBookMrq,
-        public float $enterpriseToRevenue,
+        public ?float $enterpriseToRevenue,
         public ?float $enterpriseToEbitda,
     ) {
     }
@@ -26,9 +26,9 @@ readonly class StatisticsValuationsMetrics
      *     trailing_pe: float|null,
      *     forward_pe: float|null,
      *     peg_ratio: float|null,
-     *     price_to_sales_ttm: float,
+     *     price_to_sales_ttm: float|null,
      *     price_to_book_mrq: float|null,
-     *     enterprise_to_revenue: float,
+     *     enterprise_to_revenue: float|null,
      *     enterprise_to_ebitda: float|null,
      *  } $data
      */
