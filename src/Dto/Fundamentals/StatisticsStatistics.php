@@ -61,8 +61,8 @@ readonly class StatisticsStatistics
      *     stock_statistics: array{
      *         shares_outstanding: int|null,
      *         float_shares: int|null,
-     *         avg_10_volume: int,
-     *         avg_90_volume: int,
+     *         avg_10_volume: int|null,
+     *         avg_90_volume: int|null,
      *         shares_short: int|null,
      *         short_ratio: float|null,
      *         short_percent_of_shares_outstanding: float|null,

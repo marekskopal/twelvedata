@@ -9,8 +9,8 @@ readonly class StatisticsStockStatistics
     public function __construct(
         public ?int $sharesOutstanding,
         public ?int $floatShares,
-        public int $avg10Volume,
-        public int $avg90Volume,
+        public ?int $avg10Volume,
+        public ?int $avg90Volume,
         public ?int $sharesShort,
         public ?float $shortRatio,
         public ?float $shortPercentOfSharesOutstanding,
@@ -23,8 +23,8 @@ readonly class StatisticsStockStatistics
      * @param array{
      *     shares_outstanding: int|null,
      *     float_shares: int|null,
-     *     avg_10_volume: int,
-     *     avg_90_volume: int,
+     *     avg_10_volume: int|null,
+     *     avg_90_volume: int|null,
      *     shares_short: int|null,
      *     short_ratio: float|null,
      *     short_percent_of_shares_outstanding: float|null,
