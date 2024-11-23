@@ -25,11 +25,11 @@ class ReferenceData extends TwelveDataApi
 {
     public function stockList(
         ?string $symbol = null,
+        ?string $figi = null,
         ?string $exchange = null,
         ?string $micCode = null,
         ?string $country = null,
         ?string $type = null,
-        ?string $outputSize = null,
         ?FormatEnum $format = null,
         ?string $delimiter = null,
         ?bool $includeDelisted = null,
@@ -38,11 +38,11 @@ class ReferenceData extends TwelveDataApi
             path: '/stocks',
             queryParams: [
                 'symbol' => $symbol,
+                'figi' => $figi,
                 'exchange' => $exchange,
                 'mic_code' => $micCode,
                 'country' => $country,
                 'type' => $type,
-                'outputSize' => $outputSize,
                 'format' => $format?->value,
                 'delimiter' => $delimiter,
                 'include_delisted' => $includeDelisted !== null ? QueryParamsUtils::booleanAsString($includeDelisted) : null,
@@ -98,6 +98,7 @@ class ReferenceData extends TwelveDataApi
 
     public function etfList(
         ?string $symbol = null,
+        ?string $figi = null,
         ?string $exchange = null,
         ?string $micCode = null,
         ?string $country = null,
@@ -109,6 +110,7 @@ class ReferenceData extends TwelveDataApi
             path: '/etf',
             queryParams: [
                 'symbol' => $symbol,
+                'figi' => $figi,
                 'exchange' => $exchange,
                 'mic_code' => $micCode,
                 'country' => $country,
@@ -123,6 +125,7 @@ class ReferenceData extends TwelveDataApi
 
     public function indicesList(
         ?string $symbol = null,
+        ?string $figi = null,
         ?string $exchange = null,
         ?string $micCode = null,
         ?string $country = null,
@@ -134,6 +137,7 @@ class ReferenceData extends TwelveDataApi
             path: '/indices',
             queryParams: [
                 'symbol' => $symbol,
+                'figi' => $figi,
                 'exchange' => $exchange,
                 'mic_code' => $micCode,
                 'country' => $country,
@@ -148,6 +152,7 @@ class ReferenceData extends TwelveDataApi
 
     public function fundsList(
         ?string $symbol = null,
+        ?string $figi = null,
         ?string $exchange = null,
         ?string $country = null,
         ?string $type = null,
@@ -161,6 +166,7 @@ class ReferenceData extends TwelveDataApi
             path: '/funds',
             queryParams: [
                 'symbol' => $symbol,
+                'figi' => $figi,
                 'exchange' => $exchange,
                 'country' => $country,
                 'type' => $type,
@@ -259,12 +265,13 @@ class ReferenceData extends TwelveDataApi
         return CryptocurrencyExchanges::fromJson($response);
     }
 
-    public function symbolSearch(string $symbol, ?int $outputsize = null,): SymbolSearch
+    public function symbolSearch(string $symbol, ?string $figi = null, ?int $outputsize = null,): SymbolSearch
     {
         $response = $this->client->get(
             path: '/symbol_search',
             queryParams: [
                 'symbol' => $symbol,
+                'figi' => $figi,
                 'outputsize' => $outputsize !== null ? (string) $outputsize : null,
             ],
         );
@@ -275,6 +282,7 @@ class ReferenceData extends TwelveDataApi
     public function earliestTimestamp(
         string $symbol,
         IntervalEnum $interval,
+        ?string $figi = null,
         ?string $exchange = null,
         ?string $micCode = null,
         ?string $timezone = null,
@@ -284,8 +292,9 @@ class ReferenceData extends TwelveDataApi
             queryParams: [
                 'symbol' => $symbol,
                 'interval' => $interval->value,
+                'figi' => $figi,
                 'exchange' => $exchange,
-                'micCode' => $micCode,
+                'mic_code' => $micCode,
                 'timezone' => $timezone,
             ],
         );
