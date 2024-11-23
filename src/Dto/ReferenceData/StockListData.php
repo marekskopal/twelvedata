@@ -14,6 +14,7 @@ readonly class StockListData
         public string $micCode,
         public string $country,
         public string $type,
+        public string $figiCode,
     ) {
     }
 
@@ -26,6 +27,7 @@ readonly class StockListData
      *     mic_code: string,
      *     country: string,
      *     type: string,
+     *     figi_code: string,
      *  } $data
      */
     public static function fromArray(array $data): self
@@ -38,6 +40,7 @@ readonly class StockListData
             micCode: $data['mic_code'],
             country: $data['country'],
             type: $data['type'],
+            figiCode: $data['figi_code'],
         );
     }
 }

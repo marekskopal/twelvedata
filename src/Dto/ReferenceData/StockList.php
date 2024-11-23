@@ -23,6 +23,7 @@ readonly class StockList
          *         mic_code: string,
          *         country: string,
          *         type: string,
+         *         figi_code: string,
          *     }>,
          *     status: string,
          *  } $responseContents
@@ -42,6 +43,7 @@ readonly class StockList
      *         mic_code: string,
      *         country: string,
      *         type: string,
+     *         figi_code: string,
      *     }>,
      *     status: string,
      *  } $data

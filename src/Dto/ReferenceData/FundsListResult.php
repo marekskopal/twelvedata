@@ -21,6 +21,7 @@ readonly class FundsListResult
      *         currency: string,
      *         exchange: string,
      *         type: string,
+     *         figi_code: string,
      *     }>,
      *  } $data
      */

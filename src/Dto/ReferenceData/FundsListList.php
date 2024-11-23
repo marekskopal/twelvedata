@@ -13,6 +13,7 @@ readonly class FundsListList
         public string $currency,
         public string $exchange,
         public string $type,
+        public string $figiCode,
     ) {
     }
 
@@ -24,6 +25,7 @@ readonly class FundsListList
      *     currency: string,
      *     exchange: string,
      *     type: string,
+     *     figi_code: string,
      *  } $data
      */
     public static function fromArray(array $data): self
@@ -35,6 +37,7 @@ readonly class FundsListList
             currency: $data['currency'],
             exchange: $data['exchange'],
             type: $data['type'],
+            figiCode: $data['figi_code'],
         );
     }
 }
