@@ -11,6 +11,7 @@ use MarekSkopal\TwelveData\Config\Config;
 use MarekSkopal\TwelveData\Dto\ReferenceData\BondsList;
 use MarekSkopal\TwelveData\Dto\ReferenceData\BondsListList;
 use MarekSkopal\TwelveData\Dto\ReferenceData\BondsListResult;
+use MarekSkopal\TwelveData\Dto\ReferenceData\CommoditiesList;
 use MarekSkopal\TwelveData\Dto\ReferenceData\CryptocurrenciesList;
 use MarekSkopal\TwelveData\Dto\ReferenceData\CryptocurrenciesListData;
 use MarekSkopal\TwelveData\Dto\ReferenceData\CryptocurrencyExchanges;
@@ -135,6 +136,16 @@ class ReferenceDataTest extends TestCase
         $this->assertInstanceOf(
             BondsList::class,
             $referenceData->bondsList('AJXA'),
+        );
+    }
+
+    public function testCommoditiesList(): void
+    {
+        $referenceData = new ReferenceData(ClientFixture::createDemo());
+
+        $this->assertInstanceOf(
+            CommoditiesList::class,
+            $referenceData->commoditiesList(),
         );
     }
 

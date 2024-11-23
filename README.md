@@ -33,10 +33,11 @@ More endpoints will be covered in future versions.
 * Stocks List                    ✅
 * Forex Pairs List               ✅
 * Cryptocurrencies List          ✅
-* ETF List                       ✅
-* Indices List                   ✅
 * Funds List                     ✅
 * Bonds List                     ✅
+* ETF List                       ✅
+* Indices List                   ✅
+* Commodities List               ✅
 * Exchanges                      ✅
 * Cryptocurrency Exchanges       ✅
 * Technical Indicators Interface ❌

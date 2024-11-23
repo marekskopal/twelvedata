@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace MarekSkopal\TwelveData\Api;
 
 use MarekSkopal\TwelveData\Dto\ReferenceData\BondsList;
+use MarekSkopal\TwelveData\Dto\ReferenceData\CommoditiesList;
 use MarekSkopal\TwelveData\Dto\ReferenceData\CryptocurrenciesList;
 use MarekSkopal\TwelveData\Dto\ReferenceData\CryptocurrencyExchanges;
 use MarekSkopal\TwelveData\Dto\ReferenceData\EarliestTimestamp;
@@ -201,6 +202,25 @@ class ReferenceData extends TwelveDataApi
         );
 
         return BondsList::fromJson($response);
+    }
+
+    public function commoditiesList(
+        ?string $symbol = null,
+        ?string $category = null,
+        ?FormatEnum $format = null,
+        ?string $delimiter = null,
+    ): CommoditiesList {
+        $response = $this->client->get(
+            path: '/commodities',
+            queryParams: [
+                'symbol' => $symbol,
+                'category' => $category,
+                'format' => $format?->value,
+                'delimiter' => $delimiter,
+            ],
+        );
+
+        return CommoditiesList::fromJson($response);
     }
 
     public function exchanges(
