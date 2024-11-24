@@ -12,6 +12,7 @@ use MarekSkopal\TwelveData\Dto\ReferenceData\BondsList;
 use MarekSkopal\TwelveData\Dto\ReferenceData\BondsListList;
 use MarekSkopal\TwelveData\Dto\ReferenceData\BondsListResult;
 use MarekSkopal\TwelveData\Dto\ReferenceData\CommoditiesList;
+use MarekSkopal\TwelveData\Dto\ReferenceData\Countries;
 use MarekSkopal\TwelveData\Dto\ReferenceData\CrossListings;
 use MarekSkopal\TwelveData\Dto\ReferenceData\CryptocurrenciesList;
 use MarekSkopal\TwelveData\Dto\ReferenceData\CryptocurrenciesListData;
@@ -30,6 +31,7 @@ use MarekSkopal\TwelveData\Dto\ReferenceData\FundsListList;
 use MarekSkopal\TwelveData\Dto\ReferenceData\FundsListResult;
 use MarekSkopal\TwelveData\Dto\ReferenceData\IndicesList;
 use MarekSkopal\TwelveData\Dto\ReferenceData\IndicesListData;
+use MarekSkopal\TwelveData\Dto\ReferenceData\InstrumentType;
 use MarekSkopal\TwelveData\Dto\ReferenceData\MarketState;
 use MarekSkopal\TwelveData\Dto\ReferenceData\StockList;
 use MarekSkopal\TwelveData\Dto\ReferenceData\StockListData;
@@ -199,6 +201,26 @@ class ReferenceDataTest extends TestCase
 
         $this->assertIsArray($marketState);
         $this->assertInstanceOf(MarketState::class, $marketState[0]);
+    }
+
+    public function testInstrumentType(): void
+    {
+        $referenceData = new ReferenceData(ClientFixture::createWithResponse('instrument_type.json'));
+
+        $this->assertInstanceOf(
+            InstrumentType::class,
+            $referenceData->instrumentType(),
+        );
+    }
+
+    public function testCounties(): void
+    {
+        $referenceData = new ReferenceData(ClientFixture::createWithResponse('countries.json'));
+
+        $this->assertInstanceOf(
+            Countries::class,
+            $referenceData->countries(),
+        );
     }
 
     public function testEarliestTimestamp(): void

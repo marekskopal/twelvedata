@@ -7,6 +7,7 @@ namespace MarekSkopal\TwelveData\Api;
 use DateTimeImmutable;
 use MarekSkopal\TwelveData\Dto\ReferenceData\BondsList;
 use MarekSkopal\TwelveData\Dto\ReferenceData\CommoditiesList;
+use MarekSkopal\TwelveData\Dto\ReferenceData\Countries;
 use MarekSkopal\TwelveData\Dto\ReferenceData\CrossListings;
 use MarekSkopal\TwelveData\Dto\ReferenceData\CryptocurrenciesList;
 use MarekSkopal\TwelveData\Dto\ReferenceData\CryptocurrencyExchanges;
@@ -17,6 +18,7 @@ use MarekSkopal\TwelveData\Dto\ReferenceData\ExchangeSchedule;
 use MarekSkopal\TwelveData\Dto\ReferenceData\ForexPairsList;
 use MarekSkopal\TwelveData\Dto\ReferenceData\FundsList;
 use MarekSkopal\TwelveData\Dto\ReferenceData\IndicesList;
+use MarekSkopal\TwelveData\Dto\ReferenceData\InstrumentType;
 use MarekSkopal\TwelveData\Dto\ReferenceData\MarketState;
 use MarekSkopal\TwelveData\Dto\ReferenceData\StockList;
 use MarekSkopal\TwelveData\Dto\ReferenceData\SymbolSearch;
@@ -334,6 +336,26 @@ class ReferenceData extends TwelveDataApi
         $data = json_decode($responseContents, associative: true);
 
         return array_map(fn (array $item): MarketState => MarketState::fromArray($item), $data);
+    }
+
+    public function instrumentType(): InstrumentType
+    {
+        $response = $this->client->get(
+            path: '/instrument_type',
+            queryParams: [],
+        );
+
+        return InstrumentType::fromJson($response);
+    }
+
+    public function countries(): Countries
+    {
+        $response = $this->client->get(
+            path: '/countries',
+            queryParams: [],
+        );
+
+        return Countries::fromJson($response);
     }
 
     public function earliestTimestamp(

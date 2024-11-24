@@ -40,11 +40,14 @@ More endpoints will be covered in future versions.
 * Commodities List               ✅
 * Cross listings                 ✅
 * Exchanges                      ✅
+* Exchange schedule              ✅
 * Cryptocurrency Exchanges       ✅
-* Technical Indicators Interface ❌
-* Symbol Search                  ✅
-* Earliest Timestamp             ✅
 * Market State                   ✅
+* Instrument Type                ✅
+* Countries                      ✅
+* Technical Indicators Interface ❌
+* Earliest Timestamp             ✅
+* Symbol Search                  ✅
 
 ### Core Data
 
