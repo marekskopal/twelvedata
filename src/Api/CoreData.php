@@ -8,12 +8,15 @@ use DateTimeImmutable;
 use MarekSkopal\TwelveData\Dto\CoreData\CurrencyConversion;
 use MarekSkopal\TwelveData\Dto\CoreData\EndOfDayPrice;
 use MarekSkopal\TwelveData\Dto\CoreData\ExchangeRate;
+use MarekSkopal\TwelveData\Dto\CoreData\MarketMovers;
 use MarekSkopal\TwelveData\Dto\CoreData\Quote;
 use MarekSkopal\TwelveData\Dto\CoreData\RealTimePrice;
 use MarekSkopal\TwelveData\Dto\CoreData\TimeSeries;
 use MarekSkopal\TwelveData\Enum\AdjustEnum;
+use MarekSkopal\TwelveData\Enum\DirectionEnum;
 use MarekSkopal\TwelveData\Enum\FormatEnum;
 use MarekSkopal\TwelveData\Enum\IntervalEnum;
+use MarekSkopal\TwelveData\Enum\MarketMoverEnum;
 use MarekSkopal\TwelveData\Enum\OrderEnum;
 use MarekSkopal\TwelveData\Enum\PrepostEnum;
 use MarekSkopal\TwelveData\Utils\QueryParamsUtils;
@@ -217,5 +220,27 @@ class CoreData extends TwelveDataApi
         );
 
         return EndOfDayPrice::fromJson($response);
+    }
+
+    public function marketMovers(
+        MarketMoverEnum $marketMover,
+        ?DirectionEnum $direction = null,
+        ?string $outputsize = null,
+        ?string $country = null,
+        ?float $priceGreaterThan = null,
+        ?int $dp = null,
+    ): MarketMovers {
+        $response = $this->client->get(
+            path: '/market_movers/' . $marketMover->value,
+            queryParams: [
+                'direction' => $direction?->value,
+                'outputsize' => $outputsize,
+                'country' => $country,
+                'price_greater_than' => $priceGreaterThan !== null ? (string) $priceGreaterThan : null,
+                'dp' => $dp !== null ? (string) $dp : null,
+            ],
+        );
+
+        return MarketMovers::fromJson($response);
     }
 }

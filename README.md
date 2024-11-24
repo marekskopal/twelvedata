@@ -57,7 +57,7 @@ More endpoints will be covered in future versions.
 * Quote                ✅
 * Real-Time Price      ✅
 * Edd of Day Price     ✅
-* Market Movers        ❌
+* Market Movers        ✅
 
 ### Fundamentals
 
