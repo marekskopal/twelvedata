@@ -58,7 +58,7 @@ readonly class CashFlow
          *         },
          *         end_cash_position: int,
          *         income_tax_paid: int,
-         *         interest_paid: int,
+         *         interest_paid: int|null,
          *         free_cash_flow: int,
          *    }>
          * } $responseContents
@@ -113,7 +113,7 @@ readonly class CashFlow
      *         },
      *         end_cash_position: int,
      *         income_tax_paid: int,
-     *         interest_paid: int,
+     *         interest_paid: int|null,
      *         free_cash_flow: int,
      *    }>
      * } $data

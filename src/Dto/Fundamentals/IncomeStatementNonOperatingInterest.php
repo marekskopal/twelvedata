@@ -6,14 +6,14 @@ namespace MarekSkopal\TwelveData\Dto\Fundamentals;
 
 readonly class IncomeStatementNonOperatingInterest
 {
-    public function __construct(public int $income, public int $expense,)
+    public function __construct(public ?int $income, public ?int $expense,)
     {
     }
 
     /**
      * @param array{
-     *     income: int,
-     *     expense: int,
+     *     income: int|null,
+     *     expense: int|null,
      *  } $data
      */
     public static function fromArray(array $data): self

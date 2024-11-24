@@ -14,7 +14,7 @@ readonly class CashFlowCashFlow
         public CashFlowFinancingActivities $financingActivities,
         public int $endCashPosition,
         public int $incomeTaxPaid,
-        public int $interestPaid,
+        public ?int $interestPaid,
         public int $freeCashFlow,
     ) {
     }
@@ -55,7 +55,7 @@ readonly class CashFlowCashFlow
      *     },
      *     end_cash_position: int,
      *     income_tax_paid: int,
-     *     interest_paid: int,
+     *     interest_paid: int|null,
      *     free_cash_flow: int,
      * } $data
      */
