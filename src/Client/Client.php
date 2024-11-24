@@ -9,16 +9,15 @@ use Http\Discovery\Psr18ClientDiscovery;
 use MarekSkopal\TwelveData\Config\Config;
 use MarekSkopal\TwelveData\Exception\ApiException;
 use MarekSkopal\TwelveData\Exception\TooManyRequestsException;
-use Psr\Http\Client\ClientInterface;
 use Psr\Http\Message\RequestFactoryInterface;
 use Psr\Http\Message\RequestInterface;
 use Psr\Http\Message\ResponseInterface;
 
-class Client
+class Client implements ClientInterface
 {
     private const string BaseUri = 'https://api.twelvedata.com';
 
-    private readonly ClientInterface $httpClient;
+    private readonly \Psr\Http\Client\ClientInterface $httpClient;
 
     private readonly RequestFactoryInterface $requestFactory;
 

@@ -231,7 +231,7 @@ class ReferenceData extends TwelveDataApi
     }
 
     public function crossListings(
-        ?string $symbol = null,
+        string $symbol,
         ?string $exchange = null,
         ?string $micCode = null,
         ?string $country = null,

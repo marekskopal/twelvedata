@@ -12,6 +12,7 @@ use MarekSkopal\TwelveData\Dto\ReferenceData\BondsList;
 use MarekSkopal\TwelveData\Dto\ReferenceData\BondsListList;
 use MarekSkopal\TwelveData\Dto\ReferenceData\BondsListResult;
 use MarekSkopal\TwelveData\Dto\ReferenceData\CommoditiesList;
+use MarekSkopal\TwelveData\Dto\ReferenceData\CrossListings;
 use MarekSkopal\TwelveData\Dto\ReferenceData\CryptocurrenciesList;
 use MarekSkopal\TwelveData\Dto\ReferenceData\CryptocurrenciesListData;
 use MarekSkopal\TwelveData\Dto\ReferenceData\CryptocurrencyExchanges;
@@ -146,6 +147,16 @@ class ReferenceDataTest extends TestCase
         $this->assertInstanceOf(
             CommoditiesList::class,
             $referenceData->commoditiesList(),
+        );
+    }
+
+    public function testCrossListings(): void
+    {
+        $referenceData = new ReferenceData(ClientFixture::createWithResponse('cross_listings.json'));
+
+        $this->assertInstanceOf(
+            CrossListings::class,
+            $referenceData->crossListings('NVDA'),
         );
     }
 
