@@ -59,6 +59,10 @@ More endpoints will be covered in future versions.
 * Edd of Day Price     ✅
 * Market Movers        ✅
 
+### Mutual Funds ❌
+
+### ETFs ❌
+
 ### Fundamentals
 
 * Logo                  ✅
@@ -92,14 +96,14 @@ More endpoints will be covered in future versions.
 * Analyst Ratings - Light       ❌
 * Analyst Ratings - US Equities ❌
 
-### WebSocket
-
-* ❌
+### WebSocket ❌
 
 ### Advanced
 
 * Complex Data ❌
 * Usage        ✅
+
+### Technical Indicators ❌
 
 ## Notice
 This is NOT an official Twelve Data library, and the authors of this library are not affiliated with Twelve Data in any way, shape or form. Twelve Data APIs and data are Copyright © 2024 Twelve Data Pte. Ltd.
