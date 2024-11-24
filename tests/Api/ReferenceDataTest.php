@@ -99,26 +99,6 @@ class ReferenceDataTest extends TestCase
         );
     }
 
-    public function testEtfList(): void
-    {
-        $referenceData = new ReferenceData(ClientFixture::createDemo());
-
-        $this->assertInstanceOf(
-            EtfList::class,
-            $referenceData->etfList('QQQ'),
-        );
-    }
-
-    public function testIndicesList(): void
-    {
-        $referenceData = new ReferenceData(ClientFixture::createDemo());
-
-        $this->assertInstanceOf(
-            IndicesList::class,
-            $referenceData->indicesList('IXIC'),
-        );
-    }
-
     public function testFundsList(): void
     {
         $referenceData = new ReferenceData(ClientFixture::createDemo());
@@ -136,6 +116,26 @@ class ReferenceDataTest extends TestCase
         $this->assertInstanceOf(
             BondsList::class,
             $referenceData->bondsList('AJXA'),
+        );
+    }
+
+    public function testEtfList(): void
+    {
+        $referenceData = new ReferenceData(ClientFixture::createDemo());
+
+        $this->assertInstanceOf(
+            EtfList::class,
+            $referenceData->etfList('QQQ'),
+        );
+    }
+
+    public function testIndicesList(): void
+    {
+        $referenceData = new ReferenceData(ClientFixture::createDemo());
+
+        $this->assertInstanceOf(
+            IndicesList::class,
+            $referenceData->indicesList('IXIC'),
         );
     }
 
@@ -169,14 +169,14 @@ class ReferenceDataTest extends TestCase
         );
     }
 
-    public function testSymbolSearch(): void
+    public function testMarketState(): void
     {
         $referenceData = new ReferenceData(ClientFixture::createDemo());
 
-        $this->assertInstanceOf(
-            SymbolSearch::class,
-            $referenceData->symbolSearch('AA'),
-        );
+        $marketState = $referenceData->marketState('NYSE');
+
+        $this->assertIsArray($marketState);
+        $this->assertInstanceOf(MarketState::class, $marketState[0]);
     }
 
     public function testEarliestTimestamp(): void
@@ -189,13 +189,13 @@ class ReferenceDataTest extends TestCase
         );
     }
 
-    public function testMarketState(): void
+    public function testSymbolSearch(): void
     {
         $referenceData = new ReferenceData(ClientFixture::createDemo());
 
-        $marketState = $referenceData->marketState('NYSE');
-
-        $this->assertIsArray($marketState);
-        $this->assertInstanceOf(MarketState::class, $marketState[0]);
+        $this->assertInstanceOf(
+            SymbolSearch::class,
+            $referenceData->symbolSearch('AA'),
+        );
     }
 }

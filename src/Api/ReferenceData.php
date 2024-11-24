@@ -96,60 +96,6 @@ class ReferenceData extends TwelveDataApi
         return CryptocurrenciesList::fromJson($response);
     }
 
-    public function etfList(
-        ?string $symbol = null,
-        ?string $figi = null,
-        ?string $exchange = null,
-        ?string $micCode = null,
-        ?string $country = null,
-        ?FormatEnum $format = null,
-        ?string $delimiter = null,
-        ?bool $includeDelisted = null,
-    ): EtfList {
-        $response = $this->client->get(
-            path: '/etf',
-            queryParams: [
-                'symbol' => $symbol,
-                'figi' => $figi,
-                'exchange' => $exchange,
-                'mic_code' => $micCode,
-                'country' => $country,
-                'format' => $format?->value,
-                'delimiter' => $delimiter,
-                'include_delisted' => $includeDelisted !== null ? QueryParamsUtils::booleanAsString($includeDelisted) : null,
-            ],
-        );
-
-        return EtfList::fromJson($response);
-    }
-
-    public function indicesList(
-        ?string $symbol = null,
-        ?string $figi = null,
-        ?string $exchange = null,
-        ?string $micCode = null,
-        ?string $country = null,
-        ?FormatEnum $format = null,
-        ?string $delimiter = null,
-        ?bool $includeDelisted = null,
-    ): IndicesList {
-        $response = $this->client->get(
-            path: '/indices',
-            queryParams: [
-                'symbol' => $symbol,
-                'figi' => $figi,
-                'exchange' => $exchange,
-                'mic_code' => $micCode,
-                'country' => $country,
-                'format' => $format?->value,
-                'delimiter' => $delimiter,
-                'include_delisted' => $includeDelisted !== null ? QueryParamsUtils::booleanAsString($includeDelisted) : null,
-            ],
-        );
-
-        return IndicesList::fromJson($response);
-    }
-
     public function fundsList(
         ?string $symbol = null,
         ?string $figi = null,
@@ -210,6 +156,60 @@ class ReferenceData extends TwelveDataApi
         return BondsList::fromJson($response);
     }
 
+    public function etfList(
+        ?string $symbol = null,
+        ?string $figi = null,
+        ?string $exchange = null,
+        ?string $micCode = null,
+        ?string $country = null,
+        ?FormatEnum $format = null,
+        ?string $delimiter = null,
+        ?bool $includeDelisted = null,
+    ): EtfList {
+        $response = $this->client->get(
+            path: '/etf',
+            queryParams: [
+                'symbol' => $symbol,
+                'figi' => $figi,
+                'exchange' => $exchange,
+                'mic_code' => $micCode,
+                'country' => $country,
+                'format' => $format?->value,
+                'delimiter' => $delimiter,
+                'include_delisted' => $includeDelisted !== null ? QueryParamsUtils::booleanAsString($includeDelisted) : null,
+            ],
+        );
+
+        return EtfList::fromJson($response);
+    }
+
+    public function indicesList(
+        ?string $symbol = null,
+        ?string $figi = null,
+        ?string $exchange = null,
+        ?string $micCode = null,
+        ?string $country = null,
+        ?FormatEnum $format = null,
+        ?string $delimiter = null,
+        ?bool $includeDelisted = null,
+    ): IndicesList {
+        $response = $this->client->get(
+            path: '/indices',
+            queryParams: [
+                'symbol' => $symbol,
+                'figi' => $figi,
+                'exchange' => $exchange,
+                'mic_code' => $micCode,
+                'country' => $country,
+                'format' => $format?->value,
+                'delimiter' => $delimiter,
+                'include_delisted' => $includeDelisted !== null ? QueryParamsUtils::booleanAsString($includeDelisted) : null,
+            ],
+        );
+
+        return IndicesList::fromJson($response);
+    }
+
     public function commoditiesList(
         ?string $symbol = null,
         ?string $category = null,
@@ -265,43 +265,6 @@ class ReferenceData extends TwelveDataApi
         return CryptocurrencyExchanges::fromJson($response);
     }
 
-    public function symbolSearch(string $symbol, ?string $figi = null, ?int $outputsize = null,): SymbolSearch
-    {
-        $response = $this->client->get(
-            path: '/symbol_search',
-            queryParams: [
-                'symbol' => $symbol,
-                'figi' => $figi,
-                'outputsize' => $outputsize !== null ? (string) $outputsize : null,
-            ],
-        );
-
-        return SymbolSearch::fromJson($response);
-    }
-
-    public function earliestTimestamp(
-        string $symbol,
-        IntervalEnum $interval,
-        ?string $figi = null,
-        ?string $exchange = null,
-        ?string $micCode = null,
-        ?string $timezone = null,
-    ): EarliestTimestamp {
-        $response = $this->client->get(
-            path: '/earliest_timestamp',
-            queryParams: [
-                'symbol' => $symbol,
-                'interval' => $interval->value,
-                'figi' => $figi,
-                'exchange' => $exchange,
-                'mic_code' => $micCode,
-                'timezone' => $timezone,
-            ],
-        );
-
-        return EarliestTimestamp::fromJson($response);
-    }
-
     /** @return list<MarketState> */
     public function marketState(?string $exchange = null, ?string $code = null, ?string $country = null,): array
     {
@@ -330,5 +293,42 @@ class ReferenceData extends TwelveDataApi
         $data = json_decode($responseContents, associative: true);
 
         return array_map(fn (array $item): MarketState => MarketState::fromArray($item), $data);
+    }
+
+    public function earliestTimestamp(
+        string $symbol,
+        IntervalEnum $interval,
+        ?string $figi = null,
+        ?string $exchange = null,
+        ?string $micCode = null,
+        ?string $timezone = null,
+    ): EarliestTimestamp {
+        $response = $this->client->get(
+            path: '/earliest_timestamp',
+            queryParams: [
+                'symbol' => $symbol,
+                'interval' => $interval->value,
+                'figi' => $figi,
+                'exchange' => $exchange,
+                'mic_code' => $micCode,
+                'timezone' => $timezone,
+            ],
+        );
+
+        return EarliestTimestamp::fromJson($response);
+    }
+
+    public function symbolSearch(string $symbol, ?string $figi = null, ?int $outputsize = null,): SymbolSearch
+    {
+        $response = $this->client->get(
+            path: '/symbol_search',
+            queryParams: [
+                'symbol' => $symbol,
+                'figi' => $figi,
+                'outputsize' => $outputsize !== null ? (string) $outputsize : null,
+            ],
+        );
+
+        return SymbolSearch::fromJson($response);
     }
 }
