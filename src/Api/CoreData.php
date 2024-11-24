@@ -24,6 +24,7 @@ class CoreData extends TwelveDataApi
     public function timeSeries(
         string $symbol,
         IntervalEnum $interval = IntervalEnum::OneDay,
+        ?string $figi = null,
         ?string $exchange = null,
         ?string $micCode = null,
         ?string $country = null,
@@ -46,6 +47,7 @@ class CoreData extends TwelveDataApi
             queryParams: [
                 'symbol' => $symbol,
                 'interval' => $interval->value,
+                'figi' => $figi,
                 'exchange' => $exchange,
                 'mic_code' => $micCode,
                 'country' => $country,
@@ -119,6 +121,7 @@ class CoreData extends TwelveDataApi
     public function quote(
         string $symbol,
         IntervalEnum $interval = IntervalEnum::OneDay,
+        ?string $figi = null,
         ?string $exchange = null,
         ?string $micCode = null,
         ?string $country = null,
@@ -137,6 +140,7 @@ class CoreData extends TwelveDataApi
             queryParams: [
                 'symbol' => $symbol,
                 'interval' => $interval->value,
+                'figi' => $figi,
                 'exchange' => $exchange,
                 'mic_code' => $micCode,
                 'country' => $country,
@@ -157,6 +161,7 @@ class CoreData extends TwelveDataApi
 
     public function realTimePrice(
         string $symbol,
+        ?string $figi = null,
         ?string $exchange = null,
         ?string $micCode = null,
         ?string $country = null,
@@ -170,6 +175,7 @@ class CoreData extends TwelveDataApi
             path: '/price',
             queryParams: [
                 'symbol' => $symbol,
+                'figi' => $figi,
                 'exchange' => $exchange,
                 'mic_code' => $micCode,
                 'country' => $country,
@@ -186,10 +192,12 @@ class CoreData extends TwelveDataApi
 
     public function endOfDayPrice(
         string $symbol,
+        ?string $figi = null,
         ?string $exchange = null,
         ?string $micCode = null,
         ?string $country = null,
         ?string $type = null,
+        ?DateTimeImmutable $date = null,
         ?PrepostEnum $prepost = null,
         ?int $dp = null,
     ): EndOfDayPrice {
@@ -197,10 +205,12 @@ class CoreData extends TwelveDataApi
             path: '/eod',
             queryParams: [
                 'symbol' => $symbol,
+                'figi' => $figi,
                 'exchange' => $exchange,
                 'mic_code' => $micCode,
                 'country' => $country,
                 'type' => $type,
+                'date' => $date?->format('Y-m-d'),
                 'prepost' => $prepost?->value,
                 'dp' => $dp !== null ? (string) $dp : null,
             ],
