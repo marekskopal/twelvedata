@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace MarekSkopal\TwelveData\Api;
 
+use DateTimeImmutable;
 use MarekSkopal\TwelveData\Dto\ReferenceData\BondsList;
 use MarekSkopal\TwelveData\Dto\ReferenceData\CommoditiesList;
 use MarekSkopal\TwelveData\Dto\ReferenceData\CrossListings;
@@ -12,6 +13,7 @@ use MarekSkopal\TwelveData\Dto\ReferenceData\CryptocurrencyExchanges;
 use MarekSkopal\TwelveData\Dto\ReferenceData\EarliestTimestamp;
 use MarekSkopal\TwelveData\Dto\ReferenceData\EtfList;
 use MarekSkopal\TwelveData\Dto\ReferenceData\Exchanges;
+use MarekSkopal\TwelveData\Dto\ReferenceData\ExchangeSchedule;
 use MarekSkopal\TwelveData\Dto\ReferenceData\ForexPairsList;
 use MarekSkopal\TwelveData\Dto\ReferenceData\FundsList;
 use MarekSkopal\TwelveData\Dto\ReferenceData\IndicesList;
@@ -270,6 +272,25 @@ class ReferenceData extends TwelveDataApi
         );
 
         return Exchanges::fromJson($response);
+    }
+
+    public function exchangeSchedule(
+        ?DateTimeImmutable $date = null,
+        ?string $micName = null,
+        ?string $micCode = null,
+        ?string $country = null,
+    ): ExchangeSchedule {
+        $response = $this->client->get(
+            path: '/exchange_schedule',
+            queryParams: [
+                'date' => $date?->format('Y-m-d'),
+                'mic_name' => $micName,
+                'mic_code' => $micCode,
+                'country' => $country,
+            ],
+        );
+
+        return ExchangeSchedule::fromJson($response);
     }
 
     public function cryptocurrencyExchanges(?FormatEnum $format = null, ?string $delimiter = null,): CryptocurrencyExchanges

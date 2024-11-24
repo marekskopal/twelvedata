@@ -21,6 +21,7 @@ use MarekSkopal\TwelveData\Dto\ReferenceData\EarliestTimestamp;
 use MarekSkopal\TwelveData\Dto\ReferenceData\EtfList;
 use MarekSkopal\TwelveData\Dto\ReferenceData\EtfListData;
 use MarekSkopal\TwelveData\Dto\ReferenceData\Exchanges;
+use MarekSkopal\TwelveData\Dto\ReferenceData\ExchangeSchedule;
 use MarekSkopal\TwelveData\Dto\ReferenceData\ExchangesData;
 use MarekSkopal\TwelveData\Dto\ReferenceData\ForexPairsList;
 use MarekSkopal\TwelveData\Dto\ReferenceData\ForexPairsListData;
@@ -167,6 +168,16 @@ class ReferenceDataTest extends TestCase
         $this->assertInstanceOf(
             Exchanges::class,
             $referenceData->exchanges('etf'),
+        );
+    }
+
+    public function testExchangeSchedule(): void
+    {
+        $referenceData = new ReferenceData(ClientFixture::createWithResponse('exchange_schedule.json'));
+
+        $this->assertInstanceOf(
+            ExchangeSchedule::class,
+            $referenceData->exchangeSchedule(),
         );
     }
 
