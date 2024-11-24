@@ -38,6 +38,7 @@ More endpoints will be covered in future versions.
 * ETF List                       ✅
 * Indices List                   ✅
 * Commodities List               ✅
+* Cross listings                 ✅
 * Exchanges                      ✅
 * Cryptocurrency Exchanges       ✅
 * Technical Indicators Interface ❌

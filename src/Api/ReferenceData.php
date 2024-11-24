@@ -6,6 +6,7 @@ namespace MarekSkopal\TwelveData\Api;
 
 use MarekSkopal\TwelveData\Dto\ReferenceData\BondsList;
 use MarekSkopal\TwelveData\Dto\ReferenceData\CommoditiesList;
+use MarekSkopal\TwelveData\Dto\ReferenceData\CrossListings;
 use MarekSkopal\TwelveData\Dto\ReferenceData\CryptocurrenciesList;
 use MarekSkopal\TwelveData\Dto\ReferenceData\CryptocurrencyExchanges;
 use MarekSkopal\TwelveData\Dto\ReferenceData\EarliestTimestamp;
@@ -227,6 +228,25 @@ class ReferenceData extends TwelveDataApi
         );
 
         return CommoditiesList::fromJson($response);
+    }
+
+    public function crossListings(
+        ?string $symbol = null,
+        ?string $exchange = null,
+        ?string $micCode = null,
+        ?string $country = null,
+    ): CrossListings {
+        $response = $this->client->get(
+            path: '/commodities',
+            queryParams: [
+                'symbol' => $symbol,
+                'exchange' => $exchange,
+                'mic_code' => $micCode,
+                'country' => $country,
+            ],
+        );
+
+        return CrossListings::fromJson($response);
     }
 
     public function exchanges(
