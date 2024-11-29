@@ -7,9 +7,9 @@ namespace MarekSkopal\TwelveData\Dto\Fundamentals;
 readonly class StatisticsBalanceSheet
 {
     public function __construct(
-        public int $totalCashMrq,
+        public ?int $totalCashMrq,
         public ?float $totalCashPerShareMrq,
-        public int $totalDebtMrq,
+        public ?int $totalDebtMrq,
         public ?float $totalDebtToEquityMrq,
         public ?float $currentRatioMrq,
         public ?float $bookValuePerShareMrq,
@@ -18,9 +18,9 @@ readonly class StatisticsBalanceSheet
 
     /**
      * @param array{
-     *     total_cash_mrq: int,
+     *     total_cash_mrq: int|null,
      *     total_cash_per_share_mrq: float|null,
-     *     total_debt_mrq: int,
+     *     total_debt_mrq: int|null,
      *     total_debt_to_equity_mrq: float|null,
      *     current_ratio_mrq: float|null,
      *     book_value_per_share_mrq: float|null,

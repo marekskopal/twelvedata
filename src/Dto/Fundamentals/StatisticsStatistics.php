@@ -46,9 +46,9 @@ readonly class StatisticsStatistics
      *             quarterly_earnings_growth_yoy: float|null,
      *         },
      *         balance_sheet: array{
-     *             total_cash_mrq: int,
+     *             total_cash_mrq: int|null,
      *             total_cash_per_share_mrq: float|null,
-     *             total_debt_mrq: int,
+     *             total_debt_mrq: int|null,
      *             total_debt_to_equity_mrq: float|null,
      *             current_ratio_mrq: float|null,
      *             book_value_per_share_mrq: float|null,

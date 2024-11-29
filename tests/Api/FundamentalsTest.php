@@ -167,11 +167,11 @@ class FundamentalsTest extends TestCase
 
     public function testStatistics(): void
     {
-        $fundamentals = new Fundamentals(ClientFixture::createDemo());
+        $fundamentals = new Fundamentals(ClientFixture::createWithResponse('statistics.json'));
 
         $this->assertInstanceOf(
             Statistics::class,
-            $fundamentals->statistics('AAPL'),
+            $fundamentals->statistics('TSM'),
         );
     }
 
