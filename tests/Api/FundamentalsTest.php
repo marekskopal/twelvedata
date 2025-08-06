@@ -127,7 +127,7 @@ class FundamentalsTest extends TestCase
 
     public function testProfile(): void
     {
-        $fundamentals = new Fundamentals(ClientFixture::createDemo());
+        $fundamentals = new Fundamentals(ClientFixture::createWithResponse('profile.json'));
 
         $this->assertInstanceOf(
             Profile::class,

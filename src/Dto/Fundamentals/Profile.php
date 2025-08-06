@@ -19,8 +19,10 @@ readonly class Profile
         public string $type,
         public string $ceo,
         public string $address,
+        public string $address2,
         public string $city,
         public string $zip,
+        public string $state,
         public string $country,
         public string $phone,
     ) {
@@ -42,8 +44,10 @@ readonly class Profile
          *     type: string,
          *     CEO: string,
          *     address: string,
+         *     address2: string,
          *     city: string,
          *     zip: string,
+         *     state: string,
          *     country: string,
          *     phone: string,
          *  } $responseContents
@@ -67,8 +71,10 @@ readonly class Profile
      *     type: string,
      *     CEO: string,
      *     address: string,
+     *     address2: string,
      *     city: string,
      *     zip: string,
+     *     state: string,
      *     country: string,
      *     phone: string,
      *  } $data
@@ -88,8 +94,10 @@ readonly class Profile
             type: $data['type'],
             ceo: $data['CEO'],
             address: $data['address'],
+            address2: $data['address2'],
             city: $data['city'],
             zip: $data['zip'],
+            state: $data['state'],
             country: $data['country'],
             phone: $data['phone'],
         );
