@@ -43,12 +43,23 @@ class Fundamentals extends TwelveDataApi
         return Logo::fromJson($response);
     }
 
-    public function profile(string $symbol, ?string $exchange = null, ?string $micCode = null, ?string $country = null,): Profile
+    public function profile(
+        string $symbol,
+        ?string $figi = null,
+        ?string $isin = null,
+        ?string $cusip = null,
+        ?string $exchange = null,
+        ?string $micCode = null,
+        ?string $country = null,
+    ): Profile
     {
         $response = $this->client->get(
             path: '/profile',
             queryParams: [
                 'symbol' => $symbol,
+                'figi' => $figi,
+                'isin' => $isin,
+                'cusip' => $cusip,
                 'exchange' => $exchange,
                 'mic_code' => $micCode,
                 'country' => $country,
@@ -60,6 +71,9 @@ class Fundamentals extends TwelveDataApi
 
     public function dividends(
         string $symbol,
+        ?string $figi = null,
+        ?string $isin = null,
+        ?string $cusip = null,
         ?string $exchange = null,
         ?string $micCode = null,
         ?string $country = null,
@@ -71,6 +85,9 @@ class Fundamentals extends TwelveDataApi
             path: '/dividends',
             queryParams: [
                 'symbol' => $symbol,
+                'figi' => $figi,
+                'isin' => $isin,
+                'cusip' => $cusip,
                 'exchange' => $exchange,
                 'mic_code' => $micCode,
                 'country' => $country,
@@ -85,6 +102,9 @@ class Fundamentals extends TwelveDataApi
 
     public function splits(
         string $symbol,
+        ?string $figi = null,
+        ?string $isin = null,
+        ?string $cusip = null,
         ?string $exchange = null,
         ?string $micCode = null,
         ?string $country = null,
@@ -96,6 +116,9 @@ class Fundamentals extends TwelveDataApi
             path: '/splits',
             queryParams: [
                 'symbol' => $symbol,
+                'figi' => $figi,
+                'isin' => $isin,
+                'cusip' => $cusip,
                 'exchange' => $exchange,
                 'mic_code' => $micCode,
                 'country' => $country,
@@ -111,6 +134,9 @@ class Fundamentals extends TwelveDataApi
     public function earnings(
         string $symbol,
         ?string $exchange = null,
+        ?string $figi = null,
+        ?string $isin = null,
+        ?string $cusip = null,
         ?string $micCode = null,
         ?string $country = null,
         ?string $type = null,
@@ -126,6 +152,9 @@ class Fundamentals extends TwelveDataApi
             path: '/earnings',
             queryParams: [
                 'symbol' => $symbol,
+                'figi' => $figi,
+                'isin' => $isin,
+                'cusip' => $cusip,
                 'exchange' => $exchange,
                 'mic_code' => $micCode,
                 'country' => $country,
@@ -143,12 +172,23 @@ class Fundamentals extends TwelveDataApi
         return Earnings::fromJson($response);
     }
 
-    public function statistics(string $symbol, ?string $exchange = null, ?string $micCode = null, ?string $country = null,): Statistics
+    public function statistics(
+        string $symbol,
+        ?string $exchange = null,
+        ?string $figi = null,
+        ?string $isin = null,
+        ?string $cusip = null,
+        ?string $micCode = null,
+        ?string $country = null,
+    ): Statistics
     {
         $response = $this->client->get(
             path: '/statistics',
             queryParams: [
                 'symbol' => $symbol,
+                'figi' => $figi,
+                'isin' => $isin,
+                'cusip' => $cusip,
                 'exchange' => $exchange,
                 'mic_code' => $micCode,
                 'country' => $country,
@@ -179,23 +219,31 @@ class Fundamentals extends TwelveDataApi
 
     public function incomeStatement(
         string $symbol,
+        ?string $figi = null,
+        ?string $isin = null,
+        ?string $cusip = null,
         ?string $exchange = null,
         ?string $micCode = null,
         ?string $country = null,
         ?PeriodEnum $period = null,
         ?DateTimeImmutable $startDate = null,
         ?DateTimeImmutable $endDate = null,
+        ?int $outputsize = null,
     ): IncomeStatement {
         $response = $this->client->get(
             path: '/income_statement',
             queryParams: [
                 'symbol' => $symbol,
+                'figi' => $figi,
+                'isin' => $isin,
+                'cusip' => $cusip,
                 'exchange' => $exchange,
                 'mic_code' => $micCode,
                 'country' => $country,
                 'period' => $period?->value,
                 'start_date' => $startDate?->format('Y-m-d'),
                 'end_date' => $endDate?->format('Y-m-d'),
+                'outputsize' => $outputsize,
             ],
         );
 
@@ -204,23 +252,31 @@ class Fundamentals extends TwelveDataApi
 
     public function balanceSheet(
         string $symbol,
+        ?string $figi = null,
+        ?string $isin = null,
+        ?string $cusip = null,
         ?string $exchange = null,
         ?string $micCode = null,
         ?string $country = null,
         ?PeriodEnum $period = null,
         ?DateTimeImmutable $startDate = null,
         ?DateTimeImmutable $endDate = null,
+        ?int $outputsize = null,
     ): BalanceSheet {
         $response = $this->client->get(
             path: '/balance_sheet',
             queryParams: [
                 'symbol' => $symbol,
+                'figi' => $figi,
+                'isin' => $isin,
+                'cusip' => $cusip,
                 'exchange' => $exchange,
                 'mic_code' => $micCode,
                 'country' => $country,
                 'period' => $period?->value,
                 'start_date' => $startDate?->format('Y-m-d'),
                 'end_date' => $endDate?->format('Y-m-d'),
+                'outputsize' => $outputsize,
             ],
         );
 
@@ -229,23 +285,31 @@ class Fundamentals extends TwelveDataApi
 
     public function cashFlow(
         string $symbol,
+        ?string $figi = null,
+        ?string $isin = null,
+        ?string $cusip = null,
         ?string $exchange = null,
         ?string $micCode = null,
         ?string $country = null,
         ?PeriodEnum $period = null,
         ?DateTimeImmutable $startDate = null,
         ?DateTimeImmutable $endDate = null,
+        ?int $outputsize = null,
     ): CashFlow {
         $response = $this->client->get(
             path: '/cash_flow',
             queryParams: [
                 'symbol' => $symbol,
+                'figi' => $figi,
+                'isin' => $isin,
+                'cusip' => $cusip,
                 'exchange' => $exchange,
                 'mic_code' => $micCode,
                 'country' => $country,
                 'period' => $period?->value,
                 'start_date' => $startDate?->format('Y-m-d'),
                 'end_date' => $endDate?->format('Y-m-d'),
+                'outputsize' => $outputsize,
             ],
         );
 
@@ -298,6 +362,9 @@ class Fundamentals extends TwelveDataApi
 
     public function keyExecutives(
         string $symbol,
+        ?string $figi = null,
+        ?string $isin = null,
+        ?string $cusip = null,
         ?string $exchange = null,
         ?string $micCode = null,
         ?string $country = null,
@@ -306,6 +373,9 @@ class Fundamentals extends TwelveDataApi
             path: '/key_executives',
             queryParams: [
                 'symbol' => $symbol,
+                'figi' => $figi,
+                'isin' => $isin,
+                'cusip' => $cusip,
                 'exchange' => $exchange,
                 'mic_code' => $micCode,
                 'country' => $country,
