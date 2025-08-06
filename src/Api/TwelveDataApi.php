@@ -6,9 +6,9 @@ namespace MarekSkopal\TwelveData\Api;
 
 use MarekSkopal\TwelveData\Client\ClientInterface;
 
-abstract class TwelveDataApi
+abstract readonly class TwelveDataApi
 {
-    public function __construct(protected readonly ClientInterface $client)
+    public function __construct(protected ClientInterface $client)
     {
     }
 }

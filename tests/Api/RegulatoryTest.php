@@ -23,7 +23,7 @@ use PHPUnit\Framework\TestCase;
 #[UsesClass(EdgarFillingsMeta::class)]
 #[UsesClass(EdgarFillingsValue::class)]
 #[UsesClass(EdgarFillingsValueFile::class)]
-class RegulatoryTest extends TestCase
+final class RegulatoryTest extends TestCase
 {
     public function testEdgarFillings(): void
     {

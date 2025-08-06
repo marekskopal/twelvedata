@@ -24,7 +24,8 @@
         "spatie/ray": "^1.39",
         "slevomat/coding-standard": "^8.14",
         "phpstan/phpstan-strict-rules": "^2.0",
-        "php-http/guzzle7-adapter": "^1.0"
+        "php-http/guzzle7-adapter": "^1.0",
+        "phpstan/phpstan-phpunit": "^2.0"
     },
     "suggest": {
         "nyholm/psr7": "PSR-7 message implementation",

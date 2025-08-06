@@ -19,7 +19,7 @@ use PHPUnit\Framework\TestCase;
 #[UsesClass(Client::class)]
 #[UsesClass(Config::class)]
 #[UsesClass(ApiUsage::class)]
-class AdvancedTest extends TestCase
+final class AdvancedTest extends TestCase
 {
     public function testApiUsage(): void
     {

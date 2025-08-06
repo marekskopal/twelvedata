@@ -112,7 +112,7 @@ use PHPUnit\Framework\TestCase;
 #[UsesClass(StatisticsStockPriceSummary::class)]
 #[UsesClass(StatisticsStockStatistics::class)]
 #[UsesClass(StatisticsValuationsMetrics::class)]
-class FundamentalsTest extends TestCase
+final class FundamentalsTest extends TestCase
 {
     public function testLogo(): void
     {

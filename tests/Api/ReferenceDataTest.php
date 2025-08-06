@@ -71,7 +71,7 @@ use PHPUnit\Framework\TestCase;
 #[UsesClass(StockListData::class)]
 #[UsesClass(SymbolSearch::class)]
 #[UsesClass(SymbolSearchData::class)]
-class ReferenceDataTest extends TestCase
+final class ReferenceDataTest extends TestCase
 {
     public function testStockList(): void
     {

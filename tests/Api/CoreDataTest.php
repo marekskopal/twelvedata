@@ -38,7 +38,7 @@ use PHPUnit\Framework\TestCase;
 #[UsesClass(TimeSeries::class)]
 #[UsesClass(TimeSeriesMeta::class)]
 #[UsesClass(TimeSeriesValue::class)]
-class CoreDataTest extends TestCase
+final class CoreDataTest extends TestCase
 {
     public function testTimeSeries(): void
     {
