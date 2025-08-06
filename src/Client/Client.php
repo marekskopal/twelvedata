@@ -13,15 +13,15 @@ use Psr\Http\Message\RequestFactoryInterface;
 use Psr\Http\Message\RequestInterface;
 use Psr\Http\Message\ResponseInterface;
 
-class Client implements ClientInterface
+readonly class Client implements ClientInterface
 {
     private const string BaseUri = 'https://api.twelvedata.com';
 
-    private readonly \Psr\Http\Client\ClientInterface $httpClient;
+    private \Psr\Http\Client\ClientInterface $httpClient;
 
-    private readonly RequestFactoryInterface $requestFactory;
+    private RequestFactoryInterface $requestFactory;
 
-    public function __construct(private readonly Config $config)
+    public function __construct(private Config $config)
     {
         $this->httpClient = Psr18ClientDiscovery::find();
         $this->requestFactory = Psr17FactoryDiscovery::findRequestFactory();

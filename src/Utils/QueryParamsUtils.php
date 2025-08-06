@@ -6,7 +6,7 @@ namespace MarekSkopal\TwelveData\Utils;
 
 use UnitEnum;
 
-class QueryParamsUtils
+readonly class QueryParamsUtils
 {
     public static function booleanAsString(bool $param): string
     {
