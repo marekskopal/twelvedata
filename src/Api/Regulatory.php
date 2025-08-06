@@ -11,7 +11,7 @@ use MarekSkopal\TwelveData\Dto\Regulatory\FundHolders;
 use MarekSkopal\TwelveData\Dto\Regulatory\InsiderTransactions;
 use MarekSkopal\TwelveData\Dto\Regulatory\InstitutionalHolders;
 
-class Regulatory extends TwelveDataApi
+readonly class Regulatory extends TwelveDataApi
 {
     public function edgarFilligs(
         string $symbol,

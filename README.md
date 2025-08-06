@@ -19,7 +19,7 @@ use MarekSkopal\TwelveData\Enum\IntervalEnum;
 $twelveData = new TwelveData('<yourApiKey>');
 
 // Get the one minute time series for the AAPL symbol
-$response = $twelveData->getCoreData()->timeSeries(
+$response = $twelveData->coreData->timeSeries(
     symbol: 'AAPL',
     interval: IntervalEnum::OneMinute,
 );

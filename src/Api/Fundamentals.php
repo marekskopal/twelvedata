@@ -22,7 +22,7 @@ use MarekSkopal\TwelveData\Enum\FormatEnum;
 use MarekSkopal\TwelveData\Enum\PeriodEnum;
 use MarekSkopal\TwelveData\Enum\RangeEnum;
 
-class Fundamentals extends TwelveDataApi
+readonly class Fundamentals extends TwelveDataApi
 {
     public function logo(string $symbol, ?string $exchange = null, ?string $micCode = null, ?string $country = null,): Logo
     {

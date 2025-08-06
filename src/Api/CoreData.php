@@ -21,7 +21,7 @@ use MarekSkopal\TwelveData\Enum\OrderEnum;
 use MarekSkopal\TwelveData\Enum\PrepostEnum;
 use MarekSkopal\TwelveData\Utils\QueryParamsUtils;
 
-class CoreData extends TwelveDataApi
+readonly class CoreData extends TwelveDataApi
 {
     /** @param list<AdjustEnum>|null $adjust */
     public function timeSeries(

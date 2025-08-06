@@ -7,7 +7,7 @@ namespace MarekSkopal\TwelveData\Api;
 use MarekSkopal\TwelveData\Dto\Advanced\ApiUsage;
 use MarekSkopal\TwelveData\Enum\FormatEnum;
 
-class Advanced extends TwelveDataApi
+readonly class Advanced extends TwelveDataApi
 {
     public function apiUsage(?FormatEnum $format = null, ?string $delimiter = null,): ApiUsage
     {

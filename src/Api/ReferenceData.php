@@ -26,7 +26,7 @@ use MarekSkopal\TwelveData\Enum\FormatEnum;
 use MarekSkopal\TwelveData\Enum\IntervalEnum;
 use MarekSkopal\TwelveData\Utils\QueryParamsUtils;
 
-class ReferenceData extends TwelveDataApi
+readonly class ReferenceData extends TwelveDataApi
 {
     public function stockList(
         ?string $symbol = null,

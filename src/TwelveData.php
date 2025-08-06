@@ -4,57 +4,59 @@ declare(strict_types=1);
 
 namespace MarekSkopal\TwelveData;
 
+use MarekSkopal\TwelveData\Api\Advanced;
 use MarekSkopal\TwelveData\Api\CoreData;
 use MarekSkopal\TwelveData\Api\Fundamentals;
 use MarekSkopal\TwelveData\Api\ReferenceData;
+use MarekSkopal\TwelveData\Api\Regulatory;
 use MarekSkopal\TwelveData\Client\Client;
 use MarekSkopal\TwelveData\Config\Config;
 
-class TwelveData
+readonly class TwelveData
 {
-    private readonly Client $client;
+    public ReferenceData $referenceData;
 
-    private ReferenceData $referenceData;
+    public CoreData $coreData;
 
-    private CoreData $coreData;
+    public Fundamentals $fundamentals;
 
-    private Fundamentals $fundamentals;
+    public Regulatory $regulatory;
+
+    public Advanced $advanced;
 
     public function __construct(Config $config)
     {
-        $this->client = new Client($config);
-    }
+        $client = new Client($config);
 
-    public function getReferenceData(): ReferenceData
-    {
-        if (isset($this->referenceData)) {
-            return $this->referenceData;
-        }
-
-        $this->referenceData = new ReferenceData($this->client);
-
-        return $this->referenceData;
+        $this->coreData = new CoreData($client);
+        $this->referenceData = new ReferenceData($client);
+        $this->fundamentals = new Fundamentals($client);
+        $this->regulatory = new Regulatory($client);
+        $this->advanced = new Advanced($client);
     }
 
     public function getCoreData(): CoreData
     {
-        if (isset($this->coreData)) {
-            return $this->coreData;
-        }
-
-        $this->coreData = new CoreData($this->client);
-
         return $this->coreData;
+    }
+
+    public function getReferenceData(): ReferenceData
+    {
+        return $this->referenceData;
     }
 
     public function getFundamentals(): Fundamentals
     {
-        if (isset($this->fundamentals)) {
-            return $this->fundamentals;
-        }
-
-        $this->fundamentals = new Fundamentals($this->client);
-
         return $this->fundamentals;
+    }
+
+    public function getRegulatory(): Regulatory
+    {
+        return $this->regulatory;
+    }
+
+    public function getAdvanced(): Advanced
+    {
+        return $this->advanced;
     }
 }
