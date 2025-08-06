@@ -20,7 +20,7 @@
     "require-dev": {
         "phpstan/phpstan": "^2.0",
         "phpstan/extension-installer": "^1.4",
-        "phpunit/phpunit": "^10.2",
+        "phpunit/phpunit": "^12.3",
         "spatie/ray": "^1.39",
         "slevomat/coding-standard": "^8.14",
         "phpstan/phpstan-strict-rules": "^2.0",
