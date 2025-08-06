@@ -23,20 +23,14 @@ use MarekSkopal\TwelveData\Dto\Fundamentals\CashFlowCashFlow;
 use MarekSkopal\TwelveData\Dto\Fundamentals\CashFlowFinancingActivities;
 use MarekSkopal\TwelveData\Dto\Fundamentals\CashFlowInvestingActivities;
 use MarekSkopal\TwelveData\Dto\Fundamentals\CashFlowOperatingActivities;
-use MarekSkopal\TwelveData\Dto\Fundamentals\DirectHolders;
 use MarekSkopal\TwelveData\Dto\Fundamentals\Dividends;
 use MarekSkopal\TwelveData\Dto\Fundamentals\DividendsDividend;
 use MarekSkopal\TwelveData\Dto\Fundamentals\Earnings;
 use MarekSkopal\TwelveData\Dto\Fundamentals\EarningsEarning;
-use MarekSkopal\TwelveData\Dto\Fundamentals\FundHolders;
-use MarekSkopal\TwelveData\Dto\Fundamentals\Holder;
 use MarekSkopal\TwelveData\Dto\Fundamentals\IncomeStatement;
 use MarekSkopal\TwelveData\Dto\Fundamentals\IncomeStatementIncomeStatement;
 use MarekSkopal\TwelveData\Dto\Fundamentals\IncomeStatementNonOperatingInterest;
 use MarekSkopal\TwelveData\Dto\Fundamentals\IncomeStatementOperationExpense;
-use MarekSkopal\TwelveData\Dto\Fundamentals\InsiderTransactions;
-use MarekSkopal\TwelveData\Dto\Fundamentals\InsiderTransactionsInsiderTransaction;
-use MarekSkopal\TwelveData\Dto\Fundamentals\InstitutionalHolders;
 use MarekSkopal\TwelveData\Dto\Fundamentals\KeyExecutives;
 use MarekSkopal\TwelveData\Dto\Fundamentals\KeyExecutivesKeyExecutive;
 use MarekSkopal\TwelveData\Dto\Fundamentals\Logo;
@@ -57,6 +51,11 @@ use MarekSkopal\TwelveData\Dto\Fundamentals\StatisticsStatistics;
 use MarekSkopal\TwelveData\Dto\Fundamentals\StatisticsStockPriceSummary;
 use MarekSkopal\TwelveData\Dto\Fundamentals\StatisticsStockStatistics;
 use MarekSkopal\TwelveData\Dto\Fundamentals\StatisticsValuationsMetrics;
+use MarekSkopal\TwelveData\Dto\Regulatory\DirectHolders;
+use MarekSkopal\TwelveData\Dto\Regulatory\Holder;
+use MarekSkopal\TwelveData\Dto\Regulatory\InsiderTransactions;
+use MarekSkopal\TwelveData\Dto\Regulatory\InsiderTransactionsInsiderTransaction;
+use MarekSkopal\TwelveData\Dto\Regulatory\InstitutionalHolders;
 use MarekSkopal\TwelveData\Tests\Fixtures\Client\ClientFixture;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\UsesClass;
@@ -175,16 +174,6 @@ class FundamentalsTest extends TestCase
         );
     }
 
-    public function testInsiderTransactions(): void
-    {
-        $fundamentals = new Fundamentals(ClientFixture::createDemo());
-
-        $this->assertInstanceOf(
-            InsiderTransactions::class,
-            $fundamentals->insiderTransactions('AAPL'),
-        );
-    }
-
     public function testIncomeStatement(): void
     {
         $fundamentals = new Fundamentals(ClientFixture::createDemo());
@@ -242,36 +231,6 @@ class FundamentalsTest extends TestCase
         $this->assertInstanceOf(
             KeyExecutives::class,
             $fundamentals->keyExecutives('AAPL'),
-        );
-    }
-
-    public function testInstitutionalHolders(): void
-    {
-        $fundamentals = new Fundamentals(ClientFixture::createDemo());
-
-        $this->assertInstanceOf(
-            InstitutionalHolders::class,
-            $fundamentals->institutionalHolders('AAPL'),
-        );
-    }
-
-    public function testFundHolders(): void
-    {
-        $fundamentals = new Fundamentals(ClientFixture::createDemo());
-
-        $this->assertInstanceOf(
-            FundHolders::class,
-            $fundamentals->fundHolders('AAPL'),
-        );
-    }
-
-    public function testDirectHolders(): void
-    {
-        $fundamentals = new Fundamentals(ClientFixture::createDemo());
-
-        $this->assertInstanceOf(
-            DirectHolders::class,
-            $fundamentals->directHolders('AAPL'),
         );
     }
 }

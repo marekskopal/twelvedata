@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace MarekSkopal\TwelveData\Dto\Fundamentals;
+namespace MarekSkopal\TwelveData\Dto\Regulatory;
 
 use DateTimeImmutable;
 

@@ -7,13 +7,9 @@ namespace MarekSkopal\TwelveData\Api;
 use DateTimeImmutable;
 use MarekSkopal\TwelveData\Dto\Fundamentals\BalanceSheet;
 use MarekSkopal\TwelveData\Dto\Fundamentals\CashFlow;
-use MarekSkopal\TwelveData\Dto\Fundamentals\DirectHolders;
 use MarekSkopal\TwelveData\Dto\Fundamentals\Dividends;
 use MarekSkopal\TwelveData\Dto\Fundamentals\Earnings;
-use MarekSkopal\TwelveData\Dto\Fundamentals\FundHolders;
 use MarekSkopal\TwelveData\Dto\Fundamentals\IncomeStatement;
-use MarekSkopal\TwelveData\Dto\Fundamentals\InsiderTransactions;
-use MarekSkopal\TwelveData\Dto\Fundamentals\InstitutionalHolders;
 use MarekSkopal\TwelveData\Dto\Fundamentals\KeyExecutives;
 use MarekSkopal\TwelveData\Dto\Fundamentals\Logo;
 use MarekSkopal\TwelveData\Dto\Fundamentals\OptionsChain;
@@ -198,25 +194,6 @@ class Fundamentals extends TwelveDataApi
         return Statistics::fromJson($response);
     }
 
-    public function insiderTransactions(
-        string $symbol,
-        ?string $exchange = null,
-        ?string $micCode = null,
-        ?string $country = null,
-    ): InsiderTransactions {
-        $response = $this->client->get(
-            path: '/insider_transactions',
-            queryParams: [
-                'symbol' => $symbol,
-                'exchange' => $exchange,
-                'mic_code' => $micCode,
-                'country' => $country,
-            ],
-        );
-
-        return InsiderTransactions::fromJson($response);
-    }
-
     public function incomeStatement(
         string $symbol,
         ?string $figi = null,
@@ -383,58 +360,5 @@ class Fundamentals extends TwelveDataApi
         );
 
         return KeyExecutives::fromJson($response);
-    }
-
-    public function institutionalHolders(
-        string $symbol,
-        ?string $exchange = null,
-        ?string $micCode = null,
-        ?string $country = null,
-    ): InstitutionalHolders {
-        $response = $this->client->get(
-            path: '/institutional_holders',
-            queryParams: [
-                'symbol' => $symbol,
-                'exchange' => $exchange,
-                'mic_code' => $micCode,
-                'country' => $country,
-            ],
-        );
-
-        return InstitutionalHolders::fromJson($response);
-    }
-
-    public function fundHolders(string $symbol, ?string $exchange = null, ?string $micCode = null, ?string $country = null,): FundHolders
-    {
-        $response = $this->client->get(
-            path: '/fund_holders',
-            queryParams: [
-                'symbol' => $symbol,
-                'exchange' => $exchange,
-                'mic_code' => $micCode,
-                'country' => $country,
-            ],
-        );
-
-        return FundHolders::fromJson($response);
-    }
-
-    public function directHolders(
-        string $symbol,
-        ?string $exchange = null,
-        ?string $micCode = null,
-        ?string $country = null,
-    ): DirectHolders {
-        $response = $this->client->get(
-            path: '/direct_holders',
-            queryParams: [
-                'symbol' => $symbol,
-                'exchange' => $exchange,
-                'mic_code' => $micCode,
-                'country' => $country,
-            ],
-        );
-
-        return DirectHolders::fromJson($response);
     }
 }

@@ -2,12 +2,14 @@
 
 declare(strict_types=1);
 
-namespace MarekSkopal\TwelveData\Dto\Fundamentals;
+namespace MarekSkopal\TwelveData\Dto\Regulatory;
 
-readonly class DirectHolders
+use MarekSkopal\TwelveData\Dto\Fundamentals\Meta;
+
+readonly class InstitutionalHolders
 {
-    /** @param list<Holder> $directHolders */
-    public function __construct(public Meta $meta, public array $directHolders)
+    /** @param list<Holder> $institutionalHolders */
+    public function __construct(public Meta $meta, public array $institutionalHolders)
     {
     }
 
@@ -23,7 +25,7 @@ readonly class DirectHolders
          *         mic_code: string,
          *         exchange_timezone: string,
          *     },
-         *     direct_holders: list<array{
+         *     institutional_holders: list<array{
          *         entity_name: string,
          *         date_reported: string,
          *         shares: int,
@@ -47,7 +49,7 @@ readonly class DirectHolders
      *         mic_code: string,
      *         exchange_timezone: string,
      *     },
-     *     direct_holders: list<array{
+     *     institutional_holders: list<array{
      *         entity_name: string,
      *         date_reported: string,
      *         shares: int,
@@ -60,9 +62,9 @@ readonly class DirectHolders
     {
         return new self(
             meta: Meta::fromArray($data['meta']),
-            directHolders: array_map(
+            institutionalHolders: array_map(
                 fn (array $item): Holder => Holder::fromArray($item),
-                $data['direct_holders'],
+                $data['institutional_holders'],
             ),
         );
     }
