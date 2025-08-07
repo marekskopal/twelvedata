@@ -5,32 +5,32 @@ declare(strict_types=1);
 namespace MarekSkopal\TwelveData\Dto\ReferenceData;
 
 /**
- * @phpstan-import-type SymbolSearchDataType from SymbolSearchData
- * @phpstan-type SymbolSearchType array{
- *     data: list<SymbolSearchDataType>,
+ * @phpstan-import-type IndicesDataType from IndicesData
+ * @phpstan-type IndicesType array{
+ *     data: list<IndicesDataType>,
  *     status: string,
  * }
  */
-readonly class SymbolSearch
+readonly class Indices
 {
-    /** @param list<SymbolSearchData> $data */
+    /** @param list<IndicesData> $data */
     public function __construct(public array $data, public string $status,)
     {
     }
 
     public static function fromJson(string $json): self
     {
-        /** @var SymbolSearchType $responseContents */
+        /** @var IndicesType $responseContents */
         $responseContents = json_decode($json, associative: true);
 
         return self::fromArray($responseContents);
     }
 
-    /** @param SymbolSearchType $data */
+    /** @param IndicesType $data */
     public static function fromArray(array $data): self
     {
         return new self(
-            data: array_map(fn (array $item): SymbolSearchData => SymbolSearchData::fromArray($item), $data['data']),
+            data: array_map(fn (array $item): IndicesData => IndicesData::fromArray($item), $data['data']),
             status: $data['status'],
         );
     }

@@ -38,25 +38,28 @@ More endpoints will be covered in future versions.
 * Market Movers        ✅
 
 ### Reference Data
-
-* Stocks List                    ✅
-* Forex Pairs List               ✅
-* Cryptocurrencies List          ✅
-* Funds List                     ✅
-* Bonds List                     ✅
-* ETF List                       ✅
+#### Asset Catalogs
+* Stocks                         ✅
+* Forex Pairs                    ✅
+* Cryptocurrency Pairs           ✅
+* ETFs                           ✅
+* Funds                          ✅
+* Commodities                    ✅
+* Fixed Income                   ✅
 * Indices List                   ✅
-* Commodities List               ✅
+#### Discovery
+* Symbol Search                  ✅
 * Cross listings                 ✅
+* Earliest Timestamp             ✅
+#### Markets
 * Exchanges                      ✅
 * Exchange schedule              ✅
 * Cryptocurrency Exchanges       ✅
 * Market State                   ✅
+#### Supporting Metadata
 * Instrument Type                ✅
 * Countries                      ✅
-* Technical Indicators Interface ❌
-* Earliest Timestamp             ✅
-* Symbol Search                  ✅
+* Technical Indicators           ❌
 
 ### Mutual Funds ❌
 

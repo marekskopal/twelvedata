@@ -4,6 +4,13 @@ declare(strict_types=1);
 
 namespace MarekSkopal\TwelveData\Dto\ReferenceData;
 
+/**
+ * @phpstan-import-type ExchangesDataType from ExchangesData
+ * @phpstan-type ExchangesType array{
+ *     data: list<ExchangesDataType>,
+ *     status: string,
+ * }
+ */
 readonly class Exchanges
 {
     /** @param list<ExchangesData> $data */
@@ -13,33 +20,13 @@ readonly class Exchanges
 
     public static function fromJson(string $json): self
     {
-        /**
-         * @var array{
-         *     data: list<array{
-         *         name: string,
-         *         code: string,
-         *         country: string,
-         *         timezone: string,
-         *     }>,
-         *     status: string,
-         *  } $responseContents
-         */
+        /** @var ExchangesType $responseContents */
         $responseContents = json_decode($json, associative: true);
 
         return self::fromArray($responseContents);
     }
 
-    /**
-     * @param array{
-     *     data: list<array{
-     *         name: string,
-     *         code: string,
-     *         country: string,
-     *         timezone: string,
-     *     }>,
-     *     status: string,
-     *  } $data
-     */
+    /** @param ExchangesType $data */
     public static function fromArray(array $data): self
     {
         return new self(

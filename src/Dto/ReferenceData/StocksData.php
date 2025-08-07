@@ -4,7 +4,24 @@ declare(strict_types=1);
 
 namespace MarekSkopal\TwelveData\Dto\ReferenceData;
 
-readonly class StockListData
+/**
+ * @phpstan-import-type AccessType from Access
+ * @phpstan-type StocksDataType array{
+ *     symbol: string,
+ *     name: string,
+ *     currency: string,
+ *     exchange: string,
+ *     mic_code: string,
+ *     country: string,
+ *     type: string,
+ *     figi_code: string,
+ *     cfi_code: string,
+ *     isin: string,
+ *     cusip: string,
+ *     access?: AccessType
+ * }
+ */
+readonly class StocksData
 {
     public function __construct(
         public string $symbol,
@@ -15,21 +32,14 @@ readonly class StockListData
         public string $country,
         public string $type,
         public string $figiCode,
+        public string $cfiCode,
+        public string $isin,
+        public string $cusip,
+        public ?Access $access,
     ) {
     }
 
-    /**
-     * @param array{
-     *     symbol: string,
-     *     name: string,
-     *     currency: string,
-     *     exchange: string,
-     *     mic_code: string,
-     *     country: string,
-     *     type: string,
-     *     figi_code: string,
-     *  } $data
-     */
+    /** @param StocksDataType $data */
     public static function fromArray(array $data): self
     {
         return new self(
@@ -41,6 +51,10 @@ readonly class StockListData
             country: $data['country'],
             type: $data['type'],
             figiCode: $data['figi_code'],
+            cfiCode: $data['cfi_code'],
+            isin: $data['isin'],
+            cusip: $data['cusip'],
+            access: ($data['access'] ?? null) !== null ? Access::fromArray($data['access']) : null,
         );
     }
 }

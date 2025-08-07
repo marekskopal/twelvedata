@@ -4,7 +4,15 @@ declare(strict_types=1);
 
 namespace MarekSkopal\TwelveData\Dto\ReferenceData;
 
-readonly class ForexPairsListData
+/**
+ * @phpstan-type ForexPairsDataType array{
+ *     symbol: string,
+ *     currency_group: string,
+ *     currency_base: string,
+ *     currency_quote: string,
+ * }
+ */
+readonly class ForexPairsData
 {
     public function __construct(
         public string $symbol,
@@ -14,14 +22,7 @@ readonly class ForexPairsListData
     ) {
     }
 
-    /**
-     * @param array{
-     *     symbol: string,
-     *     currency_group: string,
-     *     currency_base: string,
-     *     currency_quote: string,
-     *  } $data
-     */
+    /** @param ForexPairsDataType $data */
     public static function fromArray(array $data): self
     {
         return new self(

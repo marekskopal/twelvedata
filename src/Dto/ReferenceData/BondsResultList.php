@@ -4,7 +4,17 @@ declare(strict_types=1);
 
 namespace MarekSkopal\TwelveData\Dto\ReferenceData;
 
-readonly class FundsListList
+/**
+ * @phpstan-type BondsResultListType array{
+ *     symbol: string,
+ *     name: string,
+ *     country: string,
+ *     currency: string,
+ *     exchange: string,
+ *     type: string,
+ * }
+ */
+readonly class BondsResultList
 {
     public function __construct(
         public string $symbol,
@@ -13,21 +23,10 @@ readonly class FundsListList
         public string $currency,
         public string $exchange,
         public string $type,
-        public string $figiCode,
     ) {
     }
 
-    /**
-     * @param array{
-     *     symbol: string,
-     *     name: string,
-     *     country: string,
-     *     currency: string,
-     *     exchange: string,
-     *     type: string,
-     *     figi_code: string,
-     *  } $data
-     */
+    /** @param BondsResultListType $data */
     public static function fromArray(array $data): self
     {
         return new self(
@@ -37,7 +36,6 @@ readonly class FundsListList
             currency: $data['currency'],
             exchange: $data['exchange'],
             type: $data['type'],
-            figiCode: $data['figi_code'],
         );
     }
 }

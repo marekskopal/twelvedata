@@ -4,6 +4,12 @@ declare(strict_types=1);
 
 namespace MarekSkopal\TwelveData\Dto\ReferenceData;
 
+/**
+ * @phpstan-type InstrumentTypeType array{
+ *     result: list<string>,
+ *     status: string,
+ * }
+ */
 readonly class InstrumentType
 {
     /** @param list<string> $result */
@@ -13,23 +19,13 @@ readonly class InstrumentType
 
     public static function fromJson(string $json): self
     {
-        /**
-         * @var array{
-         *     result: list<string>,
-         *     status: string,
-         * } $responseContents
-         */
+        /** @var InstrumentTypeType $responseContents */
         $responseContents = json_decode($json, associative: true);
 
         return self::fromArray($responseContents);
     }
 
-    /**
-     * @param array{
-     *     result: list<string>,
-     *     status: string,
-     * } $data
-     */
+    /** @param InstrumentTypeType $data */
     public static function fromArray(array $data): self
     {
         return new self(result: $data['result'], status: $data['status']);

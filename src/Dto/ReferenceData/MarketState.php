@@ -4,6 +4,17 @@ declare(strict_types=1);
 
 namespace MarekSkopal\TwelveData\Dto\ReferenceData;
 
+/**
+ * @phpstan-type MarketStateType array{
+ *     name: string,
+ *     code: string,
+ *     country: string,
+ *     is_market_open: bool,
+ *     time_after_open: string,
+ *     time_to_open: string,
+ *     time_to_close: string,
+ * }
+ */
 readonly class MarketState
 {
     public function __construct(
@@ -17,17 +28,7 @@ readonly class MarketState
     ) {
     }
 
-    /**
-     * @param array{
-     *     name: string,
-     *     code: string,
-     *     country: string,
-     *     is_market_open: bool,
-     *     time_after_open: string,
-     *     time_to_open: string,
-     *     time_to_close: string,
-     *  } $data
-     */
+    /** @param MarketStateType $data */
     public static function fromArray(array $data): self
     {
         return new self(

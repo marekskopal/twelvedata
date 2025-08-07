@@ -6,45 +6,51 @@ namespace MarekSkopal\TwelveData\Dto\ReferenceData;
 
 /**
  * @phpstan-import-type AccessType from Access
- * @phpstan-type SymbolSearchDataType array{
+ * @phpstan-type EtfsDataType array{
  *     symbol: string,
- *     instrument_name: string,
+ *     name: string,
+ *     currency: string,
  *     exchange: string,
  *     mic_code: string,
- *     exchange_timezone: string,
- *     instrument_type: string,
  *     country: string,
- *     currency: string,
- *     access?: AccessType,
+ *     figi_code: string,
+ *     cfi_code: string,
+ *     isin: string,
+ *     cusip: string,
+ *     access?: AccessType
  * }
  */
-readonly class SymbolSearchData
+readonly class EtfsData
 {
     public function __construct(
         public string $symbol,
-        public string $instrumentName,
+        public string $name,
+        public string $currency,
         public string $exchange,
         public string $micCode,
-        public string $exchangeTimezone,
-        public string $instrumentType,
         public string $country,
-        public string $currency,
+        public string $figiCode,
+        public string $cfiCode,
+        public string $isin,
+        public string $cusip,
         public ?Access $access,
     ) {
     }
 
-    /** @param SymbolSearchDataType $data */
+    /** @param EtfsDataType $data */
     public static function fromArray(array $data): self
     {
         return new self(
             symbol: $data['symbol'],
-            instrumentName: $data['instrument_name'],
+            name: $data['name'],
+            currency: $data['currency'],
             exchange: $data['exchange'],
             micCode: $data['mic_code'],
-            exchangeTimezone: $data['exchange_timezone'],
-            instrumentType: $data['instrument_type'],
             country: $data['country'],
-            currency: $data['currency'],
+            figiCode: $data['figi_code'],
+            cfiCode: $data['cfi_code'],
+            isin: $data['isin'],
+            cusip: $data['cusip'],
             access: ($data['access'] ?? null) !== null ? Access::fromArray($data['access']) : null,
         );
     }

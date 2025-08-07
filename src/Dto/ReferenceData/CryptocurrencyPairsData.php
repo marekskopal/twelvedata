@@ -4,7 +4,15 @@ declare(strict_types=1);
 
 namespace MarekSkopal\TwelveData\Dto\ReferenceData;
 
-readonly class CryptocurrenciesListData
+/**
+ * @phpstan-type CryptocurrencyPairsDataType array{
+ *     symbol: string,
+ *     available_exchanges: list<string>,
+ *     currency_base: string,
+ *     currency_quote: string,
+ * }
+ */
+readonly class CryptocurrencyPairsData
 {
     /** @param list<string> $availableExchanges */
     public function __construct(
@@ -15,14 +23,7 @@ readonly class CryptocurrenciesListData
     ) {
     }
 
-    /**
-     * @param array{
-     *     symbol: string,
-     *     available_exchanges: list<string>,
-     *     currency_base: string,
-     *     currency_quote: string,
-     *  } $data
-     */
+    /** @param CryptocurrencyPairsDataType $data */
     public static function fromArray(array $data): self
     {
         return new self(
