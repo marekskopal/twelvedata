@@ -4,6 +4,14 @@ declare(strict_types=1);
 
 namespace MarekSkopal\TwelveData\Dto\Fundamentals;
 
+/**
+ * @phpstan-import-type MetaType from Meta
+ * @phpstan-import-type KeyExecutivesKeyExecutiveType from KeyExecutivesKeyExecutive
+ * @phpstan-type KeyExecutivesType array{
+ *     meta: MetaType,
+ *     key_executives: list<KeyExecutivesKeyExecutiveType>,
+ * }
+ */
 readonly class KeyExecutives
 {
     /** @param list<KeyExecutivesKeyExecutive> $keyExecutives */
@@ -13,49 +21,13 @@ readonly class KeyExecutives
 
     public static function fromJson(string $json): self
     {
-        /**
-         * @var array{
-         *     meta: array{
-         *         symbol: string,
-         *         name: string,
-         *         currency: string,
-         *         exchange: string,
-         *         mic_code: string,
-         *         exchange_timezone: string,
-         *     },
-         *     key_executives: list<array{
-         *         name: string,
-         *         title: string,
-         *         age: int,
-         *         year_born: int,
-         *         pay: int|null,
-         *     }>,
-         * } $responseContents
-         */
+        /** @var KeyExecutivesType $responseContents */
         $responseContents = json_decode($json, associative: true);
 
         return self::fromArray($responseContents);
     }
 
-    /**
-     * @param array{
-     *     meta: array{
-     *         symbol: string,
-     *         name: string,
-     *         currency: string,
-     *         exchange: string,
-     *         mic_code: string,
-     *         exchange_timezone: string,
-     *     },
-     *     key_executives: list<array{
-     *         name: string,
-     *         title: string,
-     *         age: int,
-     *         year_born: int,
-     *         pay: int|null,
-     *     }>,
-     * } $data
-     */
+    /** @param KeyExecutivesType $data */
     public static function fromArray(array $data): self
     {
         return new self(

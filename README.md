@@ -61,32 +61,40 @@ More endpoints will be covered in future versions.
 * Countries                      ✅
 * Technical Indicators           ❌
 
-### Mutual Funds ❌
-
-### ETFs ❌
-
 ### Fundamentals
 
-* Logo                  ✅
-* Profile               ✅
-* Dividends             ✅
-* Splits                ✅
-* Earnings              ✅
-* Earnings Calendar     ❌
-* IPO Calendar          ❌
-* Statistics            ✅
-* Income Statement      ✅
-* Balance Sheet         ✅
-* Cash Flow             ✅
-* Options Expiration    ✅
-* Options Chain         ✅
-* Key Executives        ✅
-* Last changes          ❌
+* Logo                          ✅
+* Profile                       ✅
+* Dividends                     ✅
+* Dividends Calendar            ✅
+* Splits                        ✅
+* Splits Calendar               ✅
+* Earnings                      ✅
+* Earnings Calendar             ❌
+* IPO Calendar                  ❌
+* Statistics                    ✅
+* Income Statement              ✅
+* Income Statement Consolidated ❌
+* Balance Sheet                 ✅
+* Balance Sheet Consolidated    ❌
+* Cash Flow                     ✅
+* Cash Flow Consolidated        ❌
+* Key Executives                ✅
+* Options Expiration            ✅
+* Options Chain                 ✅
+* Market Capitalization         ❌
+* Last changes                  ❌
 
 ### Currencies
 
 * Exchange Rate        ✅
 * Currency Conversion  ✅
+
+### ETFs ❌
+
+### Mutual Funds ❌
+
+### Technical Indicators ❌
 
 ### Analysis
 * Earnings Estimate             ❌
@@ -109,14 +117,12 @@ More endpoints will be covered in future versions.
 * Tax Information       ✅
 * Sanctioned Entities   ✅
 
-### WebSocket ❌
-
 ### Advanced
 
 * Complex Data ❌
 * Usage        ✅
 
-### Technical Indicators ❌
+### WebSocket ❌
 
 ## Notice
 This is NOT an official Twelve Data library, and the authors of this library are not affiliated with Twelve Data in any way, shape or form. Twelve Data APIs and data are Copyright © 2024 Twelve Data Pte. Ltd.

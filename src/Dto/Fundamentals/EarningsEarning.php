@@ -6,6 +6,16 @@ namespace MarekSkopal\TwelveData\Dto\Fundamentals;
 
 use DateTimeImmutable;
 
+/**
+ * @phpstan-type EarningsEarningType array{
+ *     date: string,
+ *     time: string,
+ *     eps_estimate: float|null,
+ *     eps_actual: float|null,
+ *     difference: float|null,
+ *     surprise_prc: float|null,
+ * }
+ */
 readonly class EarningsEarning
 {
     public function __construct(
@@ -18,16 +28,7 @@ readonly class EarningsEarning
     ) {
     }
 
-    /**
-     * @param array{
-     *     date: string,
-     *     time: string,
-     *     eps_estimate: float|null,
-     *     eps_actual: float|null,
-     *     difference: float|null,
-     *     surprise_prc: float|null,
-     *  } $data
-     */
+    /** @param EarningsEarningType $data */
     public static function fromArray(array $data): self
     {
         return new self(

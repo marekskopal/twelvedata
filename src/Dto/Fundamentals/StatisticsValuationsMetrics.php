@@ -4,6 +4,19 @@ declare(strict_types=1);
 
 namespace MarekSkopal\TwelveData\Dto\Fundamentals;
 
+/**
+ * @phpstan-type StatisticsValuationsMetricsType array{
+ *     market_capitalization: int,
+ *     enterprise_value: int,
+ *     trailing_pe: float|null,
+ *     forward_pe: float|null,
+ *     peg_ratio: float|null,
+ *     price_to_sales_ttm: float|null,
+ *     price_to_book_mrq: float|null,
+ *     enterprise_to_revenue: float|null,
+ *     enterprise_to_ebitda: float|null,
+ * }
+ */
 readonly class StatisticsValuationsMetrics
 {
     public function __construct(
@@ -19,19 +32,7 @@ readonly class StatisticsValuationsMetrics
     ) {
     }
 
-    /**
-     * @param array{
-     *     market_capitalization: int,
-     *     enterprise_value: int,
-     *     trailing_pe: float|null,
-     *     forward_pe: float|null,
-     *     peg_ratio: float|null,
-     *     price_to_sales_ttm: float|null,
-     *     price_to_book_mrq: float|null,
-     *     enterprise_to_revenue: float|null,
-     *     enterprise_to_ebitda: float|null,
-     *  } $data
-     */
+    /** @param StatisticsValuationsMetricsType $data */
     public static function fromArray(array $data): self
     {
         return new self(

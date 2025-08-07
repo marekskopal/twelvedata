@@ -4,6 +4,15 @@ declare(strict_types=1);
 
 namespace MarekSkopal\TwelveData\Dto\Fundamentals;
 
+/**
+ * @phpstan-import-type BalanceSheetCurrentLiabilitiesType from BalanceSheetCurrentLiabilities
+ * @phpstan-import-type BalanceSheetNonCurrentLiabilitiesType from BalanceSheetNonCurrentLiabilities
+ * @phpstan-type BalanceSheetLiabilitiesType array{
+ *     current_liabilities: BalanceSheetCurrentLiabilitiesType,
+ *     non_current_liabilities: BalanceSheetNonCurrentLiabilitiesType,
+ *     total_liabilities: int,
+ * }
+ */
 readonly class BalanceSheetLiabilities
 {
     public function __construct(
@@ -13,30 +22,7 @@ readonly class BalanceSheetLiabilities
     ) {
     }
 
-    /**
-     * @param array{
-     *     current_liabilities: array{
-     *         accounts_payable: int|null,
-     *         accrued_expenses: int|null,
-     *         short_term_debt:int|null,
-     *         deferred_revenue:int|null,
-     *         tax_payable:int|null,
-     *         pensions:int|null,
-     *         other_current_liabilities:int|null,
-     *         total_current_liabilities:int|null,
-     *     },
-     *     non_current_liabilities: array{
-     *         long_term_provisions: int|null,
-     *         long_term_debt: int|null,
-     *         provision_for_risks_and_charges:int|null,
-     *         deferred_liabilities:int|null,
-     *         derivative_product_liabilities:int|null,
-     *         other_non_current_liabilities:int|null,
-     *         total_non_current_liabilities:int|null,
-     *     },
-     *     total_liabilities: int,
-     * } $data
-     */
+    /** @param BalanceSheetLiabilitiesType $data */
     public static function fromArray(array $data): self
     {
         return new self(

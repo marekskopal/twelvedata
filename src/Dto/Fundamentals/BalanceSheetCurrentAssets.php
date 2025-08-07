@@ -4,6 +4,23 @@ declare(strict_types=1);
 
 namespace MarekSkopal\TwelveData\Dto\Fundamentals;
 
+/**
+ * @phpstan-type BalanceSheetCurrentAssetsType array{
+ *     cash: int,
+ *     cash_equivalents: int,
+ *     cash_and_cash_equivalents:int,
+ *     other_short_term_investments:int,
+ *     accounts_receivable:int,
+ *     other_receivables:int,
+ *     inventory:int,
+ *     prepaid_assets:int|null,
+ *     restricted_cash:int|null,
+ *     assets_held_for_sale:int|null,
+ *     hedging_assets:int|null,
+ *     other_current_assets:int|null,
+ *     total_current_assets:int|null,
+ * }
+ */
 readonly class BalanceSheetCurrentAssets
 {
     public function __construct(
@@ -23,23 +40,7 @@ readonly class BalanceSheetCurrentAssets
     ) {
     }
 
-    /**
-     * @param array{
-     *     cash: int,
-     *     cash_equivalents: int,
-     *     cash_and_cash_equivalents:int,
-     *     other_short_term_investments:int,
-     *     accounts_receivable:int,
-     *     other_receivables:int,
-     *     inventory:int,
-     *     prepaid_assets:int|null,
-     *     restricted_cash:int|null,
-     *     assets_held_for_sale:int|null,
-     *     hedging_assets:int|null,
-     *     other_current_assets:int|null,
-     *     total_current_assets:int|null,
-     *  } $data
-     */
+    /** @param BalanceSheetCurrentAssetsType $data */
     public static function fromArray(array $data): self
     {
         return new self(

@@ -4,6 +4,19 @@ declare(strict_types=1);
 
 namespace MarekSkopal\TwelveData\Dto\Fundamentals;
 
+/**
+ * @phpstan-type CashFlowOperatingActivitiesType array{
+ *     net_income: int,
+ *     depreciation: int,
+ *     deferred_taxes: int|null,
+ *     stock_based_compensation: int,
+ *     other_non_cash_items: int,
+ *     accounts_receivable: int,
+ *     accounts_payable: int,
+ *     other_assets_liabilities: int,
+ *     operating_cash_flow: int,
+ * }
+ */
 readonly class CashFlowOperatingActivities
 {
     public function __construct(
@@ -19,19 +32,7 @@ readonly class CashFlowOperatingActivities
     ) {
     }
 
-    /**
-     * @param array{
-     *     net_income: int,
-     *     depreciation: int,
-     *     deferred_taxes: int|null,
-     *     stock_based_compensation: int,
-     *     other_non_cash_items: int,
-     *     accounts_receivable: int,
-     *     accounts_payable: int,
-     *     other_assets_liabilities: int,
-     *     operating_cash_flow: int,
-     * } $data
-     */
+    /** @param CashFlowOperatingActivitiesType $data */
     public static function fromArray(array $data): self
     {
         return new self(

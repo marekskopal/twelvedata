@@ -4,6 +4,28 @@ declare(strict_types=1);
 
 namespace MarekSkopal\TwelveData\Dto\Fundamentals;
 
+/**
+ * @phpstan-type ProfileType array{
+ *     symbol: string,
+ *     name: string,
+ *     exchange: string,
+ *     mic_code: string,
+ *     sector: string,
+ *     industry: string,
+ *     employees: int,
+ *     website: string,
+ *     description: string,
+ *     type: string,
+ *     CEO: string,
+ *     address: string,
+ *     address2: string,
+ *     city: string,
+ *     zip: string,
+ *     state: string,
+ *     country: string,
+ *     phone: string,
+ *  }
+ */
 readonly class Profile
 {
     public function __construct(
@@ -30,55 +52,13 @@ readonly class Profile
 
     public static function fromJson(string $json): self
     {
-        /**
-         * @var array{
-         *     symbol: string,
-         *     name: string,
-         *     exchange: string,
-         *     mic_code: string,
-         *     sector: string,
-         *     industry: string,
-         *     employees: int,
-         *     website: string,
-         *     description: string,
-         *     type: string,
-         *     CEO: string,
-         *     address: string,
-         *     address2: string,
-         *     city: string,
-         *     zip: string,
-         *     state: string,
-         *     country: string,
-         *     phone: string,
-         *  } $responseContents
-         */
+        /** @var ProfileType $responseContents */
         $responseContents = json_decode($json, associative: true);
 
         return self::fromArray($responseContents);
     }
 
-    /**
-     * @param array{
-     *     symbol: string,
-     *     name: string,
-     *     exchange: string,
-     *     mic_code: string,
-     *     sector: string,
-     *     industry: string,
-     *     employees: int,
-     *     website: string,
-     *     description: string,
-     *     type: string,
-     *     CEO: string,
-     *     address: string,
-     *     address2: string,
-     *     city: string,
-     *     zip: string,
-     *     state: string,
-     *     country: string,
-     *     phone: string,
-     *  } $data
-     */
+    /** @param ProfileType $data */
     public static function fromArray(array $data): self
     {
         return new self(

@@ -4,6 +4,14 @@ declare(strict_types=1);
 
 namespace MarekSkopal\TwelveData\Dto\Fundamentals;
 
+/**
+ * @phpstan-import-type MetaType from Meta
+ * @phpstan-import-type IncomeStatementIncomeStatementType from IncomeStatementIncomeStatement
+ * @phpstan-type IncomeStatementType array{
+ *     meta: MetaType,
+ *     income_statement: list<IncomeStatementIncomeStatementType>,
+ * }
+ */
 readonly class IncomeStatement
 {
     /** @param list<IncomeStatementIncomeStatement> $incomeStatement */
@@ -13,93 +21,13 @@ readonly class IncomeStatement
 
     public static function fromJson(string $json): self
     {
-        /**
-         * @var array{
-         *     meta: array{
-         *         symbol: string,
-         *         name: string,
-         *         currency: string,
-         *         exchange: string,
-         *         mic_code: string,
-         *         exchange_timezone: string,
-         *     },
-         *     income_statement: list<array{
-         *         fiscal_date: string,
-         *         quarter?: int,
-         *         sales: int,
-         *         cost_of_goods: int,
-         *         gross_profit: int,
-         *         operating_expense: array{
-         *             research_and_development: int,
-         *             selling_general_and_administrative: int,
-         *             other_operating_expenses: int|null,
-         *         },
-         *         operating_income: int,
-         *         non_operating_interest: array{
-         *             income: int,
-         *             expense: int,
-         *         },
-         *         other_income_expense: int,
-         *         pretax_income: int,
-         *         income_tax: int,
-         *         net_income: int,
-         *         eps_basic: float|null,
-         *         eps_diluted: float|null,
-         *         basic_shares_outstanding: int|null,
-         *         diluted_shares_outstanding: int|null,
-         *         ebitda: int,
-         *         net_income_continuous_operations: int|null,
-         *         minority_interests: int|null,
-         *         preferred_stock_dividends: int|null,
-         *     }>
-         *  } $responseContents
-         */
+        /** @var IncomeStatementType $responseContents */
         $responseContents = json_decode($json, associative: true);
 
         return self::fromArray($responseContents);
     }
 
-    /**
-     * @param array{
-     *     meta: array{
-     *         symbol: string,
-     *         name: string,
-     *         currency: string,
-     *         exchange: string,
-     *         mic_code: string,
-     *         exchange_timezone: string,
-     *     },
-     *     income_statement: list<array{
-     *         fiscal_date: string,
-     *         quarter?: int,
-     *         sales: int,
-     *         cost_of_goods: int,
-     *         gross_profit: int,
-     *         operating_expense: array{
-     *             research_and_development: int,
-     *             selling_general_and_administrative: int,
-     *             other_operating_expenses: int|null,
-     *         },
-     *         operating_income: int,
-     *         non_operating_interest: array{
-     *             income: int,
-     *             expense: int,
-     *         },
-     *         other_income_expense: int,
-     *         pretax_income: int,
-     *         income_tax: int,
-     *         net_income: int,
-     *         eps_basic: float|null,
-     *         eps_diluted: float|null,
-     *         basic_shares_outstanding: int|null,
-     *         diluted_shares_outstanding: int|null,
-     *         ebitda: int,
-     *         net_income_continuous_operations: int|null,
-     *         minority_interests: int|null,
-     *         preferred_stock_dividends: int|null,
-     *     }>
-     *  } $data
-     */
+    /** @param IncomeStatementType $data */
     public static function fromArray(array $data): self
     {
         return new self(

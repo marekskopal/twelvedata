@@ -4,6 +4,13 @@ declare(strict_types=1);
 
 namespace MarekSkopal\TwelveData\Dto\Fundamentals;
 
+/**
+ * @phpstan-type IncomeStatementOperationExpenseType array{
+ *     research_and_development: int,
+ *     selling_general_and_administrative: int,
+ *     other_operating_expenses: int|null,
+ * }
+ */
 readonly class IncomeStatementOperationExpense
 {
     public function __construct(
@@ -13,13 +20,7 @@ readonly class IncomeStatementOperationExpense
     ) {
     }
 
-    /**
-     * @param array{
-     *     research_and_development: int,
-     *     selling_general_and_administrative: int,
-     *     other_operating_expenses: int|null,
-     *  } $data
-     */
+    /** @param IncomeStatementOperationExpenseType $data */
     public static function fromArray(array $data): self
     {
         return new self(

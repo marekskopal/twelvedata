@@ -4,6 +4,17 @@ declare(strict_types=1);
 
 namespace MarekSkopal\TwelveData\Dto\Fundamentals;
 
+/**
+ * @phpstan-type BalanceSheetShareholdersEquityType array{
+ *     common_stock: int,
+ *     retained_earnings: int,
+ *     other_shareholders_equity:int,
+ *     total_shareholders_equity:int,
+ *     additional_paid_in_capital:int|null,
+ *     treasury_stock:int|null,
+ *     minority_interest:int|null,
+ * }
+ */
 readonly class BalanceSheetShareholdersEquity
 {
     public function __construct(
@@ -17,17 +28,7 @@ readonly class BalanceSheetShareholdersEquity
     ) {
     }
 
-    /**
-     * @param array{
-     *     common_stock: int,
-     *     retained_earnings: int,
-     *     other_shareholders_equity:int,
-     *     total_shareholders_equity:int,
-     *     additional_paid_in_capital:int|null,
-     *     treasury_stock:int|null,
-     *     minority_interest:int|null,
-     *  } $data
-     */
+    /** @param BalanceSheetShareholdersEquityType $data */
     public static function fromArray(array $data): self
     {
         return new self(

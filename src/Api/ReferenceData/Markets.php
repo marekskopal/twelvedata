@@ -85,10 +85,8 @@ readonly class Markets extends TwelveDataApi
             ],
         );
 
-        $responseContents = $response;
-
         /** @var list<MarketStateType> $data */
-        $data = json_decode($responseContents, associative: true);
+        $data = json_decode($response, associative: true);
 
         return array_map(fn (array $item): MarketState => MarketState::fromArray($item), $data);
     }

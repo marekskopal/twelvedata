@@ -4,6 +4,17 @@ declare(strict_types=1);
 
 namespace MarekSkopal\TwelveData\Dto\Fundamentals;
 
+/**
+ * @phpstan-type CashFlowInvestingActivitiesType array{
+ *     capital_expenditures: int,
+ *     net_intangibles: int|null,
+ *     net_acquisitions: int|null,
+ *     purchase_of_investments: int,
+ *     sale_of_investments: int,
+ *     other_investing_activity: int,
+ *     investing_cash_flow: int,
+ * }
+ */
 readonly class CashFlowInvestingActivities
 {
     public function __construct(
@@ -17,17 +28,7 @@ readonly class CashFlowInvestingActivities
     ) {
     }
 
-    /**
-     * @param array{
-     *     capital_expenditures: int,
-     *     net_intangibles: int|null,
-     *     net_acquisitions: int|null,
-     *     purchase_of_investments: int,
-     *     sale_of_investments: int,
-     *     other_investing_activity: int,
-     *     investing_cash_flow: int,
-     * } $data
-     */
+    /** @param CashFlowInvestingActivitiesType $data */
     public static function fromArray(array $data): self
     {
         return new self(

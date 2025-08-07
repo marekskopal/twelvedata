@@ -4,6 +4,18 @@ declare(strict_types=1);
 
 namespace MarekSkopal\TwelveData\Dto\Fundamentals;
 
+/**
+ * @phpstan-type StatisticsIncomeStatementType array{
+ *     revenue_ttm: int,
+ *     revenue_per_share_ttm: float|null,
+ *     quarterly_revenue_growth: float|null,
+ *     gross_profit_ttm: int,
+ *     ebitda: int,
+ *     net_income_to_common_ttm: int,
+ *     diluted_eps_ttm: float|null,
+ *     quarterly_earnings_growth_yoy: float|null,
+ * }
+ */
 readonly class StatisticsIncomeStatement
 {
     public function __construct(

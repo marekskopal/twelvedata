@@ -4,6 +4,16 @@ declare(strict_types=1);
 
 namespace MarekSkopal\TwelveData\Dto\Fundamentals;
 
+/**
+ * @phpstan-type StatisticsStockPriceSummaryType array{
+ *     fifty_two_week_low: float,
+ *     fifty_two_week_high: float,
+ *     fifty_two_week_change: float,
+ *     beta: float|null,
+ *     day_50_ma: float,
+ *     day_200_ma: float,
+ * }
+ */
 readonly class StatisticsStockPriceSummary
 {
     public function __construct(
@@ -16,16 +26,7 @@ readonly class StatisticsStockPriceSummary
     ) {
     }
 
-    /**
-     * @param array{
-     *     fifty_two_week_low: float,
-     *     fifty_two_week_high: float,
-     *     fifty_two_week_change: float,
-     *     beta: float|null,
-     *     day_50_ma: float,
-     *     day_200_ma: float,
-     *  } $data
-     */
+    /** @param StatisticsStockPriceSummaryType $data */
     public static function fromArray(array $data): self
     {
         return new self(

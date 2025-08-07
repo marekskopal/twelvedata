@@ -6,6 +6,22 @@ namespace MarekSkopal\TwelveData\Dto\Fundamentals;
 
 use DateTimeImmutable;
 
+/**
+ * @phpstan-import-type StatisticsIncomeStatementType from StatisticsIncomeStatement
+ * @phpstan-import-type StatisticsBalanceSheetType from StatisticsBalanceSheet
+ * @phpstan-import-type StatisticsCashFlowType from StatisticsCashFlow
+ * @phpstan-type StatisticsFinancialsType array{
+ *     fiscal_year_ends: string|null,
+ *     most_recent_quarter: string|null,
+ *     profit_margin: float|null,
+ *     operating_margin: float|null,
+ *     return_on_assets_ttm: float|null,
+ *     return_on_equity_ttm: float|null,
+ *     income_statement: StatisticsIncomeStatementType,
+ *     balance_sheet: StatisticsBalanceSheetType,
+ *     cash_flow: StatisticsCashFlowType,
+ * }
+ */
 readonly class StatisticsFinancials
 {
     public function __construct(
@@ -21,38 +37,7 @@ readonly class StatisticsFinancials
     ) {
     }
 
-    /**
-     * @param array{
-     *     fiscal_year_ends: string|null,
-     *     most_recent_quarter: string|null,
-     *     profit_margin: float|null,
-     *     operating_margin: float|null,
-     *     return_on_assets_ttm: float|null,
-     *     return_on_equity_ttm: float|null,
-     *     income_statement: array{
-     *          revenue_ttm: int,
-     *          revenue_per_share_ttm: float|null,
-     *          quarterly_revenue_growth: float|null,
-     *          gross_profit_ttm: int,
-     *          ebitda: int,
-     *          net_income_to_common_ttm: int,
-     *          diluted_eps_ttm: float|null,
-     *          quarterly_earnings_growth_yoy: float|null,
-     *     },
-     *     balance_sheet: array{
-     *          total_cash_mrq: int|null,
-     *          total_cash_per_share_mrq: float|null,
-     *          total_debt_mrq: int|null,
-     *          total_debt_to_equity_mrq: float|null,
-     *          current_ratio_mrq: float|null,
-     *          book_value_per_share_mrq: float|null,
-     *     },
-     *     cash_flow: array{
-     *          operating_cash_flow_ttm: int,
-     *          levered_free_cash_flow_ttm: int,
-     *     },
-     *  } $data
-     */
+    /** @param StatisticsFinancialsType $data */
     public static function fromArray(array $data): self
     {
         return new self(

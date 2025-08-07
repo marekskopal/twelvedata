@@ -4,6 +4,22 @@ declare(strict_types=1);
 
 namespace MarekSkopal\TwelveData\Dto\Fundamentals;
 
+/**
+ * @phpstan-import-type CashFlowOperatingActivitiesType from CashFlowOperatingActivities
+ * @phpstan-import-type CashFlowInvestingActivitiesType from CashFlowInvestingActivities
+ * @phpstan-import-type CashFlowFinancingActivitiesType from CashFlowFinancingActivities
+ * @phpstan-type CashFlowCashFlowType array{
+ *     fiscal_date: string,
+ *     quarter: int|null,
+ *     operating_activities: CashFlowOperatingActivitiesType,
+ *     investing_activities: CashFlowInvestingActivitiesType,
+ *     financing_activities: CashFlowFinancingActivitiesType,
+ *     end_cash_position: int,
+ *     income_tax_paid: int,
+ *     interest_paid: int|null,
+ *     free_cash_flow: int,
+ * }
+ */
 readonly class CashFlowCashFlow
 {
     public function __construct(
@@ -19,46 +35,7 @@ readonly class CashFlowCashFlow
     ) {
     }
 
-    /**
-     * @param array{
-     *     fiscal_date: string,
-     *     quarter: int|null,
-     *     operating_activities: array{
-     *         net_income: int,
-     *         depreciation: int,
-     *         deferred_taxes: int|null,
-     *         stock_based_compensation: int,
-     *         other_non_cash_items: int,
-     *         accounts_receivable: int,
-     *         accounts_payable: int,
-     *         other_assets_liabilities: int,
-     *         operating_cash_flow: int,
-     *     },
-     *     investing_activities: array{
-     *         capital_expenditures: int,
-     *         net_intangibles: int|null,
-     *         net_acquisitions: int|null,
-     *         purchase_of_investments: int,
-     *         sale_of_investments: int,
-     *         other_investing_activity: int,
-     *         investing_cash_flow: int,
-     *     },
-     *     financing_activities: array{
-     *         long_term_debt_issuance: int|null,
-     *         long_term_debt_payments: int,
-     *         short_term_debt_issuance: int,
-     *         common_stock_issuance: int|null,
-     *         common_stock_repurchase: int,
-     *         common_dividends: int,
-     *         other_financing_charges: int,
-     *         financing_cash_flow: int,
-     *     },
-     *     end_cash_position: int,
-     *     income_tax_paid: int,
-     *     interest_paid: int|null,
-     *     free_cash_flow: int,
-     * } $data
-     */
+    /** @param CashFlowCashFlowType $data */
     public static function fromArray(array $data): self
     {
         return new self(

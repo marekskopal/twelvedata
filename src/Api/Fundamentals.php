@@ -8,6 +8,7 @@ use DateTimeImmutable;
 use MarekSkopal\TwelveData\Dto\Fundamentals\BalanceSheet;
 use MarekSkopal\TwelveData\Dto\Fundamentals\CashFlow;
 use MarekSkopal\TwelveData\Dto\Fundamentals\Dividends;
+use MarekSkopal\TwelveData\Dto\Fundamentals\DividendsCalendar;
 use MarekSkopal\TwelveData\Dto\Fundamentals\Earnings;
 use MarekSkopal\TwelveData\Dto\Fundamentals\IncomeStatement;
 use MarekSkopal\TwelveData\Dto\Fundamentals\KeyExecutives;
@@ -16,12 +17,18 @@ use MarekSkopal\TwelveData\Dto\Fundamentals\OptionsChain;
 use MarekSkopal\TwelveData\Dto\Fundamentals\OptionsExpiration;
 use MarekSkopal\TwelveData\Dto\Fundamentals\Profile;
 use MarekSkopal\TwelveData\Dto\Fundamentals\Splits;
+use MarekSkopal\TwelveData\Dto\Fundamentals\SplitsCalendar;
 use MarekSkopal\TwelveData\Dto\Fundamentals\Statistics;
 use MarekSkopal\TwelveData\Enum\EarningsPeriodEnum;
 use MarekSkopal\TwelveData\Enum\FormatEnum;
 use MarekSkopal\TwelveData\Enum\PeriodEnum;
 use MarekSkopal\TwelveData\Enum\RangeEnum;
+use MarekSkopal\TwelveData\Utils\QueryParamsUtils;
 
+/**
+ * @phpstan-import-type DividendsCalendarType from DividendsCalendar
+ * @phpstan-import-type SplitsCalendarType from SplitsCalendar
+ */
 readonly class Fundamentals extends TwelveDataApi
 {
     public function logo(string $symbol, ?string $exchange = null, ?string $micCode = null, ?string $country = null,): Logo
@@ -76,6 +83,7 @@ readonly class Fundamentals extends TwelveDataApi
         ?RangeEnum $range = null,
         ?DateTimeImmutable $startDate = null,
         ?DateTimeImmutable $endDate = null,
+        ?bool $adjust = null,
     ): Dividends {
         $response = $this->client->get(
             path: '/dividends',
@@ -90,10 +98,48 @@ readonly class Fundamentals extends TwelveDataApi
                 'range' => $range?->value,
                 'start_date' => $startDate?->format('Y-m-d'),
                 'end_date' => $endDate?->format('Y-m-d'),
+                'adjust' => $adjust !== null ? QueryParamsUtils::booleanAsString($adjust) : null,
             ],
         );
 
         return Dividends::fromJson($response);
+    }
+
+    /** @return list<DividendsCalendar> */
+    public function dividendsCalendar(
+        ?string $symbol = null,
+        ?string $figi = null,
+        ?string $isin = null,
+        ?string $cusip = null,
+        ?string $exchange = null,
+        ?string $micCode = null,
+        ?string $country = null,
+        ?DateTimeImmutable $startDate = null,
+        ?DateTimeImmutable $endDate = null,
+        ?int $outputsize = null,
+        ?int $page = null,
+    ): array {
+        $response = $this->client->get(
+            path: '/dividends_calendar',
+            queryParams: [
+                'symbol' => $symbol,
+                'figi' => $figi,
+                'isin' => $isin,
+                'cusip' => $cusip,
+                'exchange' => $exchange,
+                'mic_code' => $micCode,
+                'country' => $country,
+                'start_date' => $startDate?->format('Y-m-d'),
+                'end_date' => $endDate?->format('Y-m-d'),
+                'outputsize' => $outputsize !== null ? (string) $outputsize : null,
+                'page' => $page !== null ? (string) $page : null,
+            ],
+        );
+
+        /** @var list<DividendsCalendarType> $data */
+        $data = json_decode($response, associative: true);
+
+        return array_map(fn (array $item): DividendsCalendar => DividendsCalendar::fromArray($item), $data);
     }
 
     public function splits(
@@ -125,6 +171,43 @@ readonly class Fundamentals extends TwelveDataApi
         );
 
         return Splits::fromJson($response);
+    }
+
+    /** @return list<SplitsCalendar> */
+    public function splitsCalendar(
+        ?string $symbol = null,
+        ?string $figi = null,
+        ?string $isin = null,
+        ?string $cusip = null,
+        ?string $exchange = null,
+        ?string $micCode = null,
+        ?string $country = null,
+        ?DateTimeImmutable $startDate = null,
+        ?DateTimeImmutable $endDate = null,
+        ?int $outputsize = null,
+        ?int $page = null,
+    ): array {
+        $response = $this->client->get(
+            path: '/splits_calendar',
+            queryParams: [
+                'symbol' => $symbol,
+                'figi' => $figi,
+                'isin' => $isin,
+                'cusip' => $cusip,
+                'exchange' => $exchange,
+                'mic_code' => $micCode,
+                'country' => $country,
+                'start_date' => $startDate?->format('Y-m-d'),
+                'end_date' => $endDate?->format('Y-m-d'),
+                'outputsize' => $outputsize !== null ? (string) $outputsize : null,
+                'page' => $page !== null ? (string) $page : null,
+            ],
+        );
+
+        /** @var list<SplitsCalendarType> $data */
+        $data = json_decode($response, associative: true);
+
+        return array_map(fn (array $item): SplitsCalendar => SplitsCalendar::fromArray($item), $data);
     }
 
     public function earnings(
@@ -170,10 +253,10 @@ readonly class Fundamentals extends TwelveDataApi
 
     public function statistics(
         string $symbol,
-        ?string $exchange = null,
         ?string $figi = null,
         ?string $isin = null,
         ?string $cusip = null,
+        ?string $exchange = null,
         ?string $micCode = null,
         ?string $country = null,
     ): Statistics

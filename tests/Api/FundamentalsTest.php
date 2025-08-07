@@ -24,6 +24,7 @@ use MarekSkopal\TwelveData\Dto\Fundamentals\CashFlowFinancingActivities;
 use MarekSkopal\TwelveData\Dto\Fundamentals\CashFlowInvestingActivities;
 use MarekSkopal\TwelveData\Dto\Fundamentals\CashFlowOperatingActivities;
 use MarekSkopal\TwelveData\Dto\Fundamentals\Dividends;
+use MarekSkopal\TwelveData\Dto\Fundamentals\DividendsCalendar;
 use MarekSkopal\TwelveData\Dto\Fundamentals\DividendsDividend;
 use MarekSkopal\TwelveData\Dto\Fundamentals\Earnings;
 use MarekSkopal\TwelveData\Dto\Fundamentals\EarningsEarning;
@@ -34,12 +35,14 @@ use MarekSkopal\TwelveData\Dto\Fundamentals\IncomeStatementOperationExpense;
 use MarekSkopal\TwelveData\Dto\Fundamentals\KeyExecutives;
 use MarekSkopal\TwelveData\Dto\Fundamentals\KeyExecutivesKeyExecutive;
 use MarekSkopal\TwelveData\Dto\Fundamentals\Logo;
+use MarekSkopal\TwelveData\Dto\Fundamentals\LogoMeta;
 use MarekSkopal\TwelveData\Dto\Fundamentals\Meta;
 use MarekSkopal\TwelveData\Dto\Fundamentals\OptionsChain;
 use MarekSkopal\TwelveData\Dto\Fundamentals\OptionsChainOption;
 use MarekSkopal\TwelveData\Dto\Fundamentals\OptionsExpiration;
 use MarekSkopal\TwelveData\Dto\Fundamentals\Profile;
 use MarekSkopal\TwelveData\Dto\Fundamentals\Splits;
+use MarekSkopal\TwelveData\Dto\Fundamentals\SplitsCalendar;
 use MarekSkopal\TwelveData\Dto\Fundamentals\SplitsSplit;
 use MarekSkopal\TwelveData\Dto\Fundamentals\Statistics;
 use MarekSkopal\TwelveData\Dto\Fundamentals\StatisticsBalanceSheet;
@@ -82,6 +85,7 @@ use PHPUnit\Framework\TestCase;
 #[UsesClass(DirectHolders::class)]
 #[UsesClass(Dividends::class)]
 #[UsesClass(DividendsDividend::class)]
+#[UsesClass(DividendsCalendar::class)]
 #[UsesClass(Earnings::class)]
 #[UsesClass(EarningsEarning::class)]
 #[UsesClass(Holder::class)]
@@ -95,6 +99,7 @@ use PHPUnit\Framework\TestCase;
 #[UsesClass(KeyExecutives::class)]
 #[UsesClass(KeyExecutivesKeyExecutive::class)]
 #[UsesClass(Logo::class)]
+#[UsesClass(LogoMeta::class)]
 #[UsesClass(Meta::class)]
 #[UsesClass(OptionsChain::class)]
 #[UsesClass(OptionsChainOption::class)]
@@ -144,6 +149,15 @@ final class FundamentalsTest extends TestCase
         );
     }
 
+    public function testDividendsCalendar(): void
+    {
+        $fundamentals = new Fundamentals(ClientFixture::createWithResponse('dividends_calendar.json'));
+
+        $dividendsCalendar = $fundamentals->dividendsCalendar();
+
+        $this->assertInstanceOf(DividendsCalendar::class, $dividendsCalendar[0]);
+    }
+
     public function testSplits(): void
     {
         $fundamentals = new Fundamentals(ClientFixture::createDemo());
@@ -152,6 +166,15 @@ final class FundamentalsTest extends TestCase
             Splits::class,
             $fundamentals->splits('AAPL'),
         );
+    }
+
+    public function testSplitsCalendar(): void
+    {
+        $fundamentals = new Fundamentals(ClientFixture::createWithResponse('splits_calendar.json'));
+
+        $splitsCalendar = $fundamentals->splitsCalendar();
+
+        $this->assertInstanceOf(SplitsCalendar::class, $splitsCalendar[0]);
     }
 
     public function testEarnings(): void

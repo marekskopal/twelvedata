@@ -4,6 +4,18 @@ declare(strict_types=1);
 
 namespace MarekSkopal\TwelveData\Dto\Fundamentals;
 
+/**
+ * @phpstan-type CashFlowFinancingActivitiesType array{
+ *     long_term_debt_issuance: int|null,
+ *     long_term_debt_payments: int,
+ *     short_term_debt_issuance: int,
+ *     common_stock_issuance: int|null,
+ *     common_stock_repurchase: int,
+ *     common_dividends: int,
+ *     other_financing_charges: int,
+ *     financing_cash_flow: int,
+ * }
+ */
 readonly class CashFlowFinancingActivities
 {
     public function __construct(
@@ -18,18 +30,7 @@ readonly class CashFlowFinancingActivities
     ) {
     }
 
-    /**
-     * @param array{
-     *     long_term_debt_issuance: int|null,
-     *     long_term_debt_payments: int,
-     *     short_term_debt_issuance: int,
-     *     common_stock_issuance: int|null,
-     *     common_stock_repurchase: int,
-     *     common_dividends: int,
-     *     other_financing_charges: int,
-     *     financing_cash_flow: int,
-     * } $data
-     */
+    /** @param CashFlowFinancingActivitiesType $data */
     public static function fromArray(array $data): self
     {
         return new self(

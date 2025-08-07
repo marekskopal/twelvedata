@@ -6,18 +6,19 @@ namespace MarekSkopal\TwelveData\Dto\Fundamentals;
 
 use DateTimeImmutable;
 
+/**
+ * @phpstan-type DividendsDividendType array{
+ *     ex_date: string,
+ *     amount: float,
+ *  }
+ */
 readonly class DividendsDividend
 {
     public function __construct(public DateTimeImmutable $exDate, public float $amount,)
     {
     }
 
-    /**
-     * @param array{
-     *     ex_date: string,
-     *     amount: float,
-     *  } $data
-     */
+    /** @param DividendsDividendType $data */
     public static function fromArray(array $data): self
     {
         return new self(

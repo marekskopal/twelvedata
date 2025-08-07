@@ -4,6 +4,16 @@ declare(strict_types=1);
 
 namespace MarekSkopal\TwelveData\Dto\Fundamentals;
 
+/**
+ * @phpstan-type StatisticsBalanceSheetType array{
+ *     total_cash_mrq: int|null,
+ *     total_cash_per_share_mrq: float|null,
+ *     total_debt_mrq: int|null,
+ *     total_debt_to_equity_mrq: float|null,
+ *     current_ratio_mrq: float|null,
+ *     book_value_per_share_mrq: float|null,
+ * }
+ */
 readonly class StatisticsBalanceSheet
 {
     public function __construct(
@@ -16,16 +26,7 @@ readonly class StatisticsBalanceSheet
     ) {
     }
 
-    /**
-     * @param array{
-     *     total_cash_mrq: int|null,
-     *     total_cash_per_share_mrq: float|null,
-     *     total_debt_mrq: int|null,
-     *     total_debt_to_equity_mrq: float|null,
-     *     current_ratio_mrq: float|null,
-     *     book_value_per_share_mrq: float|null,
-     *  } $data
-     */
+    /** @param StatisticsBalanceSheetType $data */
     public static function fromArray(array $data): self
     {
         return new self(

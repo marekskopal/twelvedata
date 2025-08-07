@@ -4,6 +4,16 @@ declare(strict_types=1);
 
 namespace MarekSkopal\TwelveData\Dto\Fundamentals;
 
+/**
+ * @phpstan-type MetaType array{
+ *     symbol: string,
+ *     name: string,
+ *     currency: string,
+ *     exchange: string,
+ *     mic_code: string,
+ *     exchange_timezone: string,
+ *  }
+ */
 readonly class Meta
 {
     public function __construct(
@@ -16,16 +26,7 @@ readonly class Meta
     ) {
     }
 
-    /**
-     * @param array{
-     *     symbol: string,
-     *     name: string,
-     *     currency: string,
-     *     exchange: string,
-     *     mic_code: string,
-     *     exchange_timezone: string,
-     *  } $data
-     */
+    /** @param MetaType $data */
     public static function fromArray(array $data): self
     {
         return new self(

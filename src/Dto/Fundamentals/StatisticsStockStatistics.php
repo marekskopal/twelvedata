@@ -4,6 +4,19 @@ declare(strict_types=1);
 
 namespace MarekSkopal\TwelveData\Dto\Fundamentals;
 
+/**
+ * @phpstan-type StatisticsStockStatisticsType array{
+ *     shares_outstanding: int|null,
+ *     float_shares: int|null,
+ *     avg_10_volume: int|null,
+ *     avg_90_volume: int|null,
+ *     shares_short: int|null,
+ *     short_ratio: float|null,
+ *     short_percent_of_shares_outstanding: float|null,
+ *     percent_held_by_insiders: float|null,
+ *     percent_held_by_institutions: float|null,
+ * }
+ */
 readonly class StatisticsStockStatistics
 {
     public function __construct(
@@ -19,19 +32,7 @@ readonly class StatisticsStockStatistics
     ) {
     }
 
-    /**
-     * @param array{
-     *     shares_outstanding: int|null,
-     *     float_shares: int|null,
-     *     avg_10_volume: int|null,
-     *     avg_90_volume: int|null,
-     *     shares_short: int|null,
-     *     short_ratio: float|null,
-     *     short_percent_of_shares_outstanding: float|null,
-     *     percent_held_by_insiders: float|null,
-     *     percent_held_by_institutions: float|null,
-     *  } $data
-     */
+    /** @param StatisticsStockStatisticsType $data */
     public static function fromArray(array $data): self
     {
         return new self(

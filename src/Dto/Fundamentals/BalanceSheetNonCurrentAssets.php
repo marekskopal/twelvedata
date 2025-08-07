@@ -4,6 +4,23 @@ declare(strict_types=1);
 
 namespace MarekSkopal\TwelveData\Dto\Fundamentals;
 
+/**
+ * @phpstan-type BalanceSheetNonCurrentAssetsType array{
+ *     properties: int|null,
+ *     land_and_improvements: int|null,
+ *     machinery_furniture_equipment:int|null,
+ *     construction_in_progress:int|null,
+ *     leases:int|null,
+ *     accumulated_depreciation:int|null,
+ *     goodwill:int|null,
+ *     investment_properties:int|null,
+ *     financial_assets:int|null,
+ *     intangible_assets:int|null,
+ *     investments_and_advances:int|null,
+ *     other_non_current_assets:int|null,
+ *     total_non_current_assets:int|null,
+ * }
+ */
 readonly class BalanceSheetNonCurrentAssets
 {
     public function __construct(
@@ -23,23 +40,7 @@ readonly class BalanceSheetNonCurrentAssets
     ) {
     }
 
-    /**
-     * @param array{
-     *     properties: int|null,
-     *     land_and_improvements: int|null,
-     *     machinery_furniture_equipment:int|null,
-     *     construction_in_progress:int|null,
-     *     leases:int|null,
-     *     accumulated_depreciation:int|null,
-     *     goodwill:int|null,
-     *     investment_properties:int|null,
-     *     financial_assets:int|null,
-     *     intangible_assets:int|null,
-     *     investments_and_advances:int|null,
-     *     other_non_current_assets:int|null,
-     *     total_non_current_assets:int|null,
-     *  } $data
-     */
+    /** @param BalanceSheetNonCurrentAssetsType $data */
     public static function fromArray(array $data): self
     {
         return new self(

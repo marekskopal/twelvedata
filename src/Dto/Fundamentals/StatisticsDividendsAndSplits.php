@@ -6,6 +6,21 @@ namespace MarekSkopal\TwelveData\Dto\Fundamentals;
 
 use DateTimeImmutable;
 
+/**
+ * @phpstan-type StatisticsDividendsAndSplitsType array{
+ *     forward_annual_dividend_rate: float|null,
+ *     forward_annual_dividend_yield: float|null,
+ *     trailing_annual_dividend_rate: float|null,
+ *     trailing_annual_dividend_yield: float|null,
+ *     "5_year_average_dividend_yield": float|null,
+ *     payout_ratio: float|null,
+ *     dividend_frequency?: string|null,
+ *     dividend_date: string|null,
+ *     ex_dividend_date: string|null,
+ *     last_split_factor: string|null,
+ *     last_split_date: string|null,
+ * }
+ */
 readonly class StatisticsDividendsAndSplits
 {
     public function __construct(
@@ -15,6 +30,7 @@ readonly class StatisticsDividendsAndSplits
         public ?float $trailingAnnualDividendYield,
         public ?float $fiveYearAverageDividendYield,
         public ?float $payoutRatio,
+        public ?string $dividendFrequency,
         public ?DateTimeImmutable $dividendDate,
         public ?DateTimeImmutable $exDividendDate,
         public ?string $lastSplitFactor,
@@ -22,20 +38,7 @@ readonly class StatisticsDividendsAndSplits
     ) {
     }
 
-    /**
-     * @param array{
-     *     forward_annual_dividend_rate: float|null,
-     *     forward_annual_dividend_yield: float|null,
-     *     trailing_annual_dividend_rate: float|null,
-     *     trailing_annual_dividend_yield: float|null,
-     *     "5_year_average_dividend_yield": float|null,
-     *     payout_ratio: float|null,
-     *     dividend_date: string|null,
-     *     ex_dividend_date: string|null,
-     *     last_split_factor: string|null,
-     *     last_split_date: string|null,
-     *  } $data
-     */
+    /** @param StatisticsDividendsAndSplitsType $data */
     public static function fromArray(array $data): self
     {
         return new self(
@@ -45,6 +48,7 @@ readonly class StatisticsDividendsAndSplits
             trailingAnnualDividendYield: $data['trailing_annual_dividend_yield'],
             fiveYearAverageDividendYield: $data['5_year_average_dividend_yield'],
             payoutRatio: $data['payout_ratio'],
+            dividendFrequency: $data['dividend_frequency'] ?? null,
             dividendDate: $data['dividend_date'] !== null ? new DateTimeImmutable($data['dividend_date']) : null,
             exDividendDate: $data['ex_dividend_date'] !== null ? new DateTimeImmutable($data['ex_dividend_date']) : null,
             lastSplitFactor: $data['last_split_factor'],
