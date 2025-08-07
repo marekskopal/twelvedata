@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Api;
 
-use MarekSkopal\TwelveData\Api\CoreData;
 use MarekSkopal\TwelveData\Api\Currencies;
 use MarekSkopal\TwelveData\Api\TwelveDataApi;
 use MarekSkopal\TwelveData\Client\Client;
@@ -16,7 +15,7 @@ use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\UsesClass;
 use PHPUnit\Framework\TestCase;
 
-#[CoversClass(CoreData::class)]
+#[CoversClass(Currencies::class)]
 #[UsesClass(TwelveDataApi::class)]
 #[UsesClass(Client::class)]
 #[UsesClass(Config::class)]

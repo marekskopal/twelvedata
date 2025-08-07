@@ -12,6 +12,9 @@ use MarekSkopal\TwelveData\Dto\ReferenceData\Bonds;
 use MarekSkopal\TwelveData\Dto\ReferenceData\BondsResult;
 use MarekSkopal\TwelveData\Dto\ReferenceData\BondsResultList;
 use MarekSkopal\TwelveData\Dto\ReferenceData\Commodities;
+use MarekSkopal\TwelveData\Dto\ReferenceData\CommoditiesData;
+use MarekSkopal\TwelveData\Dto\ReferenceData\CrossListingsList;
+use MarekSkopal\TwelveData\Dto\ReferenceData\CrossListingsResult;
 use MarekSkopal\TwelveData\Dto\ReferenceData\CryptocurrencyExchanges;
 use MarekSkopal\TwelveData\Dto\ReferenceData\CryptocurrencyExchangesData;
 use MarekSkopal\TwelveData\Dto\ReferenceData\CryptocurrencyPairs;
@@ -66,6 +69,10 @@ use PHPUnit\Framework\TestCase;
 #[UsesClass(StocksData::class)]
 #[UsesClass(SymbolSearch::class)]
 #[UsesClass(SymbolSearchData::class)]
+#[UsesClass(CrossListingsList::class)]
+#[UsesClass(CrossListingsResult::class)]
+#[UsesClass(Commodities::class)]
+#[UsesClass(CommoditiesData::class)]
 final class AssetCatalogsTest extends TestCase
 {
     public function testStocks(): void

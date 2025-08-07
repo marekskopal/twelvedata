@@ -107,6 +107,7 @@ use PHPUnit\Framework\TestCase;
 #[UsesClass(Profile::class)]
 #[UsesClass(Splits::class)]
 #[UsesClass(SplitsSplit::class)]
+#[UsesClass(SplitsCalendar::class)]
 #[UsesClass(Statistics::class)]
 #[UsesClass(StatisticsBalanceSheet::class)]
 #[UsesClass(StatisticsCashFlow::class)]

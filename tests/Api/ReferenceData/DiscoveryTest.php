@@ -9,6 +9,8 @@ use MarekSkopal\TwelveData\Api\TwelveDataApi;
 use MarekSkopal\TwelveData\Client\Client;
 use MarekSkopal\TwelveData\Config\Config;
 use MarekSkopal\TwelveData\Dto\ReferenceData\CrossListings;
+use MarekSkopal\TwelveData\Dto\ReferenceData\CrossListingsList;
+use MarekSkopal\TwelveData\Dto\ReferenceData\CrossListingsResult;
 use MarekSkopal\TwelveData\Dto\ReferenceData\EarliestTimestamp;
 use MarekSkopal\TwelveData\Dto\ReferenceData\SymbolSearch;
 use MarekSkopal\TwelveData\Dto\ReferenceData\SymbolSearchData;
@@ -23,6 +25,8 @@ use PHPUnit\Framework\TestCase;
 #[UsesClass(Client::class)]
 #[UsesClass(Config::class)]
 #[UsesClass(CrossListings::class)]
+#[UsesClass(CrossListingsList::class)]
+#[UsesClass(CrossListingsResult::class)]
 #[UsesClass(EarliestTimestamp::class)]
 #[UsesClass(SymbolSearch::class)]
 #[UsesClass(SymbolSearchData::class)]

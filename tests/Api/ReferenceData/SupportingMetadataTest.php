@@ -9,6 +9,7 @@ use MarekSkopal\TwelveData\Api\TwelveDataApi;
 use MarekSkopal\TwelveData\Client\Client;
 use MarekSkopal\TwelveData\Config\Config;
 use MarekSkopal\TwelveData\Dto\ReferenceData\Countries;
+use MarekSkopal\TwelveData\Dto\ReferenceData\CountriesData;
 use MarekSkopal\TwelveData\Dto\ReferenceData\InstrumentType;
 use MarekSkopal\TwelveData\Tests\Fixtures\Client\ClientFixture;
 use PHPUnit\Framework\Attributes\CoversClass;
@@ -19,6 +20,9 @@ use PHPUnit\Framework\TestCase;
 #[UsesClass(TwelveDataApi::class)]
 #[UsesClass(Client::class)]
 #[UsesClass(Config::class)]
+#[UsesClass(Countries::class)]
+#[UsesClass(CountriesData::class)]
+#[UsesClass(InstrumentType::class)]
 final class SupportingMetadataTest extends TestCase
 {
     public function testCounties(): void

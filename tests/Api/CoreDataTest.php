@@ -11,10 +11,13 @@ use MarekSkopal\TwelveData\Config\Config;
 use MarekSkopal\TwelveData\Dto\CoreData\EndOfDayPrice;
 use MarekSkopal\TwelveData\Dto\CoreData\LatestPrice;
 use MarekSkopal\TwelveData\Dto\CoreData\MarketMovers;
+use MarekSkopal\TwelveData\Dto\CoreData\MarketMoversValue;
 use MarekSkopal\TwelveData\Dto\CoreData\Quote;
 use MarekSkopal\TwelveData\Dto\CoreData\QuoteFiftyTwoWeek;
 use MarekSkopal\TwelveData\Dto\CoreData\TimeSeries;
 use MarekSkopal\TwelveData\Dto\CoreData\TimeSeriesCross;
+use MarekSkopal\TwelveData\Dto\CoreData\TimeSeriesCrossMeta;
+use MarekSkopal\TwelveData\Dto\CoreData\TimeSeriesCrossValue;
 use MarekSkopal\TwelveData\Dto\CoreData\TimeSeriesMeta;
 use MarekSkopal\TwelveData\Dto\CoreData\TimeSeriesValue;
 use MarekSkopal\TwelveData\Dto\Currencies\CurrencyConversion;
@@ -39,6 +42,11 @@ use PHPUnit\Framework\TestCase;
 #[UsesClass(TimeSeries::class)]
 #[UsesClass(TimeSeriesMeta::class)]
 #[UsesClass(TimeSeriesValue::class)]
+#[UsesClass(TimeSeriesCross::class)]
+#[UsesClass(TimeSeriesCrossMeta::class)]
+#[UsesClass(TimeSeriesCrossValue::class)]
+#[UsesClass(MarketMovers::class)]
+#[UsesClass(MarketMoversValue::class)]
 final class CoreDataTest extends TestCase
 {
     public function testTimeSeries(): void
