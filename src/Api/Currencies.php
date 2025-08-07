@@ -8,6 +8,7 @@ use DateTimeImmutable;
 use MarekSkopal\TwelveData\Dto\Currencies\CurrencyConversion;
 use MarekSkopal\TwelveData\Dto\Currencies\ExchangeRate;
 use MarekSkopal\TwelveData\Enum\FormatEnum;
+use MarekSkopal\TwelveData\Utils\DateUtils;
 
 readonly class Currencies extends TwelveDataApi
 {
@@ -23,7 +24,7 @@ readonly class Currencies extends TwelveDataApi
             path: '/exchange_rate',
             queryParams: [
                 'symbol' => $symbol,
-                'date' => $date?->format('Y-m-d'),
+                'date' => DateUtils::formatDate($date),
                 'format' => $format?->value,
                 'delimiter' => $delimiter,
                 'dp' => $dp !== null ? (string) $dp : null,
@@ -48,7 +49,7 @@ readonly class Currencies extends TwelveDataApi
             queryParams: [
                 'symbol' => $symbol,
                 'amount' => (string) $amount,
-                'date' => $date?->format('Y-m-d'),
+                'date' => DateUtils::formatDate($date),
                 'format' => $format?->value,
                 'delimiter' => $delimiter,
                 'dp' => $dp !== null ? (string) $dp : null,

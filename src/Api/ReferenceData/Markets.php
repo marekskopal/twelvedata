@@ -11,6 +11,7 @@ use MarekSkopal\TwelveData\Dto\ReferenceData\Exchanges;
 use MarekSkopal\TwelveData\Dto\ReferenceData\ExchangeSchedule;
 use MarekSkopal\TwelveData\Dto\ReferenceData\MarketState;
 use MarekSkopal\TwelveData\Enum\FormatEnum;
+use MarekSkopal\TwelveData\Utils\DateUtils;
 use MarekSkopal\TwelveData\Utils\QueryParamsUtils;
 
 /** @phpstan-import-type MarketStateType from MarketState */
@@ -50,7 +51,7 @@ readonly class Markets extends TwelveDataApi
         $response = $this->client->get(
             path: '/exchange_schedule',
             queryParams: [
-                'date' => $date?->format('Y-m-d'),
+                'date' => DateUtils::formatDate($date),
                 'mic_name' => $micName,
                 'mic_code' => $micCode,
                 'country' => $country,

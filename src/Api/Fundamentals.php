@@ -24,6 +24,7 @@ use MarekSkopal\TwelveData\Enum\EarningsPeriodEnum;
 use MarekSkopal\TwelveData\Enum\FormatEnum;
 use MarekSkopal\TwelveData\Enum\PeriodEnum;
 use MarekSkopal\TwelveData\Enum\RangeEnum;
+use MarekSkopal\TwelveData\Utils\DateUtils;
 use MarekSkopal\TwelveData\Utils\QueryParamsUtils;
 
 /**
@@ -97,8 +98,8 @@ readonly class Fundamentals extends TwelveDataApi
                 'mic_code' => $micCode,
                 'country' => $country,
                 'range' => $range?->value,
-                'start_date' => $startDate?->format('Y-m-d'),
-                'end_date' => $endDate?->format('Y-m-d'),
+                'start_date' => DateUtils::formatDate($startDate),
+                'end_date' => DateUtils::formatDate($endDate),
                 'adjust' => $adjust !== null ? QueryParamsUtils::booleanAsString($adjust) : null,
             ],
         );
@@ -130,8 +131,8 @@ readonly class Fundamentals extends TwelveDataApi
                 'exchange' => $exchange,
                 'mic_code' => $micCode,
                 'country' => $country,
-                'start_date' => $startDate?->format('Y-m-d'),
-                'end_date' => $endDate?->format('Y-m-d'),
+                'start_date' => DateUtils::formatDate($startDate),
+                'end_date' => DateUtils::formatDate($endDate),
                 'outputsize' => $outputsize !== null ? (string) $outputsize : null,
                 'page' => $page !== null ? (string) $page : null,
             ],
@@ -166,8 +167,8 @@ readonly class Fundamentals extends TwelveDataApi
                 'mic_code' => $micCode,
                 'country' => $country,
                 'range' => $range?->value,
-                'start_date' => $startDate?->format('Y-m-d'),
-                'end_date' => $endDate?->format('Y-m-d'),
+                'start_date' => DateUtils::formatDate($startDate),
+                'end_date' => DateUtils::formatDate($endDate),
             ],
         );
 
@@ -198,8 +199,8 @@ readonly class Fundamentals extends TwelveDataApi
                 'exchange' => $exchange,
                 'mic_code' => $micCode,
                 'country' => $country,
-                'start_date' => $startDate?->format('Y-m-d'),
-                'end_date' => $endDate?->format('Y-m-d'),
+                'start_date' => DateUtils::formatDate($startDate),
+                'end_date' => DateUtils::formatDate($endDate),
                 'outputsize' => $outputsize !== null ? (string) $outputsize : null,
                 'page' => $page !== null ? (string) $page : null,
             ],
@@ -244,8 +245,8 @@ readonly class Fundamentals extends TwelveDataApi
                 'format' => $format?->value,
                 'delimiter' => $delimiter,
                 'dp' => $dp !== null ? (string) $dp : null,
-                'start_date' => $startDate?->format('Y-m-d h:i:s'),
-                'end_date' => $endDate?->format('Y-m-d h:i:s'),
+                'start_date' => DateUtils::formatDate($startDate),
+                'end_date' => DateUtils::formatDate($endDate),
             ],
         );
 
@@ -273,8 +274,8 @@ readonly class Fundamentals extends TwelveDataApi
                 'format' => $format?->value,
                 'delimiter' => $delimiter,
                 'dp' => $dp !== null ? (string) $dp : null,
-                'start_date' => $startDate?->format('Y-m-d h:i:s'),
-                'end_date' => $endDate?->format('Y-m-d h:i:s'),
+                'start_date' => DateUtils::formatDate($startDate),
+                'end_date' => DateUtils::formatDate($endDate),
             ],
         );
 
@@ -331,8 +332,8 @@ readonly class Fundamentals extends TwelveDataApi
                 'mic_code' => $micCode,
                 'country' => $country,
                 'period' => $period?->value,
-                'start_date' => $startDate?->format('Y-m-d'),
-                'end_date' => $endDate?->format('Y-m-d'),
+                'start_date' => DateUtils::formatDate($startDate),
+                'end_date' => DateUtils::formatDate($endDate),
                 'outputsize' => $outputsize,
             ],
         );
@@ -364,8 +365,8 @@ readonly class Fundamentals extends TwelveDataApi
                 'mic_code' => $micCode,
                 'country' => $country,
                 'period' => $period?->value,
-                'start_date' => $startDate?->format('Y-m-d'),
-                'end_date' => $endDate?->format('Y-m-d'),
+                'start_date' => DateUtils::formatDate($startDate),
+                'end_date' => DateUtils::formatDate($endDate),
                 'outputsize' => $outputsize,
             ],
         );
@@ -397,8 +398,8 @@ readonly class Fundamentals extends TwelveDataApi
                 'mic_code' => $micCode,
                 'country' => $country,
                 'period' => $period?->value,
-                'start_date' => $startDate?->format('Y-m-d'),
-                'end_date' => $endDate?->format('Y-m-d'),
+                'start_date' => DateUtils::formatDate($startDate),
+                'end_date' => DateUtils::formatDate($endDate),
                 'outputsize' => $outputsize,
             ],
         );
@@ -441,7 +442,7 @@ readonly class Fundamentals extends TwelveDataApi
                 'exchange' => $exchange,
                 'mic_code' => $micCode,
                 'country' => $country,
-                'expiration_date' => $expirationDate?->format('Y-m-d'),
+                'expiration_date' => DateUtils::formatDate($expirationDate),
                 'option_id' => $optionId,
                 'side' => $side,
             ],

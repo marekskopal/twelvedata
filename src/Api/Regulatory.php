@@ -13,6 +13,7 @@ use MarekSkopal\TwelveData\Dto\Regulatory\InstitutionalHolders;
 use MarekSkopal\TwelveData\Dto\Regulatory\SanctionedEntities;
 use MarekSkopal\TwelveData\Dto\Regulatory\TaxInformation;
 use MarekSkopal\TwelveData\Enum\SanctionsSourceEnum;
+use MarekSkopal\TwelveData\Utils\DateUtils;
 
 readonly class Regulatory extends TwelveDataApi
 {
@@ -41,8 +42,8 @@ readonly class Regulatory extends TwelveDataApi
                 'mic_code' => $micCode,
                 'country' => $country,
                 'form_type' => $formType,
-                'filled_from' => $filledFrom?->format('Y-m-d'),
-                'filled_to' => $filledTo?->format('Y-m-d'),
+                'filled_from' => DateUtils::formatDate($filledFrom),
+                'filled_to' => DateUtils::formatDate($filledTo),
                 'page' => $page,
                 'page_size' => $pageSize,
             ],

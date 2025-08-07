@@ -18,6 +18,7 @@ use MarekSkopal\TwelveData\Enum\IntervalEnum;
 use MarekSkopal\TwelveData\Enum\MarketMoverEnum;
 use MarekSkopal\TwelveData\Enum\OrderEnum;
 use MarekSkopal\TwelveData\Enum\PrepostEnum;
+use MarekSkopal\TwelveData\Utils\DateUtils;
 use MarekSkopal\TwelveData\Utils\QueryParamsUtils;
 
 readonly class CoreData extends TwelveDataApi
@@ -65,9 +66,9 @@ readonly class CoreData extends TwelveDataApi
                 'dp' => $dp !== null ? (string) $dp : null,
                 'order' => $order?->value,
                 'timezone' => $timezone,
-                'date' => $date?->format('Y-m-d'),
-                'start_date' => $startDate?->format('Y-m-d h:i:s'),
-                'end_date' => $endDate?->format('Y-m-d h:i:s'),
+                'date' => DateUtils::formatDate($date),
+                'start_date' => DateUtils::formatDateTime($startDate),
+                'end_date' => DateUtils::formatDateTime($endDate),
                 'previous_close' => $previousClose !== null ? QueryParamsUtils::booleanAsString($previousClose) : null,
                 'adjust' => $adjust !== null ? QueryParamsUtils::enumArrayAsString($adjust) : null,
             ],
@@ -113,8 +114,8 @@ readonly class CoreData extends TwelveDataApi
                 'format' => $format?->value,
                 'delimiter' => $delimiter,
                 'prepost' => $prepost?->value,
-                'start_date' => $startDate?->format('Y-m-d h:i:s'),
-                'end_date' => $endDate?->format('Y-m-d h:i:s'),
+                'start_date' => DateUtils::formatDateTime($startDate),
+                'end_date' => DateUtils::formatDateTime($endDate),
                 'adjust' => $adjust !== null ? QueryParamsUtils::enumArrayAsString($adjust) : null,
                 'dp' => $dp,
                 'timezone' => $timezone,
@@ -228,7 +229,7 @@ readonly class CoreData extends TwelveDataApi
                 'mic_code' => $micCode,
                 'country' => $country,
                 'type' => $type,
-                'date' => $date?->format('Y-m-d'),
+                'date' => DateUtils::formatDate($date),
                 'prepost' => $prepost?->value,
                 'dp' => $dp !== null ? (string) $dp : null,
             ],
