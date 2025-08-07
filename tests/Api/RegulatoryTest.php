@@ -28,6 +28,7 @@ use MarekSkopal\TwelveData\Dto\Regulatory\TaxInformationData;
 use MarekSkopal\TwelveData\Dto\Regulatory\TaxInformationMeta;
 use MarekSkopal\TwelveData\Enum\SanctionsSourceEnum;
 use MarekSkopal\TwelveData\Tests\Fixtures\Client\ClientFixture;
+use MarekSkopal\TwelveData\Utils\DateUtils;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\UsesClass;
 use PHPUnit\Framework\TestCase;
@@ -36,6 +37,7 @@ use PHPUnit\Framework\TestCase;
 #[UsesClass(TwelveDataApi::class)]
 #[UsesClass(Client::class)]
 #[UsesClass(Config::class)]
+#[UsesClass(DateUtils::class)]
 #[UsesClass(EdgarFillings::class)]
 #[UsesClass(EdgarFillingsMeta::class)]
 #[UsesClass(EdgarFillingsValue::class)]

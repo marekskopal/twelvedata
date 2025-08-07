@@ -34,6 +34,7 @@ use MarekSkopal\TwelveData\Dto\Fundamentals\IncomeStatement;
 use MarekSkopal\TwelveData\Dto\Fundamentals\IncomeStatementIncomeStatement;
 use MarekSkopal\TwelveData\Dto\Fundamentals\IncomeStatementNonOperatingInterest;
 use MarekSkopal\TwelveData\Dto\Fundamentals\IncomeStatementOperationExpense;
+use MarekSkopal\TwelveData\Dto\Fundamentals\IpoCalendar;
 use MarekSkopal\TwelveData\Dto\Fundamentals\KeyExecutives;
 use MarekSkopal\TwelveData\Dto\Fundamentals\KeyExecutivesKeyExecutive;
 use MarekSkopal\TwelveData\Dto\Fundamentals\Logo;
@@ -62,6 +63,7 @@ use MarekSkopal\TwelveData\Dto\Regulatory\InsiderTransactions;
 use MarekSkopal\TwelveData\Dto\Regulatory\InsiderTransactionsInsiderTransaction;
 use MarekSkopal\TwelveData\Dto\Regulatory\InstitutionalHolders;
 use MarekSkopal\TwelveData\Tests\Fixtures\Client\ClientFixture;
+use MarekSkopal\TwelveData\Utils\DateUtils;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\UsesClass;
 use PHPUnit\Framework\TestCase;
@@ -70,6 +72,7 @@ use PHPUnit\Framework\TestCase;
 #[UsesClass(TwelveDataApi::class)]
 #[UsesClass(Client::class)]
 #[UsesClass(Config::class)]
+#[UsesClass(DateUtils::class)]
 #[UsesClass(BalanceSheet::class)]
 #[UsesClass(BalanceSheetAssets::class)]
 #[UsesClass(BalanceSheetBalanceSheet::class)]
@@ -102,6 +105,7 @@ use PHPUnit\Framework\TestCase;
 #[UsesClass(InstitutionalHolders::class)]
 #[UsesClass(KeyExecutives::class)]
 #[UsesClass(KeyExecutivesKeyExecutive::class)]
+#[UsesClass(IpoCalendar::class)]
 #[UsesClass(Logo::class)]
 #[UsesClass(LogoMeta::class)]
 #[UsesClass(Meta::class)]
@@ -200,6 +204,15 @@ final class FundamentalsTest extends TestCase
             EarningsCalendar::class,
             $fundamentals->earningsCalendar(),
         );
+    }
+
+    public function testIpoCalendar(): void
+    {
+        $fundamentals = new Fundamentals(ClientFixture::createWithResponse('ipo_calendar.json'));
+
+        $ipoCalendar = $fundamentals->ipoCalendar();
+
+        $this->assertInstanceOf(IpoCalendar::class, $ipoCalendar[array_key_first($ipoCalendar)][0]);
     }
 
     public function testStatistics(): void

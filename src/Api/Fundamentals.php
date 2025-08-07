@@ -12,6 +12,7 @@ use MarekSkopal\TwelveData\Dto\Fundamentals\DividendsCalendar;
 use MarekSkopal\TwelveData\Dto\Fundamentals\Earnings;
 use MarekSkopal\TwelveData\Dto\Fundamentals\EarningsCalendar;
 use MarekSkopal\TwelveData\Dto\Fundamentals\IncomeStatement;
+use MarekSkopal\TwelveData\Dto\Fundamentals\IpoCalendar;
 use MarekSkopal\TwelveData\Dto\Fundamentals\KeyExecutives;
 use MarekSkopal\TwelveData\Dto\Fundamentals\Logo;
 use MarekSkopal\TwelveData\Dto\Fundamentals\OptionsChain;
@@ -30,6 +31,7 @@ use MarekSkopal\TwelveData\Utils\QueryParamsUtils;
 /**
  * @phpstan-import-type DividendsCalendarType from DividendsCalendar
  * @phpstan-import-type SplitsCalendarType from SplitsCalendar
+ * @phpstan-import-type IpoCalendarType from IpoCalendar
  */
 readonly class Fundamentals extends TwelveDataApi
 {
@@ -265,7 +267,7 @@ readonly class Fundamentals extends TwelveDataApi
         ?DateTimeImmutable $endDate = null,
     ): EarningsCalendar {
         $response = $this->client->get(
-            path: '/earnings',
+            path: '/earnings_calendar',
             queryParams: [
                 'exchange' => $exchange,
                 'mic_code' => $micCode,
@@ -280,6 +282,39 @@ readonly class Fundamentals extends TwelveDataApi
         );
 
         return EarningsCalendar::fromJson($response);
+    }
+
+    /** @return array<string, list<IpoCalendar>> */
+    public function ipoCalendar(
+        ?string $exchange = null,
+        ?string $micCode = null,
+        ?string $country = null,
+        ?DateTimeImmutable $startDate = null,
+        ?DateTimeImmutable $endDate = null,
+    ): array {
+        $response = $this->client->get(
+            path: '/ipo_calendar',
+            queryParams: [
+                'exchange' => $exchange,
+                'mic_code' => $micCode,
+                'country' => $country,
+                'start_date' => DateUtils::formatDate($startDate),
+                'end_date' => DateUtils::formatDate($endDate),
+            ],
+        );
+
+        /** @var array<string, list<IpoCalendarType>> $data */
+        $data = json_decode($response, associative: true);
+
+        $ipoCalendar = [];
+        foreach ($data as $date => $items) {
+            foreach ($items as $item) {
+                $item['date'] = $date;
+                $ipoCalendar[$date][] = IpoCalendar::fromArray($item);
+            }
+        }
+
+        return $ipoCalendar;
     }
 
     public function statistics(

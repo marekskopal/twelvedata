@@ -37,6 +37,7 @@ use MarekSkopal\TwelveData\Dto\ReferenceData\StocksData;
 use MarekSkopal\TwelveData\Dto\ReferenceData\SymbolSearch;
 use MarekSkopal\TwelveData\Dto\ReferenceData\SymbolSearchData;
 use MarekSkopal\TwelveData\Tests\Fixtures\Client\ClientFixture;
+use MarekSkopal\TwelveData\Utils\DateUtils;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\UsesClass;
 use PHPUnit\Framework\TestCase;
@@ -45,6 +46,7 @@ use PHPUnit\Framework\TestCase;
 #[UsesClass(TwelveDataApi::class)]
 #[UsesClass(Client::class)]
 #[UsesClass(Config::class)]
+#[UsesClass(DateUtils::class)]
 #[UsesClass(Bonds::class)]
 #[UsesClass(BondsResultList::class)]
 #[UsesClass(BondsResult::class)]

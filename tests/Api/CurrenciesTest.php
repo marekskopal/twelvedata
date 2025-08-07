@@ -11,6 +11,7 @@ use MarekSkopal\TwelveData\Config\Config;
 use MarekSkopal\TwelveData\Dto\Currencies\CurrencyConversion;
 use MarekSkopal\TwelveData\Dto\Currencies\ExchangeRate;
 use MarekSkopal\TwelveData\Tests\Fixtures\Client\ClientFixture;
+use MarekSkopal\TwelveData\Utils\DateUtils;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\UsesClass;
 use PHPUnit\Framework\TestCase;
@@ -19,6 +20,7 @@ use PHPUnit\Framework\TestCase;
 #[UsesClass(TwelveDataApi::class)]
 #[UsesClass(Client::class)]
 #[UsesClass(Config::class)]
+#[UsesClass(DateUtils::class)]
 #[UsesClass(CurrencyConversion::class)]
 #[UsesClass(ExchangeRate::class)]
 final class CurrenciesTest extends TestCase

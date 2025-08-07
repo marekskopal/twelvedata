@@ -12,7 +12,7 @@ namespace MarekSkopal\TwelveData\Dto\Fundamentals;
  */
 readonly class EarningsCalendar
 {
-    /** @param array<string, EarningsCalendarEarning> $earnings */
+    /** @param array<string, list<EarningsCalendarEarning>> $earnings */
     public function __construct(public array $earnings,)
     {
     }
@@ -32,7 +32,7 @@ readonly class EarningsCalendar
         foreach ($data['earnings'] as $date => $items) {
             foreach ($items as $item) {
                 $item['date'] = $date;
-                $earnings[$date] = EarningsCalendarEarning::fromArray($item);
+                $earnings[$date][] = EarningsCalendarEarning::fromArray($item);
             }
         }
 

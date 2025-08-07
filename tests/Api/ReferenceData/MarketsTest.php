@@ -17,6 +17,7 @@ use MarekSkopal\TwelveData\Dto\ReferenceData\ExchangeScheduleSession;
 use MarekSkopal\TwelveData\Dto\ReferenceData\ExchangesData;
 use MarekSkopal\TwelveData\Dto\ReferenceData\MarketState;
 use MarekSkopal\TwelveData\Tests\Fixtures\Client\ClientFixture;
+use MarekSkopal\TwelveData\Utils\DateUtils;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\UsesClass;
 use PHPUnit\Framework\TestCase;
@@ -25,6 +26,7 @@ use PHPUnit\Framework\TestCase;
 #[UsesClass(TwelveDataApi::class)]
 #[UsesClass(Client::class)]
 #[UsesClass(Config::class)]
+#[UsesClass(DateUtils::class)]
 #[UsesClass(Exchanges::class)]
 #[UsesClass(ExchangesData::class)]
 #[UsesClass(ExchangeSchedule::class)]

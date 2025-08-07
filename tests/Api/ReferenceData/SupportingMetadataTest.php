@@ -12,6 +12,7 @@ use MarekSkopal\TwelveData\Dto\ReferenceData\Countries;
 use MarekSkopal\TwelveData\Dto\ReferenceData\CountriesData;
 use MarekSkopal\TwelveData\Dto\ReferenceData\InstrumentType;
 use MarekSkopal\TwelveData\Tests\Fixtures\Client\ClientFixture;
+use MarekSkopal\TwelveData\Utils\DateUtils;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\UsesClass;
 use PHPUnit\Framework\TestCase;
@@ -20,6 +21,7 @@ use PHPUnit\Framework\TestCase;
 #[UsesClass(TwelveDataApi::class)]
 #[UsesClass(Client::class)]
 #[UsesClass(Config::class)]
+#[UsesClass(DateUtils::class)]
 #[UsesClass(Countries::class)]
 #[UsesClass(CountriesData::class)]
 #[UsesClass(InstrumentType::class)]
