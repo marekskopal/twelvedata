@@ -70,7 +70,7 @@ More endpoints will be covered in future versions.
 * Splits                        ✅
 * Splits Calendar               ✅
 * Earnings                      ✅
-* Earnings Calendar             ❌
+* Earnings Calendar             ✅
 * IPO Calendar                  ❌
 * Statistics                    ✅
 * Income Statement              ✅

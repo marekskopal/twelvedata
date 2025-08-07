@@ -10,6 +10,7 @@ use MarekSkopal\TwelveData\Dto\Fundamentals\CashFlow;
 use MarekSkopal\TwelveData\Dto\Fundamentals\Dividends;
 use MarekSkopal\TwelveData\Dto\Fundamentals\DividendsCalendar;
 use MarekSkopal\TwelveData\Dto\Fundamentals\Earnings;
+use MarekSkopal\TwelveData\Dto\Fundamentals\EarningsCalendar;
 use MarekSkopal\TwelveData\Dto\Fundamentals\IncomeStatement;
 use MarekSkopal\TwelveData\Dto\Fundamentals\KeyExecutives;
 use MarekSkopal\TwelveData\Dto\Fundamentals\Logo;
@@ -249,6 +250,35 @@ readonly class Fundamentals extends TwelveDataApi
         );
 
         return Earnings::fromJson($response);
+    }
+
+    public function earningsCalendar(
+        ?string $exchange = null,
+        ?string $micCode = null,
+        ?string $country = null,
+        ?string $type = null,
+        ?FormatEnum $format = null,
+        ?string $delimiter = null,
+        ?int $dp = null,
+        ?DateTimeImmutable $startDate = null,
+        ?DateTimeImmutable $endDate = null,
+    ): EarningsCalendar {
+        $response = $this->client->get(
+            path: '/earnings',
+            queryParams: [
+                'exchange' => $exchange,
+                'mic_code' => $micCode,
+                'country' => $country,
+                'type' => $type,
+                'format' => $format?->value,
+                'delimiter' => $delimiter,
+                'dp' => $dp !== null ? (string) $dp : null,
+                'start_date' => $startDate?->format('Y-m-d h:i:s'),
+                'end_date' => $endDate?->format('Y-m-d h:i:s'),
+            ],
+        );
+
+        return EarningsCalendar::fromJson($response);
     }
 
     public function statistics(

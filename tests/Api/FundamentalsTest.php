@@ -27,6 +27,8 @@ use MarekSkopal\TwelveData\Dto\Fundamentals\Dividends;
 use MarekSkopal\TwelveData\Dto\Fundamentals\DividendsCalendar;
 use MarekSkopal\TwelveData\Dto\Fundamentals\DividendsDividend;
 use MarekSkopal\TwelveData\Dto\Fundamentals\Earnings;
+use MarekSkopal\TwelveData\Dto\Fundamentals\EarningsCalendar;
+use MarekSkopal\TwelveData\Dto\Fundamentals\EarningsCalendarEarning;
 use MarekSkopal\TwelveData\Dto\Fundamentals\EarningsEarning;
 use MarekSkopal\TwelveData\Dto\Fundamentals\IncomeStatement;
 use MarekSkopal\TwelveData\Dto\Fundamentals\IncomeStatementIncomeStatement;
@@ -88,6 +90,8 @@ use PHPUnit\Framework\TestCase;
 #[UsesClass(DividendsCalendar::class)]
 #[UsesClass(Earnings::class)]
 #[UsesClass(EarningsEarning::class)]
+#[UsesClass(EarningsCalendar::class)]
+#[UsesClass(EarningsCalendarEarning::class)]
 #[UsesClass(Holder::class)]
 #[UsesClass(IncomeStatement::class)]
 #[UsesClass(IncomeStatementIncomeStatement::class)]
@@ -185,6 +189,16 @@ final class FundamentalsTest extends TestCase
         $this->assertInstanceOf(
             Earnings::class,
             $fundamentals->earnings('AAPL'),
+        );
+    }
+
+    public function testEarningsCalendar(): void
+    {
+        $fundamentals = new Fundamentals(ClientFixture::createWithResponse('earnings_calendar.json'));
+
+        $this->assertInstanceOf(
+            EarningsCalendar::class,
+            $fundamentals->earningsCalendar(),
         );
     }
 
