@@ -12,6 +12,21 @@ use MarekSkopal\TwelveData\Config\Config;
 use MarekSkopal\TwelveData\Dto\Fundamentals\BalanceSheet;
 use MarekSkopal\TwelveData\Dto\Fundamentals\BalanceSheetAssets;
 use MarekSkopal\TwelveData\Dto\Fundamentals\BalanceSheetBalanceSheet;
+use MarekSkopal\TwelveData\Dto\Fundamentals\BalanceSheetConsolidated;
+use MarekSkopal\TwelveData\Dto\Fundamentals\BalanceSheetConsolidatedAssets;
+use MarekSkopal\TwelveData\Dto\Fundamentals\BalanceSheetConsolidatedBalanceSheet;
+use MarekSkopal\TwelveData\Dto\Fundamentals\BalanceSheetConsolidatedCapitalStock;
+use MarekSkopal\TwelveData\Dto\Fundamentals\BalanceSheetConsolidatedCurrentAssets;
+use MarekSkopal\TwelveData\Dto\Fundamentals\BalanceSheetConsolidatedCurrentLiabilities;
+use MarekSkopal\TwelveData\Dto\Fundamentals\BalanceSheetConsolidatedEquity;
+use MarekSkopal\TwelveData\Dto\Fundamentals\BalanceSheetConsolidatedEquityAdjustments;
+use MarekSkopal\TwelveData\Dto\Fundamentals\BalanceSheetConsolidatedInventory;
+use MarekSkopal\TwelveData\Dto\Fundamentals\BalanceSheetConsolidatedLiabilities;
+use MarekSkopal\TwelveData\Dto\Fundamentals\BalanceSheetConsolidatedLongTermDebtAndCapitalLeaseObligation;
+use MarekSkopal\TwelveData\Dto\Fundamentals\BalanceSheetConsolidatedNonCurrentAssets;
+use MarekSkopal\TwelveData\Dto\Fundamentals\BalanceSheetConsolidatedNonCurrentLiabilities;
+use MarekSkopal\TwelveData\Dto\Fundamentals\BalanceSheetConsolidatedPayablesAndAccruedExpenses;
+use MarekSkopal\TwelveData\Dto\Fundamentals\BalanceSheetConsolidatedReceivables;
 use MarekSkopal\TwelveData\Dto\Fundamentals\BalanceSheetCurrentAssets;
 use MarekSkopal\TwelveData\Dto\Fundamentals\BalanceSheetCurrentLiabilities;
 use MarekSkopal\TwelveData\Dto\Fundamentals\BalanceSheetLiabilities;
@@ -91,6 +106,21 @@ use PHPUnit\Framework\TestCase;
 #[UsesClass(BalanceSheet::class)]
 #[UsesClass(BalanceSheetAssets::class)]
 #[UsesClass(BalanceSheetBalanceSheet::class)]
+#[UsesClass(BalanceSheetConsolidated::class)]
+#[UsesClass(BalanceSheetConsolidatedAssets::class)]
+#[UsesClass(BalanceSheetConsolidatedBalanceSheet::class)]
+#[UsesClass(BalanceSheetConsolidatedCapitalStock::class)]
+#[UsesClass(BalanceSheetConsolidatedCurrentAssets::class)]
+#[UsesClass(BalanceSheetConsolidatedCurrentLiabilities::class)]
+#[UsesClass(BalanceSheetConsolidatedEquity::class)]
+#[UsesClass(BalanceSheetConsolidatedEquityAdjustments::class)]
+#[UsesClass(BalanceSheetConsolidatedInventory::class)]
+#[UsesClass(BalanceSheetConsolidatedLiabilities::class)]
+#[UsesClass(BalanceSheetConsolidatedLongTermDebtAndCapitalLeaseObligation::class)]
+#[UsesClass(BalanceSheetConsolidatedNonCurrentAssets::class)]
+#[UsesClass(BalanceSheetConsolidatedNonCurrentLiabilities::class)]
+#[UsesClass(BalanceSheetConsolidatedPayablesAndAccruedExpenses::class)]
+#[UsesClass(BalanceSheetConsolidatedReceivables::class)]
 #[UsesClass(BalanceSheetCurrentAssets::class)]
 #[UsesClass(BalanceSheetCurrentLiabilities::class)]
 #[UsesClass(BalanceSheetLiabilities::class)]
@@ -282,6 +312,16 @@ final class FundamentalsTest extends TestCase
         $this->assertInstanceOf(
             BalanceSheet::class,
             $fundamentals->balanceSheet('AAPL'),
+        );
+    }
+
+    public function testBalanceSheetConsolidated(): void
+    {
+        $fundamentals = new Fundamentals(ClientFixture::createWithResponse('balance_sheet_consolidated.json'));
+
+        $this->assertInstanceOf(
+            BalanceSheetConsolidated::class,
+            $fundamentals->balanceSheetConsolidated('AAPL'),
         );
     }
 

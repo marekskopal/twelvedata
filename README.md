@@ -76,7 +76,7 @@ More endpoints will be covered in future versions.
 * Income Statement              ✅
 * Income Statement Consolidated ✅
 * Balance Sheet                 ✅
-* Balance Sheet Consolidated    ❌
+* Balance Sheet Consolidated    ✅
 * Cash Flow                     ✅
 * Cash Flow Consolidated        ❌
 * Key Executives                ✅

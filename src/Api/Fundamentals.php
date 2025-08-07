@@ -6,6 +6,7 @@ namespace MarekSkopal\TwelveData\Api;
 
 use DateTimeImmutable;
 use MarekSkopal\TwelveData\Dto\Fundamentals\BalanceSheet;
+use MarekSkopal\TwelveData\Dto\Fundamentals\BalanceSheetConsolidated;
 use MarekSkopal\TwelveData\Dto\Fundamentals\CashFlow;
 use MarekSkopal\TwelveData\Dto\Fundamentals\Dividends;
 use MarekSkopal\TwelveData\Dto\Fundamentals\DividendsCalendar;
@@ -441,6 +442,39 @@ readonly class Fundamentals extends TwelveDataApi
         );
 
         return BalanceSheet::fromJson($response);
+    }
+
+    public function balanceSheetConsolidated(
+        string $symbol,
+        ?string $figi = null,
+        ?string $isin = null,
+        ?string $cusip = null,
+        ?string $exchange = null,
+        ?string $micCode = null,
+        ?string $country = null,
+        ?PeriodEnum $period = null,
+        ?DateTimeImmutable $startDate = null,
+        ?DateTimeImmutable $endDate = null,
+        ?int $outputsize = null,
+    ): BalanceSheetConsolidated {
+        $response = $this->client->get(
+            path: '/balance_sheet/consolidated',
+            queryParams: [
+                'symbol' => $symbol,
+                'figi' => $figi,
+                'isin' => $isin,
+                'cusip' => $cusip,
+                'exchange' => $exchange,
+                'mic_code' => $micCode,
+                'country' => $country,
+                'period' => $period?->value,
+                'start_date' => DateUtils::formatDate($startDate),
+                'end_date' => DateUtils::formatDate($endDate),
+                'outputsize' => $outputsize,
+            ],
+        );
+
+        return BalanceSheetConsolidated::fromJson($response);
     }
 
     public function cashFlow(
