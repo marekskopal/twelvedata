@@ -28,6 +28,15 @@ $response = $twelveData->coreData->timeSeries(
 ## Covered endpoints
 More endpoints will be covered in future versions.
 
+### Core Data
+
+* Time Series          ✅
+* Time Series Cross    ✅
+* Quote                ✅
+* Latest Price         ✅
+* Edd of Day Price     ✅
+* Market Movers        ✅
+
 ### Reference Data
 
 * Stocks List                    ✅
@@ -48,16 +57,6 @@ More endpoints will be covered in future versions.
 * Technical Indicators Interface ❌
 * Earliest Timestamp             ✅
 * Symbol Search                  ✅
-
-### Core Data
-
-* Time Series          ✅
-* Exchange Rate        ✅
-* Currency Conversion  ✅
-* Quote                ✅
-* Real-Time Price      ✅
-* Edd of Day Price     ✅
-* Market Movers        ✅
 
 ### Mutual Funds ❌
 
@@ -81,6 +80,11 @@ More endpoints will be covered in future versions.
 * Key Executives        ✅
 * Last changes          ❌
 
+### Currencies
+
+* Exchange Rate        ✅
+* Currency Conversion  ✅
+
 ### Analysis
 * Earnings Estimate             ❌
 * Revenue Estimate              ❌
@@ -93,6 +97,7 @@ More endpoints will be covered in future versions.
 * Analyst Ratings - US Equities ❌
 
 ### Regulatory
+
 * EDGAR Fillings        ✅
 * Insider Transactions  ✅
 * Institutional Holders ✅

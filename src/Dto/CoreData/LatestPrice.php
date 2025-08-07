@@ -4,7 +4,12 @@ declare(strict_types=1);
 
 namespace MarekSkopal\TwelveData\Dto\CoreData;
 
-readonly class RealTimePrice
+/**
+ * @phpstan-type LatestPriceType array{
+ *     price: string,
+ * }
+ */
+readonly class LatestPrice
 {
     public function __construct(public string $price)
     {
@@ -12,21 +17,13 @@ readonly class RealTimePrice
 
     public static function fromJson(string $json): self
     {
-        /**
-         * @var array{
-         *     price: string,
-         *  } $responseContents
-         */
+        /** @var LatestPriceType $responseContents */
         $responseContents = json_decode($json, associative: true);
 
         return self::fromArray($responseContents);
     }
 
-    /**
-     * @param array{
-     *     price: string,
-     *  } $data
-     */
+    /** @param LatestPriceType $data */
     public static function fromArray(array $data): self
     {
         return new self(price: $data['price']);

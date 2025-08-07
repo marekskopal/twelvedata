@@ -8,16 +8,17 @@ use MarekSkopal\TwelveData\Api\CoreData;
 use MarekSkopal\TwelveData\Api\TwelveDataApi;
 use MarekSkopal\TwelveData\Client\Client;
 use MarekSkopal\TwelveData\Config\Config;
-use MarekSkopal\TwelveData\Dto\CoreData\CurrencyConversion;
 use MarekSkopal\TwelveData\Dto\CoreData\EndOfDayPrice;
-use MarekSkopal\TwelveData\Dto\CoreData\ExchangeRate;
+use MarekSkopal\TwelveData\Dto\CoreData\LatestPrice;
 use MarekSkopal\TwelveData\Dto\CoreData\MarketMovers;
 use MarekSkopal\TwelveData\Dto\CoreData\Quote;
 use MarekSkopal\TwelveData\Dto\CoreData\QuoteFiftyTwoWeek;
-use MarekSkopal\TwelveData\Dto\CoreData\RealTimePrice;
 use MarekSkopal\TwelveData\Dto\CoreData\TimeSeries;
+use MarekSkopal\TwelveData\Dto\CoreData\TimeSeriesCross;
 use MarekSkopal\TwelveData\Dto\CoreData\TimeSeriesMeta;
 use MarekSkopal\TwelveData\Dto\CoreData\TimeSeriesValue;
+use MarekSkopal\TwelveData\Dto\Currencies\CurrencyConversion;
+use MarekSkopal\TwelveData\Dto\Currencies\ExchangeRate;
 use MarekSkopal\TwelveData\Enum\IntervalEnum;
 use MarekSkopal\TwelveData\Enum\MarketMoverEnum;
 use MarekSkopal\TwelveData\Tests\Fixtures\Client\ClientFixture;
@@ -34,7 +35,7 @@ use PHPUnit\Framework\TestCase;
 #[UsesClass(ExchangeRate::class)]
 #[UsesClass(Quote::class)]
 #[UsesClass(QuoteFiftyTwoWeek::class)]
-#[UsesClass(RealTimePrice::class)]
+#[UsesClass(LatestPrice::class)]
 #[UsesClass(TimeSeries::class)]
 #[UsesClass(TimeSeriesMeta::class)]
 #[UsesClass(TimeSeriesValue::class)]
@@ -50,23 +51,13 @@ final class CoreDataTest extends TestCase
         );
     }
 
-    public function testExchangeRate(): void
+    public function testTimeSeriesCross(): void
     {
-        $referenceData = new CoreData(ClientFixture::createDemo());
+        $referenceData = new CoreData(ClientFixture::createWithResponse('time_series_cross.json'));
 
         $this->assertInstanceOf(
-            ExchangeRate::class,
-            $referenceData->exchangeRate('USD/JPY'),
-        );
-    }
-
-    public function testCurrencyConversion(): void
-    {
-        $referenceData = new CoreData(ClientFixture::createDemo());
-
-        $this->assertInstanceOf(
-            CurrencyConversion::class,
-            $referenceData->currencyConversion('USD/JPY', 122),
+            TimeSeriesCross::class,
+            $referenceData->timeSeriesCross('JPY', 'BTC', IntervalEnum::OneMinute),
         );
     }
 
@@ -80,13 +71,13 @@ final class CoreDataTest extends TestCase
         );
     }
 
-    public function testRealTimePrice(): void
+    public function testLatestPrice(): void
     {
         $referenceData = new CoreData(ClientFixture::createDemo());
 
         $this->assertInstanceOf(
-            RealTimePrice::class,
-            $referenceData->realTimePrice('AAPL'),
+            LatestPrice::class,
+            $referenceData->latestPrice('AAPL'),
         );
     }
 

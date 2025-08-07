@@ -5,13 +5,12 @@ declare(strict_types=1);
 namespace MarekSkopal\TwelveData\Api;
 
 use DateTimeImmutable;
-use MarekSkopal\TwelveData\Dto\CoreData\CurrencyConversion;
 use MarekSkopal\TwelveData\Dto\CoreData\EndOfDayPrice;
-use MarekSkopal\TwelveData\Dto\CoreData\ExchangeRate;
+use MarekSkopal\TwelveData\Dto\CoreData\LatestPrice;
 use MarekSkopal\TwelveData\Dto\CoreData\MarketMovers;
 use MarekSkopal\TwelveData\Dto\CoreData\Quote;
-use MarekSkopal\TwelveData\Dto\CoreData\RealTimePrice;
 use MarekSkopal\TwelveData\Dto\CoreData\TimeSeries;
+use MarekSkopal\TwelveData\Dto\CoreData\TimeSeriesCross;
 use MarekSkopal\TwelveData\Enum\AdjustEnum;
 use MarekSkopal\TwelveData\Enum\DirectionEnum;
 use MarekSkopal\TwelveData\Enum\FormatEnum;
@@ -28,11 +27,13 @@ readonly class CoreData extends TwelveDataApi
         string $symbol,
         IntervalEnum $interval = IntervalEnum::OneDay,
         ?string $figi = null,
+        ?string $isin = null,
+        ?string $cusip = null,
         ?string $exchange = null,
         ?string $micCode = null,
         ?string $country = null,
         ?string $type = null,
-        ?string $outputSize = null,
+        ?int $outputSize = null,
         ?FormatEnum $format = null,
         ?string $delimiter = null,
         ?PrepostEnum $prepost = null,
@@ -51,11 +52,13 @@ readonly class CoreData extends TwelveDataApi
                 'symbol' => $symbol,
                 'interval' => $interval->value,
                 'figi' => $figi,
+                'isin' => $isin,
+                'cusip' => $cusip,
                 'exchange' => $exchange,
                 'mic_code' => $micCode,
                 'country' => $country,
                 'type' => $type,
-                'outputSize' => $outputSize,
+                'outputsize' => $outputSize,
                 'format' => $format?->value,
                 'delimiter' => $delimiter,
                 'prepost' => $prepost?->value,
@@ -73,58 +76,60 @@ readonly class CoreData extends TwelveDataApi
         return TimeSeries::fromJson($response);
     }
 
-    public function exchangeRate(
-        string $symbol,
-        ?DateTimeImmutable $date = null,
+    /** @param list<AdjustEnum>|null $adjust */
+    public function timeSeriesCross(
+        string $base,
+        string $quote,
+        IntervalEnum $interval = IntervalEnum::OneDay,
+        ?string $baseType = null,
+        ?string $baseExchange = null,
+        ?string $baseMicCode = null,
+        ?string $quoteType = null,
+        ?string $quoteExchange = null,
+        ?string $quoteMicCode = null,
+        ?int $outputSize = null,
         ?FormatEnum $format = null,
         ?string $delimiter = null,
+        ?PrepostEnum $prepost = null,
+        ?DateTimeImmutable $startDate = null,
+        ?DateTimeImmutable $endDate = null,
+        ?array $adjust = null,
         ?int $dp = null,
         ?string $timezone = null,
-    ): ExchangeRate {
+    ): TimeSeriesCross {
         $response = $this->client->get(
-            path: '/exchange_rate',
+            path: '/time_series/cross',
             queryParams: [
-                'symbol' => $symbol,
-                'date' => $date?->format('Y-m-d'),
+                'base' => $base,
+                'quote' => $quote,
+                'interval' => $interval->value,
+                'base_type' => $baseType,
+                'base_exchange' => $baseExchange,
+                'base_mic_code' => $baseMicCode,
+                'quote_type' => $quoteType,
+                'quote_exchange' => $quoteExchange,
+                'quote_mic_code' => $quoteMicCode,
+                'outputsize' => $outputSize,
                 'format' => $format?->value,
                 'delimiter' => $delimiter,
-                'dp' => $dp !== null ? (string) $dp : null,
+                'prepost' => $prepost?->value,
+                'start_date' => $startDate?->format('Y-m-d h:i:s'),
+                'end_date' => $endDate?->format('Y-m-d h:i:s'),
+                'adjust' => $adjust !== null ? QueryParamsUtils::enumArrayAsString($adjust) : null,
+                'dp' => $dp,
                 'timezone' => $timezone,
             ],
         );
 
-        return ExchangeRate::fromJson($response);
-    }
-
-    public function currencyConversion(
-        string $symbol,
-        float $amount,
-        ?DateTimeImmutable $date = null,
-        ?FormatEnum $format = null,
-        ?string $delimiter = null,
-        ?int $dp = null,
-        ?string $timezone = null,
-    ): CurrencyConversion {
-        $response = $this->client->get(
-            path: '/currency_conversion',
-            queryParams: [
-                'symbol' => $symbol,
-                'amount' => (string) $amount,
-                'date' => $date?->format('Y-m-d'),
-                'format' => $format?->value,
-                'delimiter' => $delimiter,
-                'dp' => $dp !== null ? (string) $dp : null,
-                'timezone' => $timezone,
-            ],
-        );
-
-        return CurrencyConversion::fromJson($response);
+        return TimeSeriesCross::fromJson($response);
     }
 
     public function quote(
         string $symbol,
-        IntervalEnum $interval = IntervalEnum::OneDay,
         ?string $figi = null,
+        ?string $isin = null,
+        ?string $cusip = null,
+        ?IntervalEnum $interval = IntervalEnum::OneDay,
         ?string $exchange = null,
         ?string $micCode = null,
         ?string $country = null,
@@ -142,8 +147,10 @@ readonly class CoreData extends TwelveDataApi
             path: '/quote',
             queryParams: [
                 'symbol' => $symbol,
-                'interval' => $interval->value,
                 'figi' => $figi,
+                'isin' => $isin,
+                'cusip' => $cusip,
+                'interval' => $interval?->value,
                 'exchange' => $exchange,
                 'mic_code' => $micCode,
                 'country' => $country,
@@ -162,9 +169,11 @@ readonly class CoreData extends TwelveDataApi
         return Quote::fromJson($response);
     }
 
-    public function realTimePrice(
+    public function latestPrice(
         string $symbol,
         ?string $figi = null,
+        ?string $isin = null,
+        ?string $cusip = null,
         ?string $exchange = null,
         ?string $micCode = null,
         ?string $country = null,
@@ -173,12 +182,14 @@ readonly class CoreData extends TwelveDataApi
         ?string $delimiter = null,
         ?PrepostEnum $prepost = null,
         ?int $dp = null,
-    ): RealTimePrice {
+    ): LatestPrice {
         $response = $this->client->get(
             path: '/price',
             queryParams: [
                 'symbol' => $symbol,
                 'figi' => $figi,
+                'isin' => $isin,
+                'cusip' => $cusip,
                 'exchange' => $exchange,
                 'mic_code' => $micCode,
                 'country' => $country,
@@ -190,12 +201,14 @@ readonly class CoreData extends TwelveDataApi
             ],
         );
 
-        return RealTimePrice::fromJson($response);
+        return LatestPrice::fromJson($response);
     }
 
     public function endOfDayPrice(
         string $symbol,
         ?string $figi = null,
+        ?string $isin = null,
+        ?string $cusip = null,
         ?string $exchange = null,
         ?string $micCode = null,
         ?string $country = null,
@@ -209,6 +222,8 @@ readonly class CoreData extends TwelveDataApi
             queryParams: [
                 'symbol' => $symbol,
                 'figi' => $figi,
+                'isin' => $isin,
+                'cusip' => $cusip,
                 'exchange' => $exchange,
                 'mic_code' => $micCode,
                 'country' => $country,
@@ -223,7 +238,7 @@ readonly class CoreData extends TwelveDataApi
     }
 
     public function marketMovers(
-        MarketMoverEnum $marketMover,
+        MarketMoverEnum $market,
         ?DirectionEnum $direction = null,
         ?string $outputsize = null,
         ?string $country = null,
@@ -231,7 +246,7 @@ readonly class CoreData extends TwelveDataApi
         ?int $dp = null,
     ): MarketMovers {
         $response = $this->client->get(
-            path: '/market_movers/' . $marketMover->value,
+            path: '/market_movers/' . $market->value,
             queryParams: [
                 'direction' => $direction?->value,
                 'outputsize' => $outputsize,

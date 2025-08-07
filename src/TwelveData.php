@@ -6,6 +6,7 @@ namespace MarekSkopal\TwelveData;
 
 use MarekSkopal\TwelveData\Api\Advanced;
 use MarekSkopal\TwelveData\Api\CoreData;
+use MarekSkopal\TwelveData\Api\Currencies;
 use MarekSkopal\TwelveData\Api\Fundamentals;
 use MarekSkopal\TwelveData\Api\ReferenceData;
 use MarekSkopal\TwelveData\Api\Regulatory;
@@ -20,6 +21,8 @@ readonly class TwelveData
 
     public Fundamentals $fundamentals;
 
+    public Currencies $currencies;
+
     public Regulatory $regulatory;
 
     public Advanced $advanced;
@@ -31,6 +34,7 @@ readonly class TwelveData
         $this->coreData = new CoreData($client);
         $this->referenceData = new ReferenceData($client);
         $this->fundamentals = new Fundamentals($client);
+        $this->currencies = new Currencies($client);
         $this->regulatory = new Regulatory($client);
         $this->advanced = new Advanced($client);
     }
@@ -48,6 +52,11 @@ readonly class TwelveData
     public function getFundamentals(): Fundamentals
     {
         return $this->fundamentals;
+    }
+
+    public function getCurrencies(): Currencies
+    {
+        return $this->currencies;
     }
 
     public function getRegulatory(): Regulatory
