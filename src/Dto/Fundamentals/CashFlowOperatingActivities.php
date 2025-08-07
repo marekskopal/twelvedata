@@ -6,29 +6,29 @@ namespace MarekSkopal\TwelveData\Dto\Fundamentals;
 
 /**
  * @phpstan-type CashFlowOperatingActivitiesType array{
- *     net_income: int,
- *     depreciation: int,
+ *     net_income: int|null,
+ *     depreciation: int|null,
  *     deferred_taxes: int|null,
- *     stock_based_compensation: int,
- *     other_non_cash_items: int,
- *     accounts_receivable: int,
- *     accounts_payable: int,
- *     other_assets_liabilities: int,
- *     operating_cash_flow: int,
+ *     stock_based_compensation: int|null,
+ *     other_non_cash_items: int|null,
+ *     accounts_receivable: int|null,
+ *     accounts_payable: int|null,
+ *     other_assets_liabilities: int|null,
+ *     operating_cash_flow: int|null,
  * }
  */
 readonly class CashFlowOperatingActivities
 {
     public function __construct(
-        public int $netIncome,
-        public int $depreciation,
+        public ?int $netIncome,
+        public ?int $depreciation,
         public ?int $deferredTaxes,
-        public int $stockBasedCompensation,
-        public int $otherNonCashItems,
-        public int $accountsReceivable,
-        public int $accountsPayable,
-        public int $otherAssetsLiabilities,
-        public int $operatingCashFlow,
+        public ?int $stockBasedCompensation,
+        public ?int $otherNonCashItems,
+        public ?int $accountsReceivable,
+        public ?int $accountsPayable,
+        public ?int $otherAssetsLiabilities,
+        public ?int $operatingCashFlow,
     ) {
     }
 
