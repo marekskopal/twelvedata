@@ -73,16 +73,12 @@ More endpoints will be covered in future versions.
 * Earnings Calendar     ❌
 * IPO Calendar          ❌
 * Statistics            ✅
-* Insider Transactions  ✅
 * Income Statement      ✅
 * Balance Sheet         ✅
 * Cash Flow             ✅
 * Options Expiration    ✅
 * Options Chain         ✅
 * Key Executives        ✅
-* Institutional Holders ✅
-* Fund Holders          ✅
-* Direct Holders        ✅
 * Last changes          ❌
 
 ### Analysis
@@ -95,6 +91,15 @@ More endpoints will be covered in future versions.
 * Price Target                  ❌
 * Analyst Ratings - Light       ❌
 * Analyst Ratings - US Equities ❌
+
+### Regulatory
+* EDGAR Fillings        ✅
+* Insider Transactions  ✅
+* Institutional Holders ✅
+* Fund Holders          ✅
+* Direct Holders        ✅
+* Tax Information       ✅
+* Sanctioned Entities   ✅
 
 ### WebSocket ❌
 

@@ -10,6 +10,9 @@ use MarekSkopal\TwelveData\Dto\Regulatory\EdgarFillings;
 use MarekSkopal\TwelveData\Dto\Regulatory\FundHolders;
 use MarekSkopal\TwelveData\Dto\Regulatory\InsiderTransactions;
 use MarekSkopal\TwelveData\Dto\Regulatory\InstitutionalHolders;
+use MarekSkopal\TwelveData\Dto\Regulatory\SanctionedEntities;
+use MarekSkopal\TwelveData\Dto\Regulatory\TaxInformation;
+use MarekSkopal\TwelveData\Enum\SanctionsSourceEnum;
 
 readonly class Regulatory extends TwelveDataApi
 {
@@ -50,6 +53,9 @@ readonly class Regulatory extends TwelveDataApi
 
     public function insiderTransactions(
         string $symbol,
+        ?string $figi = null,
+        ?string $isin = null,
+        ?string $cusip = null,
         ?string $exchange = null,
         ?string $micCode = null,
         ?string $country = null,
@@ -58,6 +64,9 @@ readonly class Regulatory extends TwelveDataApi
             path: '/insider_transactions',
             queryParams: [
                 'symbol' => $symbol,
+                'figi' => $figi,
+                'isin' => $isin,
+                'cusip' => $cusip,
                 'exchange' => $exchange,
                 'mic_code' => $micCode,
                 'country' => $country,
@@ -69,6 +78,9 @@ readonly class Regulatory extends TwelveDataApi
 
     public function institutionalHolders(
         string $symbol,
+        ?string $figi = null,
+        ?string $isin = null,
+        ?string $cusip = null,
         ?string $exchange = null,
         ?string $micCode = null,
         ?string $country = null,
@@ -77,6 +89,9 @@ readonly class Regulatory extends TwelveDataApi
             path: '/institutional_holders',
             queryParams: [
                 'symbol' => $symbol,
+                'figi' => $figi,
+                'isin' => $isin,
+                'cusip' => $cusip,
                 'exchange' => $exchange,
                 'mic_code' => $micCode,
                 'country' => $country,
@@ -86,12 +101,22 @@ readonly class Regulatory extends TwelveDataApi
         return InstitutionalHolders::fromJson($response);
     }
 
-    public function fundHolders(string $symbol, ?string $exchange = null, ?string $micCode = null, ?string $country = null,): FundHolders
-    {
+    public function fundHolders(
+        string $symbol,
+        ?string $figi = null,
+        ?string $isin = null,
+        ?string $cusip = null,
+        ?string $exchange = null,
+        ?string $micCode = null,
+        ?string $country = null,
+    ): FundHolders {
         $response = $this->client->get(
             path: '/fund_holders',
             queryParams: [
                 'symbol' => $symbol,
+                'figi' => $figi,
+                'isin' => $isin,
+                'cusip' => $cusip,
                 'exchange' => $exchange,
                 'mic_code' => $micCode,
                 'country' => $country,
@@ -103,6 +128,9 @@ readonly class Regulatory extends TwelveDataApi
 
     public function directHolders(
         string $symbol,
+        ?string $figi = null,
+        ?string $isin = null,
+        ?string $cusip = null,
         ?string $exchange = null,
         ?string $micCode = null,
         ?string $country = null,
@@ -111,6 +139,9 @@ readonly class Regulatory extends TwelveDataApi
             path: '/direct_holders',
             queryParams: [
                 'symbol' => $symbol,
+                'figi' => $figi,
+                'isin' => $isin,
+                'cusip' => $cusip,
                 'exchange' => $exchange,
                 'mic_code' => $micCode,
                 'country' => $country,
@@ -118,5 +149,38 @@ readonly class Regulatory extends TwelveDataApi
         );
 
         return DirectHolders::fromJson($response);
+    }
+
+    public function taxInformation(
+        string $symbol,
+        ?string $figi = null,
+        ?string $isin = null,
+        ?string $cusip = null,
+        ?string $exchange = null,
+        ?string $micCode = null,
+    ): TaxInformation {
+        $response = $this->client->get(
+            path: '/tax_info',
+            queryParams: [
+                'symbol' => $symbol,
+                'figi' => $figi,
+                'isin' => $isin,
+                'cusip' => $cusip,
+                'exchange' => $exchange,
+                'mic_code' => $micCode,
+            ],
+        );
+
+        return TaxInformation::fromJson($response);
+    }
+
+    public function sanctionedEntities(SanctionsSourceEnum $source,): SanctionedEntities
+    {
+        $response = $this->client->get(
+            path: '/sanctions/' . $source->value,
+            queryParams: [],
+        );
+
+        return SanctionedEntities::fromJson($response);
     }
 }
