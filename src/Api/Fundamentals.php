@@ -12,6 +12,7 @@ use MarekSkopal\TwelveData\Dto\Fundamentals\DividendsCalendar;
 use MarekSkopal\TwelveData\Dto\Fundamentals\Earnings;
 use MarekSkopal\TwelveData\Dto\Fundamentals\EarningsCalendar;
 use MarekSkopal\TwelveData\Dto\Fundamentals\IncomeStatement;
+use MarekSkopal\TwelveData\Dto\Fundamentals\IncomeStatementConsolidated;
 use MarekSkopal\TwelveData\Dto\Fundamentals\IpoCalendar;
 use MarekSkopal\TwelveData\Dto\Fundamentals\KeyExecutives;
 use MarekSkopal\TwelveData\Dto\Fundamentals\Logo;
@@ -374,6 +375,39 @@ readonly class Fundamentals extends TwelveDataApi
         );
 
         return IncomeStatement::fromJson($response);
+    }
+
+    public function incomeStatementConsolidated(
+        string $symbol,
+        ?string $figi = null,
+        ?string $isin = null,
+        ?string $cusip = null,
+        ?string $exchange = null,
+        ?string $micCode = null,
+        ?string $country = null,
+        ?PeriodEnum $period = null,
+        ?DateTimeImmutable $startDate = null,
+        ?DateTimeImmutable $endDate = null,
+        ?int $outputsize = null,
+    ): IncomeStatementConsolidated {
+        $response = $this->client->get(
+            path: '/income_statement/consolidated',
+            queryParams: [
+                'symbol' => $symbol,
+                'figi' => $figi,
+                'isin' => $isin,
+                'cusip' => $cusip,
+                'exchange' => $exchange,
+                'mic_code' => $micCode,
+                'country' => $country,
+                'period' => $period?->value,
+                'start_date' => DateUtils::formatDate($startDate),
+                'end_date' => DateUtils::formatDate($endDate),
+                'outputsize' => $outputsize,
+            ],
+        );
+
+        return IncomeStatementConsolidated::fromJson($response);
     }
 
     public function balanceSheet(

@@ -71,10 +71,10 @@ More endpoints will be covered in future versions.
 * Splits Calendar               ✅
 * Earnings                      ✅
 * Earnings Calendar             ✅
-* IPO Calendar                  ❌
+* IPO Calendar                  ✅
 * Statistics                    ✅
 * Income Statement              ✅
-* Income Statement Consolidated ❌
+* Income Statement Consolidated ✅
 * Balance Sheet                 ✅
 * Balance Sheet Consolidated    ❌
 * Cash Flow                     ✅

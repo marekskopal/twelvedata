@@ -31,6 +31,21 @@ use MarekSkopal\TwelveData\Dto\Fundamentals\EarningsCalendar;
 use MarekSkopal\TwelveData\Dto\Fundamentals\EarningsCalendarEarning;
 use MarekSkopal\TwelveData\Dto\Fundamentals\EarningsEarning;
 use MarekSkopal\TwelveData\Dto\Fundamentals\IncomeStatement;
+use MarekSkopal\TwelveData\Dto\Fundamentals\IncomeStatementConsolidated;
+use MarekSkopal\TwelveData\Dto\Fundamentals\IncomeStatementConsolidatedCostOfRevenue;
+use MarekSkopal\TwelveData\Dto\Fundamentals\IncomeStatementConsolidatedDepreciation;
+use MarekSkopal\TwelveData\Dto\Fundamentals\IncomeStatementConsolidatedDividendsAndShares;
+use MarekSkopal\TwelveData\Dto\Fundamentals\IncomeStatementConsolidatedEarningsPerShare;
+use MarekSkopal\TwelveData\Dto\Fundamentals\IncomeStatementConsolidatedEbitda;
+use MarekSkopal\TwelveData\Dto\Fundamentals\IncomeStatementConsolidatedExpenses;
+use MarekSkopal\TwelveData\Dto\Fundamentals\IncomeStatementConsolidatedGrossProfit;
+use MarekSkopal\TwelveData\Dto\Fundamentals\IncomeStatementConsolidatedIncomeStatement;
+use MarekSkopal\TwelveData\Dto\Fundamentals\IncomeStatementConsolidatedNetIncome;
+use MarekSkopal\TwelveData\Dto\Fundamentals\IncomeStatementConsolidatedOperatingIncome;
+use MarekSkopal\TwelveData\Dto\Fundamentals\IncomeStatementConsolidatedOtherIncomeAndExpenses;
+use MarekSkopal\TwelveData\Dto\Fundamentals\IncomeStatementConsolidatedPretaxIncome;
+use MarekSkopal\TwelveData\Dto\Fundamentals\IncomeStatementConsolidatedRevenue;
+use MarekSkopal\TwelveData\Dto\Fundamentals\IncomeStatementConsolidatedTaxes;
 use MarekSkopal\TwelveData\Dto\Fundamentals\IncomeStatementIncomeStatement;
 use MarekSkopal\TwelveData\Dto\Fundamentals\IncomeStatementNonOperatingInterest;
 use MarekSkopal\TwelveData\Dto\Fundamentals\IncomeStatementOperationExpense;
@@ -97,6 +112,21 @@ use PHPUnit\Framework\TestCase;
 #[UsesClass(EarningsCalendarEarning::class)]
 #[UsesClass(Holder::class)]
 #[UsesClass(IncomeStatement::class)]
+#[UsesClass(IncomeStatementConsolidated::class)]
+#[UsesClass(IncomeStatementConsolidatedCostOfRevenue::class)]
+#[UsesClass(IncomeStatementConsolidatedDepreciation::class)]
+#[UsesClass(IncomeStatementConsolidatedDividendsAndShares::class)]
+#[UsesClass(IncomeStatementConsolidatedEarningsPerShare::class)]
+#[UsesClass(IncomeStatementConsolidatedEbitda::class)]
+#[UsesClass(IncomeStatementConsolidatedExpenses::class)]
+#[UsesClass(IncomeStatementConsolidatedGrossProfit::class)]
+#[UsesClass(IncomeStatementConsolidatedIncomeStatement::class)]
+#[UsesClass(IncomeStatementConsolidatedNetIncome::class)]
+#[UsesClass(IncomeStatementConsolidatedOperatingIncome::class)]
+#[UsesClass(IncomeStatementConsolidatedOtherIncomeAndExpenses::class)]
+#[UsesClass(IncomeStatementConsolidatedPretaxIncome::class)]
+#[UsesClass(IncomeStatementConsolidatedRevenue::class)]
+#[UsesClass(IncomeStatementConsolidatedTaxes::class)]
 #[UsesClass(IncomeStatementIncomeStatement::class)]
 #[UsesClass(IncomeStatementNonOperatingInterest::class)]
 #[UsesClass(IncomeStatementOperationExpense::class)]
@@ -232,6 +262,16 @@ final class FundamentalsTest extends TestCase
         $this->assertInstanceOf(
             IncomeStatement::class,
             $fundamentals->incomeStatement('AAPL'),
+        );
+    }
+
+    public function testIncomeStatementConsolidated(): void
+    {
+        $fundamentals = new Fundamentals(ClientFixture::createDemo());
+
+        $this->assertInstanceOf(
+            IncomeStatementConsolidated::class,
+            $fundamentals->incomeStatementConsolidated('AAPL'),
         );
     }
 
