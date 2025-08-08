@@ -35,6 +35,13 @@ use MarekSkopal\TwelveData\Dto\Fundamentals\BalanceSheetNonCurrentLiabilities;
 use MarekSkopal\TwelveData\Dto\Fundamentals\BalanceSheetShareholdersEquity;
 use MarekSkopal\TwelveData\Dto\Fundamentals\CashFlow;
 use MarekSkopal\TwelveData\Dto\Fundamentals\CashFlowCashFlow;
+use MarekSkopal\TwelveData\Dto\Fundamentals\CashFlowConsolidated;
+use MarekSkopal\TwelveData\Dto\Fundamentals\CashFlowConsolidatedCashFlow;
+use MarekSkopal\TwelveData\Dto\Fundamentals\CashFlowConsolidatedCashFlowFromFinancingActivities;
+use MarekSkopal\TwelveData\Dto\Fundamentals\CashFlowConsolidatedCashFlowFromInvestingActivities;
+use MarekSkopal\TwelveData\Dto\Fundamentals\CashFlowConsolidatedCashFlowFromOperatingActivities;
+use MarekSkopal\TwelveData\Dto\Fundamentals\CashFlowConsolidatedCashPosition;
+use MarekSkopal\TwelveData\Dto\Fundamentals\CashFlowConsolidatedSupplementalData;
 use MarekSkopal\TwelveData\Dto\Fundamentals\CashFlowFinancingActivities;
 use MarekSkopal\TwelveData\Dto\Fundamentals\CashFlowInvestingActivities;
 use MarekSkopal\TwelveData\Dto\Fundamentals\CashFlowOperatingActivities;
@@ -132,6 +139,13 @@ use PHPUnit\Framework\TestCase;
 #[UsesClass(CashFlowFinancingActivities::class)]
 #[UsesClass(CashFlowInvestingActivities::class)]
 #[UsesClass(CashFlowOperatingActivities::class)]
+#[UsesClass(CashFlowConsolidated::class)]
+#[UsesClass(CashFlowConsolidatedCashFlow::class)]
+#[UsesClass(CashFlowConsolidatedCashFlowFromFinancingActivities::class)]
+#[UsesClass(CashFlowConsolidatedCashFlowFromInvestingActivities::class)]
+#[UsesClass(CashFlowConsolidatedCashFlowFromOperatingActivities::class)]
+#[UsesClass(CashFlowConsolidatedCashPosition::class)]
+#[UsesClass(CashFlowConsolidatedSupplementalData::class)]
 #[UsesClass(DirectHolders::class)]
 #[UsesClass(Dividends::class)]
 #[UsesClass(DividendsDividend::class)]
@@ -332,6 +346,16 @@ final class FundamentalsTest extends TestCase
         $this->assertInstanceOf(
             CashFlow::class,
             $fundamentals->cashFlow('AAPL'),
+        );
+    }
+
+    public function testCashFlowConsolidated(): void
+    {
+        $fundamentals = new Fundamentals(ClientFixture::createWithResponse('cash_flow_consolidated.json'));
+
+        $this->assertInstanceOf(
+            CashFlowConsolidated::class,
+            $fundamentals->cashFlowConsolidated('AAPL'),
         );
     }
 

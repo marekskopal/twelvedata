@@ -78,7 +78,7 @@ More endpoints will be covered in future versions.
 * Balance Sheet                 ✅
 * Balance Sheet Consolidated    ✅
 * Cash Flow                     ✅
-* Cash Flow Consolidated        ❌
+* Cash Flow Consolidated        ✅
 * Key Executives                ✅
 * Options Expiration            ✅
 * Options Chain                 ✅
