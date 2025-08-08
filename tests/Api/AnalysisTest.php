@@ -11,6 +11,8 @@ use MarekSkopal\TwelveData\Config\Config;
 use MarekSkopal\TwelveData\Dto\Analysis\EarningsEstimate;
 use MarekSkopal\TwelveData\Dto\Analysis\EarningsEstimateEarningsEstimate;
 use MarekSkopal\TwelveData\Dto\Analysis\Meta;
+use MarekSkopal\TwelveData\Dto\Analysis\RevenueEstimate;
+use MarekSkopal\TwelveData\Dto\Analysis\RevenueEstimateRevenueEstimate;
 use MarekSkopal\TwelveData\Tests\Fixtures\Client\ClientFixture;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\UsesClass;
@@ -23,6 +25,8 @@ use PHPUnit\Framework\TestCase;
 #[UsesClass(Meta::class)]
 #[UsesClass(EarningsEstimate::class)]
 #[UsesClass(EarningsEstimateEarningsEstimate::class)]
+#[UsesClass(RevenueEstimate::class)]
+#[UsesClass(RevenueEstimateRevenueEstimate::class)]
 final class AnalysisTest extends TestCase
 {
     public function testEarningsEstimate(): void
@@ -32,6 +36,16 @@ final class AnalysisTest extends TestCase
         $this->assertInstanceOf(
             EarningsEstimate::class,
             $analysis->earningsEstimate('AAPL'),
+        );
+    }
+
+    public function testRevenueEstimate(): void
+    {
+        $analysis = new Analysis(ClientFixture::createWithResponse('revenue_estimate.json'));
+
+        $this->assertInstanceOf(
+            RevenueEstimate::class,
+            $analysis->revenueEstimate('AAPL'),
         );
     }
 }
