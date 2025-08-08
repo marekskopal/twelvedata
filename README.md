@@ -83,7 +83,7 @@ More endpoints will be covered in future versions.
 * Options Expiration            ✅
 * Options Chain                 ✅
 * Market Capitalization         ✅
-* Last changes                  ❌
+* Last changes                  ✅
 
 ### Currencies
 

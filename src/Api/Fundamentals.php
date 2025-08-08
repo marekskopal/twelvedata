@@ -17,6 +17,7 @@ use MarekSkopal\TwelveData\Dto\Fundamentals\IncomeStatement;
 use MarekSkopal\TwelveData\Dto\Fundamentals\IncomeStatementConsolidated;
 use MarekSkopal\TwelveData\Dto\Fundamentals\IpoCalendar;
 use MarekSkopal\TwelveData\Dto\Fundamentals\KeyExecutives;
+use MarekSkopal\TwelveData\Dto\Fundamentals\LastChanges;
 use MarekSkopal\TwelveData\Dto\Fundamentals\Logo;
 use MarekSkopal\TwelveData\Dto\Fundamentals\MarketCapitalization;
 use MarekSkopal\TwelveData\Dto\Fundamentals\OptionsChain;
@@ -26,6 +27,7 @@ use MarekSkopal\TwelveData\Dto\Fundamentals\Splits;
 use MarekSkopal\TwelveData\Dto\Fundamentals\SplitsCalendar;
 use MarekSkopal\TwelveData\Dto\Fundamentals\Statistics;
 use MarekSkopal\TwelveData\Enum\EarningsPeriodEnum;
+use MarekSkopal\TwelveData\Enum\EndpointEnum;
 use MarekSkopal\TwelveData\Enum\FormatEnum;
 use MarekSkopal\TwelveData\Enum\PeriodEnum;
 use MarekSkopal\TwelveData\Enum\RangeEnum;
@@ -645,5 +647,31 @@ readonly class Fundamentals extends TwelveDataApi
         );
 
         return MarketCapitalization::fromJson($response);
+    }
+
+    public function lastChanges(
+        EndpointEnum $endpoint,
+        ?DateTimeImmutable $startDate = null,
+        ?string $symbol = null,
+        ?string $exchange = null,
+        ?string $micCode = null,
+        ?string $country = null,
+        ?int $page = null,
+        ?int $outputsize = null,
+    ): LastChanges {
+        $response = $this->client->get(
+            path: '/last_change/' . $endpoint->value,
+            queryParams: [
+                'start_date' => DateUtils::formatDateTime($startDate),
+                'symbol' => $symbol,
+                'exchange' => $exchange,
+                'mic_code' => $micCode,
+                'country' => $country,
+                'page' => $page !== null ? (string) $page : null,
+                'outputsize' => $outputsize,
+            ],
+        );
+
+        return LastChanges::fromJson($response);
     }
 }

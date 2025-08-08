@@ -74,6 +74,9 @@ use MarekSkopal\TwelveData\Dto\Fundamentals\IncomeStatementOperationExpense;
 use MarekSkopal\TwelveData\Dto\Fundamentals\IpoCalendar;
 use MarekSkopal\TwelveData\Dto\Fundamentals\KeyExecutives;
 use MarekSkopal\TwelveData\Dto\Fundamentals\KeyExecutivesKeyExecutive;
+use MarekSkopal\TwelveData\Dto\Fundamentals\LastChanges;
+use MarekSkopal\TwelveData\Dto\Fundamentals\LastChangesData;
+use MarekSkopal\TwelveData\Dto\Fundamentals\LastChangesPagination;
 use MarekSkopal\TwelveData\Dto\Fundamentals\Logo;
 use MarekSkopal\TwelveData\Dto\Fundamentals\LogoMeta;
 use MarekSkopal\TwelveData\Dto\Fundamentals\MarketCapitalization;
@@ -101,6 +104,7 @@ use MarekSkopal\TwelveData\Dto\Regulatory\Holder;
 use MarekSkopal\TwelveData\Dto\Regulatory\InsiderTransactions;
 use MarekSkopal\TwelveData\Dto\Regulatory\InsiderTransactionsInsiderTransaction;
 use MarekSkopal\TwelveData\Dto\Regulatory\InstitutionalHolders;
+use MarekSkopal\TwelveData\Enum\EndpointEnum;
 use MarekSkopal\TwelveData\Tests\Fixtures\Client\ClientFixture;
 use MarekSkopal\TwelveData\Utils\DateUtils;
 use PHPUnit\Framework\Attributes\CoversClass;
@@ -204,6 +208,9 @@ use PHPUnit\Framework\TestCase;
 #[UsesClass(StatisticsValuationsMetrics::class)]
 #[UsesClass(MarketCapitalization::class)]
 #[UsesClass(MarketCapitalizationMarketCap::class)]
+#[UsesClass(LastChanges::class)]
+#[UsesClass(LastChangesPagination::class)]
+#[UsesClass(LastChangesData::class)]
 final class FundamentalsTest extends TestCase
 {
     public function testLogo(): void
@@ -400,6 +407,16 @@ final class FundamentalsTest extends TestCase
         $this->assertInstanceOf(
             MarketCapitalization::class,
             $fundamentals->marketCapitalization('AAPL'),
+        );
+    }
+
+    public function testLastChanges(): void
+    {
+        $fundamentals = new Fundamentals(ClientFixture::createWithResponse('last_changes.json'));
+
+        $this->assertInstanceOf(
+            LastChanges::class,
+            $fundamentals->lastChanges(EndpointEnum::Statistics),
         );
     }
 }
