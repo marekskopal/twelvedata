@@ -82,7 +82,7 @@ More endpoints will be covered in future versions.
 * Key Executives                ✅
 * Options Expiration            ✅
 * Options Chain                 ✅
-* Market Capitalization         ❌
+* Market Capitalization         ✅
 * Last changes                  ❌
 
 ### Currencies

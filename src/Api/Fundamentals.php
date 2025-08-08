@@ -18,6 +18,7 @@ use MarekSkopal\TwelveData\Dto\Fundamentals\IncomeStatementConsolidated;
 use MarekSkopal\TwelveData\Dto\Fundamentals\IpoCalendar;
 use MarekSkopal\TwelveData\Dto\Fundamentals\KeyExecutives;
 use MarekSkopal\TwelveData\Dto\Fundamentals\Logo;
+use MarekSkopal\TwelveData\Dto\Fundamentals\MarketCapitalization;
 use MarekSkopal\TwelveData\Dto\Fundamentals\OptionsChain;
 use MarekSkopal\TwelveData\Dto\Fundamentals\OptionsExpiration;
 use MarekSkopal\TwelveData\Dto\Fundamentals\Profile;
@@ -611,5 +612,38 @@ readonly class Fundamentals extends TwelveDataApi
         );
 
         return KeyExecutives::fromJson($response);
+    }
+
+    public function marketCapitalization(
+        string $symbol,
+        ?string $figi = null,
+        ?string $isin = null,
+        ?string $cusip = null,
+        ?string $exchange = null,
+        ?string $micCode = null,
+        ?string $country = null,
+        ?DateTimeImmutable $startDate = null,
+        ?DateTimeImmutable $endDate = null,
+        ?int $page = null,
+        ?int $outputsize = null,
+    ): MarketCapitalization {
+        $response = $this->client->get(
+            path: '/market_cap',
+            queryParams: [
+                'symbol' => $symbol,
+                'figi' => $figi,
+                'isin' => $isin,
+                'cusip' => $cusip,
+                'exchange' => $exchange,
+                'mic_code' => $micCode,
+                'country' => $country,
+                'start_date' => DateUtils::formatDate($startDate),
+                'end_date' => DateUtils::formatDate($endDate),
+                'page' => $page !== null ? (string) $page : null,
+                'outputsize' => $outputsize,
+            ],
+        );
+
+        return MarketCapitalization::fromJson($response);
     }
 }

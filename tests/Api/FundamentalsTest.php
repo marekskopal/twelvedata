@@ -76,6 +76,8 @@ use MarekSkopal\TwelveData\Dto\Fundamentals\KeyExecutives;
 use MarekSkopal\TwelveData\Dto\Fundamentals\KeyExecutivesKeyExecutive;
 use MarekSkopal\TwelveData\Dto\Fundamentals\Logo;
 use MarekSkopal\TwelveData\Dto\Fundamentals\LogoMeta;
+use MarekSkopal\TwelveData\Dto\Fundamentals\MarketCapitalization;
+use MarekSkopal\TwelveData\Dto\Fundamentals\MarketCapitalizationMarketCap;
 use MarekSkopal\TwelveData\Dto\Fundamentals\Meta;
 use MarekSkopal\TwelveData\Dto\Fundamentals\OptionsChain;
 use MarekSkopal\TwelveData\Dto\Fundamentals\OptionsChainOption;
@@ -200,6 +202,8 @@ use PHPUnit\Framework\TestCase;
 #[UsesClass(StatisticsStockPriceSummary::class)]
 #[UsesClass(StatisticsStockStatistics::class)]
 #[UsesClass(StatisticsValuationsMetrics::class)]
+#[UsesClass(MarketCapitalization::class)]
+#[UsesClass(MarketCapitalizationMarketCap::class)]
 final class FundamentalsTest extends TestCase
 {
     public function testLogo(): void
@@ -386,6 +390,16 @@ final class FundamentalsTest extends TestCase
         $this->assertInstanceOf(
             KeyExecutives::class,
             $fundamentals->keyExecutives('AAPL'),
+        );
+    }
+
+    public function testMarketCapitalization(): void
+    {
+        $fundamentals = new Fundamentals(ClientFixture::createWithResponse('market_capitalization.json'));
+
+        $this->assertInstanceOf(
+            MarketCapitalization::class,
+            $fundamentals->marketCapitalization('AAPL'),
         );
     }
 }
