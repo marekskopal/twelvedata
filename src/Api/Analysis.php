@@ -5,6 +5,8 @@ declare(strict_types=1);
 namespace MarekSkopal\TwelveData\Api;
 
 use MarekSkopal\TwelveData\Dto\Analysis\EarningsEstimate;
+use MarekSkopal\TwelveData\Dto\Analysis\EpsRevisions;
+use MarekSkopal\TwelveData\Dto\Analysis\EpsTrend;
 use MarekSkopal\TwelveData\Dto\Analysis\RevenueEstimate;
 
 readonly class Analysis extends TwelveDataApi
@@ -55,5 +57,51 @@ readonly class Analysis extends TwelveDataApi
         );
 
         return RevenueEstimate::fromJson($response);
+    }
+
+    public function epsTrend(
+        string $symbol,
+        ?string $figi = null,
+        ?string $isin = null,
+        ?string $cusip = null,
+        ?string $country = null,
+        ?string $exchange = null,
+    ): EpsTrend {
+        $response = $this->client->get(
+            path: '/eps_trend',
+            queryParams: [
+                'symbol' => $symbol,
+                'figi' => $figi,
+                'isin' => $isin,
+                'cusip' => $cusip,
+                'exchange' => $exchange,
+                'country' => $country,
+            ],
+        );
+
+        return EpsTrend::fromJson($response);
+    }
+
+    public function epsRevisions(
+        string $symbol,
+        ?string $figi = null,
+        ?string $isin = null,
+        ?string $cusip = null,
+        ?string $country = null,
+        ?string $exchange = null,
+    ): EpsRevisions {
+        $response = $this->client->get(
+            path: '/eps_revisions',
+            queryParams: [
+                'symbol' => $symbol,
+                'figi' => $figi,
+                'isin' => $isin,
+                'cusip' => $cusip,
+                'exchange' => $exchange,
+                'country' => $country,
+            ],
+        );
+
+        return EpsRevisions::fromJson($response);
     }
 }
