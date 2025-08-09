@@ -8,6 +8,8 @@ use MarekSkopal\TwelveData\Api\Analysis;
 use MarekSkopal\TwelveData\Api\TwelveDataApi;
 use MarekSkopal\TwelveData\Client\Client;
 use MarekSkopal\TwelveData\Config\Config;
+use MarekSkopal\TwelveData\Dto\Analysis\AnalystRatingsSnapshot;
+use MarekSkopal\TwelveData\Dto\Analysis\AnalystRatingsSnapshotRating;
 use MarekSkopal\TwelveData\Dto\Analysis\EarningsEstimate;
 use MarekSkopal\TwelveData\Dto\Analysis\EarningsEstimateEarningsEstimate;
 use MarekSkopal\TwelveData\Dto\Analysis\EpsRevisions;
@@ -49,6 +51,8 @@ use PHPUnit\Framework\TestCase;
 #[UsesClass(RecommendationsMonth::class)]
 #[UsesClass(PriceTarget::class)]
 #[UsesClass(PriceTargetPriceTarget::class)]
+#[UsesClass(AnalystRatingsSnapshot::class)]
+#[UsesClass(AnalystRatingsSnapshotRating::class)]
 final class AnalysisTest extends TestCase
 {
     public function testEarningsEstimate(): void
@@ -118,6 +122,16 @@ final class AnalysisTest extends TestCase
         self::assertInstanceOf(
             PriceTarget::class,
             $analysis->priceTarget('AAPL'),
+        );
+    }
+
+    public function testAnalystRatingsSnapshot(): void
+    {
+        $analysis = new Analysis(ClientFixture::createWithResponse('analyst_ratings_snapshot.json'));
+
+        self::assertInstanceOf(
+            AnalystRatingsSnapshot::class,
+            $analysis->analystRatingsSnapshot('AAPL'),
         );
     }
 }
