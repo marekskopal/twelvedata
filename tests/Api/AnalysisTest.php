@@ -17,6 +17,8 @@ use MarekSkopal\TwelveData\Dto\Analysis\EpsTrendEpsTrend;
 use MarekSkopal\TwelveData\Dto\Analysis\GrowthEstimates;
 use MarekSkopal\TwelveData\Dto\Analysis\GrowthEstimatesGrowthEstimates;
 use MarekSkopal\TwelveData\Dto\Analysis\Meta;
+use MarekSkopal\TwelveData\Dto\Analysis\PriceTarget;
+use MarekSkopal\TwelveData\Dto\Analysis\PriceTargetPriceTarget;
 use MarekSkopal\TwelveData\Dto\Analysis\Recommendations;
 use MarekSkopal\TwelveData\Dto\Analysis\RecommendationsMonth;
 use MarekSkopal\TwelveData\Dto\Analysis\RecommendationsTrends;
@@ -45,6 +47,8 @@ use PHPUnit\Framework\TestCase;
 #[UsesClass(Recommendations::class)]
 #[UsesClass(RecommendationsTrends::class)]
 #[UsesClass(RecommendationsMonth::class)]
+#[UsesClass(PriceTarget::class)]
+#[UsesClass(PriceTargetPriceTarget::class)]
 final class AnalysisTest extends TestCase
 {
     public function testEarningsEstimate(): void
@@ -104,6 +108,16 @@ final class AnalysisTest extends TestCase
         self::assertInstanceOf(
             Recommendations::class,
             $analysis->recommendations('AAPL'),
+        );
+    }
+
+    public function testPriceTarget(): void
+    {
+        $analysis = new Analysis(ClientFixture::createWithResponse('price_target.json'));
+
+        self::assertInstanceOf(
+            PriceTarget::class,
+            $analysis->priceTarget('AAPL'),
         );
     }
 }
