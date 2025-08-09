@@ -15,6 +15,9 @@ use MarekSkopal\TwelveData\Dto\Analysis\EpsRevisionsEpsRevision;
 use MarekSkopal\TwelveData\Dto\Analysis\EpsTrend;
 use MarekSkopal\TwelveData\Dto\Analysis\EpsTrendEpsTrend;
 use MarekSkopal\TwelveData\Dto\Analysis\Meta;
+use MarekSkopal\TwelveData\Dto\Analysis\Recommendations;
+use MarekSkopal\TwelveData\Dto\Analysis\RecommendationsMonth;
+use MarekSkopal\TwelveData\Dto\Analysis\RecommendationsTrends;
 use MarekSkopal\TwelveData\Dto\Analysis\RevenueEstimate;
 use MarekSkopal\TwelveData\Dto\Analysis\RevenueEstimateRevenueEstimate;
 use MarekSkopal\TwelveData\Tests\Fixtures\Client\ClientFixture;
@@ -35,6 +38,9 @@ use PHPUnit\Framework\TestCase;
 #[UsesClass(EpsTrendEpsTrend::class)]
 #[UsesClass(EpsRevisions::class)]
 #[UsesClass(EpsRevisionsEpsRevision::class)]
+#[UsesClass(Recommendations::class)]
+#[UsesClass(RecommendationsTrends::class)]
+#[UsesClass(RecommendationsMonth::class)]
 final class AnalysisTest extends TestCase
 {
     public function testEarningsEstimate(): void
@@ -74,6 +80,16 @@ final class AnalysisTest extends TestCase
         self::assertInstanceOf(
             EpsRevisions::class,
             $analysis->epsRevisions('AAPL'),
+        );
+    }
+
+    public function testRecommendations(): void
+    {
+        $analysis = new Analysis(ClientFixture::createWithResponse('recommendations.json'));
+
+        self::assertInstanceOf(
+            Recommendations::class,
+            $analysis->recommendations('AAPL'),
         );
     }
 }
