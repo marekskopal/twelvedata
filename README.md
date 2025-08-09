@@ -97,15 +97,15 @@ More endpoints will be covered in future versions.
 ### Technical Indicators ❌
 
 ### Analysis
-* Earnings Estimate             ❌
-* Revenue Estimate              ❌
-* EPS Trend                     ❌
-* EPS Revisions                 ❌
-* Growth Estimates              ❌
-* Recommendations               ❌
-* Price Target                  ❌
-* Analyst Ratings - Light       ❌
-* Analyst Ratings - US Equities ❌
+* Earnings Estimate           ✅
+* Revenue Estimate            ✅
+* EPS Trend                   ✅
+* EPS Revisions               ✅
+* Growth Estimates            ✅
+* Recommendations             ✅
+* Price Target                ✅
+* Analyst Ratings Snapshot    ✅
+* Analyst Ratings US Equities ✅
 
 ### Regulatory
 
@@ -125,7 +125,7 @@ More endpoints will be covered in future versions.
 ### WebSocket ❌
 
 ## Notice
-This is NOT an official Twelve Data library, and the authors of this library are not affiliated with Twelve Data in any way, shape or form. Twelve Data APIs and data are Copyright © 2024 Twelve Data Pte. Ltd.
+This is NOT an official Twelve Data library, and the authors of this library are not affiliated with Twelve Data in any way, shape or form. Twelve Data APIs and data are Copyright © 2025 Twelve Data Pte. Ltd.
 
 ## Contributing
 If you want to contribute, feel free to submit a pull request.
