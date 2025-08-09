@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace MarekSkopal\TwelveData\Api;
 
 use MarekSkopal\TwelveData\Dto\Analysis\AnalystRatingsSnapshot;
+use MarekSkopal\TwelveData\Dto\Analysis\AnalystRatingsUsEquities;
 use MarekSkopal\TwelveData\Dto\Analysis\EarningsEstimate;
 use MarekSkopal\TwelveData\Dto\Analysis\EpsRevisions;
 use MarekSkopal\TwelveData\Dto\Analysis\EpsTrend;
@@ -204,5 +205,32 @@ readonly class Analysis extends TwelveDataApi
         );
 
         return AnalystRatingsSnapshot::fromJson($response);
+    }
+
+    public function analystRatingsUsEquities(
+        string $symbol,
+        ?string $figi = null,
+        ?string $isin = null,
+        ?string $cusip = null,
+        ?string $country = null,
+        ?string $exchange = null,
+        ?RatingChangeEnum $ratingChange = null,
+        ?int $outputsize = null,
+    ): AnalystRatingsUsEquities {
+        $response = $this->client->get(
+            path: '/analyst_ratings/light',
+            queryParams: [
+                'symbol' => $symbol,
+                'figi' => $figi,
+                'isin' => $isin,
+                'cusip' => $cusip,
+                'exchange' => $exchange,
+                'country' => $country,
+                'rating_change' => $ratingChange?->value,
+                'outputsize' => $outputsize,
+            ],
+        );
+
+        return AnalystRatingsUsEquities::fromJson($response);
     }
 }
