@@ -17,6 +17,7 @@ use MarekSkopal\TwelveData\Dto\ReferenceData\SymbolSearchData;
 use MarekSkopal\TwelveData\Enum\IntervalEnum;
 use MarekSkopal\TwelveData\Tests\Fixtures\Client\ClientFixture;
 use MarekSkopal\TwelveData\Utils\DateUtils;
+use MarekSkopal\TwelveData\Utils\QueryParamsUtils;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\UsesClass;
 use PHPUnit\Framework\TestCase;
@@ -26,6 +27,7 @@ use PHPUnit\Framework\TestCase;
 #[UsesClass(Client::class)]
 #[UsesClass(Config::class)]
 #[UsesClass(DateUtils::class)]
+#[UsesClass(QueryParamsUtils::class)]
 #[UsesClass(CrossListings::class)]
 #[UsesClass(CrossListingsList::class)]
 #[UsesClass(CrossListingsResult::class)]

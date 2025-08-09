@@ -6,6 +6,11 @@ parameters:
        - tests
     ignoreErrors:
        -
+          identifier: varTag.type
+          paths:
+             - src/Api/TechnicalIndictors/*
+
+       -
           identifier: staticMethod.alreadyNarrowedType
           paths:
               - tests/*

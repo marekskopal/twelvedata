@@ -20,7 +20,7 @@ readonly class Discovery extends TwelveDataApi
             queryParams: [
                 'symbol' => $symbol,
                 'outputsize' => $outputsize !== null ? (string) $outputsize : null,
-                'show_plan' => $showPlan !== null ? QueryParamsUtils::booleanAsString($showPlan) : null,
+                'show_plan' => QueryParamsUtils::booleanAsString($showPlan),
             ],
         );
 

@@ -108,7 +108,7 @@ readonly class Fundamentals extends TwelveDataApi
                 'range' => $range?->value,
                 'start_date' => DateUtils::formatDate($startDate),
                 'end_date' => DateUtils::formatDate($endDate),
-                'adjust' => $adjust !== null ? QueryParamsUtils::booleanAsString($adjust) : null,
+                'adjust' => QueryParamsUtils::booleanAsString($adjust),
             ],
         );
 

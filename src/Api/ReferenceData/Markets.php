@@ -35,7 +35,7 @@ readonly class Markets extends TwelveDataApi
                 'country' => $country,
                 'format' => $format?->value,
                 'delimiter' => $delimiter,
-                'show_plan' => $showPlan !== null ? QueryParamsUtils::booleanAsString($showPlan) : null,
+                'show_plan' => QueryParamsUtils::booleanAsString($showPlan),
             ],
         );
 

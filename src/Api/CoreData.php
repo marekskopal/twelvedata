@@ -69,8 +69,8 @@ readonly class CoreData extends TwelveDataApi
                 'date' => DateUtils::formatDate($date),
                 'start_date' => DateUtils::formatDateTime($startDate),
                 'end_date' => DateUtils::formatDateTime($endDate),
-                'previous_close' => $previousClose !== null ? QueryParamsUtils::booleanAsString($previousClose) : null,
-                'adjust' => $adjust !== null ? QueryParamsUtils::enumArrayAsString($adjust) : null,
+                'previous_close' => QueryParamsUtils::booleanAsString($previousClose),
+                'adjust' => QueryParamsUtils::enumArrayAsString($adjust),
             ],
         );
 
@@ -116,7 +116,7 @@ readonly class CoreData extends TwelveDataApi
                 'prepost' => $prepost?->value,
                 'start_date' => DateUtils::formatDateTime($startDate),
                 'end_date' => DateUtils::formatDateTime($endDate),
-                'adjust' => $adjust !== null ? QueryParamsUtils::enumArrayAsString($adjust) : null,
+                'adjust' => QueryParamsUtils::enumArrayAsString($adjust),
                 'dp' => $dp,
                 'timezone' => $timezone,
             ],
@@ -160,7 +160,7 @@ readonly class CoreData extends TwelveDataApi
                 'format' => $format?->value,
                 'delimiter' => $delimiter,
                 'prepost' => $prepost?->value,
-                'eod' => $eod !== null ? QueryParamsUtils::booleanAsString($eod) : null,
+                'eod' => QueryParamsUtils::booleanAsString($eod),
                 'rolling_period' => $rollingPeriod !== null ? (string) $rollingPeriod : null,
                 'dp' => $dp !== null ? (string) $dp : null,
                 'timezone' => $timezone,
