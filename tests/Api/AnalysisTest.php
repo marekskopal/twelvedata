@@ -14,6 +14,8 @@ use MarekSkopal\TwelveData\Dto\Analysis\EpsRevisions;
 use MarekSkopal\TwelveData\Dto\Analysis\EpsRevisionsEpsRevision;
 use MarekSkopal\TwelveData\Dto\Analysis\EpsTrend;
 use MarekSkopal\TwelveData\Dto\Analysis\EpsTrendEpsTrend;
+use MarekSkopal\TwelveData\Dto\Analysis\GrowthEstimates;
+use MarekSkopal\TwelveData\Dto\Analysis\GrowthEstimatesGrowthEstimates;
 use MarekSkopal\TwelveData\Dto\Analysis\Meta;
 use MarekSkopal\TwelveData\Dto\Analysis\Recommendations;
 use MarekSkopal\TwelveData\Dto\Analysis\RecommendationsMonth;
@@ -38,6 +40,8 @@ use PHPUnit\Framework\TestCase;
 #[UsesClass(EpsTrendEpsTrend::class)]
 #[UsesClass(EpsRevisions::class)]
 #[UsesClass(EpsRevisionsEpsRevision::class)]
+#[UsesClass(GrowthEstimates::class)]
+#[UsesClass(GrowthEstimatesGrowthEstimates::class)]
 #[UsesClass(Recommendations::class)]
 #[UsesClass(RecommendationsTrends::class)]
 #[UsesClass(RecommendationsMonth::class)]
@@ -80,6 +84,16 @@ final class AnalysisTest extends TestCase
         self::assertInstanceOf(
             EpsRevisions::class,
             $analysis->epsRevisions('AAPL'),
+        );
+    }
+
+    public function testGrowthEstimates(): void
+    {
+        $analysis = new Analysis(ClientFixture::createWithResponse('growth_estimates.json'));
+
+        self::assertInstanceOf(
+            GrowthEstimates::class,
+            $analysis->growthEstimates('AAPL'),
         );
     }
 

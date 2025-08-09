@@ -4,8 +4,6 @@ declare(strict_types=1);
 
 namespace MarekSkopal\TwelveData\Dto\Analysis;
 
-use DateTimeImmutable;
-
 /**
  * @phpstan-type RecommendationsMonthType array{
  *     strong_buy: int,
@@ -17,13 +15,8 @@ use DateTimeImmutable;
  */
 readonly class RecommendationsMonth
 {
-    public function __construct(
-        public int $strongBuy,
-        public int $buy,
-        public int $hold,
-        public int $sell,
-        public int $strongSell,
-    ) {
+    public function __construct(public int $strongBuy, public int $buy, public int $hold, public int $sell, public int $strongSell,)
+    {
     }
 
     /** @param RecommendationsMonthType $data */

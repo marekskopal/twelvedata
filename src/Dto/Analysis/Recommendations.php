@@ -16,13 +16,8 @@ namespace MarekSkopal\TwelveData\Dto\Analysis;
  */
 readonly class Recommendations
 {
-
-    public function __construct(
-        public Meta $meta,
-        public RecommendationsTrends $trends,
-        public float $rating,
-        public string $status,
-    ) {
+    public function __construct(public Meta $meta, public RecommendationsTrends $trends, public float $rating, public string $status,)
+    {
     }
 
     public static function fromJson(string $json): self

@@ -4,8 +4,6 @@ declare(strict_types=1);
 
 namespace MarekSkopal\TwelveData\Dto\Analysis;
 
-use DateTimeImmutable;
-
 /**
  * @phpstan-import-type RecommendationsMonthType from RecommendationsMonth
  * @phpstan-type RecommendationsTrendsType array{

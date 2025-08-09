@@ -7,6 +7,7 @@ namespace MarekSkopal\TwelveData\Api;
 use MarekSkopal\TwelveData\Dto\Analysis\EarningsEstimate;
 use MarekSkopal\TwelveData\Dto\Analysis\EpsRevisions;
 use MarekSkopal\TwelveData\Dto\Analysis\EpsTrend;
+use MarekSkopal\TwelveData\Dto\Analysis\GrowthEstimates;
 use MarekSkopal\TwelveData\Dto\Analysis\Recommendations;
 use MarekSkopal\TwelveData\Dto\Analysis\RevenueEstimate;
 
@@ -104,6 +105,29 @@ readonly class Analysis extends TwelveDataApi
         );
 
         return EpsRevisions::fromJson($response);
+    }
+
+    public function growthEstimates(
+        string $symbol,
+        ?string $figi = null,
+        ?string $isin = null,
+        ?string $cusip = null,
+        ?string $country = null,
+        ?string $exchange = null,
+    ): GrowthEstimates {
+        $response = $this->client->get(
+            path: '/growth_estimates',
+            queryParams: [
+                'symbol' => $symbol,
+                'figi' => $figi,
+                'isin' => $isin,
+                'cusip' => $cusip,
+                'exchange' => $exchange,
+                'country' => $country,
+            ],
+        );
+
+        return GrowthEstimates::fromJson($response);
     }
 
     public function recommendations(
