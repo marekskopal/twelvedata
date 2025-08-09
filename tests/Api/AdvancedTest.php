@@ -25,7 +25,7 @@ final class AdvancedTest extends TestCase
     {
         $advanced = new Advanced(ClientFixture::createDemo());
 
-        $this->assertInstanceOf(
+        self::assertInstanceOf(
             ApiUsage::class,
             $advanced->apiUsage(),
         );

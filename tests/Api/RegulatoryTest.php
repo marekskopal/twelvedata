@@ -62,7 +62,7 @@ final class RegulatoryTest extends TestCase
     {
         $regulatory = new Regulatory(ClientFixture::createWithResponse('edgar_fillings.json'));
 
-        $this->assertInstanceOf(
+        self::assertInstanceOf(
             EdgarFillings::class,
             $regulatory->edgarFilligs('AAPL'),
         );
@@ -72,7 +72,7 @@ final class RegulatoryTest extends TestCase
     {
         $regulatory = new Regulatory(ClientFixture::createDemo());
 
-        $this->assertInstanceOf(
+        self::assertInstanceOf(
             InsiderTransactions::class,
             $regulatory->insiderTransactions('AAPL'),
         );
@@ -82,7 +82,7 @@ final class RegulatoryTest extends TestCase
     {
         $regulatory = new Regulatory(ClientFixture::createDemo());
 
-        $this->assertInstanceOf(
+        self::assertInstanceOf(
             InstitutionalHolders::class,
             $regulatory->institutionalHolders('AAPL'),
         );
@@ -92,7 +92,7 @@ final class RegulatoryTest extends TestCase
     {
         $regulatory = new Regulatory(ClientFixture::createDemo());
 
-        $this->assertInstanceOf(
+        self::assertInstanceOf(
             FundHolders::class,
             $regulatory->fundHolders('AAPL'),
         );
@@ -102,7 +102,7 @@ final class RegulatoryTest extends TestCase
     {
         $regulatory = new Regulatory(ClientFixture::createDemo());
 
-        $this->assertInstanceOf(
+        self::assertInstanceOf(
             DirectHolders::class,
             $regulatory->directHolders('AAPL'),
         );
@@ -112,7 +112,7 @@ final class RegulatoryTest extends TestCase
     {
         $regulatory = new Regulatory(ClientFixture::createWithResponse('tax_info.json'));
 
-        $this->assertInstanceOf(
+        self::assertInstanceOf(
             TaxInformation::class,
             $regulatory->taxInformation('SKYQ'),
         );
@@ -122,7 +122,7 @@ final class RegulatoryTest extends TestCase
     {
         $regulatory = new Regulatory(ClientFixture::createWithResponse('sanctioned_entities.json'));
 
-        $this->assertInstanceOf(
+        self::assertInstanceOf(
             SanctionedEntities::class,
             $regulatory->sanctionedEntities(SanctionsSourceEnum::Ofac),
         );

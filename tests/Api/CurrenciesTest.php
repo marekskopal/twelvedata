@@ -29,7 +29,7 @@ final class CurrenciesTest extends TestCase
     {
         $referenceData = new Currencies(ClientFixture::createWithResponse('exchange_rate.json'));
 
-        $this->assertInstanceOf(
+        self::assertInstanceOf(
             ExchangeRate::class,
             $referenceData->exchangeRate('USD/JPY'),
         );
@@ -39,7 +39,7 @@ final class CurrenciesTest extends TestCase
     {
         $referenceData = new Currencies(ClientFixture::createWithResponse('currency_conversion.json'));
 
-        $this->assertInstanceOf(
+        self::assertInstanceOf(
             CurrencyConversion::class,
             $referenceData->currencyConversion('USD/JPY', 122),
         );

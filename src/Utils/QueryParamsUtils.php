@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace MarekSkopal\TwelveData\Utils;
 
-use UnitEnum;
+use BackedEnum;
 
 readonly class QueryParamsUtils
 {
@@ -19,10 +19,9 @@ readonly class QueryParamsUtils
         return implode(',', $param);
     }
 
-    /** @param array<UnitEnum> $param */
+    /** @param array<BackedEnum> $param */
     public static function enumArrayAsString(array $param): string
     {
-        /** @phpstan-ignore-next-line */
-        return implode(',', array_map(fn (UnitEnum $item): string => $item->value, $param));
+        return implode(',', array_map(fn (BackedEnum $item): string => (string) $item->value, $param));
     }
 }

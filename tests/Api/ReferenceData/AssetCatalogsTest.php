@@ -81,7 +81,7 @@ final class AssetCatalogsTest extends TestCase
     {
         $referenceData = new AssetCatalogs(ClientFixture::createDemo());
 
-        $this->assertInstanceOf(
+        self::assertInstanceOf(
             Stocks::class,
             $referenceData->stocks('AAPL'),
         );
@@ -91,7 +91,7 @@ final class AssetCatalogsTest extends TestCase
     {
         $referenceData = new AssetCatalogs(ClientFixture::createDemo());
 
-        $this->assertInstanceOf(
+        self::assertInstanceOf(
             ForexPairs::class,
             $referenceData->forexPairs('EUR/USD'),
         );
@@ -101,7 +101,7 @@ final class AssetCatalogsTest extends TestCase
     {
         $referenceData = new AssetCatalogs(ClientFixture::createDemo());
 
-        $this->assertInstanceOf(
+        self::assertInstanceOf(
             CryptocurrencyPairs::class,
             $referenceData->cryptocurrencyPairs('BTC/USD'),
         );
@@ -111,7 +111,7 @@ final class AssetCatalogsTest extends TestCase
     {
         $referenceData = new AssetCatalogs(ClientFixture::createDemo());
 
-        $this->assertInstanceOf(
+        self::assertInstanceOf(
             Etfs::class,
             $referenceData->etfs('QQQ'),
         );
@@ -121,7 +121,7 @@ final class AssetCatalogsTest extends TestCase
     {
         $referenceData = new AssetCatalogs(ClientFixture::createDemo());
 
-        $this->assertInstanceOf(
+        self::assertInstanceOf(
             Funds::class,
             $referenceData->funds('0P00000AMH'),
         );
@@ -131,7 +131,7 @@ final class AssetCatalogsTest extends TestCase
     {
         $referenceData = new AssetCatalogs(ClientFixture::createDemo());
 
-        $this->assertInstanceOf(
+        self::assertInstanceOf(
             Bonds::class,
             $referenceData->bonds('AJXA'),
         );
@@ -141,7 +141,7 @@ final class AssetCatalogsTest extends TestCase
     {
         $referenceData = new AssetCatalogs(ClientFixture::createDemo());
 
-        $this->assertInstanceOf(
+        self::assertInstanceOf(
             Indices::class,
             $referenceData->indices('IXIC'),
         );
@@ -151,7 +151,7 @@ final class AssetCatalogsTest extends TestCase
     {
         $referenceData = new AssetCatalogs(ClientFixture::createDemo());
 
-        $this->assertInstanceOf(
+        self::assertInstanceOf(
             Commodities::class,
             $referenceData->commodities(),
         );

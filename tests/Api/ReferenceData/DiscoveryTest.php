@@ -38,7 +38,7 @@ final class DiscoveryTest extends TestCase
     {
         $referenceData = new Discovery(ClientFixture::createDemo());
 
-        $this->assertInstanceOf(
+        self::assertInstanceOf(
             SymbolSearch::class,
             $referenceData->symbolSearch('AA'),
         );
@@ -48,7 +48,7 @@ final class DiscoveryTest extends TestCase
     {
         $referenceData = new Discovery(ClientFixture::createWithResponse('cross_listings.json'));
 
-        $this->assertInstanceOf(
+        self::assertInstanceOf(
             CrossListings::class,
             $referenceData->crossListings('NVDA'),
         );
@@ -58,7 +58,7 @@ final class DiscoveryTest extends TestCase
     {
         $referenceData = new Discovery(ClientFixture::createDemo());
 
-        $this->assertInstanceOf(
+        self::assertInstanceOf(
             EarliestTimestamp::class,
             $referenceData->earliestTimestamp('AAPL', IntervalEnum::OneDay),
         );

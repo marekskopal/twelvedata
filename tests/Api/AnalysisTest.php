@@ -41,7 +41,7 @@ final class AnalysisTest extends TestCase
     {
         $analysis = new Analysis(ClientFixture::createWithResponse('earnings_estimate.json'));
 
-        $this->assertInstanceOf(
+        self::assertInstanceOf(
             EarningsEstimate::class,
             $analysis->earningsEstimate('AAPL'),
         );
@@ -51,7 +51,7 @@ final class AnalysisTest extends TestCase
     {
         $analysis = new Analysis(ClientFixture::createWithResponse('revenue_estimate.json'));
 
-        $this->assertInstanceOf(
+        self::assertInstanceOf(
             RevenueEstimate::class,
             $analysis->revenueEstimate('AAPL'),
         );
@@ -61,7 +61,7 @@ final class AnalysisTest extends TestCase
     {
         $analysis = new Analysis(ClientFixture::createWithResponse('eps_trend.json'));
 
-        $this->assertInstanceOf(
+        self::assertInstanceOf(
             EpsTrend::class,
             $analysis->epsTrend('AAPL'),
         );
@@ -71,7 +71,7 @@ final class AnalysisTest extends TestCase
     {
         $analysis = new Analysis(ClientFixture::createWithResponse('eps_revisions.json'));
 
-        $this->assertInstanceOf(
+        self::assertInstanceOf(
             EpsRevisions::class,
             $analysis->epsRevisions('AAPL'),
         );

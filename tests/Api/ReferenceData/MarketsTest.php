@@ -41,7 +41,7 @@ final class MarketsTest extends TestCase
     {
         $referenceData = new Markets(ClientFixture::createDemo());
 
-        $this->assertInstanceOf(
+        self::assertInstanceOf(
             Exchanges::class,
             $referenceData->exchanges('etf'),
         );
@@ -51,7 +51,7 @@ final class MarketsTest extends TestCase
     {
         $referenceData = new Markets(ClientFixture::createWithResponse('exchange_schedule.json'));
 
-        $this->assertInstanceOf(
+        self::assertInstanceOf(
             ExchangeSchedule::class,
             $referenceData->exchangeSchedule(),
         );
@@ -61,7 +61,7 @@ final class MarketsTest extends TestCase
     {
         $referenceData = new Markets(ClientFixture::createDemo());
 
-        $this->assertInstanceOf(
+        self::assertInstanceOf(
             CryptocurrencyExchanges::class,
             $referenceData->cryptocurrencyExchanges(),
         );
@@ -73,7 +73,7 @@ final class MarketsTest extends TestCase
 
         $marketState = $referenceData->marketState('NYSE');
 
-        $this->assertIsArray($marketState);
-        $this->assertInstanceOf(MarketState::class, $marketState[0]);
+        self::assertIsArray($marketState);
+        self::assertInstanceOf(MarketState::class, $marketState[0]);
     }
 }

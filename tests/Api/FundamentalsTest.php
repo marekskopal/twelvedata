@@ -217,7 +217,7 @@ final class FundamentalsTest extends TestCase
     {
         $fundamentals = new Fundamentals(ClientFixture::createDemo());
 
-        $this->assertInstanceOf(
+        self::assertInstanceOf(
             Logo::class,
             $fundamentals->logo('AAPL'),
         );
@@ -227,7 +227,7 @@ final class FundamentalsTest extends TestCase
     {
         $fundamentals = new Fundamentals(ClientFixture::createWithResponse('profile.json'));
 
-        $this->assertInstanceOf(
+        self::assertInstanceOf(
             Profile::class,
             $fundamentals->profile('AAPL'),
         );
@@ -237,7 +237,7 @@ final class FundamentalsTest extends TestCase
     {
         $fundamentals = new Fundamentals(ClientFixture::createDemo());
 
-        $this->assertInstanceOf(
+        self::assertInstanceOf(
             Dividends::class,
             $fundamentals->dividends('AAPL'),
         );
@@ -249,14 +249,14 @@ final class FundamentalsTest extends TestCase
 
         $dividendsCalendar = $fundamentals->dividendsCalendar();
 
-        $this->assertInstanceOf(DividendsCalendar::class, $dividendsCalendar[0]);
+        self::assertInstanceOf(DividendsCalendar::class, $dividendsCalendar[0]);
     }
 
     public function testSplits(): void
     {
         $fundamentals = new Fundamentals(ClientFixture::createDemo());
 
-        $this->assertInstanceOf(
+        self::assertInstanceOf(
             Splits::class,
             $fundamentals->splits('AAPL'),
         );
@@ -268,14 +268,14 @@ final class FundamentalsTest extends TestCase
 
         $splitsCalendar = $fundamentals->splitsCalendar();
 
-        $this->assertInstanceOf(SplitsCalendar::class, $splitsCalendar[0]);
+        self::assertInstanceOf(SplitsCalendar::class, $splitsCalendar[0]);
     }
 
     public function testEarnings(): void
     {
         $fundamentals = new Fundamentals(ClientFixture::createDemo());
 
-        $this->assertInstanceOf(
+        self::assertInstanceOf(
             Earnings::class,
             $fundamentals->earnings('AAPL'),
         );
@@ -285,7 +285,7 @@ final class FundamentalsTest extends TestCase
     {
         $fundamentals = new Fundamentals(ClientFixture::createWithResponse('earnings_calendar.json'));
 
-        $this->assertInstanceOf(
+        self::assertInstanceOf(
             EarningsCalendar::class,
             $fundamentals->earningsCalendar(),
         );
@@ -297,14 +297,14 @@ final class FundamentalsTest extends TestCase
 
         $ipoCalendar = $fundamentals->ipoCalendar();
 
-        $this->assertInstanceOf(IpoCalendar::class, $ipoCalendar[array_key_first($ipoCalendar)][0]);
+        self::assertInstanceOf(IpoCalendar::class, $ipoCalendar[array_key_first($ipoCalendar)][0]);
     }
 
     public function testStatistics(): void
     {
         $fundamentals = new Fundamentals(ClientFixture::createWithResponse('statistics.json'));
 
-        $this->assertInstanceOf(
+        self::assertInstanceOf(
             Statistics::class,
             $fundamentals->statistics('TSM'),
         );
@@ -314,7 +314,7 @@ final class FundamentalsTest extends TestCase
     {
         $fundamentals = new Fundamentals(ClientFixture::createDemo());
 
-        $this->assertInstanceOf(
+        self::assertInstanceOf(
             IncomeStatement::class,
             $fundamentals->incomeStatement('AAPL'),
         );
@@ -324,7 +324,7 @@ final class FundamentalsTest extends TestCase
     {
         $fundamentals = new Fundamentals(ClientFixture::createDemo());
 
-        $this->assertInstanceOf(
+        self::assertInstanceOf(
             IncomeStatementConsolidated::class,
             $fundamentals->incomeStatementConsolidated('AAPL'),
         );
@@ -334,7 +334,7 @@ final class FundamentalsTest extends TestCase
     {
         $fundamentals = new Fundamentals(ClientFixture::createDemo());
 
-        $this->assertInstanceOf(
+        self::assertInstanceOf(
             BalanceSheet::class,
             $fundamentals->balanceSheet('AAPL'),
         );
@@ -344,7 +344,7 @@ final class FundamentalsTest extends TestCase
     {
         $fundamentals = new Fundamentals(ClientFixture::createWithResponse('balance_sheet_consolidated.json'));
 
-        $this->assertInstanceOf(
+        self::assertInstanceOf(
             BalanceSheetConsolidated::class,
             $fundamentals->balanceSheetConsolidated('AAPL'),
         );
@@ -354,7 +354,7 @@ final class FundamentalsTest extends TestCase
     {
         $fundamentals = new Fundamentals(ClientFixture::createDemo());
 
-        $this->assertInstanceOf(
+        self::assertInstanceOf(
             CashFlow::class,
             $fundamentals->cashFlow('AAPL'),
         );
@@ -364,7 +364,7 @@ final class FundamentalsTest extends TestCase
     {
         $fundamentals = new Fundamentals(ClientFixture::createWithResponse('cash_flow_consolidated.json'));
 
-        $this->assertInstanceOf(
+        self::assertInstanceOf(
             CashFlowConsolidated::class,
             $fundamentals->cashFlowConsolidated('AAPL'),
         );
@@ -374,7 +374,7 @@ final class FundamentalsTest extends TestCase
     {
         $fundamentals = new Fundamentals(ClientFixture::createDemo());
 
-        $this->assertInstanceOf(
+        self::assertInstanceOf(
             OptionsExpiration::class,
             $fundamentals->optionsExpiration('AAPL'),
         );
@@ -384,7 +384,7 @@ final class FundamentalsTest extends TestCase
     {
         $fundamentals = new Fundamentals(ClientFixture::createDemo());
 
-        $this->assertInstanceOf(
+        self::assertInstanceOf(
             OptionsChain::class,
             $fundamentals->optionsChain('AAPL', expirationDate: new DateTimeImmutable('2022-01-21')),
         );
@@ -394,7 +394,7 @@ final class FundamentalsTest extends TestCase
     {
         $fundamentals = new Fundamentals(ClientFixture::createDemo());
 
-        $this->assertInstanceOf(
+        self::assertInstanceOf(
             KeyExecutives::class,
             $fundamentals->keyExecutives('AAPL'),
         );
@@ -404,7 +404,7 @@ final class FundamentalsTest extends TestCase
     {
         $fundamentals = new Fundamentals(ClientFixture::createWithResponse('market_capitalization.json'));
 
-        $this->assertInstanceOf(
+        self::assertInstanceOf(
             MarketCapitalization::class,
             $fundamentals->marketCapitalization('AAPL'),
         );
@@ -414,7 +414,7 @@ final class FundamentalsTest extends TestCase
     {
         $fundamentals = new Fundamentals(ClientFixture::createWithResponse('last_changes.json'));
 
-        $this->assertInstanceOf(
+        self::assertInstanceOf(
             LastChanges::class,
             $fundamentals->lastChanges(EndpointEnum::Statistics),
         );

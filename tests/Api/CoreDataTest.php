@@ -55,7 +55,7 @@ final class CoreDataTest extends TestCase
     {
         $referenceData = new CoreData(ClientFixture::createDemo());
 
-        $this->assertInstanceOf(
+        self::assertInstanceOf(
             TimeSeries::class,
             $referenceData->timeSeries('AAPL', IntervalEnum::OneMinute),
         );
@@ -65,7 +65,7 @@ final class CoreDataTest extends TestCase
     {
         $referenceData = new CoreData(ClientFixture::createWithResponse('time_series_cross.json'));
 
-        $this->assertInstanceOf(
+        self::assertInstanceOf(
             TimeSeriesCross::class,
             $referenceData->timeSeriesCross('JPY', 'BTC', IntervalEnum::OneMinute),
         );
@@ -75,7 +75,7 @@ final class CoreDataTest extends TestCase
     {
         $referenceData = new CoreData(ClientFixture::createDemo());
 
-        $this->assertInstanceOf(
+        self::assertInstanceOf(
             Quote::class,
             $referenceData->quote('AAPL'),
         );
@@ -85,7 +85,7 @@ final class CoreDataTest extends TestCase
     {
         $referenceData = new CoreData(ClientFixture::createDemo());
 
-        $this->assertInstanceOf(
+        self::assertInstanceOf(
             LatestPrice::class,
             $referenceData->latestPrice('AAPL'),
         );
@@ -95,7 +95,7 @@ final class CoreDataTest extends TestCase
     {
         $referenceData = new CoreData(ClientFixture::createDemo());
 
-        $this->assertInstanceOf(
+        self::assertInstanceOf(
             EndOfDayPrice::class,
             $referenceData->endOfDayPrice('AAPL'),
         );
@@ -105,7 +105,7 @@ final class CoreDataTest extends TestCase
     {
         $referenceData = new CoreData(ClientFixture::createWithResponse('market_movers_stocks.json'));
 
-        $this->assertInstanceOf(
+        self::assertInstanceOf(
             MarketMovers::class,
             $referenceData->marketMovers(MarketMoverEnum::Stocks),
         );

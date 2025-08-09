@@ -31,7 +31,7 @@ final class SupportingMetadataTest extends TestCase
     {
         $referenceData = new SupportingMetadata(ClientFixture::createWithResponse('countries.json'));
 
-        $this->assertInstanceOf(
+        self::assertInstanceOf(
             Countries::class,
             $referenceData->countries(),
         );
@@ -41,7 +41,7 @@ final class SupportingMetadataTest extends TestCase
     {
         $referenceData = new SupportingMetadata(ClientFixture::createWithResponse('instrument_type.json'));
 
-        $this->assertInstanceOf(
+        self::assertInstanceOf(
             InstrumentType::class,
             $referenceData->instrumentType(),
         );
