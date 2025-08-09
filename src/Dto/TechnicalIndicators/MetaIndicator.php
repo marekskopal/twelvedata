@@ -9,8 +9,8 @@ namespace MarekSkopal\TwelveData\Dto\TechnicalIndicators;
  *     name: string,
  *     series_type: string,
  *     time_period: int,
- *     sd: int,
- *     ma_type: string,
+ *     sd?: int,
+ *     ma_type?: string,
  * }
  */
 readonly class MetaIndicator
@@ -19,8 +19,8 @@ readonly class MetaIndicator
         public string $name,
         public string $seriesType,
         public int $timePeriod,
-        public int $sd,
-        public string $maType,
+        public ?int $sd,
+        public ?string $maType,
     ) {
     }
 
@@ -31,8 +31,8 @@ readonly class MetaIndicator
             name: $data['name'],
             seriesType: $data['series_type'],
             timePeriod: $data['time_period'],
-            sd: $data['sd'],
-            maType: $data['ma_type'],
+            sd: $data['sd'] ?? null,
+            maType: $data['ma_type'] ?? null,
         );
     }
 }

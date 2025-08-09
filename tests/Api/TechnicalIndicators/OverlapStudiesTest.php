@@ -11,9 +11,11 @@ use MarekSkopal\TwelveData\Config\Config;
 use MarekSkopal\TwelveData\Dto\TechnicalIndicators\Meta;
 use MarekSkopal\TwelveData\Dto\TechnicalIndicators\MetaIndicator;
 use MarekSkopal\TwelveData\Dto\TechnicalIndicators\OverlapStudies\BollingerBands;
+use MarekSkopal\TwelveData\Dto\TechnicalIndicators\OverlapStudies\DoubleExponentialMovingAverage;
 use MarekSkopal\TwelveData\Dto\TechnicalIndicators\TechnicalIndicator;
 use MarekSkopal\TwelveData\Tests\Fixtures\Client\ClientFixture;
 use MarekSkopal\TwelveData\Utils\DateUtils;
+use MarekSkopal\TwelveData\Utils\QueryParamsUtils;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\UsesClass;
 use PHPUnit\Framework\TestCase;
@@ -23,10 +25,12 @@ use PHPUnit\Framework\TestCase;
 #[UsesClass(Client::class)]
 #[UsesClass(Config::class)]
 #[UsesClass(DateUtils::class)]
+#[UsesClass(QueryParamsUtils::class)]
 #[UsesClass(TechnicalIndicator::class)]
 #[UsesClass(Meta::class)]
 #[UsesClass(MetaIndicator::class)]
 #[UsesClass(BollingerBands::class)]
+#[UsesClass(DoubleExponentialMovingAverage::class)]
 final class OverlapStudiesTest extends TestCase
 {
     public function testBollingerBands(): void
@@ -36,6 +40,16 @@ final class OverlapStudiesTest extends TestCase
         self::assertInstanceOf(
             BollingerBands::class,
             $overlapStudies->bollingerBands('AAPL')->values[0],
+        );
+    }
+
+    public function testDoubleExponentialMovingAverage(): void
+    {
+        $overlapStudies = new OverlapStudies(ClientFixture::createWithResponse('double_exponential_moving_average.json'));
+
+        self::assertInstanceOf(
+            DoubleExponentialMovingAverage::class,
+            $overlapStudies->doubleExponentialMovingAverage('AAPL')->values[0],
         );
     }
 }
