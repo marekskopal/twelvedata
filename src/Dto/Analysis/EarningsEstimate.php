@@ -10,12 +10,13 @@ namespace MarekSkopal\TwelveData\Dto\Analysis;
  * @phpstan-type EarningsEstimateType array{
  *     meta: MetaType,
  *     earnings_estimate: list<EarningsEstimateEarningsEstimateType>,
+ *     status: string,
  * }
  */
 readonly class EarningsEstimate
 {
     /** @param list<EarningsEstimateEarningsEstimate> $earningsEstimate */
-    public function __construct(public Meta $meta, public array $earningsEstimate)
+    public function __construct(public Meta $meta, public array $earningsEstimate, public string $status)
     {
     }
 
@@ -36,6 +37,7 @@ readonly class EarningsEstimate
                 fn (array $item) => EarningsEstimateEarningsEstimate::fromArray($item),
                 $data['earnings_estimate'],
             ),
+            status: $data['status'],
         );
     }
 }

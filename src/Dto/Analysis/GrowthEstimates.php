@@ -10,11 +10,12 @@ namespace MarekSkopal\TwelveData\Dto\Analysis;
  * @phpstan-type GrowthEstimatesType array{
  *     meta: MetaType,
  *     growth_estimates: GrowthEstimatesGrowthEstimatesType,
+ *     status: string,
  * }
  */
 readonly class GrowthEstimates
 {
-    public function __construct(public Meta $meta, public GrowthEstimatesGrowthEstimates $growthEstimates)
+    public function __construct(public Meta $meta, public GrowthEstimatesGrowthEstimates $growthEstimates, public string $status)
     {
     }
 
@@ -32,6 +33,7 @@ readonly class GrowthEstimates
         return new self(
             meta: Meta::fromArray($data['meta']),
             growthEstimates: GrowthEstimatesGrowthEstimates::fromArray($data['growth_estimates']),
+            status: $data['status'],
         );
     }
 }

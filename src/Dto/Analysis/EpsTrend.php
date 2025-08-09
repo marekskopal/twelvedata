@@ -10,12 +10,13 @@ namespace MarekSkopal\TwelveData\Dto\Analysis;
  * @phpstan-type EpsTrendType array{
  *     meta: MetaType,
  *     eps_trend: list<EpsTrendEpsTrendType>,
+ *     status: string,
  * }
  */
 readonly class EpsTrend
 {
     /** @param list<EpsTrendEpsTrend> $epsTrend */
-    public function __construct(public Meta $meta, public array $epsTrend)
+    public function __construct(public Meta $meta, public array $epsTrend, public string $status)
     {
     }
 
@@ -36,6 +37,7 @@ readonly class EpsTrend
                 fn (array $item) => EpsTrendEpsTrend::fromArray($item),
                 $data['eps_trend'],
             ),
+            status: $data['status'],
         );
     }
 }

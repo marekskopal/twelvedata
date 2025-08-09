@@ -10,12 +10,13 @@ namespace MarekSkopal\TwelveData\Dto\Analysis;
  * @phpstan-type EpsRevisionsType array{
  *     meta: MetaType,
  *     eps_revision: list<EpsRevisionsEpsRevisionType>,
+ *     status: string,
  * }
  */
 readonly class EpsRevisions
 {
     /** @param list<EpsRevisionsEpsRevision> $revenueEstimate */
-    public function __construct(public Meta $meta, public array $revenueEstimate)
+    public function __construct(public Meta $meta, public array $revenueEstimate, public string $status)
     {
     }
 
@@ -36,6 +37,7 @@ readonly class EpsRevisions
                 fn (array $item) => EpsRevisionsEpsRevision::fromArray($item),
                 $data['eps_revision'],
             ),
+            status: $data['status'],
         );
     }
 }

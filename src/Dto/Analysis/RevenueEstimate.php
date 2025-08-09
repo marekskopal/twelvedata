@@ -10,12 +10,13 @@ namespace MarekSkopal\TwelveData\Dto\Analysis;
  * @phpstan-type RevenueEstimateType array{
  *     meta: MetaType,
  *     revenue_estimate: list<RevenueEstimateRevenueEstimateType>,
+ *     status: string,
  * }
  */
 readonly class RevenueEstimate
 {
     /** @param list<RevenueEstimateRevenueEstimate> $revenueEstimate */
-    public function __construct(public Meta $meta, public array $revenueEstimate)
+    public function __construct(public Meta $meta, public array $revenueEstimate, public string $status)
     {
     }
 
@@ -36,6 +37,7 @@ readonly class RevenueEstimate
                 fn (array $item) => RevenueEstimateRevenueEstimate::fromArray($item),
                 $data['revenue_estimate'],
             ),
+            status: $data['status'],
         );
     }
 }

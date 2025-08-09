@@ -10,11 +10,12 @@ namespace MarekSkopal\TwelveData\Dto\Analysis;
  * @phpstan-type PriceTargetType array{
  *     meta: MetaType,
  *     price_target: PriceTargetPriceTargetType,
+ *     status: string,
  * }
  */
 readonly class PriceTarget
 {
-    public function __construct(public Meta $meta, public PriceTargetPriceTarget $priceTarget)
+    public function __construct(public Meta $meta, public PriceTargetPriceTarget $priceTarget, public string $status)
     {
     }
 
@@ -32,6 +33,7 @@ readonly class PriceTarget
         return new self(
             meta: Meta::fromArray($data['meta']),
             priceTarget: PriceTargetPriceTarget::fromArray($data['price_target']),
+            status: $data['status'],
         );
     }
 }
