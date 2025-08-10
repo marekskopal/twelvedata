@@ -17,6 +17,10 @@ use MarekSkopal\TwelveData\Dto\TechnicalIndicators\OverlapStudies\HilbertTransfo
 use MarekSkopal\TwelveData\Dto\TechnicalIndicators\OverlapStudies\IchimokuCloud;
 use MarekSkopal\TwelveData\Dto\TechnicalIndicators\OverlapStudies\KaufmanAdaptiveMovingAverage;
 use MarekSkopal\TwelveData\Dto\TechnicalIndicators\OverlapStudies\KeltnerChannel;
+use MarekSkopal\TwelveData\Dto\TechnicalIndicators\OverlapStudies\McGinleyDynamicIndicator;
+use MarekSkopal\TwelveData\Dto\TechnicalIndicators\OverlapStudies\MesaAdaptiveMovingAverage;
+use MarekSkopal\TwelveData\Dto\TechnicalIndicators\OverlapStudies\Midpoint;
+use MarekSkopal\TwelveData\Dto\TechnicalIndicators\OverlapStudies\Midprice;
 use MarekSkopal\TwelveData\Dto\TechnicalIndicators\OverlapStudies\MovingAverage;
 use MarekSkopal\TwelveData\Dto\TechnicalIndicators\TechnicalIndicator;
 use MarekSkopal\TwelveData\Tests\Fixtures\Client\ClientFixture;
@@ -43,6 +47,10 @@ use PHPUnit\Framework\TestCase;
 #[UsesClass(KaufmanAdaptiveMovingAverage::class)]
 #[UsesClass(KeltnerChannel::class)]
 #[UsesClass(MovingAverage::class)]
+#[UsesClass(MesaAdaptiveMovingAverage::class)]
+#[UsesClass(McGinleyDynamicIndicator::class)]
+#[UsesClass(Midpoint::class)]
+#[UsesClass(Midprice::class)]
 final class OverlapStudiesTest extends TestCase
 {
     public function testBollingerBands(): void
@@ -122,6 +130,46 @@ final class OverlapStudiesTest extends TestCase
         self::assertInstanceOf(
             MovingAverage::class,
             $overlapStudies->movingAverage('AAPL')->values[0],
+        );
+    }
+
+    public function testMesaAdaptiveMovingAverage(): void
+    {
+        $overlapStudies = new OverlapStudies(ClientFixture::createWithResponse('mesa_adaptive_moving_average.json'));
+
+        self::assertInstanceOf(
+            MesaAdaptiveMovingAverage::class,
+            $overlapStudies->mesaAdaptiveMovingAverage('AAPL')->values[0],
+        );
+    }
+
+    public function testMcGinleyDynamicIndicator(): void
+    {
+        $overlapStudies = new OverlapStudies(ClientFixture::createWithResponse('mcginley_dynamic_indicator.json'));
+
+        self::assertInstanceOf(
+            McGinleyDynamicIndicator::class,
+            $overlapStudies->mcGinleyDynamicIndicator('AAPL')->values[0],
+        );
+    }
+
+    public function testMidpoint(): void
+    {
+        $overlapStudies = new OverlapStudies(ClientFixture::createWithResponse('midpoint.json'));
+
+        self::assertInstanceOf(
+            Midpoint::class,
+            $overlapStudies->midpoint('AAPL')->values[0],
+        );
+    }
+
+    public function testMidprice(): void
+    {
+        $overlapStudies = new OverlapStudies(ClientFixture::createWithResponse('midprice.json'));
+
+        self::assertInstanceOf(
+            Midprice::class,
+            $overlapStudies->midprice('AAPL')->values[0],
         );
     }
 }

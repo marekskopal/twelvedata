@@ -16,6 +16,8 @@ namespace MarekSkopal\TwelveData\Dto\TechnicalIndicators;
  *     leading_span_b_period?: int,
  *     lagging_span_period?: int,
  *     include_ahead_span_period?: bool,
+ *     fast_limit?: float,
+ *     slow_limit?: float,
  * }
  */
 readonly class MetaIndicator
@@ -31,6 +33,8 @@ readonly class MetaIndicator
         public ?int $leading_span_b_period,
         public ?int $laggingSpanPeriod,
         public ?bool $includeAheadSpanPeriod,
+        public ?float $fastLimit,
+        public ?float $slowLimit,
     ) {
     }
 
@@ -48,6 +52,8 @@ readonly class MetaIndicator
             leading_span_b_period: $data['leading_span_b_period'] ?? null,
             laggingSpanPeriod: $data['lagging_span_period'] ?? null,
             includeAheadSpanPeriod: $data['include_ahead_span_period'] ?? null,
+            fastLimit: $data['fast_limit'] ?? null,
+            slowLimit: $data['slow_limit'] ?? null,
         );
     }
 }
