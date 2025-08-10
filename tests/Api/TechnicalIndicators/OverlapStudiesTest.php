@@ -15,6 +15,9 @@ use MarekSkopal\TwelveData\Dto\TechnicalIndicators\OverlapStudies\DoubleExponent
 use MarekSkopal\TwelveData\Dto\TechnicalIndicators\OverlapStudies\ExponentialMovingAverage;
 use MarekSkopal\TwelveData\Dto\TechnicalIndicators\OverlapStudies\HilbertTransformInstantaneousTrendline;
 use MarekSkopal\TwelveData\Dto\TechnicalIndicators\OverlapStudies\IchimokuCloud;
+use MarekSkopal\TwelveData\Dto\TechnicalIndicators\OverlapStudies\KaufmanAdaptiveMovingAverage;
+use MarekSkopal\TwelveData\Dto\TechnicalIndicators\OverlapStudies\KeltnerChannel;
+use MarekSkopal\TwelveData\Dto\TechnicalIndicators\OverlapStudies\MovingAverage;
 use MarekSkopal\TwelveData\Dto\TechnicalIndicators\TechnicalIndicator;
 use MarekSkopal\TwelveData\Tests\Fixtures\Client\ClientFixture;
 use MarekSkopal\TwelveData\Utils\DateUtils;
@@ -37,6 +40,9 @@ use PHPUnit\Framework\TestCase;
 #[UsesClass(ExponentialMovingAverage::class)]
 #[UsesClass(HilbertTransformInstantaneousTrendline::class)]
 #[UsesClass(IchimokuCloud::class)]
+#[UsesClass(KaufmanAdaptiveMovingAverage::class)]
+#[UsesClass(KeltnerChannel::class)]
+#[UsesClass(MovingAverage::class)]
 final class OverlapStudiesTest extends TestCase
 {
     public function testBollingerBands(): void
@@ -86,6 +92,36 @@ final class OverlapStudiesTest extends TestCase
         self::assertInstanceOf(
             IchimokuCloud::class,
             $overlapStudies->ichimokuCloud('AAPL')->values[0],
+        );
+    }
+
+    public function testKaufmanAdaptiveMovingAverage(): void
+    {
+        $overlapStudies = new OverlapStudies(ClientFixture::createWithResponse('kaufman_adaptive_moving_average.json'));
+
+        self::assertInstanceOf(
+            KaufmanAdaptiveMovingAverage::class,
+            $overlapStudies->kaufmanAdaptiveMovingAverage('AAPL')->values[0],
+        );
+    }
+
+    public function testKeltnerChannel(): void
+    {
+        $overlapStudies = new OverlapStudies(ClientFixture::createWithResponse('keltner_channel.json'));
+
+        self::assertInstanceOf(
+            KeltnerChannel::class,
+            $overlapStudies->keltnerChannel('AAPL')->values[0],
+        );
+    }
+
+    public function testMovingAverage(): void
+    {
+        $overlapStudies = new OverlapStudies(ClientFixture::createWithResponse('moving_average.json'));
+
+        self::assertInstanceOf(
+            MovingAverage::class,
+            $overlapStudies->movingAverage('AAPL')->values[0],
         );
     }
 }
