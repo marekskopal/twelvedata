@@ -12,6 +12,9 @@ use MarekSkopal\TwelveData\Dto\TechnicalIndicators\Meta;
 use MarekSkopal\TwelveData\Dto\TechnicalIndicators\MetaIndicator;
 use MarekSkopal\TwelveData\Dto\TechnicalIndicators\OverlapStudies\BollingerBands;
 use MarekSkopal\TwelveData\Dto\TechnicalIndicators\OverlapStudies\DoubleExponentialMovingAverage;
+use MarekSkopal\TwelveData\Dto\TechnicalIndicators\OverlapStudies\ExponentialMovingAverage;
+use MarekSkopal\TwelveData\Dto\TechnicalIndicators\OverlapStudies\HilbertTransformInstantaneousTrendline;
+use MarekSkopal\TwelveData\Dto\TechnicalIndicators\OverlapStudies\IchimokuCloud;
 use MarekSkopal\TwelveData\Dto\TechnicalIndicators\TechnicalIndicator;
 use MarekSkopal\TwelveData\Tests\Fixtures\Client\ClientFixture;
 use MarekSkopal\TwelveData\Utils\DateUtils;
@@ -31,6 +34,9 @@ use PHPUnit\Framework\TestCase;
 #[UsesClass(MetaIndicator::class)]
 #[UsesClass(BollingerBands::class)]
 #[UsesClass(DoubleExponentialMovingAverage::class)]
+#[UsesClass(ExponentialMovingAverage::class)]
+#[UsesClass(HilbertTransformInstantaneousTrendline::class)]
+#[UsesClass(IchimokuCloud::class)]
 final class OverlapStudiesTest extends TestCase
 {
     public function testBollingerBands(): void
@@ -50,6 +56,36 @@ final class OverlapStudiesTest extends TestCase
         self::assertInstanceOf(
             DoubleExponentialMovingAverage::class,
             $overlapStudies->doubleExponentialMovingAverage('AAPL')->values[0],
+        );
+    }
+
+    public function testExponentialMovingAverage(): void
+    {
+        $overlapStudies = new OverlapStudies(ClientFixture::createWithResponse('exponential_moving_average.json'));
+
+        self::assertInstanceOf(
+            ExponentialMovingAverage::class,
+            $overlapStudies->exponentialMovingAverage('AAPL')->values[0],
+        );
+    }
+
+    public function testHilbertTransformInstantaneousTrendline(): void
+    {
+        $overlapStudies = new OverlapStudies(ClientFixture::createWithResponse('hilbert_transform_instantaneous_trendline.json'));
+
+        self::assertInstanceOf(
+            HilbertTransformInstantaneousTrendline::class,
+            $overlapStudies->hilbertTransformInstantaneousTrendline('AAPL')->values[0],
+        );
+    }
+
+    public function testIchimokuCloud(): void
+    {
+        $overlapStudies = new OverlapStudies(ClientFixture::createWithResponse('ichimoku_cloud.json'));
+
+        self::assertInstanceOf(
+            IchimokuCloud::class,
+            $overlapStudies->ichimokuCloud('AAPL')->values[0],
         );
     }
 }
