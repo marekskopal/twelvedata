@@ -18,10 +18,19 @@ use MarekSkopal\TwelveData\Enum\IntervalEnum;
 // Create TwelveData instance
 $twelveData = new TwelveData('<yourApiKey>');
 
-// Get the one minute time series for the AAPL symbol
+// Get the one minute time series for the AAPL symbol. Response is in form of strict typed DTO (Data Transfer Object)
 $response = $twelveData->coreData->timeSeries(
     symbol: 'AAPL',
     interval: IntervalEnum::OneMinute,
+);
+
+// Alternatively, you can use the low level interface
+$response = $twelveData->get(
+    '/time_series',
+    [
+        'symbol' => 'AAPL',
+        'interval' => '1min',
+    ],
 );
 ```
 
