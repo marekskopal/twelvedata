@@ -94,7 +94,38 @@ More endpoints will be covered in future versions.
 
 ### Mutual Funds ❌
 
-### Technical Indicators ❌
+### Technical Indicators
+#### Overlap studies
+* Bollinger bands                           ✅
+* High demand                               ✅
+* Double exponential moving average         ✅
+* Exponential moving average                ✅
+* High demand                               ✅
+* Hilbert transform instantaneous trendline ✅
+* Ichimoku cloud                            ✅
+* Kaufman adaptive moving average           ✅
+* Keltner channel                           ✅
+* Moving average                            ✅
+* MESA adaptive moving average              ✅
+* McGinley dynamic indicator                ✅
+* Midpoint                                  ✅
+* Midprice                                  ✅
+* Pivot points high low                     ✅
+* Parabolic stop and reverse                ✅
+* Parabolic stop and reverse extended       ✅
+* Simple moving average                     ✅
+* High demand                               ✅
+* Triple exponential moving average T3MA    ✅
+* Triple exponential moving average TEMA    ✅
+* Triangular moving average                 ✅
+* Volume weighted average price             ✅
+* Weighted moving average                   ✅
+#### Momentum indicators ❌
+#### Volume indicators ❌
+#### Volatility indicators ❌
+#### Price transform ❌
+#### Cycle indicators ❌
+#### Statistic functions ❌
 
 ### Analysis
 * Earnings Estimate           ✅
