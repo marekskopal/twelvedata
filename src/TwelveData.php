@@ -11,6 +11,7 @@ use MarekSkopal\TwelveData\Api\Currencies;
 use MarekSkopal\TwelveData\Api\Fundamentals;
 use MarekSkopal\TwelveData\Api\ReferenceData;
 use MarekSkopal\TwelveData\Api\Regulatory;
+use MarekSkopal\TwelveData\Api\TechnicalIndicators;
 use MarekSkopal\TwelveData\Client\Client;
 use MarekSkopal\TwelveData\Config\Config;
 
@@ -23,6 +24,8 @@ readonly class TwelveData
     public Fundamentals $fundamentals;
 
     public Currencies $currencies;
+
+    public TechnicalIndicators $technicalIndicators;
 
     public Analysis $analysis;
 
@@ -38,6 +41,7 @@ readonly class TwelveData
         $this->referenceData = new ReferenceData($client);
         $this->fundamentals = new Fundamentals($client);
         $this->currencies = new Currencies($client);
+        $this->technicalIndicators = new TechnicalIndicators($client);
         $this->analysis = new Analysis($client);
         $this->regulatory = new Regulatory($client);
         $this->advanced = new Advanced($client);
@@ -61,6 +65,11 @@ readonly class TwelveData
     public function getCurrencies(): Currencies
     {
         return $this->currencies;
+    }
+
+    public function getTechnicalIndicators(): TechnicalIndicators
+    {
+        return $this->technicalIndicators;
     }
 
     public function getAnalysis(): Analysis
