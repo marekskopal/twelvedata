@@ -25,6 +25,9 @@ use MarekSkopal\TwelveData\Dto\TechnicalIndicators\OverlapStudies\MovingAverage;
 use MarekSkopal\TwelveData\Dto\TechnicalIndicators\OverlapStudies\ParabolicStopAndReverse;
 use MarekSkopal\TwelveData\Dto\TechnicalIndicators\OverlapStudies\ParabolicStopAndReverseExtended;
 use MarekSkopal\TwelveData\Dto\TechnicalIndicators\OverlapStudies\PivotPointsHighLow;
+use MarekSkopal\TwelveData\Dto\TechnicalIndicators\OverlapStudies\SimpleMovingAverage;
+use MarekSkopal\TwelveData\Dto\TechnicalIndicators\OverlapStudies\TripleExponentialMovingAverageT3MA;
+use MarekSkopal\TwelveData\Dto\TechnicalIndicators\OverlapStudies\TripleExponentialMovingAverageTEMA;
 use MarekSkopal\TwelveData\Dto\TechnicalIndicators\TechnicalIndicator;
 use MarekSkopal\TwelveData\Tests\Fixtures\Client\ClientFixture;
 use MarekSkopal\TwelveData\Utils\DateUtils;
@@ -57,6 +60,9 @@ use PHPUnit\Framework\TestCase;
 #[UsesClass(PivotPointsHighLow::class)]
 #[UsesClass(ParabolicStopAndReverse::class)]
 #[UsesClass(ParabolicStopAndReverseExtended::class)]
+#[UsesClass(SimpleMovingAverage::class)]
+#[UsesClass(TripleExponentialMovingAverageT3MA::class)]
+#[UsesClass(TripleExponentialMovingAverageTEMA::class)]
 final class OverlapStudiesTest extends TestCase
 {
     public function testBollingerBands(): void
@@ -206,6 +212,36 @@ final class OverlapStudiesTest extends TestCase
         self::assertInstanceOf(
             ParabolicStopAndReverseExtended::class,
             $overlapStudies->parabolicStopAndReverseExtended('AAPL')->values[0],
+        );
+    }
+
+    public function testSimpleMovingAverage(): void
+    {
+        $overlapStudies = new OverlapStudies(ClientFixture::createWithResponse('simple_moving_average.json'));
+
+        self::assertInstanceOf(
+            SimpleMovingAverage::class,
+            $overlapStudies->simpleMovingAverage('AAPL')->values[0],
+        );
+    }
+
+    public function testTripleExponentialMovingAverageT3MA(): void
+    {
+        $overlapStudies = new OverlapStudies(ClientFixture::createWithResponse('triple_exponential_moving_average_t3ma.json'));
+
+        self::assertInstanceOf(
+            TripleExponentialMovingAverageT3MA::class,
+            $overlapStudies->tripleExponentialMovingAverageT3MA('AAPL')->values[0],
+        );
+    }
+
+    public function testTripleExponentialMovingAverageTEMA(): void
+    {
+        $overlapStudies = new OverlapStudies(ClientFixture::createWithResponse('triple_exponential_moving_average_tema.json'));
+
+        self::assertInstanceOf(
+            TripleExponentialMovingAverageTEMA::class,
+            $overlapStudies->tripleExponentialMovingAverageTEMA('AAPL')->values[0],
         );
     }
 }
