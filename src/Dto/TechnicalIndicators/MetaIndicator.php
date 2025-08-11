@@ -18,6 +18,16 @@ namespace MarekSkopal\TwelveData\Dto\TechnicalIndicators;
  *     include_ahead_span_period?: bool,
  *     fast_limit?: float,
  *     slow_limit?: float,
+ *     acceleration?: float,
+ *     maximum?: float,
+ *     start_value?: float,
+ *     offset_on_reverse?: float,
+ *     acceleration_limit_long?: float,
+ *     acceleration_long?: float,
+ *     acceleration_max_long?: float,
+ *     acceleration_limit_short?: float,
+ *     acceleration_short?: float,
+ *     acceleration_max_short?: float,
  * }
  */
 readonly class MetaIndicator
@@ -35,6 +45,16 @@ readonly class MetaIndicator
         public ?bool $includeAheadSpanPeriod,
         public ?float $fastLimit,
         public ?float $slowLimit,
+        public ?float $acceleration,
+        public ?float $maximum,
+        public ?float $startValue,
+        public ?float $offsetOnReverse,
+        public ?float $accelerationLimitLong,
+        public ?float $accelerationLong,
+        public ?float $accelerationMaxLong,
+        public ?float $accelerationLimitShort,
+        public ?float $accelerationShort,
+        public ?float $accelerationMaxShort,
     ) {
     }
 
@@ -54,6 +74,16 @@ readonly class MetaIndicator
             includeAheadSpanPeriod: $data['include_ahead_span_period'] ?? null,
             fastLimit: $data['fast_limit'] ?? null,
             slowLimit: $data['slow_limit'] ?? null,
+            acceleration: $data['acceleration'] ?? null,
+            maximum: $data['maximum'] ?? null,
+            startValue: $data['start_value'] ?? null,
+            offsetOnReverse: $data['offset_on_reverse'] ?? null,
+            accelerationLimitLong: $data['acceleration_limit_long'] ?? null,
+            accelerationLong: $data['acceleration_long'] ?? null,
+            accelerationMaxLong: $data['acceleration_max_long'] ?? null,
+            accelerationLimitShort: $data['acceleration_limit_short'] ?? null,
+            accelerationShort: $data['acceleration_short'] ?? null,
+            accelerationMaxShort: $data['acceleration_max_short'] ?? null,
         );
     }
 }

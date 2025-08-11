@@ -18,6 +18,9 @@ use MarekSkopal\TwelveData\Dto\TechnicalIndicators\OverlapStudies\MesaAdaptiveMo
 use MarekSkopal\TwelveData\Dto\TechnicalIndicators\OverlapStudies\Midpoint;
 use MarekSkopal\TwelveData\Dto\TechnicalIndicators\OverlapStudies\Midprice;
 use MarekSkopal\TwelveData\Dto\TechnicalIndicators\OverlapStudies\MovingAverage;
+use MarekSkopal\TwelveData\Dto\TechnicalIndicators\OverlapStudies\ParabolicStopAndReverse;
+use MarekSkopal\TwelveData\Dto\TechnicalIndicators\OverlapStudies\ParabolicStopAndReverseExtended;
+use MarekSkopal\TwelveData\Dto\TechnicalIndicators\OverlapStudies\PivotPointsHighLow;
 use MarekSkopal\TwelveData\Dto\TechnicalIndicators\TechnicalIndicator;
 use MarekSkopal\TwelveData\Enum\AdjustEnum;
 use MarekSkopal\TwelveData\Enum\FormatEnum;
@@ -795,6 +798,202 @@ readonly class OverlapStudies extends TwelveDataApi
 
         /** @var TechnicalIndicator<Midprice> $technicalIndicator */
         $technicalIndicator = TechnicalIndicator::fromJson(Midprice::class, $response);
+        return $technicalIndicator;
+    }
+
+    /** @return TechnicalIndicator<PivotPointsHighLow> */
+    public function pivotPointsHighLow(
+        string $symbol,
+        IntervalEnum $interval = IntervalEnum::OneDay,
+        ?string $figi = null,
+        ?string $isin = null,
+        ?string $cusip = null,
+        ?string $exchange = null,
+        ?string $micCode = null,
+        ?string $country = null,
+        ?int $timePeriod = null,
+        ?TypeEnum $type = null,
+        ?int $outputSize = null,
+        ?FormatEnum $format = null,
+        ?string $delimiter = null,
+        ?PrepostEnum $prepost = null,
+        ?int $dp = null,
+        ?OrderEnum $order = null,
+        ?bool $includeOhlc = null,
+        ?string $timezone = null,
+        ?DateTimeImmutable $date = null,
+        ?DateTimeImmutable $startDate = null,
+        ?DateTimeImmutable $endDate = null,
+        ?bool $previousClose = null,
+        ?AdjustEnum $adjust = null,
+    ): TechnicalIndicator {
+        $response = $this->client->get(
+            path: '/pivot_points_hl',
+            queryParams: [
+                'symbol' => $symbol,
+                'interval' => $interval->value,
+                'figi' => $figi,
+                'isin' => $isin,
+                'cusip' => $cusip,
+                'exchange' => $exchange,
+                'mic_code' => $micCode,
+                'country' => $country,
+                'time_period' => $timePeriod,
+                'type' => $type?->value,
+                'outputsize' => $outputSize,
+                'format' => $format?->value,
+                'delimiter' => $delimiter,
+                'prepost' => $prepost?->value,
+                'dp' => $dp,
+                'order' => $order?->value,
+                'include_ohlc' => QueryParamsUtils::booleanAsString($includeOhlc),
+                'timezone' => $timezone,
+                'date' => DateUtils::formatDate($date),
+                'start_date' => DateUtils::formatDate($startDate),
+                'end_date' => DateUtils::formatDate($endDate),
+                'previous_close' => QueryParamsUtils::booleanAsString($previousClose),
+                'adjust' => $adjust?->value,
+            ],
+        );
+
+        /** @var TechnicalIndicator<PivotPointsHighLow> $technicalIndicator */
+        $technicalIndicator = TechnicalIndicator::fromJson(PivotPointsHighLow::class, $response);
+        return $technicalIndicator;
+    }
+
+    /** @return TechnicalIndicator<ParabolicStopAndReverse> */
+    public function parabolicStopAndReverse(
+        string $symbol,
+        IntervalEnum $interval = IntervalEnum::OneDay,
+        ?string $figi = null,
+        ?string $isin = null,
+        ?string $cusip = null,
+        ?string $exchange = null,
+        ?string $micCode = null,
+        ?string $country = null,
+        ?float $acceleration = null,
+        ?float $maximum = null,
+        ?TypeEnum $type = null,
+        ?int $outputSize = null,
+        ?FormatEnum $format = null,
+        ?string $delimiter = null,
+        ?PrepostEnum $prepost = null,
+        ?int $dp = null,
+        ?OrderEnum $order = null,
+        ?bool $includeOhlc = null,
+        ?string $timezone = null,
+        ?DateTimeImmutable $date = null,
+        ?DateTimeImmutable $startDate = null,
+        ?DateTimeImmutable $endDate = null,
+        ?bool $previousClose = null,
+        ?AdjustEnum $adjust = null,
+    ): TechnicalIndicator {
+        $response = $this->client->get(
+            path: '/sar',
+            queryParams: [
+                'symbol' => $symbol,
+                'interval' => $interval->value,
+                'figi' => $figi,
+                'isin' => $isin,
+                'cusip' => $cusip,
+                'exchange' => $exchange,
+                'mic_code' => $micCode,
+                'country' => $country,
+                'acceleration' => $acceleration,
+                'maximum' => $maximum,
+                'type' => $type?->value,
+                'outputsize' => $outputSize,
+                'format' => $format?->value,
+                'delimiter' => $delimiter,
+                'prepost' => $prepost?->value,
+                'dp' => $dp,
+                'order' => $order?->value,
+                'include_ohlc' => QueryParamsUtils::booleanAsString($includeOhlc),
+                'timezone' => $timezone,
+                'date' => DateUtils::formatDate($date),
+                'start_date' => DateUtils::formatDate($startDate),
+                'end_date' => DateUtils::formatDate($endDate),
+                'previous_close' => QueryParamsUtils::booleanAsString($previousClose),
+                'adjust' => $adjust?->value,
+            ],
+        );
+
+        /** @var TechnicalIndicator<ParabolicStopAndReverse> $technicalIndicator */
+        $technicalIndicator = TechnicalIndicator::fromJson(ParabolicStopAndReverse::class, $response);
+        return $technicalIndicator;
+    }
+
+    /** @return TechnicalIndicator<ParabolicStopAndReverseExtended> */
+    public function parabolicStopAndReverseExtended(
+        string $symbol,
+        IntervalEnum $interval = IntervalEnum::OneDay,
+        ?string $figi = null,
+        ?string $isin = null,
+        ?string $cusip = null,
+        ?string $exchange = null,
+        ?string $micCode = null,
+        ?string $country = null,
+        ?float $startValue = null,
+        ?float $offsetOnReverse = null,
+        ?float $accelerationLimitLong = null,
+        ?float $accelerationLong = null,
+        ?float $accelerationMaxLong = null,
+        ?float $accelerationLimitShort = null,
+        ?float $accelerationShort = null,
+        ?float $accelerationMaxShort = null,
+        ?TypeEnum $type = null,
+        ?int $outputSize = null,
+        ?FormatEnum $format = null,
+        ?string $delimiter = null,
+        ?PrepostEnum $prepost = null,
+        ?int $dp = null,
+        ?OrderEnum $order = null,
+        ?bool $includeOhlc = null,
+        ?string $timezone = null,
+        ?DateTimeImmutable $date = null,
+        ?DateTimeImmutable $startDate = null,
+        ?DateTimeImmutable $endDate = null,
+        ?bool $previousClose = null,
+        ?AdjustEnum $adjust = null,
+    ): TechnicalIndicator {
+        $response = $this->client->get(
+            path: '/sar',
+            queryParams: [
+                'symbol' => $symbol,
+                'interval' => $interval->value,
+                'figi' => $figi,
+                'isin' => $isin,
+                'cusip' => $cusip,
+                'exchange' => $exchange,
+                'mic_code' => $micCode,
+                'country' => $country,
+                'start_value' => $startValue,
+                'offset_on_reverse' => $offsetOnReverse,
+                'acceleration_limit_long' => $accelerationLimitLong,
+                'acceleration_long' => $accelerationLong,
+                'acceleration_max_long' => $accelerationMaxLong,
+                'acceleration_limit_short' => $accelerationLimitShort,
+                'acceleration_short' => $accelerationShort,
+                'acceleration_max_short' => $accelerationMaxShort,
+                'type' => $type?->value,
+                'outputsize' => $outputSize,
+                'format' => $format?->value,
+                'delimiter' => $delimiter,
+                'prepost' => $prepost?->value,
+                'dp' => $dp,
+                'order' => $order?->value,
+                'include_ohlc' => QueryParamsUtils::booleanAsString($includeOhlc),
+                'timezone' => $timezone,
+                'date' => DateUtils::formatDate($date),
+                'start_date' => DateUtils::formatDate($startDate),
+                'end_date' => DateUtils::formatDate($endDate),
+                'previous_close' => QueryParamsUtils::booleanAsString($previousClose),
+                'adjust' => $adjust?->value,
+            ],
+        );
+
+        /** @var TechnicalIndicator<ParabolicStopAndReverseExtended> $technicalIndicator */
+        $technicalIndicator = TechnicalIndicator::fromJson(ParabolicStopAndReverseExtended::class, $response);
         return $technicalIndicator;
     }
 }

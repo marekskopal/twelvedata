@@ -22,6 +22,9 @@ use MarekSkopal\TwelveData\Dto\TechnicalIndicators\OverlapStudies\MesaAdaptiveMo
 use MarekSkopal\TwelveData\Dto\TechnicalIndicators\OverlapStudies\Midpoint;
 use MarekSkopal\TwelveData\Dto\TechnicalIndicators\OverlapStudies\Midprice;
 use MarekSkopal\TwelveData\Dto\TechnicalIndicators\OverlapStudies\MovingAverage;
+use MarekSkopal\TwelveData\Dto\TechnicalIndicators\OverlapStudies\ParabolicStopAndReverse;
+use MarekSkopal\TwelveData\Dto\TechnicalIndicators\OverlapStudies\ParabolicStopAndReverseExtended;
+use MarekSkopal\TwelveData\Dto\TechnicalIndicators\OverlapStudies\PivotPointsHighLow;
 use MarekSkopal\TwelveData\Dto\TechnicalIndicators\TechnicalIndicator;
 use MarekSkopal\TwelveData\Tests\Fixtures\Client\ClientFixture;
 use MarekSkopal\TwelveData\Utils\DateUtils;
@@ -51,6 +54,9 @@ use PHPUnit\Framework\TestCase;
 #[UsesClass(McGinleyDynamicIndicator::class)]
 #[UsesClass(Midpoint::class)]
 #[UsesClass(Midprice::class)]
+#[UsesClass(PivotPointsHighLow::class)]
+#[UsesClass(ParabolicStopAndReverse::class)]
+#[UsesClass(ParabolicStopAndReverseExtended::class)]
 final class OverlapStudiesTest extends TestCase
 {
     public function testBollingerBands(): void
@@ -170,6 +176,36 @@ final class OverlapStudiesTest extends TestCase
         self::assertInstanceOf(
             Midprice::class,
             $overlapStudies->midprice('AAPL')->values[0],
+        );
+    }
+
+    public function testPivotPointsHighLow(): void
+    {
+        $overlapStudies = new OverlapStudies(ClientFixture::createWithResponse('pivot_points_high_low.json'));
+
+        self::assertInstanceOf(
+            PivotPointsHighLow::class,
+            $overlapStudies->pivotPointsHighLow('AAPL')->values[0],
+        );
+    }
+
+    public function testParabolicStopAndReverse(): void
+    {
+        $overlapStudies = new OverlapStudies(ClientFixture::createWithResponse('parabolic_stop_and_reverse.json'));
+
+        self::assertInstanceOf(
+            ParabolicStopAndReverse::class,
+            $overlapStudies->parabolicStopAndReverse('AAPL')->values[0],
+        );
+    }
+
+    public function testParabolicStopAndReverseExtended(): void
+    {
+        $overlapStudies = new OverlapStudies(ClientFixture::createWithResponse('parabolic_stop_and_reverse_extended.json'));
+
+        self::assertInstanceOf(
+            ParabolicStopAndReverseExtended::class,
+            $overlapStudies->parabolicStopAndReverseExtended('AAPL')->values[0],
         );
     }
 }
