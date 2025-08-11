@@ -26,8 +26,11 @@ use MarekSkopal\TwelveData\Dto\TechnicalIndicators\OverlapStudies\ParabolicStopA
 use MarekSkopal\TwelveData\Dto\TechnicalIndicators\OverlapStudies\ParabolicStopAndReverseExtended;
 use MarekSkopal\TwelveData\Dto\TechnicalIndicators\OverlapStudies\PivotPointsHighLow;
 use MarekSkopal\TwelveData\Dto\TechnicalIndicators\OverlapStudies\SimpleMovingAverage;
+use MarekSkopal\TwelveData\Dto\TechnicalIndicators\OverlapStudies\TriangularMovingAverage;
 use MarekSkopal\TwelveData\Dto\TechnicalIndicators\OverlapStudies\TripleExponentialMovingAverageT3MA;
 use MarekSkopal\TwelveData\Dto\TechnicalIndicators\OverlapStudies\TripleExponentialMovingAverageTEMA;
+use MarekSkopal\TwelveData\Dto\TechnicalIndicators\OverlapStudies\VolumeWeightedAveragePrice;
+use MarekSkopal\TwelveData\Dto\TechnicalIndicators\OverlapStudies\WeightedMovingAverage;
 use MarekSkopal\TwelveData\Dto\TechnicalIndicators\TechnicalIndicator;
 use MarekSkopal\TwelveData\Tests\Fixtures\Client\ClientFixture;
 use MarekSkopal\TwelveData\Utils\DateUtils;
@@ -63,6 +66,9 @@ use PHPUnit\Framework\TestCase;
 #[UsesClass(SimpleMovingAverage::class)]
 #[UsesClass(TripleExponentialMovingAverageT3MA::class)]
 #[UsesClass(TripleExponentialMovingAverageTEMA::class)]
+#[UsesClass(TriangularMovingAverage::class)]
+#[UsesClass(VolumeWeightedAveragePrice::class)]
+#[UsesClass(WeightedMovingAverage::class)]
 final class OverlapStudiesTest extends TestCase
 {
     public function testBollingerBands(): void
@@ -242,6 +248,36 @@ final class OverlapStudiesTest extends TestCase
         self::assertInstanceOf(
             TripleExponentialMovingAverageTEMA::class,
             $overlapStudies->tripleExponentialMovingAverageTEMA('AAPL')->values[0],
+        );
+    }
+
+    public function testTriangularMovingAverage(): void
+    {
+        $overlapStudies = new OverlapStudies(ClientFixture::createWithResponse('triangular_moving_average.json'));
+
+        self::assertInstanceOf(
+            TriangularMovingAverage::class,
+            $overlapStudies->triangularMovingAverage('AAPL')->values[0],
+        );
+    }
+
+    public function testVolumeWeightedAveragePrice(): void
+    {
+        $overlapStudies = new OverlapStudies(ClientFixture::createWithResponse('volume_weighted_average_price.json'));
+
+        self::assertInstanceOf(
+            VolumeWeightedAveragePrice::class,
+            $overlapStudies->volumeWeightedAveragePrice('AAPL')->values[0],
+        );
+    }
+
+    public function testWeightedMovingAverage(): void
+    {
+        $overlapStudies = new OverlapStudies(ClientFixture::createWithResponse('weighted_moving_average.json'));
+
+        self::assertInstanceOf(
+            WeightedMovingAverage::class,
+            $overlapStudies->weightedMovingAverage('AAPL')->values[0],
         );
     }
 }

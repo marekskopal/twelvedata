@@ -22,8 +22,11 @@ use MarekSkopal\TwelveData\Dto\TechnicalIndicators\OverlapStudies\ParabolicStopA
 use MarekSkopal\TwelveData\Dto\TechnicalIndicators\OverlapStudies\ParabolicStopAndReverseExtended;
 use MarekSkopal\TwelveData\Dto\TechnicalIndicators\OverlapStudies\PivotPointsHighLow;
 use MarekSkopal\TwelveData\Dto\TechnicalIndicators\OverlapStudies\SimpleMovingAverage;
+use MarekSkopal\TwelveData\Dto\TechnicalIndicators\OverlapStudies\TriangularMovingAverage;
 use MarekSkopal\TwelveData\Dto\TechnicalIndicators\OverlapStudies\TripleExponentialMovingAverageT3MA;
 use MarekSkopal\TwelveData\Dto\TechnicalIndicators\OverlapStudies\TripleExponentialMovingAverageTEMA;
+use MarekSkopal\TwelveData\Dto\TechnicalIndicators\OverlapStudies\VolumeWeightedAveragePrice;
+use MarekSkopal\TwelveData\Dto\TechnicalIndicators\OverlapStudies\WeightedMovingAverage;
 use MarekSkopal\TwelveData\Dto\TechnicalIndicators\TechnicalIndicator;
 use MarekSkopal\TwelveData\Enum\AdjustEnum;
 use MarekSkopal\TwelveData\Enum\FormatEnum;
@@ -1138,7 +1141,6 @@ readonly class OverlapStudies extends TwelveDataApi
         ?string $country = null,
         ?SeriesTypeEnum $seriesType = null,
         ?int $timePeriod = null,
-        ?int $vFactor = null,
         ?TypeEnum $type = null,
         ?int $outputSize = null,
         ?FormatEnum $format = null,
@@ -1167,7 +1169,6 @@ readonly class OverlapStudies extends TwelveDataApi
                 'country' => $country,
                 'series_type' => $seriesType?->value,
                 'time_period' => $timePeriod,
-                'v_factor' => $vFactor,
                 'type' => $type?->value,
                 'outputsize' => $outputSize,
                 'format' => $format?->value,
@@ -1187,6 +1188,192 @@ readonly class OverlapStudies extends TwelveDataApi
 
         /** @var TechnicalIndicator<TripleExponentialMovingAverageTEMA> $technicalIndicator */
         $technicalIndicator = TechnicalIndicator::fromJson(TripleExponentialMovingAverageTEMA::class, $response);
+        return $technicalIndicator;
+    }
+
+    /** @return TechnicalIndicator<TriangularMovingAverage> */
+    public function triangularMovingAverage(
+        string $symbol,
+        IntervalEnum $interval = IntervalEnum::OneDay,
+        ?string $figi = null,
+        ?string $isin = null,
+        ?string $cusip = null,
+        ?string $exchange = null,
+        ?string $micCode = null,
+        ?string $country = null,
+        ?SeriesTypeEnum $seriesType = null,
+        ?int $timePeriod = null,
+        ?TypeEnum $type = null,
+        ?int $outputSize = null,
+        ?FormatEnum $format = null,
+        ?string $delimiter = null,
+        ?PrepostEnum $prepost = null,
+        ?int $dp = null,
+        ?OrderEnum $order = null,
+        ?bool $includeOhlc = null,
+        ?string $timezone = null,
+        ?DateTimeImmutable $date = null,
+        ?DateTimeImmutable $startDate = null,
+        ?DateTimeImmutable $endDate = null,
+        ?bool $previousClose = null,
+        ?AdjustEnum $adjust = null,
+    ): TechnicalIndicator {
+        $response = $this->client->get(
+            path: '/trima',
+            queryParams: [
+                'symbol' => $symbol,
+                'interval' => $interval->value,
+                'figi' => $figi,
+                'isin' => $isin,
+                'cusip' => $cusip,
+                'exchange' => $exchange,
+                'mic_code' => $micCode,
+                'country' => $country,
+                'series_type' => $seriesType?->value,
+                'time_period' => $timePeriod,
+                'type' => $type?->value,
+                'outputsize' => $outputSize,
+                'format' => $format?->value,
+                'delimiter' => $delimiter,
+                'prepost' => $prepost?->value,
+                'dp' => $dp,
+                'order' => $order?->value,
+                'include_ohlc' => QueryParamsUtils::booleanAsString($includeOhlc),
+                'timezone' => $timezone,
+                'date' => DateUtils::formatDate($date),
+                'start_date' => DateUtils::formatDate($startDate),
+                'end_date' => DateUtils::formatDate($endDate),
+                'previous_close' => QueryParamsUtils::booleanAsString($previousClose),
+                'adjust' => $adjust?->value,
+            ],
+        );
+
+        /** @var TechnicalIndicator<TriangularMovingAverage> $technicalIndicator */
+        $technicalIndicator = TechnicalIndicator::fromJson(TriangularMovingAverage::class, $response);
+        return $technicalIndicator;
+    }
+
+    /** @return TechnicalIndicator<VolumeWeightedAveragePrice> */
+    public function volumeWeightedAveragePrice(
+        string $symbol,
+        IntervalEnum $interval = IntervalEnum::OneDay,
+        ?string $figi = null,
+        ?string $isin = null,
+        ?string $cusip = null,
+        ?string $exchange = null,
+        ?string $micCode = null,
+        ?string $country = null,
+        ?float $sd = null,
+        ?int $sdTimePeriod = null,
+        ?TypeEnum $type = null,
+        ?int $outputSize = null,
+        ?FormatEnum $format = null,
+        ?string $delimiter = null,
+        ?PrepostEnum $prepost = null,
+        ?int $dp = null,
+        ?OrderEnum $order = null,
+        ?bool $includeOhlc = null,
+        ?string $timezone = null,
+        ?DateTimeImmutable $date = null,
+        ?DateTimeImmutable $startDate = null,
+        ?DateTimeImmutable $endDate = null,
+        ?bool $previousClose = null,
+        ?AdjustEnum $adjust = null,
+    ): TechnicalIndicator {
+        $response = $this->client->get(
+            path: '/vwap',
+            queryParams: [
+                'symbol' => $symbol,
+                'interval' => $interval->value,
+                'figi' => $figi,
+                'isin' => $isin,
+                'cusip' => $cusip,
+                'exchange' => $exchange,
+                'mic_code' => $micCode,
+                'country' => $country,
+                'sd' => $sd,
+                'sd_time_period' => $sdTimePeriod,
+                'type' => $type?->value,
+                'outputsize' => $outputSize,
+                'format' => $format?->value,
+                'delimiter' => $delimiter,
+                'prepost' => $prepost?->value,
+                'dp' => $dp,
+                'order' => $order?->value,
+                'include_ohlc' => QueryParamsUtils::booleanAsString($includeOhlc),
+                'timezone' => $timezone,
+                'date' => DateUtils::formatDate($date),
+                'start_date' => DateUtils::formatDate($startDate),
+                'end_date' => DateUtils::formatDate($endDate),
+                'previous_close' => QueryParamsUtils::booleanAsString($previousClose),
+                'adjust' => $adjust?->value,
+            ],
+        );
+
+        /** @var TechnicalIndicator<VolumeWeightedAveragePrice> $technicalIndicator */
+        $technicalIndicator = TechnicalIndicator::fromJson(VolumeWeightedAveragePrice::class, $response);
+        return $technicalIndicator;
+    }
+
+    /** @return TechnicalIndicator<WeightedMovingAverage> */
+    public function weightedMovingAverage(
+        string $symbol,
+        IntervalEnum $interval = IntervalEnum::OneDay,
+        ?string $figi = null,
+        ?string $isin = null,
+        ?string $cusip = null,
+        ?string $exchange = null,
+        ?string $micCode = null,
+        ?string $country = null,
+        ?SeriesTypeEnum $seriesType = null,
+        ?int $timePeriod = null,
+        ?TypeEnum $type = null,
+        ?int $outputSize = null,
+        ?FormatEnum $format = null,
+        ?string $delimiter = null,
+        ?PrepostEnum $prepost = null,
+        ?int $dp = null,
+        ?OrderEnum $order = null,
+        ?bool $includeOhlc = null,
+        ?string $timezone = null,
+        ?DateTimeImmutable $date = null,
+        ?DateTimeImmutable $startDate = null,
+        ?DateTimeImmutable $endDate = null,
+        ?bool $previousClose = null,
+        ?AdjustEnum $adjust = null,
+    ): TechnicalIndicator {
+        $response = $this->client->get(
+            path: '/wma',
+            queryParams: [
+                'symbol' => $symbol,
+                'interval' => $interval->value,
+                'figi' => $figi,
+                'isin' => $isin,
+                'cusip' => $cusip,
+                'exchange' => $exchange,
+                'mic_code' => $micCode,
+                'country' => $country,
+                'series_type' => $seriesType?->value,
+                'time_period' => $timePeriod,
+                'type' => $type?->value,
+                'outputsize' => $outputSize,
+                'format' => $format?->value,
+                'delimiter' => $delimiter,
+                'prepost' => $prepost?->value,
+                'dp' => $dp,
+                'order' => $order?->value,
+                'include_ohlc' => QueryParamsUtils::booleanAsString($includeOhlc),
+                'timezone' => $timezone,
+                'date' => DateUtils::formatDate($date),
+                'start_date' => DateUtils::formatDate($startDate),
+                'end_date' => DateUtils::formatDate($endDate),
+                'previous_close' => QueryParamsUtils::booleanAsString($previousClose),
+                'adjust' => $adjust?->value,
+            ],
+        );
+
+        /** @var TechnicalIndicator<WeightedMovingAverage> $technicalIndicator */
+        $technicalIndicator = TechnicalIndicator::fromJson(WeightedMovingAverage::class, $response);
         return $technicalIndicator;
     }
 }
