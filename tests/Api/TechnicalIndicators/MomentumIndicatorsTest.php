@@ -22,6 +22,9 @@ use MarekSkopal\TwelveData\Dto\TechnicalIndicators\MomentumIndicators\ConnorsRel
 use MarekSkopal\TwelveData\Dto\TechnicalIndicators\MomentumIndicators\CoppockCurve;
 use MarekSkopal\TwelveData\Dto\TechnicalIndicators\MomentumIndicators\DetrendedPriceOscillator;
 use MarekSkopal\TwelveData\Dto\TechnicalIndicators\MomentumIndicators\DirectionalMovementIndex;
+use MarekSkopal\TwelveData\Dto\TechnicalIndicators\MomentumIndicators\KnowSureThing;
+use MarekSkopal\TwelveData\Dto\TechnicalIndicators\MomentumIndicators\MovingAverageConvergenceDivergence;
+use MarekSkopal\TwelveData\Dto\TechnicalIndicators\MomentumIndicators\MovingAverageConvergenceDivergenceSlope;
 use MarekSkopal\TwelveData\Dto\TechnicalIndicators\TechnicalIndicator;
 use MarekSkopal\TwelveData\Tests\Fixtures\Client\ClientFixture;
 use MarekSkopal\TwelveData\Utils\DateUtils;
@@ -51,6 +54,9 @@ use PHPUnit\Framework\TestCase;
 #[UsesClass(ConnorsRelativeStrengthIndex::class)]
 #[UsesClass(DetrendedPriceOscillator::class)]
 #[UsesClass(DirectionalMovementIndex::class)]
+#[UsesClass(KnowSureThing::class)]
+#[UsesClass(MovingAverageConvergenceDivergence::class)]
+#[UsesClass(MovingAverageConvergenceDivergenceSlope::class)]
 final class MomentumIndicatorsTest extends TestCase
 {
     public function testAverageDirectionalIndex(): void
@@ -170,6 +176,48 @@ final class MomentumIndicatorsTest extends TestCase
         self::assertInstanceOf(
             DirectionalMovementIndex::class,
             $momentumIndicators->directionalMovementIndex('AAPL')->values[0],
+        );
+    }
+
+    public function testKnowSureThing(): void
+    {
+        $momentumIndicators = new MomentumIndicators(ClientFixture::createWithResponse('know_sure_thing.json'));
+
+        self::assertInstanceOf(
+            KnowSureThing::class,
+            $momentumIndicators->knowSureThing('AAPL')->values[0],
+        );
+    }
+
+    public function testMovingAverageConvergenceDivergence(): void
+    {
+        $momentumIndicators = new MomentumIndicators(ClientFixture::createWithResponse('moving_average_convergence_divergence.json'));
+
+        self::assertInstanceOf(
+            MovingAverageConvergenceDivergence::class,
+            $momentumIndicators->movingAverageConvergenceDivergence('AAPL')->values[0],
+        );
+    }
+
+    public function testMovingAverageConvergenceDivergenceSlope(): void
+    {
+        $momentumIndicators = new MomentumIndicators(ClientFixture::createWithResponse('moving_average_convergence_divergence_slope.json'));
+
+        self::assertInstanceOf(
+            MovingAverageConvergenceDivergenceSlope::class,
+            $momentumIndicators->movingAverageConvergenceDivergenceSlope('AAPL')->values[0],
+        );
+    }
+
+    public function testMovingAverageConvergenceDivergenceExtension(): void
+    {
+        $momentumIndicators = new MomentumIndicators(
+            ClientFixture::createWithResponse('moving_average_convergence_divergence_extension.json'),
+        );
+
+        self::assertInstanceOf(
+            MovingAverageConvergenceDivergence::class,
+            $momentumIndicators->movingAverageConvergenceDivergenceExtension('AAPL')->values[0],
         );
     }
 }
