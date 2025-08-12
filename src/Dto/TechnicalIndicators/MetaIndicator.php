@@ -34,6 +34,10 @@ namespace MarekSkopal\TwelveData\Dto\TechnicalIndicators;
  *     long_roc_period?: int,
  *     short_roc_period?: int,
  *     wma_period?: int,
+ *     centered?: bool,
+ *     rsi_period?: int,
+ *     up_down_length?: int,
+ *     percent_rank_period?: int,
  * }
  */
 readonly class MetaIndicator
@@ -67,6 +71,10 @@ readonly class MetaIndicator
         public ?int $longRocPeriod,
         public ?int $shortRocPeriod,
         public ?int $wmaPeriod,
+        public ?bool $centered,
+        public ?int $rsiPeriod,
+        public ?int $upDownLength,
+        public ?int $percentRankPeriod,
     ) {
     }
 
@@ -102,6 +110,10 @@ readonly class MetaIndicator
             longRocPeriod: $data['long_roc_period'] ?? null,
             shortRocPeriod: $data['short_roc_period'] ?? null,
             wmaPeriod: $data['wma_period'] ?? null,
+            centered: $data['centered'] ?? null,
+            rsiPeriod: $data['rsi_period'] ?? null,
+            upDownLength: $data['up_down_length'] ?? null,
+            percentRankPeriod: $data['percent_rank_period'] ?? null,
         );
     }
 }

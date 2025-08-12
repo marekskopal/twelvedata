@@ -18,7 +18,10 @@ use MarekSkopal\TwelveData\Dto\TechnicalIndicators\MomentumIndicators\AverageDir
 use MarekSkopal\TwelveData\Dto\TechnicalIndicators\MomentumIndicators\BalanceOfPower;
 use MarekSkopal\TwelveData\Dto\TechnicalIndicators\MomentumIndicators\ChandeMomentumOscillator;
 use MarekSkopal\TwelveData\Dto\TechnicalIndicators\MomentumIndicators\CommodityChannelIndex;
+use MarekSkopal\TwelveData\Dto\TechnicalIndicators\MomentumIndicators\ConnorsRelativeStrengthIndex;
 use MarekSkopal\TwelveData\Dto\TechnicalIndicators\MomentumIndicators\CoppockCurve;
+use MarekSkopal\TwelveData\Dto\TechnicalIndicators\MomentumIndicators\DetrendedPriceOscillator;
+use MarekSkopal\TwelveData\Dto\TechnicalIndicators\MomentumIndicators\DirectionalMovementIndex;
 use MarekSkopal\TwelveData\Dto\TechnicalIndicators\TechnicalIndicator;
 use MarekSkopal\TwelveData\Tests\Fixtures\Client\ClientFixture;
 use MarekSkopal\TwelveData\Utils\DateUtils;
@@ -45,6 +48,9 @@ use PHPUnit\Framework\TestCase;
 #[UsesClass(CommodityChannelIndex::class)]
 #[UsesClass(ChandeMomentumOscillator::class)]
 #[UsesClass(CoppockCurve::class)]
+#[UsesClass(ConnorsRelativeStrengthIndex::class)]
+#[UsesClass(DetrendedPriceOscillator::class)]
+#[UsesClass(DirectionalMovementIndex::class)]
 final class MomentumIndicatorsTest extends TestCase
 {
     public function testAverageDirectionalIndex(): void
@@ -134,6 +140,36 @@ final class MomentumIndicatorsTest extends TestCase
         self::assertInstanceOf(
             CoppockCurve::class,
             $momentumIndicators->coppockCurve('AAPL')->values[0],
+        );
+    }
+
+    public function testConnorsRelativeStrengthIndex(): void
+    {
+        $momentumIndicators = new MomentumIndicators(ClientFixture::createWithResponse('connors_relative_strength_index.json'));
+
+        self::assertInstanceOf(
+            ConnorsRelativeStrengthIndex::class,
+            $momentumIndicators->connorsRelativeStrengthIndex('AAPL')->values[0],
+        );
+    }
+
+    public function testDetrendedPriceOscillator(): void
+    {
+        $momentumIndicators = new MomentumIndicators(ClientFixture::createWithResponse('detrended_price_oscillator.json'));
+
+        self::assertInstanceOf(
+            DetrendedPriceOscillator::class,
+            $momentumIndicators->detrendedPriceOscillator('AAPL')->values[0],
+        );
+    }
+
+    public function testDirectionalMovementIndex(): void
+    {
+        $momentumIndicators = new MomentumIndicators(ClientFixture::createWithResponse('directional_movement_index.json'));
+
+        self::assertInstanceOf(
+            DirectionalMovementIndex::class,
+            $momentumIndicators->directionalMovementIndex('AAPL')->values[0],
         );
     }
 }
