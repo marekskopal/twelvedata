@@ -16,6 +16,9 @@ use MarekSkopal\TwelveData\Dto\TechnicalIndicators\MomentumIndicators\AroonOscil
 use MarekSkopal\TwelveData\Dto\TechnicalIndicators\MomentumIndicators\AverageDirectionalIndex;
 use MarekSkopal\TwelveData\Dto\TechnicalIndicators\MomentumIndicators\AverageDirectionalMovementIndexRating;
 use MarekSkopal\TwelveData\Dto\TechnicalIndicators\MomentumIndicators\BalanceOfPower;
+use MarekSkopal\TwelveData\Dto\TechnicalIndicators\MomentumIndicators\ChandeMomentumOscillator;
+use MarekSkopal\TwelveData\Dto\TechnicalIndicators\MomentumIndicators\CommodityChannelIndex;
+use MarekSkopal\TwelveData\Dto\TechnicalIndicators\MomentumIndicators\CoppockCurve;
 use MarekSkopal\TwelveData\Dto\TechnicalIndicators\TechnicalIndicator;
 use MarekSkopal\TwelveData\Tests\Fixtures\Client\ClientFixture;
 use MarekSkopal\TwelveData\Utils\DateUtils;
@@ -39,6 +42,9 @@ use PHPUnit\Framework\TestCase;
 #[UsesClass(AroonIndicator::class)]
 #[UsesClass(AroonOscillator::class)]
 #[UsesClass(BalanceOfPower::class)]
+#[UsesClass(CommodityChannelIndex::class)]
+#[UsesClass(ChandeMomentumOscillator::class)]
+#[UsesClass(CoppockCurve::class)]
 final class MomentumIndicatorsTest extends TestCase
 {
     public function testAverageDirectionalIndex(): void
@@ -98,6 +104,36 @@ final class MomentumIndicatorsTest extends TestCase
         self::assertInstanceOf(
             BalanceOfPower::class,
             $momentumIndicators->balanceOfPower('AAPL')->values[0],
+        );
+    }
+
+    public function testCommodityChannelIndex(): void
+    {
+        $momentumIndicators = new MomentumIndicators(ClientFixture::createWithResponse('commodity_channel_index.json'));
+
+        self::assertInstanceOf(
+            CommodityChannelIndex::class,
+            $momentumIndicators->commodityChannelIndex('AAPL')->values[0],
+        );
+    }
+
+    public function testChandeMomentumOscillator(): void
+    {
+        $momentumIndicators = new MomentumIndicators(ClientFixture::createWithResponse('chande_momentum_oscillator.json'));
+
+        self::assertInstanceOf(
+            ChandeMomentumOscillator::class,
+            $momentumIndicators->chandeMomentumOscillator('AAPL')->values[0],
+        );
+    }
+
+    public function testCoppockCurve(): void
+    {
+        $momentumIndicators = new MomentumIndicators(ClientFixture::createWithResponse('coppock_curve.json'));
+
+        self::assertInstanceOf(
+            CoppockCurve::class,
+            $momentumIndicators->coppockCurve('AAPL')->values[0],
         );
     }
 }

@@ -31,6 +31,9 @@ namespace MarekSkopal\TwelveData\Dto\TechnicalIndicators;
  *     acceleration_max_short?: float,
  *     fast_period?: int,
  *     slow_period?: int,
+ *     long_roc_period?: int,
+ *     short_roc_period?: int,
+ *     wma_period?: int,
  * }
  */
 readonly class MetaIndicator
@@ -61,6 +64,9 @@ readonly class MetaIndicator
         public ?float $accelerationMaxShort,
         public ?int $fastPeriod,
         public ?int $slowPeriod,
+        public ?int $longRocPeriod,
+        public ?int $shortRocPeriod,
+        public ?int $wmaPeriod,
     ) {
     }
 
@@ -93,6 +99,9 @@ readonly class MetaIndicator
             accelerationMaxShort: $data['acceleration_max_short'] ?? null,
             fastPeriod: $data['fast_period'] ?? null,
             slowPeriod: $data['slow_period'] ?? null,
+            longRocPeriod: $data['long_roc_period'] ?? null,
+            shortRocPeriod: $data['short_roc_period'] ?? null,
+            wmaPeriod: $data['wma_period'] ?? null,
         );
     }
 }
