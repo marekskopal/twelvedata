@@ -33,6 +33,10 @@ use MarekSkopal\TwelveData\Dto\TechnicalIndicators\MomentumIndicators\Percentage
 use MarekSkopal\TwelveData\Dto\TechnicalIndicators\MomentumIndicators\PercentB;
 use MarekSkopal\TwelveData\Dto\TechnicalIndicators\MomentumIndicators\PlusDirectionalIndicator;
 use MarekSkopal\TwelveData\Dto\TechnicalIndicators\MomentumIndicators\PlusDirectionalMovement;
+use MarekSkopal\TwelveData\Dto\TechnicalIndicators\MomentumIndicators\RateOfChange;
+use MarekSkopal\TwelveData\Dto\TechnicalIndicators\MomentumIndicators\RateOfChangePercentage;
+use MarekSkopal\TwelveData\Dto\TechnicalIndicators\MomentumIndicators\RateOfChangeRatio;
+use MarekSkopal\TwelveData\Dto\TechnicalIndicators\MomentumIndicators\RateOfChangeRatio100;
 use MarekSkopal\TwelveData\Dto\TechnicalIndicators\TechnicalIndicator;
 use MarekSkopal\TwelveData\Tests\Fixtures\Client\ClientFixture;
 use MarekSkopal\TwelveData\Utils\DateUtils;
@@ -73,6 +77,10 @@ use PHPUnit\Framework\TestCase;
 #[UsesClass(PlusDirectionalIndicator::class)]
 #[UsesClass(PlusDirectionalMovement::class)]
 #[UsesClass(PercentagePriceOscillator::class)]
+#[UsesClass(RateOfChange::class)]
+#[UsesClass(RateOfChangePercentage::class)]
+#[UsesClass(RateOfChangeRatio::class)]
+#[UsesClass(RateOfChangeRatio100::class)]
 final class MomentumIndicatorsTest extends TestCase
 {
     public function testAverageDirectionalIndex(): void
@@ -314,6 +322,46 @@ final class MomentumIndicatorsTest extends TestCase
         self::assertInstanceOf(
             PercentagePriceOscillator::class,
             $momentumIndicators->percentagePriceOscillator('AAPL')->values[0],
+        );
+    }
+
+    public function testRateOfChange(): void
+    {
+        $momentumIndicators = new MomentumIndicators(ClientFixture::createWithResponse('rate_of_change.json'));
+
+        self::assertInstanceOf(
+            RateOfChange::class,
+            $momentumIndicators->rateOfChange('AAPL')->values[0],
+        );
+    }
+
+    public function testRateOfChangePercentage(): void
+    {
+        $momentumIndicators = new MomentumIndicators(ClientFixture::createWithResponse('rate_of_change_percentage.json'));
+
+        self::assertInstanceOf(
+            RateOfChangePercentage::class,
+            $momentumIndicators->rateOfChangePercentage('AAPL')->values[0],
+        );
+    }
+
+    public function testRateOfChangeRatio(): void
+    {
+        $momentumIndicators = new MomentumIndicators(ClientFixture::createWithResponse('rate_of_change_ratio.json'));
+
+        self::assertInstanceOf(
+            RateOfChangeRatio::class,
+            $momentumIndicators->rateOfChangeRatio('AAPL')->values[0],
+        );
+    }
+
+    public function testRateOfChangeRatio100(): void
+    {
+        $momentumIndicators = new MomentumIndicators(ClientFixture::createWithResponse('rate_of_change_ratio_100.json'));
+
+        self::assertInstanceOf(
+            RateOfChangeRatio100::class,
+            $momentumIndicators->rateOfChangeRatio100('AAPL')->values[0],
         );
     }
 }
