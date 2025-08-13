@@ -29,6 +29,10 @@ use MarekSkopal\TwelveData\Dto\TechnicalIndicators\MomentumIndicators\Momentum;
 use MarekSkopal\TwelveData\Dto\TechnicalIndicators\MomentumIndicators\MoneyFlowIndex;
 use MarekSkopal\TwelveData\Dto\TechnicalIndicators\MomentumIndicators\MovingAverageConvergenceDivergence;
 use MarekSkopal\TwelveData\Dto\TechnicalIndicators\MomentumIndicators\MovingAverageConvergenceDivergenceSlope;
+use MarekSkopal\TwelveData\Dto\TechnicalIndicators\MomentumIndicators\PercentagePriceOscillator;
+use MarekSkopal\TwelveData\Dto\TechnicalIndicators\MomentumIndicators\PercentB;
+use MarekSkopal\TwelveData\Dto\TechnicalIndicators\MomentumIndicators\PlusDirectionalIndicator;
+use MarekSkopal\TwelveData\Dto\TechnicalIndicators\MomentumIndicators\PlusDirectionalMovement;
 use MarekSkopal\TwelveData\Dto\TechnicalIndicators\TechnicalIndicator;
 use MarekSkopal\TwelveData\Tests\Fixtures\Client\ClientFixture;
 use MarekSkopal\TwelveData\Utils\DateUtils;
@@ -65,6 +69,10 @@ use PHPUnit\Framework\TestCase;
 #[UsesClass(MinusDirectionalIndicator::class)]
 #[UsesClass(MinusDirectionalMovement::class)]
 #[UsesClass(Momentum::class)]
+#[UsesClass(PercentB::class)]
+#[UsesClass(PlusDirectionalIndicator::class)]
+#[UsesClass(PlusDirectionalMovement::class)]
+#[UsesClass(PercentagePriceOscillator::class)]
 final class MomentumIndicatorsTest extends TestCase
 {
     public function testAverageDirectionalIndex(): void
@@ -266,6 +274,46 @@ final class MomentumIndicatorsTest extends TestCase
         self::assertInstanceOf(
             Momentum::class,
             $momentumIndicators->momentum('AAPL')->values[0],
+        );
+    }
+
+    public function testPercentB(): void
+    {
+        $momentumIndicators = new MomentumIndicators(ClientFixture::createWithResponse('percent_b.json'));
+
+        self::assertInstanceOf(
+            PercentB::class,
+            $momentumIndicators->percentB('AAPL')->values[0],
+        );
+    }
+
+    public function testPlusDirectionalIndicator(): void
+    {
+        $momentumIndicators = new MomentumIndicators(ClientFixture::createWithResponse('plus_directional_indicator.json'));
+
+        self::assertInstanceOf(
+            PlusDirectionalIndicator::class,
+            $momentumIndicators->plusDirectionalIndicator('AAPL')->values[0],
+        );
+    }
+
+    public function testPlusDirectionalMovement(): void
+    {
+        $momentumIndicators = new MomentumIndicators(ClientFixture::createWithResponse('plus_directional_movement.json'));
+
+        self::assertInstanceOf(
+            PlusDirectionalMovement::class,
+            $momentumIndicators->plusDirectionalMovement('AAPL')->values[0],
+        );
+    }
+
+    public function testPercentagePriceOscillator(): void
+    {
+        $momentumIndicators = new MomentumIndicators(ClientFixture::createWithResponse('percentage_price_oscillator.json'));
+
+        self::assertInstanceOf(
+            PercentagePriceOscillator::class,
+            $momentumIndicators->percentagePriceOscillator('AAPL')->values[0],
         );
     }
 }
