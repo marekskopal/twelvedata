@@ -19,6 +19,10 @@ use MarekSkopal\TwelveData\Dto\TechnicalIndicators\MomentumIndicators\CoppockCur
 use MarekSkopal\TwelveData\Dto\TechnicalIndicators\MomentumIndicators\DetrendedPriceOscillator;
 use MarekSkopal\TwelveData\Dto\TechnicalIndicators\MomentumIndicators\DirectionalMovementIndex;
 use MarekSkopal\TwelveData\Dto\TechnicalIndicators\MomentumIndicators\KnowSureThing;
+use MarekSkopal\TwelveData\Dto\TechnicalIndicators\MomentumIndicators\MinusDirectionalIndicator;
+use MarekSkopal\TwelveData\Dto\TechnicalIndicators\MomentumIndicators\MinusDirectionalMovement;
+use MarekSkopal\TwelveData\Dto\TechnicalIndicators\MomentumIndicators\Momentum;
+use MarekSkopal\TwelveData\Dto\TechnicalIndicators\MomentumIndicators\MoneyFlowIndex;
 use MarekSkopal\TwelveData\Dto\TechnicalIndicators\MomentumIndicators\MovingAverageConvergenceDivergence;
 use MarekSkopal\TwelveData\Dto\TechnicalIndicators\MomentumIndicators\MovingAverageConvergenceDivergenceSlope;
 use MarekSkopal\TwelveData\Dto\TechnicalIndicators\TechnicalIndicator;
@@ -1068,6 +1072,252 @@ readonly class MomentumIndicators extends TwelveDataApi
 
         /** @var TechnicalIndicator<MovingAverageConvergenceDivergence> $technicalIndicator */
         $technicalIndicator = TechnicalIndicator::fromJson(MovingAverageConvergenceDivergence::class, $response);
+        return $technicalIndicator;
+    }
+
+    /** @return TechnicalIndicator<MoneyFlowIndex> */
+    public function moneyFlowIndex(
+        string $symbol,
+        IntervalEnum $interval = IntervalEnum::OneDay,
+        ?string $figi = null,
+        ?string $isin = null,
+        ?string $cusip = null,
+        ?string $exchange = null,
+        ?string $micCode = null,
+        ?string $country = null,
+        ?int $timePeriod = null,
+        ?TypeEnum $type = null,
+        ?int $outputSize = null,
+        ?FormatEnum $format = null,
+        ?string $delimiter = null,
+        ?PrepostEnum $prepost = null,
+        ?int $dp = null,
+        ?OrderEnum $order = null,
+        ?bool $includeOhlc = null,
+        ?string $timezone = null,
+        ?DateTimeImmutable $date = null,
+        ?DateTimeImmutable $startDate = null,
+        ?DateTimeImmutable $endDate = null,
+        ?bool $previousClose = null,
+        ?AdjustEnum $adjust = null,
+    ): TechnicalIndicator
+    {
+        $response = $this->client->get(
+            path: '/mfi',
+            queryParams: [
+                'symbol' => $symbol,
+                'interval' => $interval->value,
+                'figi' => $figi,
+                'isin' => $isin,
+                'cusip' => $cusip,
+                'exchange' => $exchange,
+                'mic_code' => $micCode,
+                'country' => $country,
+                'time_period' => $timePeriod,
+                'type' => $type?->value,
+                'outputsize' => $outputSize,
+                'format' => $format?->value,
+                'delimiter' => $delimiter,
+                'prepost' => $prepost?->value,
+                'dp' => $dp,
+                'order' => $order?->value,
+                'include_ohlc' => QueryParamsUtils::booleanAsString($includeOhlc),
+                'timezone' => $timezone,
+                'date' => DateUtils::formatDate($date),
+                'start_date' => DateUtils::formatDate($startDate),
+                'end_date' => DateUtils::formatDate($endDate),
+                'previous_close' => QueryParamsUtils::booleanAsString($previousClose),
+                'adjust' => $adjust?->value,
+            ],
+        );
+
+        /** @var TechnicalIndicator<MoneyFlowIndex> $technicalIndicator */
+        $technicalIndicator = TechnicalIndicator::fromJson(MoneyFlowIndex::class, $response);
+        return $technicalIndicator;
+    }
+
+    /** @return TechnicalIndicator<MinusDirectionalIndicator> */
+    public function minusDirectionalIndicator(
+        string $symbol,
+        IntervalEnum $interval = IntervalEnum::OneDay,
+        ?string $figi = null,
+        ?string $isin = null,
+        ?string $cusip = null,
+        ?string $exchange = null,
+        ?string $micCode = null,
+        ?string $country = null,
+        ?int $timePeriod = null,
+        ?TypeEnum $type = null,
+        ?int $outputSize = null,
+        ?FormatEnum $format = null,
+        ?string $delimiter = null,
+        ?PrepostEnum $prepost = null,
+        ?int $dp = null,
+        ?OrderEnum $order = null,
+        ?bool $includeOhlc = null,
+        ?string $timezone = null,
+        ?DateTimeImmutable $date = null,
+        ?DateTimeImmutable $startDate = null,
+        ?DateTimeImmutable $endDate = null,
+        ?bool $previousClose = null,
+        ?AdjustEnum $adjust = null,
+    ): TechnicalIndicator
+    {
+        $response = $this->client->get(
+            path: '/minus_di',
+            queryParams: [
+                'symbol' => $symbol,
+                'interval' => $interval->value,
+                'figi' => $figi,
+                'isin' => $isin,
+                'cusip' => $cusip,
+                'exchange' => $exchange,
+                'mic_code' => $micCode,
+                'country' => $country,
+                'time_period' => $timePeriod,
+                'type' => $type?->value,
+                'outputsize' => $outputSize,
+                'format' => $format?->value,
+                'delimiter' => $delimiter,
+                'prepost' => $prepost?->value,
+                'dp' => $dp,
+                'order' => $order?->value,
+                'include_ohlc' => QueryParamsUtils::booleanAsString($includeOhlc),
+                'timezone' => $timezone,
+                'date' => DateUtils::formatDate($date),
+                'start_date' => DateUtils::formatDate($startDate),
+                'end_date' => DateUtils::formatDate($endDate),
+                'previous_close' => QueryParamsUtils::booleanAsString($previousClose),
+                'adjust' => $adjust?->value,
+            ],
+        );
+
+        /** @var TechnicalIndicator<MinusDirectionalIndicator> $technicalIndicator */
+        $technicalIndicator = TechnicalIndicator::fromJson(MinusDirectionalIndicator::class, $response);
+        return $technicalIndicator;
+    }
+
+    /** @return TechnicalIndicator<MinusDirectionalMovement> */
+    public function minusDirectionalMovement(
+        string $symbol,
+        IntervalEnum $interval = IntervalEnum::OneDay,
+        ?string $figi = null,
+        ?string $isin = null,
+        ?string $cusip = null,
+        ?string $exchange = null,
+        ?string $micCode = null,
+        ?string $country = null,
+        ?int $timePeriod = null,
+        ?TypeEnum $type = null,
+        ?int $outputSize = null,
+        ?FormatEnum $format = null,
+        ?string $delimiter = null,
+        ?PrepostEnum $prepost = null,
+        ?int $dp = null,
+        ?OrderEnum $order = null,
+        ?bool $includeOhlc = null,
+        ?string $timezone = null,
+        ?DateTimeImmutable $date = null,
+        ?DateTimeImmutable $startDate = null,
+        ?DateTimeImmutable $endDate = null,
+        ?bool $previousClose = null,
+        ?AdjustEnum $adjust = null,
+    ): TechnicalIndicator
+    {
+        $response = $this->client->get(
+            path: '/minus_dm',
+            queryParams: [
+                'symbol' => $symbol,
+                'interval' => $interval->value,
+                'figi' => $figi,
+                'isin' => $isin,
+                'cusip' => $cusip,
+                'exchange' => $exchange,
+                'mic_code' => $micCode,
+                'country' => $country,
+                'time_period' => $timePeriod,
+                'type' => $type?->value,
+                'outputsize' => $outputSize,
+                'format' => $format?->value,
+                'delimiter' => $delimiter,
+                'prepost' => $prepost?->value,
+                'dp' => $dp,
+                'order' => $order?->value,
+                'include_ohlc' => QueryParamsUtils::booleanAsString($includeOhlc),
+                'timezone' => $timezone,
+                'date' => DateUtils::formatDate($date),
+                'start_date' => DateUtils::formatDate($startDate),
+                'end_date' => DateUtils::formatDate($endDate),
+                'previous_close' => QueryParamsUtils::booleanAsString($previousClose),
+                'adjust' => $adjust?->value,
+            ],
+        );
+
+        /** @var TechnicalIndicator<MinusDirectionalMovement> $technicalIndicator */
+        $technicalIndicator = TechnicalIndicator::fromJson(MinusDirectionalMovement::class, $response);
+        return $technicalIndicator;
+    }
+
+    /** @return TechnicalIndicator<Momentum> */
+    public function momentum(
+        string $symbol,
+        IntervalEnum $interval = IntervalEnum::OneDay,
+        ?string $figi = null,
+        ?string $isin = null,
+        ?string $cusip = null,
+        ?string $exchange = null,
+        ?string $micCode = null,
+        ?string $country = null,
+        ?SeriesTypeEnum $seriesType = null,
+        ?int $timePeriod = null,
+        ?TypeEnum $type = null,
+        ?int $outputSize = null,
+        ?FormatEnum $format = null,
+        ?string $delimiter = null,
+        ?PrepostEnum $prepost = null,
+        ?int $dp = null,
+        ?OrderEnum $order = null,
+        ?bool $includeOhlc = null,
+        ?string $timezone = null,
+        ?DateTimeImmutable $date = null,
+        ?DateTimeImmutable $startDate = null,
+        ?DateTimeImmutable $endDate = null,
+        ?bool $previousClose = null,
+        ?AdjustEnum $adjust = null,
+    ): TechnicalIndicator
+    {
+        $response = $this->client->get(
+            path: '/mom',
+            queryParams: [
+                'symbol' => $symbol,
+                'interval' => $interval->value,
+                'figi' => $figi,
+                'isin' => $isin,
+                'cusip' => $cusip,
+                'exchange' => $exchange,
+                'mic_code' => $micCode,
+                'country' => $country,
+                'series_type' => $seriesType?->value,
+                'time_period' => $timePeriod,
+                'type' => $type?->value,
+                'outputsize' => $outputSize,
+                'format' => $format?->value,
+                'delimiter' => $delimiter,
+                'prepost' => $prepost?->value,
+                'dp' => $dp,
+                'order' => $order?->value,
+                'include_ohlc' => QueryParamsUtils::booleanAsString($includeOhlc),
+                'timezone' => $timezone,
+                'date' => DateUtils::formatDate($date),
+                'start_date' => DateUtils::formatDate($startDate),
+                'end_date' => DateUtils::formatDate($endDate),
+                'previous_close' => QueryParamsUtils::booleanAsString($previousClose),
+                'adjust' => $adjust?->value,
+            ],
+        );
+
+        /** @var TechnicalIndicator<Momentum> $technicalIndicator */
+        $technicalIndicator = TechnicalIndicator::fromJson(Momentum::class, $response);
         return $technicalIndicator;
     }
 }

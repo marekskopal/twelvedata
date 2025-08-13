@@ -23,6 +23,10 @@ use MarekSkopal\TwelveData\Dto\TechnicalIndicators\MomentumIndicators\CoppockCur
 use MarekSkopal\TwelveData\Dto\TechnicalIndicators\MomentumIndicators\DetrendedPriceOscillator;
 use MarekSkopal\TwelveData\Dto\TechnicalIndicators\MomentumIndicators\DirectionalMovementIndex;
 use MarekSkopal\TwelveData\Dto\TechnicalIndicators\MomentumIndicators\KnowSureThing;
+use MarekSkopal\TwelveData\Dto\TechnicalIndicators\MomentumIndicators\MinusDirectionalIndicator;
+use MarekSkopal\TwelveData\Dto\TechnicalIndicators\MomentumIndicators\MinusDirectionalMovement;
+use MarekSkopal\TwelveData\Dto\TechnicalIndicators\MomentumIndicators\Momentum;
+use MarekSkopal\TwelveData\Dto\TechnicalIndicators\MomentumIndicators\MoneyFlowIndex;
 use MarekSkopal\TwelveData\Dto\TechnicalIndicators\MomentumIndicators\MovingAverageConvergenceDivergence;
 use MarekSkopal\TwelveData\Dto\TechnicalIndicators\MomentumIndicators\MovingAverageConvergenceDivergenceSlope;
 use MarekSkopal\TwelveData\Dto\TechnicalIndicators\TechnicalIndicator;
@@ -57,6 +61,10 @@ use PHPUnit\Framework\TestCase;
 #[UsesClass(KnowSureThing::class)]
 #[UsesClass(MovingAverageConvergenceDivergence::class)]
 #[UsesClass(MovingAverageConvergenceDivergenceSlope::class)]
+#[UsesClass(MoneyFlowIndex::class)]
+#[UsesClass(MinusDirectionalIndicator::class)]
+#[UsesClass(MinusDirectionalMovement::class)]
+#[UsesClass(Momentum::class)]
 final class MomentumIndicatorsTest extends TestCase
 {
     public function testAverageDirectionalIndex(): void
@@ -218,6 +226,46 @@ final class MomentumIndicatorsTest extends TestCase
         self::assertInstanceOf(
             MovingAverageConvergenceDivergence::class,
             $momentumIndicators->movingAverageConvergenceDivergenceExtension('AAPL')->values[0],
+        );
+    }
+
+    public function testMoneyFlowIndex(): void
+    {
+        $momentumIndicators = new MomentumIndicators(ClientFixture::createWithResponse('money_flow_index.json'));
+
+        self::assertInstanceOf(
+            MoneyFlowIndex::class,
+            $momentumIndicators->moneyFlowIndex('AAPL')->values[0],
+        );
+    }
+
+    public function testMinusDirectionalIndicator(): void
+    {
+        $momentumIndicators = new MomentumIndicators(ClientFixture::createWithResponse('minus_directional_indicator.json'));
+
+        self::assertInstanceOf(
+            MinusDirectionalIndicator::class,
+            $momentumIndicators->minusDirectionalIndicator('AAPL')->values[0],
+        );
+    }
+
+    public function testMinusDirectionalMovement(): void
+    {
+        $momentumIndicators = new MomentumIndicators(ClientFixture::createWithResponse('minus_directional_movement.json'));
+
+        self::assertInstanceOf(
+            MinusDirectionalMovement::class,
+            $momentumIndicators->minusDirectionalMovement('AAPL')->values[0],
+        );
+    }
+
+    public function testMomentum(): void
+    {
+        $momentumIndicators = new MomentumIndicators(ClientFixture::createWithResponse('momentum.json'));
+
+        self::assertInstanceOf(
+            Momentum::class,
+            $momentumIndicators->momentum('AAPL')->values[0],
         );
     }
 }
