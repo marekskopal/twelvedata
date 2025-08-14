@@ -37,6 +37,12 @@ use MarekSkopal\TwelveData\Dto\TechnicalIndicators\MomentumIndicators\RateOfChan
 use MarekSkopal\TwelveData\Dto\TechnicalIndicators\MomentumIndicators\RateOfChangePercentage;
 use MarekSkopal\TwelveData\Dto\TechnicalIndicators\MomentumIndicators\RateOfChangeRatio;
 use MarekSkopal\TwelveData\Dto\TechnicalIndicators\MomentumIndicators\RateOfChangeRatio100;
+use MarekSkopal\TwelveData\Dto\TechnicalIndicators\MomentumIndicators\RelativeStrengthIndex;
+use MarekSkopal\TwelveData\Dto\TechnicalIndicators\MomentumIndicators\StochasticFast;
+use MarekSkopal\TwelveData\Dto\TechnicalIndicators\MomentumIndicators\StochasticOscillator;
+use MarekSkopal\TwelveData\Dto\TechnicalIndicators\MomentumIndicators\StochasticRelativeStrengthIndex;
+use MarekSkopal\TwelveData\Dto\TechnicalIndicators\MomentumIndicators\UltimateOscillatorEndpoint;
+use MarekSkopal\TwelveData\Dto\TechnicalIndicators\MomentumIndicators\WilliamsPercentR;
 use MarekSkopal\TwelveData\Dto\TechnicalIndicators\TechnicalIndicator;
 use MarekSkopal\TwelveData\Tests\Fixtures\Client\ClientFixture;
 use MarekSkopal\TwelveData\Utils\DateUtils;
@@ -81,6 +87,12 @@ use PHPUnit\Framework\TestCase;
 #[UsesClass(RateOfChangePercentage::class)]
 #[UsesClass(RateOfChangeRatio::class)]
 #[UsesClass(RateOfChangeRatio100::class)]
+#[UsesClass(RelativeStrengthIndex::class)]
+#[UsesClass(StochasticOscillator::class)]
+#[UsesClass(StochasticFast::class)]
+#[UsesClass(StochasticRelativeStrengthIndex::class)]
+#[UsesClass(UltimateOscillatorEndpoint::class)]
+#[UsesClass(WilliamsPercentR::class)]
 final class MomentumIndicatorsTest extends TestCase
 {
     public function testAverageDirectionalIndex(): void
@@ -362,6 +374,66 @@ final class MomentumIndicatorsTest extends TestCase
         self::assertInstanceOf(
             RateOfChangeRatio100::class,
             $momentumIndicators->rateOfChangeRatio100('AAPL')->values[0],
+        );
+    }
+
+    public function testRelativeStrengthIndex(): void
+    {
+        $momentumIndicators = new MomentumIndicators(ClientFixture::createWithResponse('relative_strength_index.json'));
+
+        self::assertInstanceOf(
+            RelativeStrengthIndex::class,
+            $momentumIndicators->relativeStrengthIndex('AAPL')->values[0],
+        );
+    }
+
+    public function testStochasticOscillator(): void
+    {
+        $momentumIndicators = new MomentumIndicators(ClientFixture::createWithResponse('stochastic_oscillator.json'));
+
+        self::assertInstanceOf(
+            StochasticOscillator::class,
+            $momentumIndicators->stochasticOscillator('AAPL')->values[0],
+        );
+    }
+
+    public function testStochasticFast(): void
+    {
+        $momentumIndicators = new MomentumIndicators(ClientFixture::createWithResponse('stochastic_fast.json'));
+
+        self::assertInstanceOf(
+            StochasticFast::class,
+            $momentumIndicators->stochasticFast('AAPL')->values[0],
+        );
+    }
+
+    public function testStochasticRelativeStrengthIndex(): void
+    {
+        $momentumIndicators = new MomentumIndicators(ClientFixture::createWithResponse('stochastic_relative_strength_index.json'));
+
+        self::assertInstanceOf(
+            StochasticRelativeStrengthIndex::class,
+            $momentumIndicators->stochasticRelativeStrengthIndex('AAPL')->values[0],
+        );
+    }
+
+    public function testUltimateOscillatorEndpoint(): void
+    {
+        $momentumIndicators = new MomentumIndicators(ClientFixture::createWithResponse('ultimate_oscillator_endpoint.json'));
+
+        self::assertInstanceOf(
+            UltimateOscillatorEndpoint::class,
+            $momentumIndicators->ultimateOscillatorEndpoint('AAPL')->values[0],
+        );
+    }
+
+    public function testWilliamsPercentR(): void
+    {
+        $momentumIndicators = new MomentumIndicators(ClientFixture::createWithResponse('williams_percent_r.json'));
+
+        self::assertInstanceOf(
+            WilliamsPercentR::class,
+            $momentumIndicators->williamsPercentR('AAPL')->values[0],
         );
     }
 }

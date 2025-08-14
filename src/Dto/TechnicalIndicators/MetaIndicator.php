@@ -50,6 +50,20 @@ namespace MarekSkopal\TwelveData\Dto\TechnicalIndicators;
  *     sma_period_4?: int,
  *     signal_period?: int,
  *     signal_ma_type?: string,
+ *     time_period_1?: int,
+ *     time_period_2?: int,
+ *     time_period_3?: int,
+ *     stoch_length?: int,
+ *     k_period?: int,
+ *     d_period?: int,
+ *     rsi_length?: int,
+ *     fast_k_period?: int,
+ *     fast_d_period?: int,
+ *     fast_dma_type?: string,
+ *     slow_k_period?: int,
+ *     slow_d_period?: int,
+ *     slow_kma_type?: string,
+ *     slow_dma_type?: string,
  * }
  */
 readonly class MetaIndicator
@@ -99,6 +113,20 @@ readonly class MetaIndicator
         public ?int $smaPeriod4,
         public ?int $signalPeriod,
         public ?string $signalMaType,
+        public ?int $timePeriod1,
+        public ?int $timePeriod2,
+        public ?int $timePeriod3,
+        public ?int $stochLength,
+        public ?int $kPeriod,
+        public ?int $dPeriod,
+        public ?int $rsiLength,
+        public ?int $fastKPeriod,
+        public ?int $fastDPeriod,
+        public ?string $fastDmaType,
+        public ?int $slowKPeriod,
+        public ?int $slowDPeriod,
+        public ?string $slowKmaType,
+        public ?string $slowDmaType,
     ) {
     }
 
@@ -150,6 +178,20 @@ readonly class MetaIndicator
             smaPeriod4: $data['sma_period_4'] ?? null,
             signalPeriod: $data['signal_period'] ?? null,
             signalMaType: $data['signal_ma_type'] ?? null,
+            timePeriod1: $data['time_period_1'] ?? null,
+            timePeriod2: $data['time_period_2'] ?? null,
+            timePeriod3: $data['time_period_3'] ?? null,
+            stochLength: $data['stoch_length'] ?? null,
+            kPeriod: $data['k_period'] ?? null,
+            dPeriod: $data['d_period'] ?? null,
+            rsiLength: $data['rsi_length'] ?? null,
+            fastKPeriod: $data['fast_k_period'] ?? null,
+            fastDPeriod: $data['fast_d_period'] ?? null,
+            fastDmaType: $data['fast_dma_type'] ?? null,
+            slowKPeriod: $data['slow_k_period'] ?? null,
+            slowDPeriod: $data['slow_d_period'] ?? null,
+            slowKmaType: $data['slow_kma_type'] ?? null,
+            slowDmaType: $data['slow_dma_type'] ?? null,
         );
     }
 }
