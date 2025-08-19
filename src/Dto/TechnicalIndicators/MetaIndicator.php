@@ -66,6 +66,8 @@ namespace MarekSkopal\TwelveData\Dto\TechnicalIndicators;
  *     slow_dma_type?: string,
  *     period?: int,
  *     multiplier?: int,
+ *     series_type_1?: string,
+ *     series_type_2?: string,
  * }
  */
 readonly class MetaIndicator
@@ -131,6 +133,8 @@ readonly class MetaIndicator
         public ?string $slowDmaType,
         public ?int $period,
         public ?int $multiplier,
+        public ?string $seriesType1,
+        public ?string $seriesType2,
     ) {
     }
 
@@ -198,6 +202,8 @@ readonly class MetaIndicator
             slowDmaType: $data['slow_dma_type'] ?? null,
             period: $data['period'] ?? null,
             multiplier: $data['multiplier'] ?? null,
+            seriesType1: $data['series_type_1'] ?? null,
+            seriesType2: $data['series_type_2'] ?? null,
         );
     }
 }
