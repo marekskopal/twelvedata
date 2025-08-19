@@ -13,6 +13,12 @@ use MarekSkopal\TwelveData\Dto\TechnicalIndicators\MetaIndicator;
 use MarekSkopal\TwelveData\Dto\TechnicalIndicators\PriceTransform\Addition;
 use MarekSkopal\TwelveData\Dto\TechnicalIndicators\PriceTransform\Average;
 use MarekSkopal\TwelveData\Dto\TechnicalIndicators\PriceTransform\AveragePrice;
+use MarekSkopal\TwelveData\Dto\TechnicalIndicators\PriceTransform\Ceiling;
+use MarekSkopal\TwelveData\Dto\TechnicalIndicators\PriceTransform\Division;
+use MarekSkopal\TwelveData\Dto\TechnicalIndicators\PriceTransform\Exponential;
+use MarekSkopal\TwelveData\Dto\TechnicalIndicators\PriceTransform\Floor;
+use MarekSkopal\TwelveData\Dto\TechnicalIndicators\PriceTransform\HeikinashiCandles;
+use MarekSkopal\TwelveData\Dto\TechnicalIndicators\PriceTransform\HighLowCloseAverage;
 use MarekSkopal\TwelveData\Dto\TechnicalIndicators\TechnicalIndicator;
 use MarekSkopal\TwelveData\Tests\Fixtures\Client\ClientFixture;
 use MarekSkopal\TwelveData\Utils\DateUtils;
@@ -33,6 +39,12 @@ use PHPUnit\Framework\TestCase;
 #[UsesClass(Addition::class)]
 #[UsesClass(Average::class)]
 #[UsesClass(AveragePrice::class)]
+#[UsesClass(Ceiling::class)]
+#[UsesClass(Division::class)]
+#[UsesClass(Exponential::class)]
+#[UsesClass(Floor::class)]
+#[UsesClass(HeikinashiCandles::class)]
+#[UsesClass(HighLowCloseAverage::class)]
 final class PriceTransformTest extends TestCase
 {
     public function testAddition(): void
@@ -62,6 +74,66 @@ final class PriceTransformTest extends TestCase
         self::assertInstanceOf(
             AveragePrice::class,
             $priceTransform->averagePrice('AAPL')->values[0],
+        );
+    }
+
+    public function testCeiling(): void
+    {
+        $priceTransform = new PriceTransform(ClientFixture::createWithResponse('ceiling.json'));
+
+        self::assertInstanceOf(
+            Ceiling::class,
+            $priceTransform->ceiling('AAPL')->values[0],
+        );
+    }
+
+    public function testDivision(): void
+    {
+        $priceTransform = new PriceTransform(ClientFixture::createWithResponse('division.json'));
+
+        self::assertInstanceOf(
+            Division::class,
+            $priceTransform->division('AAPL')->values[0],
+        );
+    }
+
+    public function testExponential(): void
+    {
+        $priceTransform = new PriceTransform(ClientFixture::createWithResponse('exponential.json'));
+
+        self::assertInstanceOf(
+            Exponential::class,
+            $priceTransform->exponential('AAPL')->values[0],
+        );
+    }
+
+    public function testFloor(): void
+    {
+        $priceTransform = new PriceTransform(ClientFixture::createWithResponse('floor.json'));
+
+        self::assertInstanceOf(
+            Floor::class,
+            $priceTransform->floor('AAPL')->values[0],
+        );
+    }
+
+    public function testHeikinashiCandles(): void
+    {
+        $priceTransform = new PriceTransform(ClientFixture::createWithResponse('heikinashi_candles.json'));
+
+        self::assertInstanceOf(
+            HeikinashiCandles::class,
+            $priceTransform->heikinashiCandles('AAPL')->values[0],
+        );
+    }
+
+    public function testHighLowCloseAverage(): void
+    {
+        $priceTransform = new PriceTransform(ClientFixture::createWithResponse('high_low_close_average.json'));
+
+        self::assertInstanceOf(
+            HighLowCloseAverage::class,
+            $priceTransform->highLowCloseAverage('AAPL')->values[0],
         );
     }
 }
