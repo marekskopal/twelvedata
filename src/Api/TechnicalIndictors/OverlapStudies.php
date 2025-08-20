@@ -36,6 +36,7 @@ use MarekSkopal\TwelveData\Enum\OrderEnum;
 use MarekSkopal\TwelveData\Enum\PrepostEnum;
 use MarekSkopal\TwelveData\Enum\SeriesTypeEnum;
 use MarekSkopal\TwelveData\Enum\TypeEnum;
+use MarekSkopal\TwelveData\Exception\InvalidArgumentException;
 use MarekSkopal\TwelveData\Utils\DateUtils;
 use MarekSkopal\TwelveData\Utils\QueryParamsUtils;
 
@@ -43,7 +44,7 @@ readonly class OverlapStudies extends TwelveDataApi
 {
     /** @return TechnicalIndicator<BollingerBands> */
     public function bollingerBands(
-        string $symbol,
+        ?string $symbol = null,
         IntervalEnum $interval = IntervalEnum::OneDay,
         ?string $figi = null,
         ?string $isin = null,
@@ -70,6 +71,10 @@ readonly class OverlapStudies extends TwelveDataApi
         ?bool $previousClose = null,
         ?AdjustEnum $adjust = null,
     ): TechnicalIndicator {
+        if ($symbol === null && $figi === null && $isin === null && $cusip === null) {
+            throw InvalidArgumentException::missingParameters(['symbol', 'figi', 'isin', 'cusip']);
+        }
+
         $response = $this->client->get(
             path: '/bbands',
             queryParams: [
@@ -109,7 +114,7 @@ readonly class OverlapStudies extends TwelveDataApi
 
     /** @return TechnicalIndicator<DoubleExponentialMovingAverage> */
     public function doubleExponentialMovingAverage(
-        string $symbol,
+        ?string $symbol = null,
         IntervalEnum $interval = IntervalEnum::OneDay,
         ?string $figi = null,
         ?string $isin = null,
@@ -134,6 +139,10 @@ readonly class OverlapStudies extends TwelveDataApi
         ?bool $previousClose = null,
         ?AdjustEnum $adjust = null,
     ): TechnicalIndicator {
+        if ($symbol === null && $figi === null && $isin === null && $cusip === null) {
+            throw InvalidArgumentException::missingParameters(['symbol', 'figi', 'isin', 'cusip']);
+        }
+
         $response = $this->client->get(
             path: '/dema',
             queryParams: [
@@ -171,7 +180,7 @@ readonly class OverlapStudies extends TwelveDataApi
 
     /** @return TechnicalIndicator<ExponentialMovingAverage> */
     public function exponentialMovingAverage(
-        string $symbol,
+        ?string $symbol = null,
         IntervalEnum $interval = IntervalEnum::OneDay,
         ?string $figi = null,
         ?string $isin = null,
@@ -196,6 +205,10 @@ readonly class OverlapStudies extends TwelveDataApi
         ?bool $previousClose = null,
         ?AdjustEnum $adjust = null,
     ): TechnicalIndicator {
+        if ($symbol === null && $figi === null && $isin === null && $cusip === null) {
+            throw InvalidArgumentException::missingParameters(['symbol', 'figi', 'isin', 'cusip']);
+        }
+
         $response = $this->client->get(
             path: '/ema',
             queryParams: [
@@ -233,7 +246,7 @@ readonly class OverlapStudies extends TwelveDataApi
 
     /** @return TechnicalIndicator<HilbertTransformInstantaneousTrendline> */
     public function hilbertTransformInstantaneousTrendline(
-        string $symbol,
+        ?string $symbol = null,
         IntervalEnum $interval = IntervalEnum::OneDay,
         ?string $figi = null,
         ?string $isin = null,
@@ -258,6 +271,10 @@ readonly class OverlapStudies extends TwelveDataApi
         ?bool $previousClose = null,
         ?AdjustEnum $adjust = null,
     ): TechnicalIndicator {
+        if ($symbol === null && $figi === null && $isin === null && $cusip === null) {
+            throw InvalidArgumentException::missingParameters(['symbol', 'figi', 'isin', 'cusip']);
+        }
+
         $response = $this->client->get(
             path: '/ht_trendline',
             queryParams: [
@@ -295,7 +312,7 @@ readonly class OverlapStudies extends TwelveDataApi
 
     /** @return TechnicalIndicator<IchimokuCloud> */
     public function ichimokuCloud(
-        string $symbol,
+        ?string $symbol = null,
         IntervalEnum $interval = IntervalEnum::OneDay,
         ?string $figi = null,
         ?string $isin = null,
@@ -323,6 +340,10 @@ readonly class OverlapStudies extends TwelveDataApi
         ?bool $previousClose = null,
         ?AdjustEnum $adjust = null,
     ): TechnicalIndicator {
+        if ($symbol === null && $figi === null && $isin === null && $cusip === null) {
+            throw InvalidArgumentException::missingParameters(['symbol', 'figi', 'isin', 'cusip']);
+        }
+
         $response = $this->client->get(
             path: '/ichimoku',
             queryParams: [
@@ -363,7 +384,7 @@ readonly class OverlapStudies extends TwelveDataApi
 
     /** @return TechnicalIndicator<KaufmanAdaptiveMovingAverage> */
     public function kaufmanAdaptiveMovingAverage(
-        string $symbol,
+        ?string $symbol = null,
         IntervalEnum $interval = IntervalEnum::OneDay,
         ?string $figi = null,
         ?string $isin = null,
@@ -388,6 +409,10 @@ readonly class OverlapStudies extends TwelveDataApi
         ?bool $previousClose = null,
         ?AdjustEnum $adjust = null,
     ): TechnicalIndicator {
+        if ($symbol === null && $figi === null && $isin === null && $cusip === null) {
+            throw InvalidArgumentException::missingParameters(['symbol', 'figi', 'isin', 'cusip']);
+        }
+
         $response = $this->client->get(
             path: '/kama',
             queryParams: [
@@ -425,7 +450,7 @@ readonly class OverlapStudies extends TwelveDataApi
 
     /** @return TechnicalIndicator<KeltnerChannel> */
     public function keltnerChannel(
-        string $symbol,
+        ?string $symbol = null,
         IntervalEnum $interval = IntervalEnum::OneDay,
         ?string $figi = null,
         ?string $isin = null,
@@ -453,6 +478,10 @@ readonly class OverlapStudies extends TwelveDataApi
         ?bool $previousClose = null,
         ?AdjustEnum $adjust = null,
     ): TechnicalIndicator {
+        if ($symbol === null && $figi === null && $isin === null && $cusip === null) {
+            throw InvalidArgumentException::missingParameters(['symbol', 'figi', 'isin', 'cusip']);
+        }
+
         $response = $this->client->get(
             path: '/keltner',
             queryParams: [
@@ -493,7 +522,7 @@ readonly class OverlapStudies extends TwelveDataApi
 
     /** @return TechnicalIndicator<MovingAverage> */
     public function movingAverage(
-        string $symbol,
+        ?string $symbol = null,
         IntervalEnum $interval = IntervalEnum::OneDay,
         ?string $figi = null,
         ?string $isin = null,
@@ -519,6 +548,10 @@ readonly class OverlapStudies extends TwelveDataApi
         ?bool $previousClose = null,
         ?AdjustEnum $adjust = null,
     ): TechnicalIndicator {
+        if ($symbol === null && $figi === null && $isin === null && $cusip === null) {
+            throw InvalidArgumentException::missingParameters(['symbol', 'figi', 'isin', 'cusip']);
+        }
+
         $response = $this->client->get(
             path: '/ma',
             queryParams: [
@@ -557,7 +590,7 @@ readonly class OverlapStudies extends TwelveDataApi
 
     /** @return TechnicalIndicator<MesaAdaptiveMovingAverage> */
     public function mesaAdaptiveMovingAverage(
-        string $symbol,
+        ?string $symbol = null,
         IntervalEnum $interval = IntervalEnum::OneDay,
         ?string $figi = null,
         ?string $isin = null,
@@ -583,6 +616,10 @@ readonly class OverlapStudies extends TwelveDataApi
         ?bool $previousClose = null,
         ?AdjustEnum $adjust = null,
     ): TechnicalIndicator {
+        if ($symbol === null && $figi === null && $isin === null && $cusip === null) {
+            throw InvalidArgumentException::missingParameters(['symbol', 'figi', 'isin', 'cusip']);
+        }
+
         $response = $this->client->get(
             path: '/mama',
             queryParams: [
@@ -621,7 +658,7 @@ readonly class OverlapStudies extends TwelveDataApi
 
     /** @return TechnicalIndicator<McGinleyDynamicIndicator> */
     public function mcGinleyDynamicIndicator(
-        string $symbol,
+        ?string $symbol = null,
         IntervalEnum $interval = IntervalEnum::OneDay,
         ?string $figi = null,
         ?string $isin = null,
@@ -645,6 +682,10 @@ readonly class OverlapStudies extends TwelveDataApi
         ?bool $previousClose = null,
         ?AdjustEnum $adjust = null,
     ): TechnicalIndicator {
+        if ($symbol === null && $figi === null && $isin === null && $cusip === null) {
+            throw InvalidArgumentException::missingParameters(['symbol', 'figi', 'isin', 'cusip']);
+        }
+
         $response = $this->client->get(
             path: '/mcginley_dynamic',
             queryParams: [
@@ -681,7 +722,7 @@ readonly class OverlapStudies extends TwelveDataApi
 
     /** @return TechnicalIndicator<Midpoint> */
     public function midpoint(
-        string $symbol,
+        ?string $symbol = null,
         IntervalEnum $interval = IntervalEnum::OneDay,
         ?string $figi = null,
         ?string $isin = null,
@@ -707,6 +748,10 @@ readonly class OverlapStudies extends TwelveDataApi
         ?bool $previousClose = null,
         ?AdjustEnum $adjust = null,
     ): TechnicalIndicator {
+        if ($symbol === null && $figi === null && $isin === null && $cusip === null) {
+            throw InvalidArgumentException::missingParameters(['symbol', 'figi', 'isin', 'cusip']);
+        }
+
         $response = $this->client->get(
             path: '/midpoint',
             queryParams: [
@@ -745,7 +790,7 @@ readonly class OverlapStudies extends TwelveDataApi
 
     /** @return TechnicalIndicator<Midprice> */
     public function midprice(
-        string $symbol,
+        ?string $symbol = null,
         IntervalEnum $interval = IntervalEnum::OneDay,
         ?string $figi = null,
         ?string $isin = null,
@@ -771,6 +816,10 @@ readonly class OverlapStudies extends TwelveDataApi
         ?bool $previousClose = null,
         ?AdjustEnum $adjust = null,
     ): TechnicalIndicator {
+        if ($symbol === null && $figi === null && $isin === null && $cusip === null) {
+            throw InvalidArgumentException::missingParameters(['symbol', 'figi', 'isin', 'cusip']);
+        }
+
         $response = $this->client->get(
             path: '/midprice',
             queryParams: [
@@ -809,7 +858,7 @@ readonly class OverlapStudies extends TwelveDataApi
 
     /** @return TechnicalIndicator<PivotPointsHighLow> */
     public function pivotPointsHighLow(
-        string $symbol,
+        ?string $symbol = null,
         IntervalEnum $interval = IntervalEnum::OneDay,
         ?string $figi = null,
         ?string $isin = null,
@@ -833,6 +882,10 @@ readonly class OverlapStudies extends TwelveDataApi
         ?bool $previousClose = null,
         ?AdjustEnum $adjust = null,
     ): TechnicalIndicator {
+        if ($symbol === null && $figi === null && $isin === null && $cusip === null) {
+            throw InvalidArgumentException::missingParameters(['symbol', 'figi', 'isin', 'cusip']);
+        }
+
         $response = $this->client->get(
             path: '/pivot_points_hl',
             queryParams: [
@@ -869,7 +922,7 @@ readonly class OverlapStudies extends TwelveDataApi
 
     /** @return TechnicalIndicator<ParabolicStopAndReverse> */
     public function parabolicStopAndReverse(
-        string $symbol,
+        ?string $symbol = null,
         IntervalEnum $interval = IntervalEnum::OneDay,
         ?string $figi = null,
         ?string $isin = null,
@@ -894,6 +947,10 @@ readonly class OverlapStudies extends TwelveDataApi
         ?bool $previousClose = null,
         ?AdjustEnum $adjust = null,
     ): TechnicalIndicator {
+        if ($symbol === null && $figi === null && $isin === null && $cusip === null) {
+            throw InvalidArgumentException::missingParameters(['symbol', 'figi', 'isin', 'cusip']);
+        }
+
         $response = $this->client->get(
             path: '/sar',
             queryParams: [
@@ -931,7 +988,7 @@ readonly class OverlapStudies extends TwelveDataApi
 
     /** @return TechnicalIndicator<ParabolicStopAndReverseExtended> */
     public function parabolicStopAndReverseExtended(
-        string $symbol,
+        ?string $symbol = null,
         IntervalEnum $interval = IntervalEnum::OneDay,
         ?string $figi = null,
         ?string $isin = null,
@@ -962,6 +1019,10 @@ readonly class OverlapStudies extends TwelveDataApi
         ?bool $previousClose = null,
         ?AdjustEnum $adjust = null,
     ): TechnicalIndicator {
+        if ($symbol === null && $figi === null && $isin === null && $cusip === null) {
+            throw InvalidArgumentException::missingParameters(['symbol', 'figi', 'isin', 'cusip']);
+        }
+
         $response = $this->client->get(
             path: '/sar',
             queryParams: [
@@ -1005,7 +1066,7 @@ readonly class OverlapStudies extends TwelveDataApi
 
     /** @return TechnicalIndicator<SimpleMovingAverage> */
     public function simpleMovingAverage(
-        string $symbol,
+        ?string $symbol = null,
         IntervalEnum $interval = IntervalEnum::OneDay,
         ?string $figi = null,
         ?string $isin = null,
@@ -1030,6 +1091,10 @@ readonly class OverlapStudies extends TwelveDataApi
         ?bool $previousClose = null,
         ?AdjustEnum $adjust = null,
     ): TechnicalIndicator {
+        if ($symbol === null && $figi === null && $isin === null && $cusip === null) {
+            throw InvalidArgumentException::missingParameters(['symbol', 'figi', 'isin', 'cusip']);
+        }
+
         $response = $this->client->get(
             path: '/sma',
             queryParams: [
@@ -1067,7 +1132,7 @@ readonly class OverlapStudies extends TwelveDataApi
 
     /** @return TechnicalIndicator<TripleExponentialMovingAverageT3MA> */
     public function tripleExponentialMovingAverageT3MA(
-        string $symbol,
+        ?string $symbol = null,
         IntervalEnum $interval = IntervalEnum::OneDay,
         ?string $figi = null,
         ?string $isin = null,
@@ -1093,6 +1158,10 @@ readonly class OverlapStudies extends TwelveDataApi
         ?bool $previousClose = null,
         ?AdjustEnum $adjust = null,
     ): TechnicalIndicator {
+        if ($symbol === null && $figi === null && $isin === null && $cusip === null) {
+            throw InvalidArgumentException::missingParameters(['symbol', 'figi', 'isin', 'cusip']);
+        }
+
         $response = $this->client->get(
             path: '/t3ma',
             queryParams: [
@@ -1131,7 +1200,7 @@ readonly class OverlapStudies extends TwelveDataApi
 
     /** @return TechnicalIndicator<TripleExponentialMovingAverageTEMA> */
     public function tripleExponentialMovingAverageTEMA(
-        string $symbol,
+        ?string $symbol = null,
         IntervalEnum $interval = IntervalEnum::OneDay,
         ?string $figi = null,
         ?string $isin = null,
@@ -1156,6 +1225,10 @@ readonly class OverlapStudies extends TwelveDataApi
         ?bool $previousClose = null,
         ?AdjustEnum $adjust = null,
     ): TechnicalIndicator {
+        if ($symbol === null && $figi === null && $isin === null && $cusip === null) {
+            throw InvalidArgumentException::missingParameters(['symbol', 'figi', 'isin', 'cusip']);
+        }
+
         $response = $this->client->get(
             path: '/tema',
             queryParams: [
@@ -1193,7 +1266,7 @@ readonly class OverlapStudies extends TwelveDataApi
 
     /** @return TechnicalIndicator<TriangularMovingAverage> */
     public function triangularMovingAverage(
-        string $symbol,
+        ?string $symbol = null,
         IntervalEnum $interval = IntervalEnum::OneDay,
         ?string $figi = null,
         ?string $isin = null,
@@ -1218,6 +1291,10 @@ readonly class OverlapStudies extends TwelveDataApi
         ?bool $previousClose = null,
         ?AdjustEnum $adjust = null,
     ): TechnicalIndicator {
+        if ($symbol === null && $figi === null && $isin === null && $cusip === null) {
+            throw InvalidArgumentException::missingParameters(['symbol', 'figi', 'isin', 'cusip']);
+        }
+
         $response = $this->client->get(
             path: '/trima',
             queryParams: [
@@ -1255,7 +1332,7 @@ readonly class OverlapStudies extends TwelveDataApi
 
     /** @return TechnicalIndicator<VolumeWeightedAveragePrice> */
     public function volumeWeightedAveragePrice(
-        string $symbol,
+        ?string $symbol = null,
         IntervalEnum $interval = IntervalEnum::OneDay,
         ?string $figi = null,
         ?string $isin = null,
@@ -1280,6 +1357,10 @@ readonly class OverlapStudies extends TwelveDataApi
         ?bool $previousClose = null,
         ?AdjustEnum $adjust = null,
     ): TechnicalIndicator {
+        if ($symbol === null && $figi === null && $isin === null && $cusip === null) {
+            throw InvalidArgumentException::missingParameters(['symbol', 'figi', 'isin', 'cusip']);
+        }
+
         $response = $this->client->get(
             path: '/vwap',
             queryParams: [
@@ -1317,7 +1398,7 @@ readonly class OverlapStudies extends TwelveDataApi
 
     /** @return TechnicalIndicator<WeightedMovingAverage> */
     public function weightedMovingAverage(
-        string $symbol,
+        ?string $symbol = null,
         IntervalEnum $interval = IntervalEnum::OneDay,
         ?string $figi = null,
         ?string $isin = null,
@@ -1342,6 +1423,10 @@ readonly class OverlapStudies extends TwelveDataApi
         ?bool $previousClose = null,
         ?AdjustEnum $adjust = null,
     ): TechnicalIndicator {
+        if ($symbol === null && $figi === null && $isin === null && $cusip === null) {
+            throw InvalidArgumentException::missingParameters(['symbol', 'figi', 'isin', 'cusip']);
+        }
+
         $response = $this->client->get(
             path: '/wma',
             queryParams: [

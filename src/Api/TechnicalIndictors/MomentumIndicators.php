@@ -48,6 +48,7 @@ use MarekSkopal\TwelveData\Enum\OrderEnum;
 use MarekSkopal\TwelveData\Enum\PrepostEnum;
 use MarekSkopal\TwelveData\Enum\SeriesTypeEnum;
 use MarekSkopal\TwelveData\Enum\TypeEnum;
+use MarekSkopal\TwelveData\Exception\InvalidArgumentException;
 use MarekSkopal\TwelveData\Utils\DateUtils;
 use MarekSkopal\TwelveData\Utils\QueryParamsUtils;
 
@@ -55,7 +56,7 @@ readonly class MomentumIndicators extends TwelveDataApi
 {
     /** @return TechnicalIndicator<AverageDirectionalIndex> */
     public function averageDirectionalIndex(
-        string $symbol,
+        ?string $symbol = null,
         IntervalEnum $interval = IntervalEnum::OneDay,
         ?string $figi = null,
         ?string $isin = null,
@@ -80,6 +81,10 @@ readonly class MomentumIndicators extends TwelveDataApi
         ?AdjustEnum $adjust = null,
     ): TechnicalIndicator
     {
+        if ($symbol === null && $figi === null && $isin === null && $cusip === null) {
+            throw InvalidArgumentException::missingParameters(['symbol', 'figi', 'isin', 'cusip']);
+        }
+
         $response = $this->client->get(
             path: '/adx',
             queryParams: [
@@ -116,7 +121,7 @@ readonly class MomentumIndicators extends TwelveDataApi
 
     /** @return TechnicalIndicator<AverageDirectionalMovementIndexRating> */
     public function averageDirectionalMovementIndexRating(
-        string $symbol,
+        ?string $symbol = null,
         IntervalEnum $interval = IntervalEnum::OneDay,
         ?string $figi = null,
         ?string $isin = null,
@@ -141,6 +146,10 @@ readonly class MomentumIndicators extends TwelveDataApi
         ?AdjustEnum $adjust = null,
     ): TechnicalIndicator
     {
+        if ($symbol === null && $figi === null && $isin === null && $cusip === null) {
+            throw InvalidArgumentException::missingParameters(['symbol', 'figi', 'isin', 'cusip']);
+        }
+
         $response = $this->client->get(
             path: '/adxr',
             queryParams: [
@@ -177,7 +186,7 @@ readonly class MomentumIndicators extends TwelveDataApi
 
     /** @return TechnicalIndicator<AbsolutePriceOscillator> */
     public function absolutePriceOscillator(
-        string $symbol,
+        ?string $symbol = null,
         IntervalEnum $interval = IntervalEnum::OneDay,
         ?string $figi = null,
         ?string $isin = null,
@@ -205,6 +214,10 @@ readonly class MomentumIndicators extends TwelveDataApi
         ?AdjustEnum $adjust = null,
     ): TechnicalIndicator
     {
+        if ($symbol === null && $figi === null && $isin === null && $cusip === null) {
+            throw InvalidArgumentException::missingParameters(['symbol', 'figi', 'isin', 'cusip']);
+        }
+
         $response = $this->client->get(
             path: '/apo',
             queryParams: [
@@ -244,7 +257,7 @@ readonly class MomentumIndicators extends TwelveDataApi
 
     /** @return TechnicalIndicator<AroonIndicator> */
     public function aroonIndicator(
-        string $symbol,
+        ?string $symbol = null,
         IntervalEnum $interval = IntervalEnum::OneDay,
         ?string $figi = null,
         ?string $isin = null,
@@ -269,6 +282,10 @@ readonly class MomentumIndicators extends TwelveDataApi
         ?AdjustEnum $adjust = null,
     ): TechnicalIndicator
     {
+        if ($symbol === null && $figi === null && $isin === null && $cusip === null) {
+            throw InvalidArgumentException::missingParameters(['symbol', 'figi', 'isin', 'cusip']);
+        }
+
         $response = $this->client->get(
             path: '/aroon',
             queryParams: [
@@ -305,7 +322,7 @@ readonly class MomentumIndicators extends TwelveDataApi
 
     /** @return TechnicalIndicator<AroonOscillator> */
     public function aroonOscillator(
-        string $symbol,
+        ?string $symbol = null,
         IntervalEnum $interval = IntervalEnum::OneDay,
         ?string $figi = null,
         ?string $isin = null,
@@ -330,6 +347,10 @@ readonly class MomentumIndicators extends TwelveDataApi
         ?AdjustEnum $adjust = null,
     ): TechnicalIndicator
     {
+        if ($symbol === null && $figi === null && $isin === null && $cusip === null) {
+            throw InvalidArgumentException::missingParameters(['symbol', 'figi', 'isin', 'cusip']);
+        }
+
         $response = $this->client->get(
             path: '/aroonosc',
             queryParams: [
@@ -366,7 +387,7 @@ readonly class MomentumIndicators extends TwelveDataApi
 
     /** @return TechnicalIndicator<BalanceOfPower> */
     public function balanceOfPower(
-        string $symbol,
+        ?string $symbol = null,
         IntervalEnum $interval = IntervalEnum::OneDay,
         ?string $figi = null,
         ?string $isin = null,
@@ -390,6 +411,10 @@ readonly class MomentumIndicators extends TwelveDataApi
         ?AdjustEnum $adjust = null,
     ): TechnicalIndicator
     {
+        if ($symbol === null && $figi === null && $isin === null && $cusip === null) {
+            throw InvalidArgumentException::missingParameters(['symbol', 'figi', 'isin', 'cusip']);
+        }
+
         $response = $this->client->get(
             path: '/bop',
             queryParams: [
@@ -425,7 +450,7 @@ readonly class MomentumIndicators extends TwelveDataApi
 
     /** @return TechnicalIndicator<CommodityChannelIndex> */
     public function commodityChannelIndex(
-        string $symbol,
+        ?string $symbol = null,
         IntervalEnum $interval = IntervalEnum::OneDay,
         ?string $figi = null,
         ?string $isin = null,
@@ -450,6 +475,10 @@ readonly class MomentumIndicators extends TwelveDataApi
         ?AdjustEnum $adjust = null,
     ): TechnicalIndicator
     {
+        if ($symbol === null && $figi === null && $isin === null && $cusip === null) {
+            throw InvalidArgumentException::missingParameters(['symbol', 'figi', 'isin', 'cusip']);
+        }
+
         $response = $this->client->get(
             path: '/cci',
             queryParams: [
@@ -486,7 +515,7 @@ readonly class MomentumIndicators extends TwelveDataApi
 
     /** @return TechnicalIndicator<ChandeMomentumOscillator> */
     public function chandeMomentumOscillator(
-        string $symbol,
+        ?string $symbol = null,
         IntervalEnum $interval = IntervalEnum::OneDay,
         ?string $figi = null,
         ?string $isin = null,
@@ -512,6 +541,10 @@ readonly class MomentumIndicators extends TwelveDataApi
         ?AdjustEnum $adjust = null,
     ): TechnicalIndicator
     {
+        if ($symbol === null && $figi === null && $isin === null && $cusip === null) {
+            throw InvalidArgumentException::missingParameters(['symbol', 'figi', 'isin', 'cusip']);
+        }
+
         $response = $this->client->get(
             path: '/cmo',
             queryParams: [
@@ -549,7 +582,7 @@ readonly class MomentumIndicators extends TwelveDataApi
 
     /** @return TechnicalIndicator<CoppockCurve> */
     public function coppockCurve(
-        string $symbol,
+        ?string $symbol = null,
         IntervalEnum $interval = IntervalEnum::OneDay,
         ?string $figi = null,
         ?string $isin = null,
@@ -577,6 +610,10 @@ readonly class MomentumIndicators extends TwelveDataApi
         ?AdjustEnum $adjust = null,
     ): TechnicalIndicator
     {
+        if ($symbol === null && $figi === null && $isin === null && $cusip === null) {
+            throw InvalidArgumentException::missingParameters(['symbol', 'figi', 'isin', 'cusip']);
+        }
+
         $response = $this->client->get(
             path: '/coppock',
             queryParams: [
@@ -616,7 +653,7 @@ readonly class MomentumIndicators extends TwelveDataApi
 
     /** @return TechnicalIndicator<ConnorsRelativeStrengthIndex> */
     public function connorsRelativeStrengthIndex(
-        string $symbol,
+        ?string $symbol = null,
         IntervalEnum $interval = IntervalEnum::OneDay,
         ?string $figi = null,
         ?string $isin = null,
@@ -645,6 +682,10 @@ readonly class MomentumIndicators extends TwelveDataApi
         ?AdjustEnum $adjust = null,
     ): TechnicalIndicator
     {
+        if ($symbol === null && $figi === null && $isin === null && $cusip === null) {
+            throw InvalidArgumentException::missingParameters(['symbol', 'figi', 'isin', 'cusip']);
+        }
+
         $response = $this->client->get(
             path: '/crsi',
             queryParams: [
@@ -685,7 +726,7 @@ readonly class MomentumIndicators extends TwelveDataApi
 
     /** @return TechnicalIndicator<DetrendedPriceOscillator> */
     public function detrendedPriceOscillator(
-        string $symbol,
+        ?string $symbol = null,
         IntervalEnum $interval = IntervalEnum::OneDay,
         ?string $figi = null,
         ?string $isin = null,
@@ -712,6 +753,10 @@ readonly class MomentumIndicators extends TwelveDataApi
         ?AdjustEnum $adjust = null,
     ): TechnicalIndicator
     {
+        if ($symbol === null && $figi === null && $isin === null && $cusip === null) {
+            throw InvalidArgumentException::missingParameters(['symbol', 'figi', 'isin', 'cusip']);
+        }
+
         $response = $this->client->get(
             path: '/dpo',
             queryParams: [
@@ -750,7 +795,7 @@ readonly class MomentumIndicators extends TwelveDataApi
 
     /** @return TechnicalIndicator<DirectionalMovementIndex> */
     public function directionalMovementIndex(
-        string $symbol,
+        ?string $symbol = null,
         IntervalEnum $interval = IntervalEnum::OneDay,
         ?string $figi = null,
         ?string $isin = null,
@@ -775,6 +820,10 @@ readonly class MomentumIndicators extends TwelveDataApi
         ?AdjustEnum $adjust = null,
     ): TechnicalIndicator
     {
+        if ($symbol === null && $figi === null && $isin === null && $cusip === null) {
+            throw InvalidArgumentException::missingParameters(['symbol', 'figi', 'isin', 'cusip']);
+        }
+
         $response = $this->client->get(
             path: '/dx',
             queryParams: [
@@ -811,7 +860,7 @@ readonly class MomentumIndicators extends TwelveDataApi
 
     /** @return TechnicalIndicator<KnowSureThing> */
     public function knowSureThing(
-        string $symbol,
+        ?string $symbol = null,
         IntervalEnum $interval = IntervalEnum::OneDay,
         ?string $figi = null,
         ?string $isin = null,
@@ -844,6 +893,10 @@ readonly class MomentumIndicators extends TwelveDataApi
         ?AdjustEnum $adjust = null,
     ): TechnicalIndicator
     {
+        if ($symbol === null && $figi === null && $isin === null && $cusip === null) {
+            throw InvalidArgumentException::missingParameters(['symbol', 'figi', 'isin', 'cusip']);
+        }
+
         $response = $this->client->get(
             path: '/kst',
             queryParams: [
@@ -888,7 +941,7 @@ readonly class MomentumIndicators extends TwelveDataApi
 
     /** @return TechnicalIndicator<MovingAverageConvergenceDivergence> */
     public function movingAverageConvergenceDivergence(
-        string $symbol,
+        ?string $symbol = null,
         IntervalEnum $interval = IntervalEnum::OneDay,
         ?string $figi = null,
         ?string $isin = null,
@@ -915,6 +968,10 @@ readonly class MomentumIndicators extends TwelveDataApi
         ?AdjustEnum $adjust = null,
     ): TechnicalIndicator
     {
+        if ($symbol === null && $figi === null && $isin === null && $cusip === null) {
+            throw InvalidArgumentException::missingParameters(['symbol', 'figi', 'isin', 'cusip']);
+        }
+
         $response = $this->client->get(
             path: '/macd',
             queryParams: [
@@ -953,7 +1010,7 @@ readonly class MomentumIndicators extends TwelveDataApi
 
     /** @return TechnicalIndicator<MovingAverageConvergenceDivergenceSlope> */
     public function movingAverageConvergenceDivergenceSlope(
-        string $symbol,
+        ?string $symbol = null,
         IntervalEnum $interval = IntervalEnum::OneDay,
         ?string $figi = null,
         ?string $isin = null,
@@ -981,6 +1038,10 @@ readonly class MomentumIndicators extends TwelveDataApi
         ?AdjustEnum $adjust = null,
     ): TechnicalIndicator
     {
+        if ($symbol === null && $figi === null && $isin === null && $cusip === null) {
+            throw InvalidArgumentException::missingParameters(['symbol', 'figi', 'isin', 'cusip']);
+        }
+
         $response = $this->client->get(
             path: '/macd_slope',
             queryParams: [
@@ -1020,7 +1081,7 @@ readonly class MomentumIndicators extends TwelveDataApi
 
     /** @return TechnicalIndicator<MovingAverageConvergenceDivergence> */
     public function movingAverageConvergenceDivergenceExtension(
-        string $symbol,
+        ?string $symbol = null,
         IntervalEnum $interval = IntervalEnum::OneDay,
         ?string $figi = null,
         ?string $isin = null,
@@ -1050,6 +1111,10 @@ readonly class MomentumIndicators extends TwelveDataApi
         ?AdjustEnum $adjust = null,
     ): TechnicalIndicator
     {
+        if ($symbol === null && $figi === null && $isin === null && $cusip === null) {
+            throw InvalidArgumentException::missingParameters(['symbol', 'figi', 'isin', 'cusip']);
+        }
+
         $response = $this->client->get(
             path: '/macdext',
             queryParams: [
@@ -1091,7 +1156,7 @@ readonly class MomentumIndicators extends TwelveDataApi
 
     /** @return TechnicalIndicator<MoneyFlowIndex> */
     public function moneyFlowIndex(
-        string $symbol,
+        ?string $symbol = null,
         IntervalEnum $interval = IntervalEnum::OneDay,
         ?string $figi = null,
         ?string $isin = null,
@@ -1116,6 +1181,10 @@ readonly class MomentumIndicators extends TwelveDataApi
         ?AdjustEnum $adjust = null,
     ): TechnicalIndicator
     {
+        if ($symbol === null && $figi === null && $isin === null && $cusip === null) {
+            throw InvalidArgumentException::missingParameters(['symbol', 'figi', 'isin', 'cusip']);
+        }
+
         $response = $this->client->get(
             path: '/mfi',
             queryParams: [
@@ -1152,7 +1221,7 @@ readonly class MomentumIndicators extends TwelveDataApi
 
     /** @return TechnicalIndicator<MinusDirectionalIndicator> */
     public function minusDirectionalIndicator(
-        string $symbol,
+        ?string $symbol = null,
         IntervalEnum $interval = IntervalEnum::OneDay,
         ?string $figi = null,
         ?string $isin = null,
@@ -1177,6 +1246,10 @@ readonly class MomentumIndicators extends TwelveDataApi
         ?AdjustEnum $adjust = null,
     ): TechnicalIndicator
     {
+        if ($symbol === null && $figi === null && $isin === null && $cusip === null) {
+            throw InvalidArgumentException::missingParameters(['symbol', 'figi', 'isin', 'cusip']);
+        }
+
         $response = $this->client->get(
             path: '/minus_di',
             queryParams: [
@@ -1213,7 +1286,7 @@ readonly class MomentumIndicators extends TwelveDataApi
 
     /** @return TechnicalIndicator<MinusDirectionalMovement> */
     public function minusDirectionalMovement(
-        string $symbol,
+        ?string $symbol = null,
         IntervalEnum $interval = IntervalEnum::OneDay,
         ?string $figi = null,
         ?string $isin = null,
@@ -1238,6 +1311,10 @@ readonly class MomentumIndicators extends TwelveDataApi
         ?AdjustEnum $adjust = null,
     ): TechnicalIndicator
     {
+        if ($symbol === null && $figi === null && $isin === null && $cusip === null) {
+            throw InvalidArgumentException::missingParameters(['symbol', 'figi', 'isin', 'cusip']);
+        }
+
         $response = $this->client->get(
             path: '/minus_dm',
             queryParams: [
@@ -1274,7 +1351,7 @@ readonly class MomentumIndicators extends TwelveDataApi
 
     /** @return TechnicalIndicator<Momentum> */
     public function momentum(
-        string $symbol,
+        ?string $symbol = null,
         IntervalEnum $interval = IntervalEnum::OneDay,
         ?string $figi = null,
         ?string $isin = null,
@@ -1300,6 +1377,10 @@ readonly class MomentumIndicators extends TwelveDataApi
         ?AdjustEnum $adjust = null,
     ): TechnicalIndicator
     {
+        if ($symbol === null && $figi === null && $isin === null && $cusip === null) {
+            throw InvalidArgumentException::missingParameters(['symbol', 'figi', 'isin', 'cusip']);
+        }
+
         $response = $this->client->get(
             path: '/mom',
             queryParams: [
@@ -1337,7 +1418,7 @@ readonly class MomentumIndicators extends TwelveDataApi
 
     /** @return TechnicalIndicator<PercentB> */
     public function percentB(
-        string $symbol,
+        ?string $symbol = null,
         IntervalEnum $interval = IntervalEnum::OneDay,
         ?string $figi = null,
         ?string $isin = null,
@@ -1365,6 +1446,10 @@ readonly class MomentumIndicators extends TwelveDataApi
         ?AdjustEnum $adjust = null,
     ): TechnicalIndicator
     {
+        if ($symbol === null && $figi === null && $isin === null && $cusip === null) {
+            throw InvalidArgumentException::missingParameters(['symbol', 'figi', 'isin', 'cusip']);
+        }
+
         $response = $this->client->get(
             path: '/percent_b',
             queryParams: [
@@ -1404,7 +1489,7 @@ readonly class MomentumIndicators extends TwelveDataApi
 
     /** @return TechnicalIndicator<PlusDirectionalIndicator> */
     public function plusDirectionalIndicator(
-        string $symbol,
+        ?string $symbol = null,
         IntervalEnum $interval = IntervalEnum::OneDay,
         ?string $figi = null,
         ?string $isin = null,
@@ -1429,6 +1514,10 @@ readonly class MomentumIndicators extends TwelveDataApi
         ?AdjustEnum $adjust = null,
     ): TechnicalIndicator
     {
+        if ($symbol === null && $figi === null && $isin === null && $cusip === null) {
+            throw InvalidArgumentException::missingParameters(['symbol', 'figi', 'isin', 'cusip']);
+        }
+
         $response = $this->client->get(
             path: '/plus_di',
             queryParams: [
@@ -1465,7 +1554,7 @@ readonly class MomentumIndicators extends TwelveDataApi
 
     /** @return TechnicalIndicator<PlusDirectionalMovement> */
     public function plusDirectionalMovement(
-        string $symbol,
+        ?string $symbol = null,
         IntervalEnum $interval = IntervalEnum::OneDay,
         ?string $figi = null,
         ?string $isin = null,
@@ -1490,6 +1579,10 @@ readonly class MomentumIndicators extends TwelveDataApi
         ?AdjustEnum $adjust = null,
     ): TechnicalIndicator
     {
+        if ($symbol === null && $figi === null && $isin === null && $cusip === null) {
+            throw InvalidArgumentException::missingParameters(['symbol', 'figi', 'isin', 'cusip']);
+        }
+
         $response = $this->client->get(
             path: '/plus_dm',
             queryParams: [
@@ -1526,7 +1619,7 @@ readonly class MomentumIndicators extends TwelveDataApi
 
     /** @return TechnicalIndicator<PercentagePriceOscillator> */
     public function percentagePriceOscillator(
-        string $symbol,
+        ?string $symbol = null,
         IntervalEnum $interval = IntervalEnum::OneDay,
         ?string $figi = null,
         ?string $isin = null,
@@ -1554,6 +1647,10 @@ readonly class MomentumIndicators extends TwelveDataApi
         ?AdjustEnum $adjust = null,
     ): TechnicalIndicator
     {
+        if ($symbol === null && $figi === null && $isin === null && $cusip === null) {
+            throw InvalidArgumentException::missingParameters(['symbol', 'figi', 'isin', 'cusip']);
+        }
+
         $response = $this->client->get(
             path: '/ppo',
             queryParams: [
@@ -1593,7 +1690,7 @@ readonly class MomentumIndicators extends TwelveDataApi
 
     /** @return TechnicalIndicator<RateOfChange> */
     public function rateOfChange(
-        string $symbol,
+        ?string $symbol = null,
         IntervalEnum $interval = IntervalEnum::OneDay,
         ?string $figi = null,
         ?string $isin = null,
@@ -1621,6 +1718,10 @@ readonly class MomentumIndicators extends TwelveDataApi
         ?AdjustEnum $adjust = null,
     ): TechnicalIndicator
     {
+        if ($symbol === null && $figi === null && $isin === null && $cusip === null) {
+            throw InvalidArgumentException::missingParameters(['symbol', 'figi', 'isin', 'cusip']);
+        }
+
         $response = $this->client->get(
             path: '/roc',
             queryParams: [
@@ -1660,7 +1761,7 @@ readonly class MomentumIndicators extends TwelveDataApi
 
     /** @return TechnicalIndicator<RateOfChangePercentage> */
     public function rateOfChangePercentage(
-        string $symbol,
+        ?string $symbol = null,
         IntervalEnum $interval = IntervalEnum::OneDay,
         ?string $figi = null,
         ?string $isin = null,
@@ -1688,6 +1789,10 @@ readonly class MomentumIndicators extends TwelveDataApi
         ?AdjustEnum $adjust = null,
     ): TechnicalIndicator
     {
+        if ($symbol === null && $figi === null && $isin === null && $cusip === null) {
+            throw InvalidArgumentException::missingParameters(['symbol', 'figi', 'isin', 'cusip']);
+        }
+
         $response = $this->client->get(
             path: '/rocp',
             queryParams: [
@@ -1727,7 +1832,7 @@ readonly class MomentumIndicators extends TwelveDataApi
 
     /** @return TechnicalIndicator<RateOfChangeRatio> */
     public function rateOfChangeRatio(
-        string $symbol,
+        ?string $symbol = null,
         IntervalEnum $interval = IntervalEnum::OneDay,
         ?string $figi = null,
         ?string $isin = null,
@@ -1755,6 +1860,10 @@ readonly class MomentumIndicators extends TwelveDataApi
         ?AdjustEnum $adjust = null,
     ): TechnicalIndicator
     {
+        if ($symbol === null && $figi === null && $isin === null && $cusip === null) {
+            throw InvalidArgumentException::missingParameters(['symbol', 'figi', 'isin', 'cusip']);
+        }
+
         $response = $this->client->get(
             path: '/rocr',
             queryParams: [
@@ -1794,7 +1903,7 @@ readonly class MomentumIndicators extends TwelveDataApi
 
     /** @return TechnicalIndicator<RateOfChangeRatio100> */
     public function rateOfChangeRatio100(
-        string $symbol,
+        ?string $symbol = null,
         IntervalEnum $interval = IntervalEnum::OneDay,
         ?string $figi = null,
         ?string $isin = null,
@@ -1822,6 +1931,10 @@ readonly class MomentumIndicators extends TwelveDataApi
         ?AdjustEnum $adjust = null,
     ): TechnicalIndicator
     {
+        if ($symbol === null && $figi === null && $isin === null && $cusip === null) {
+            throw InvalidArgumentException::missingParameters(['symbol', 'figi', 'isin', 'cusip']);
+        }
+
         $response = $this->client->get(
             path: '/rocr100',
             queryParams: [
@@ -1861,7 +1974,7 @@ readonly class MomentumIndicators extends TwelveDataApi
 
     /** @return TechnicalIndicator<RelativeStrengthIndex> */
     public function relativeStrengthIndex(
-        string $symbol,
+        ?string $symbol = null,
         IntervalEnum $interval = IntervalEnum::OneDay,
         ?string $figi = null,
         ?string $isin = null,
@@ -1887,6 +2000,10 @@ readonly class MomentumIndicators extends TwelveDataApi
         ?AdjustEnum $adjust = null,
     ): TechnicalIndicator
     {
+        if ($symbol === null && $figi === null && $isin === null && $cusip === null) {
+            throw InvalidArgumentException::missingParameters(['symbol', 'figi', 'isin', 'cusip']);
+        }
+
         $response = $this->client->get(
             path: '/rsi',
             queryParams: [
@@ -1924,7 +2041,7 @@ readonly class MomentumIndicators extends TwelveDataApi
 
     /** @return TechnicalIndicator<StochasticOscillator> */
     public function stochasticOscillator(
-        string $symbol,
+        ?string $symbol = null,
         IntervalEnum $interval = IntervalEnum::OneDay,
         ?string $figi = null,
         ?string $isin = null,
@@ -1953,6 +2070,10 @@ readonly class MomentumIndicators extends TwelveDataApi
         ?AdjustEnum $adjust = null,
     ): TechnicalIndicator
     {
+        if ($symbol === null && $figi === null && $isin === null && $cusip === null) {
+            throw InvalidArgumentException::missingParameters(['symbol', 'figi', 'isin', 'cusip']);
+        }
+
         $response = $this->client->get(
             path: '/stoch',
             queryParams: [
@@ -1993,7 +2114,7 @@ readonly class MomentumIndicators extends TwelveDataApi
 
     /** @return TechnicalIndicator<StochasticFast> */
     public function stochasticFast(
-        string $symbol,
+        ?string $symbol = null,
         IntervalEnum $interval = IntervalEnum::OneDay,
         ?string $figi = null,
         ?string $isin = null,
@@ -2020,6 +2141,10 @@ readonly class MomentumIndicators extends TwelveDataApi
         ?AdjustEnum $adjust = null,
     ): TechnicalIndicator
     {
+        if ($symbol === null && $figi === null && $isin === null && $cusip === null) {
+            throw InvalidArgumentException::missingParameters(['symbol', 'figi', 'isin', 'cusip']);
+        }
+
         $response = $this->client->get(
             path: '/stochf',
             queryParams: [
@@ -2058,7 +2183,7 @@ readonly class MomentumIndicators extends TwelveDataApi
 
     /** @return TechnicalIndicator<StochasticRelativeStrengthIndex> */
     public function stochasticRelativeStrengthIndex(
-        string $symbol,
+        ?string $symbol = null,
         IntervalEnum $interval = IntervalEnum::OneDay,
         ?string $figi = null,
         ?string $isin = null,
@@ -2087,6 +2212,10 @@ readonly class MomentumIndicators extends TwelveDataApi
         ?AdjustEnum $adjust = null,
     ): TechnicalIndicator
     {
+        if ($symbol === null && $figi === null && $isin === null && $cusip === null) {
+            throw InvalidArgumentException::missingParameters(['symbol', 'figi', 'isin', 'cusip']);
+        }
+
         $response = $this->client->get(
             path: '/stochrsi',
             queryParams: [
@@ -2127,7 +2256,7 @@ readonly class MomentumIndicators extends TwelveDataApi
 
     /** @return TechnicalIndicator<UltimateOscillatorEndpoint> */
     public function ultimateOscillatorEndpoint(
-        string $symbol,
+        ?string $symbol = null,
         IntervalEnum $interval = IntervalEnum::OneDay,
         ?string $figi = null,
         ?string $isin = null,
@@ -2155,6 +2284,10 @@ readonly class MomentumIndicators extends TwelveDataApi
         ?AdjustEnum $adjust = null,
     ): TechnicalIndicator
     {
+        if ($symbol === null && $figi === null && $isin === null && $cusip === null) {
+            throw InvalidArgumentException::missingParameters(['symbol', 'figi', 'isin', 'cusip']);
+        }
+
         $response = $this->client->get(
             path: '/ultosc',
             queryParams: [
@@ -2194,7 +2327,7 @@ readonly class MomentumIndicators extends TwelveDataApi
 
     /** @return TechnicalIndicator<WilliamsPercentR> */
     public function williamsPercentR(
-        string $symbol,
+        ?string $symbol = null,
         IntervalEnum $interval = IntervalEnum::OneDay,
         ?string $figi = null,
         ?string $isin = null,
@@ -2219,6 +2352,10 @@ readonly class MomentumIndicators extends TwelveDataApi
         ?AdjustEnum $adjust = null,
     ): TechnicalIndicator
     {
+        if ($symbol === null && $figi === null && $isin === null && $cusip === null) {
+            throw InvalidArgumentException::missingParameters(['symbol', 'figi', 'isin', 'cusip']);
+        }
+
         $response = $this->client->get(
             path: '/willr',
             queryParams: [

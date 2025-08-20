@@ -18,6 +18,7 @@ use MarekSkopal\TwelveData\Enum\OrderEnum;
 use MarekSkopal\TwelveData\Enum\PrepostEnum;
 use MarekSkopal\TwelveData\Enum\SeriesTypeEnum;
 use MarekSkopal\TwelveData\Enum\TypeEnum;
+use MarekSkopal\TwelveData\Exception\InvalidArgumentException;
 use MarekSkopal\TwelveData\Utils\DateUtils;
 use MarekSkopal\TwelveData\Utils\QueryParamsUtils;
 
@@ -25,7 +26,7 @@ readonly class VolumeIndicators extends TwelveDataApi
 {
     /** @return TechnicalIndicator<AccumulationDistribution> */
     public function accumulationDistribution(
-        string $symbol,
+        ?string $symbol = null,
         IntervalEnum $interval = IntervalEnum::OneDay,
         ?string $figi = null,
         ?string $isin = null,
@@ -49,6 +50,10 @@ readonly class VolumeIndicators extends TwelveDataApi
         ?AdjustEnum $adjust = null,
     ): TechnicalIndicator
     {
+        if ($symbol === null && $figi === null && $isin === null && $cusip === null) {
+            throw InvalidArgumentException::missingParameters(['symbol', 'figi', 'isin', 'cusip']);
+        }
+
         $response = $this->client->get(
             path: '/ad',
             queryParams: [
@@ -84,7 +89,7 @@ readonly class VolumeIndicators extends TwelveDataApi
 
     /** @return TechnicalIndicator<AccumulationDistributionOscillator> */
     public function accumulationDistributionOscillator(
-        string $symbol,
+        ?string $symbol = null,
         IntervalEnum $interval = IntervalEnum::OneDay,
         ?string $figi = null,
         ?string $isin = null,
@@ -110,6 +115,10 @@ readonly class VolumeIndicators extends TwelveDataApi
         ?AdjustEnum $adjust = null,
     ): TechnicalIndicator
     {
+        if ($symbol === null && $figi === null && $isin === null && $cusip === null) {
+            throw InvalidArgumentException::missingParameters(['symbol', 'figi', 'isin', 'cusip']);
+        }
+
         $response = $this->client->get(
             path: '/adosc',
             queryParams: [
@@ -147,7 +156,7 @@ readonly class VolumeIndicators extends TwelveDataApi
 
     /** @return TechnicalIndicator<OnBalanceVolume> */
     public function onBalanceVolume(
-        string $symbol,
+        ?string $symbol = null,
         IntervalEnum $interval = IntervalEnum::OneDay,
         ?string $figi = null,
         ?string $isin = null,
@@ -172,6 +181,10 @@ readonly class VolumeIndicators extends TwelveDataApi
         ?AdjustEnum $adjust = null,
     ): TechnicalIndicator
     {
+        if ($symbol === null && $figi === null && $isin === null && $cusip === null) {
+            throw InvalidArgumentException::missingParameters(['symbol', 'figi', 'isin', 'cusip']);
+        }
+
         $response = $this->client->get(
             path: '/obv',
             queryParams: [
@@ -208,7 +221,7 @@ readonly class VolumeIndicators extends TwelveDataApi
 
     /** @return TechnicalIndicator<RelativeVolume> */
     public function relativeVolume(
-        string $symbol,
+        ?string $symbol = null,
         IntervalEnum $interval = IntervalEnum::OneDay,
         ?string $figi = null,
         ?string $isin = null,
@@ -233,6 +246,10 @@ readonly class VolumeIndicators extends TwelveDataApi
         ?AdjustEnum $adjust = null,
     ): TechnicalIndicator
     {
+        if ($symbol === null && $figi === null && $isin === null && $cusip === null) {
+            throw InvalidArgumentException::missingParameters(['symbol', 'figi', 'isin', 'cusip']);
+        }
+
         $response = $this->client->get(
             path: '/rvol',
             queryParams: [
