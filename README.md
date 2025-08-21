@@ -59,7 +59,7 @@ More endpoints will be covered in future versions.
 #### Supporting Metadata
 * Instrument Type                ✅
 * Countries                      ✅
-* Technical Indicators           ❌
+* Technical Indicators           ✅
 
 ### Fundamentals
 
