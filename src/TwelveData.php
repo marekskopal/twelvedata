@@ -45,7 +45,7 @@ readonly class TwelveData
         $this->referenceData = new ReferenceData($this->client);
         $this->fundamentals = new Fundamentals($this->client);
         $this->currencies = new Currencies($this->client);
-        $this->technicalIndicators = new TechnicalIndicators($client);
+        $this->technicalIndicators = new TechnicalIndicators($this->client);
         $this->analysis = new Analysis($this->client);
         $this->regulatory = new Regulatory($this->client);
         $this->advanced = new Advanced($this->client);

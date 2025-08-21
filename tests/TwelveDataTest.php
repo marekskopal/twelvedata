@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace MarekSkopal\TwelveData\Tests;
 
 use MarekSkopal\TwelveData\Api\ReferenceData;
+use MarekSkopal\TwelveData\Api\TechnicalIndicators;
 use MarekSkopal\TwelveData\Api\TwelveDataApi;
 use MarekSkopal\TwelveData\Client\Client;
 use MarekSkopal\TwelveData\Config\Config;
@@ -19,6 +20,7 @@ use stdClass;
 #[UsesClass(Client::class)]
 #[UsesClass(TwelveDataApi::class)]
 #[UsesClass(ReferenceData::class)]
+#[UsesClass(TechnicalIndicators::class)]
 final class TwelveDataTest extends TestCase
 {
     public function testGet(): void
@@ -26,13 +28,7 @@ final class TwelveDataTest extends TestCase
         $twelveData = new TwelveData(new Config('demo'));
         $response = $twelveData->get('api_usage');
 
-        self::assertInstanceOf(
-            stdClass::class,
-            $response,
-        );
-        self::assertSame(
-            0,
-            $response->current_usage,
-        );
+        self::assertInstanceOf(stdClass::class, $response);
+        self::assertSame(0, $response->current_usage);
     }
 }
