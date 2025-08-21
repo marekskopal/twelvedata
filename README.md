@@ -120,12 +120,104 @@ More endpoints will be covered in future versions.
 * Triangular moving average                 ✅
 * Volume weighted average price             ✅
 * Weighted moving average                   ✅
-#### Momentum indicators ❌
-#### Volume indicators ❌
-#### Volatility indicators ❌
-#### Price transform ❌
-#### Cycle indicators ❌
-#### Statistic functions ❌
+
+#### Momentum indicators
+* Average directional index                       ✅
+* High demand                                     ✅
+* Average directional movement index rating       ✅
+* Absolute price oscillator                       ✅
+* Aroon indicator                                 ✅
+* Aroon oscillator                                ✅
+* Balance of power                                ✅
+* Commodity channel index                         ✅
+* Chande momentum oscillator                      ✅
+* Coppock curve                                   ✅
+* Connors relative strength index                 ✅
+* Detrended price oscillator                      ✅
+* Directional movement index                      ✅
+* Know sure thing                                 ✅
+* Moving average convergence divergence           ✅
+* High demand                                     ✅
+* Moving average convergence divergence slope     ✅
+* Moving average convergence divergence extension ✅
+* Money flow index                                ✅
+* Minus directional indicator                     ✅ 
+* Minus directional movement                      ✅
+* Momentum                                        ✅
+* Percent B                                       ✅
+* High demand                                     ✅
+* Plus directional indicator                      ✅
+* Plus directional movement                       ✅
+* Percentage price oscillator                     ✅
+* Rate of change                                  ✅
+* Rate of change percentage                       ✅
+* Rate of change ratio                            ✅
+* Rate of change ratio 100                        ✅
+* Relative strength index                         ✅
+* High demand                                     ✅
+* Stochastic oscillator                           ✅
+* High demand                                     ✅
+* Stochastic fast                                 ✅
+* Stochastic relative strength index              ✅
+* Ultimate oscillator endpoint                    ✅
+* Williams %R                                     ✅
+
+#### Volume indicators
+* Accumulation/distribution            ✅
+* Accumulation/distribution oscillator ✅
+* On balance volume                    ✅
+* Relative volume                      ✅
+
+#### Volatility indicators
+* Average true range             ✅
+* Normalized average true range  ✅
+* Supertrend                     ✅
+* Supertrend Heikin Ashi candles ✅
+* True range                     ✅
+
+#### Price transform
+* Addition                 ✅
+* Average                  ✅
+* Average price            ✅
+* Ceiling                  ✅
+* Division                 ✅
+* Exponential              ✅
+* Floor                    ✅
+* Heikinashi candles       ✅
+* High, low, close average ✅
+* Natural logarithm        ✅
+* Base-10 logarithm        ✅
+* Median price             ✅
+* Multiplication           ✅
+* Square root              ✅
+* Subtraction              ✅
+* Summation                ✅
+* Typical price            ✅
+* Weighted close price     ✅
+
+#### Cycle indicators
+* Hilbert transform dominant cycle period ✅
+* Hilbert transform dominant cycle phase  ✅
+* Hilbert transform phasor components     ✅
+* Hilbert transform sine wave             ✅
+* Hilbert transform trend vs cycle mode   ✅
+
+#### Statistic functions
+* Beta indicator              ✅
+* Correlation                 ✅
+* Linear regression           ✅
+* Linear regression angle     ✅
+* Linear regression intercept ✅
+* Linear regression slope     ✅
+* Maximum                     ✅
+* Maximum Index               ✅
+* Minimum                     ✅
+* Minimum index               ✅
+* Minimum and maximum         ✅
+* Minimum and maximum index   ✅
+* Standard deviation          ✅
+* Time series forecast        ✅
+* Variance                    ✅
 
 ### Analysis
 * Earnings Estimate           ✅
