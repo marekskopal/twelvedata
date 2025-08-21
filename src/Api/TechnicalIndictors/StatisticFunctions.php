@@ -18,6 +18,9 @@ use MarekSkopal\TwelveData\Dto\TechnicalIndicators\StatisticFunctions\Minimum;
 use MarekSkopal\TwelveData\Dto\TechnicalIndicators\StatisticFunctions\MinimumAndMaximum;
 use MarekSkopal\TwelveData\Dto\TechnicalIndicators\StatisticFunctions\MinimumAndMaximumIndex;
 use MarekSkopal\TwelveData\Dto\TechnicalIndicators\StatisticFunctions\MinimumIndex;
+use MarekSkopal\TwelveData\Dto\TechnicalIndicators\StatisticFunctions\StandardDeviation;
+use MarekSkopal\TwelveData\Dto\TechnicalIndicators\StatisticFunctions\TimeSeriesForecast;
+use MarekSkopal\TwelveData\Dto\TechnicalIndicators\StatisticFunctions\Variance;
 use MarekSkopal\TwelveData\Dto\TechnicalIndicators\TechnicalIndicator;
 use MarekSkopal\TwelveData\Enum\AdjustEnum;
 use MarekSkopal\TwelveData\Enum\FormatEnum;
@@ -837,6 +840,209 @@ readonly class StatisticFunctions extends TwelveDataApi
 
         /** @var TechnicalIndicator<MinimumAndMaximumIndex> $technicalIndicator */
         $technicalIndicator = TechnicalIndicator::fromJson(MinimumAndMaximumIndex::class, $response);
+        return $technicalIndicator;
+    }
+
+    /** @return TechnicalIndicator<StandardDeviation> */
+    public function standardDeviation(
+        ?string $symbol = null,
+        IntervalEnum $interval = IntervalEnum::OneDay,
+        ?string $figi = null,
+        ?string $isin = null,
+        ?string $cusip = null,
+        ?string $exchange = null,
+        ?string $micCode = null,
+        ?string $country = null,
+        ?SeriesTypeEnum $seriesType = null,
+        ?int $timePeriod = null,
+        ?float $sd = null,
+        ?TypeEnum $type = null,
+        ?int $outputSize = null,
+        ?FormatEnum $format = null,
+        ?string $delimiter = null,
+        ?PrepostEnum $prepost = null,
+        ?int $dp = null,
+        ?OrderEnum $order = null,
+        ?bool $includeOhlc = null,
+        ?string $timezone = null,
+        ?DateTimeImmutable $date = null,
+        ?DateTimeImmutable $startDate = null,
+        ?DateTimeImmutable $endDate = null,
+        ?bool $previousClose = null,
+        ?AdjustEnum $adjust = null,
+    ): TechnicalIndicator
+    {
+        if ($symbol === null && $figi === null && $isin === null && $cusip === null) {
+            throw InvalidArgumentException::missingParameters(['symbol', 'figi', 'isin', 'cusip']);
+        }
+
+        $response = $this->client->get(
+            path: '/stddev',
+            queryParams: [
+                'symbol' => $symbol,
+                'interval' => $interval->value,
+                'figi' => $figi,
+                'isin' => $isin,
+                'cusip' => $cusip,
+                'exchange' => $exchange,
+                'mic_code' => $micCode,
+                'country' => $country,
+                'series_type' => $seriesType?->value,
+                'time_period' => $timePeriod,
+                'sd' => $sd,
+                'type' => $type?->value,
+                'outputsize' => $outputSize,
+                'format' => $format?->value,
+                'delimiter' => $delimiter,
+                'prepost' => $prepost?->value,
+                'dp' => $dp,
+                'order' => $order?->value,
+                'include_ohlc' => QueryParamsUtils::booleanAsString($includeOhlc),
+                'timezone' => $timezone,
+                'date' => DateUtils::formatDate($date),
+                'start_date' => DateUtils::formatDate($startDate),
+                'end_date' => DateUtils::formatDate($endDate),
+                'previous_close' => QueryParamsUtils::booleanAsString($previousClose),
+                'adjust' => $adjust?->value,
+            ],
+        );
+
+        /** @var TechnicalIndicator<StandardDeviation> $technicalIndicator */
+        $technicalIndicator = TechnicalIndicator::fromJson(StandardDeviation::class, $response);
+        return $technicalIndicator;
+    }
+
+    /** @return TechnicalIndicator<TimeSeriesForecast> */
+    public function timeSeriesForecast(
+        ?string $symbol = null,
+        IntervalEnum $interval = IntervalEnum::OneDay,
+        ?string $figi = null,
+        ?string $isin = null,
+        ?string $cusip = null,
+        ?string $exchange = null,
+        ?string $micCode = null,
+        ?string $country = null,
+        ?SeriesTypeEnum $seriesType = null,
+        ?int $timePeriod = null,
+        ?TypeEnum $type = null,
+        ?int $outputSize = null,
+        ?FormatEnum $format = null,
+        ?string $delimiter = null,
+        ?PrepostEnum $prepost = null,
+        ?int $dp = null,
+        ?OrderEnum $order = null,
+        ?bool $includeOhlc = null,
+        ?string $timezone = null,
+        ?DateTimeImmutable $date = null,
+        ?DateTimeImmutable $startDate = null,
+        ?DateTimeImmutable $endDate = null,
+        ?bool $previousClose = null,
+        ?AdjustEnum $adjust = null,
+    ): TechnicalIndicator
+    {
+        if ($symbol === null && $figi === null && $isin === null && $cusip === null) {
+            throw InvalidArgumentException::missingParameters(['symbol', 'figi', 'isin', 'cusip']);
+        }
+
+        $response = $this->client->get(
+            path: '/tsf',
+            queryParams: [
+                'symbol' => $symbol,
+                'interval' => $interval->value,
+                'figi' => $figi,
+                'isin' => $isin,
+                'cusip' => $cusip,
+                'exchange' => $exchange,
+                'mic_code' => $micCode,
+                'country' => $country,
+                'series_type' => $seriesType?->value,
+                'time_period' => $timePeriod,
+                'type' => $type?->value,
+                'outputsize' => $outputSize,
+                'format' => $format?->value,
+                'delimiter' => $delimiter,
+                'prepost' => $prepost?->value,
+                'dp' => $dp,
+                'order' => $order?->value,
+                'include_ohlc' => QueryParamsUtils::booleanAsString($includeOhlc),
+                'timezone' => $timezone,
+                'date' => DateUtils::formatDate($date),
+                'start_date' => DateUtils::formatDate($startDate),
+                'end_date' => DateUtils::formatDate($endDate),
+                'previous_close' => QueryParamsUtils::booleanAsString($previousClose),
+                'adjust' => $adjust?->value,
+            ],
+        );
+
+        /** @var TechnicalIndicator<TimeSeriesForecast> $technicalIndicator */
+        $technicalIndicator = TechnicalIndicator::fromJson(TimeSeriesForecast::class, $response);
+        return $technicalIndicator;
+    }
+
+    /** @return TechnicalIndicator<Variance> */
+    public function variance(
+        ?string $symbol = null,
+        IntervalEnum $interval = IntervalEnum::OneDay,
+        ?string $figi = null,
+        ?string $isin = null,
+        ?string $cusip = null,
+        ?string $exchange = null,
+        ?string $micCode = null,
+        ?string $country = null,
+        ?SeriesTypeEnum $seriesType = null,
+        ?int $timePeriod = null,
+        ?TypeEnum $type = null,
+        ?int $outputSize = null,
+        ?FormatEnum $format = null,
+        ?string $delimiter = null,
+        ?PrepostEnum $prepost = null,
+        ?int $dp = null,
+        ?OrderEnum $order = null,
+        ?bool $includeOhlc = null,
+        ?string $timezone = null,
+        ?DateTimeImmutable $date = null,
+        ?DateTimeImmutable $startDate = null,
+        ?DateTimeImmutable $endDate = null,
+        ?bool $previousClose = null,
+        ?AdjustEnum $adjust = null,
+    ): TechnicalIndicator
+    {
+        if ($symbol === null && $figi === null && $isin === null && $cusip === null) {
+            throw InvalidArgumentException::missingParameters(['symbol', 'figi', 'isin', 'cusip']);
+        }
+
+        $response = $this->client->get(
+            path: '/var',
+            queryParams: [
+                'symbol' => $symbol,
+                'interval' => $interval->value,
+                'figi' => $figi,
+                'isin' => $isin,
+                'cusip' => $cusip,
+                'exchange' => $exchange,
+                'mic_code' => $micCode,
+                'country' => $country,
+                'series_type' => $seriesType?->value,
+                'time_period' => $timePeriod,
+                'type' => $type?->value,
+                'outputsize' => $outputSize,
+                'format' => $format?->value,
+                'delimiter' => $delimiter,
+                'prepost' => $prepost?->value,
+                'dp' => $dp,
+                'order' => $order?->value,
+                'include_ohlc' => QueryParamsUtils::booleanAsString($includeOhlc),
+                'timezone' => $timezone,
+                'date' => DateUtils::formatDate($date),
+                'start_date' => DateUtils::formatDate($startDate),
+                'end_date' => DateUtils::formatDate($endDate),
+                'previous_close' => QueryParamsUtils::booleanAsString($previousClose),
+                'adjust' => $adjust?->value,
+            ],
+        );
+
+        /** @var TechnicalIndicator<Variance> $technicalIndicator */
+        $technicalIndicator = TechnicalIndicator::fromJson(Variance::class, $response);
         return $technicalIndicator;
     }
 }

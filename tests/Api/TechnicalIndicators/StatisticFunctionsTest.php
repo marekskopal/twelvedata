@@ -22,6 +22,9 @@ use MarekSkopal\TwelveData\Dto\TechnicalIndicators\StatisticFunctions\Minimum;
 use MarekSkopal\TwelveData\Dto\TechnicalIndicators\StatisticFunctions\MinimumAndMaximum;
 use MarekSkopal\TwelveData\Dto\TechnicalIndicators\StatisticFunctions\MinimumAndMaximumIndex;
 use MarekSkopal\TwelveData\Dto\TechnicalIndicators\StatisticFunctions\MinimumIndex;
+use MarekSkopal\TwelveData\Dto\TechnicalIndicators\StatisticFunctions\StandardDeviation;
+use MarekSkopal\TwelveData\Dto\TechnicalIndicators\StatisticFunctions\TimeSeriesForecast;
+use MarekSkopal\TwelveData\Dto\TechnicalIndicators\StatisticFunctions\Variance;
 use MarekSkopal\TwelveData\Dto\TechnicalIndicators\TechnicalIndicator;
 use MarekSkopal\TwelveData\Tests\Fixtures\Client\ClientFixture;
 use MarekSkopal\TwelveData\Utils\DateUtils;
@@ -51,6 +54,9 @@ use PHPUnit\Framework\TestCase;
 #[UsesClass(MinimumIndex::class)]
 #[UsesClass(MinimumAndMaximum::class)]
 #[UsesClass(MinimumAndMaximumIndex::class)]
+#[UsesClass(StandardDeviation::class)]
+#[UsesClass(TimeSeriesForecast::class)]
+#[UsesClass(Variance::class)]
 final class StatisticFunctionsTest extends TestCase
 {
     public function testBetaIndicator(): void
@@ -170,6 +176,36 @@ final class StatisticFunctionsTest extends TestCase
         self::assertInstanceOf(
             MinimumAndMaximumIndex::class,
             $statisticFunctions->minimumAndMaximumIndex('AAPL')->values[0],
+        );
+    }
+
+    public function testStandardDeviation(): void
+    {
+        $statisticFunctions = new StatisticFunctions(ClientFixture::createWithResponse('standard_deviation.json'));
+
+        self::assertInstanceOf(
+            StandardDeviation::class,
+            $statisticFunctions->standardDeviation('AAPL')->values[0],
+        );
+    }
+
+    public function testTimeSeriesForecast(): void
+    {
+        $statisticFunctions = new StatisticFunctions(ClientFixture::createWithResponse('time_series_forecast.json'));
+
+        self::assertInstanceOf(
+            TimeSeriesForecast::class,
+            $statisticFunctions->timeSeriesForecast('AAPL')->values[0],
+        );
+    }
+
+    public function testVariance(): void
+    {
+        $statisticFunctions = new StatisticFunctions(ClientFixture::createWithResponse('variance.json'));
+
+        self::assertInstanceOf(
+            Variance::class,
+            $statisticFunctions->variance('AAPL')->values[0],
         );
     }
 }
