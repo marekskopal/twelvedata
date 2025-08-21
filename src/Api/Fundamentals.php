@@ -31,6 +31,7 @@ use MarekSkopal\TwelveData\Enum\EndpointEnum;
 use MarekSkopal\TwelveData\Enum\FormatEnum;
 use MarekSkopal\TwelveData\Enum\PeriodEnum;
 use MarekSkopal\TwelveData\Enum\RangeEnum;
+use MarekSkopal\TwelveData\Exception\InvalidArgumentException;
 use MarekSkopal\TwelveData\Utils\DateUtils;
 use MarekSkopal\TwelveData\Utils\QueryParamsUtils;
 
@@ -57,7 +58,7 @@ readonly class Fundamentals extends TwelveDataApi
     }
 
     public function profile(
-        string $symbol,
+        ?string $symbol = null,
         ?string $figi = null,
         ?string $isin = null,
         ?string $cusip = null,
@@ -66,6 +67,10 @@ readonly class Fundamentals extends TwelveDataApi
         ?string $country = null,
     ): Profile
     {
+        if ($symbol === null && $figi === null && $isin === null && $cusip === null) {
+            throw InvalidArgumentException::missingParameters(['symbol', 'figi', 'isin', 'cusip']);
+        }
+
         $response = $this->client->get(
             path: '/profile',
             queryParams: [
@@ -83,7 +88,7 @@ readonly class Fundamentals extends TwelveDataApi
     }
 
     public function dividends(
-        string $symbol,
+        ?string $symbol = null,
         ?string $figi = null,
         ?string $isin = null,
         ?string $cusip = null,
@@ -95,6 +100,10 @@ readonly class Fundamentals extends TwelveDataApi
         ?DateTimeImmutable $endDate = null,
         ?bool $adjust = null,
     ): Dividends {
+        if ($symbol === null && $figi === null && $isin === null && $cusip === null) {
+            throw InvalidArgumentException::missingParameters(['symbol', 'figi', 'isin', 'cusip']);
+        }
+
         $response = $this->client->get(
             path: '/dividends',
             queryParams: [
@@ -153,7 +162,7 @@ readonly class Fundamentals extends TwelveDataApi
     }
 
     public function splits(
-        string $symbol,
+        ?string $symbol = null,
         ?string $figi = null,
         ?string $isin = null,
         ?string $cusip = null,
@@ -164,6 +173,10 @@ readonly class Fundamentals extends TwelveDataApi
         ?DateTimeImmutable $startDate = null,
         ?DateTimeImmutable $endDate = null,
     ): Splits {
+        if ($symbol === null && $figi === null && $isin === null && $cusip === null) {
+            throw InvalidArgumentException::missingParameters(['symbol', 'figi', 'isin', 'cusip']);
+        }
+
         $response = $this->client->get(
             path: '/splits',
             queryParams: [
@@ -221,7 +234,7 @@ readonly class Fundamentals extends TwelveDataApi
     }
 
     public function earnings(
-        string $symbol,
+        ?string $symbol = null,
         ?string $exchange = null,
         ?string $figi = null,
         ?string $isin = null,
@@ -237,6 +250,10 @@ readonly class Fundamentals extends TwelveDataApi
         ?DateTimeImmutable $startDate = null,
         ?DateTimeImmutable $endDate = null,
     ): Earnings {
+        if ($symbol === null && $figi === null && $isin === null && $cusip === null) {
+            throw InvalidArgumentException::missingParameters(['symbol', 'figi', 'isin', 'cusip']);
+        }
+
         $response = $this->client->get(
             path: '/earnings',
             queryParams: [
@@ -324,7 +341,7 @@ readonly class Fundamentals extends TwelveDataApi
     }
 
     public function statistics(
-        string $symbol,
+        ?string $symbol = null,
         ?string $figi = null,
         ?string $isin = null,
         ?string $cusip = null,
@@ -333,6 +350,10 @@ readonly class Fundamentals extends TwelveDataApi
         ?string $country = null,
     ): Statistics
     {
+        if ($symbol === null && $figi === null && $isin === null && $cusip === null) {
+            throw InvalidArgumentException::missingParameters(['symbol', 'figi', 'isin', 'cusip']);
+        }
+
         $response = $this->client->get(
             path: '/statistics',
             queryParams: [
@@ -350,7 +371,7 @@ readonly class Fundamentals extends TwelveDataApi
     }
 
     public function incomeStatement(
-        string $symbol,
+        ?string $symbol = null,
         ?string $figi = null,
         ?string $isin = null,
         ?string $cusip = null,
@@ -362,6 +383,10 @@ readonly class Fundamentals extends TwelveDataApi
         ?DateTimeImmutable $endDate = null,
         ?int $outputsize = null,
     ): IncomeStatement {
+        if ($symbol === null && $figi === null && $isin === null && $cusip === null) {
+            throw InvalidArgumentException::missingParameters(['symbol', 'figi', 'isin', 'cusip']);
+        }
+
         $response = $this->client->get(
             path: '/income_statement',
             queryParams: [
@@ -383,7 +408,7 @@ readonly class Fundamentals extends TwelveDataApi
     }
 
     public function incomeStatementConsolidated(
-        string $symbol,
+        ?string $symbol = null,
         ?string $figi = null,
         ?string $isin = null,
         ?string $cusip = null,
@@ -395,6 +420,10 @@ readonly class Fundamentals extends TwelveDataApi
         ?DateTimeImmutable $endDate = null,
         ?int $outputsize = null,
     ): IncomeStatementConsolidated {
+        if ($symbol === null && $figi === null && $isin === null && $cusip === null) {
+            throw InvalidArgumentException::missingParameters(['symbol', 'figi', 'isin', 'cusip']);
+        }
+
         $response = $this->client->get(
             path: '/income_statement/consolidated',
             queryParams: [
@@ -416,7 +445,7 @@ readonly class Fundamentals extends TwelveDataApi
     }
 
     public function balanceSheet(
-        string $symbol,
+        ?string $symbol = null,
         ?string $figi = null,
         ?string $isin = null,
         ?string $cusip = null,
@@ -428,6 +457,10 @@ readonly class Fundamentals extends TwelveDataApi
         ?DateTimeImmutable $endDate = null,
         ?int $outputsize = null,
     ): BalanceSheet {
+        if ($symbol === null && $figi === null && $isin === null && $cusip === null) {
+            throw InvalidArgumentException::missingParameters(['symbol', 'figi', 'isin', 'cusip']);
+        }
+
         $response = $this->client->get(
             path: '/balance_sheet',
             queryParams: [
@@ -449,7 +482,7 @@ readonly class Fundamentals extends TwelveDataApi
     }
 
     public function balanceSheetConsolidated(
-        string $symbol,
+        ?string $symbol = null,
         ?string $figi = null,
         ?string $isin = null,
         ?string $cusip = null,
@@ -461,6 +494,10 @@ readonly class Fundamentals extends TwelveDataApi
         ?DateTimeImmutable $endDate = null,
         ?int $outputsize = null,
     ): BalanceSheetConsolidated {
+        if ($symbol === null && $figi === null && $isin === null && $cusip === null) {
+            throw InvalidArgumentException::missingParameters(['symbol', 'figi', 'isin', 'cusip']);
+        }
+
         $response = $this->client->get(
             path: '/balance_sheet/consolidated',
             queryParams: [
@@ -482,7 +519,7 @@ readonly class Fundamentals extends TwelveDataApi
     }
 
     public function cashFlow(
-        string $symbol,
+        ?string $symbol = null,
         ?string $figi = null,
         ?string $isin = null,
         ?string $cusip = null,
@@ -494,6 +531,10 @@ readonly class Fundamentals extends TwelveDataApi
         ?DateTimeImmutable $endDate = null,
         ?int $outputsize = null,
     ): CashFlow {
+        if ($symbol === null && $figi === null && $isin === null && $cusip === null) {
+            throw InvalidArgumentException::missingParameters(['symbol', 'figi', 'isin', 'cusip']);
+        }
+
         $response = $this->client->get(
             path: '/cash_flow',
             queryParams: [
@@ -515,7 +556,7 @@ readonly class Fundamentals extends TwelveDataApi
     }
 
     public function cashFlowConsolidated(
-        string $symbol,
+        ?string $symbol = null,
         ?string $figi = null,
         ?string $isin = null,
         ?string $cusip = null,
@@ -527,6 +568,10 @@ readonly class Fundamentals extends TwelveDataApi
         ?DateTimeImmutable $endDate = null,
         ?int $outputsize = null,
     ): CashFlowConsolidated {
+        if ($symbol === null && $figi === null && $isin === null && $cusip === null) {
+            throw InvalidArgumentException::missingParameters(['symbol', 'figi', 'isin', 'cusip']);
+        }
+
         $response = $this->client->get(
             path: '/cash_flow/consolidated',
             queryParams: [
@@ -592,7 +637,7 @@ readonly class Fundamentals extends TwelveDataApi
     }
 
     public function keyExecutives(
-        string $symbol,
+        ?string $symbol = null,
         ?string $figi = null,
         ?string $isin = null,
         ?string $cusip = null,
@@ -600,6 +645,10 @@ readonly class Fundamentals extends TwelveDataApi
         ?string $micCode = null,
         ?string $country = null,
     ): KeyExecutives {
+        if ($symbol === null && $figi === null && $isin === null && $cusip === null) {
+            throw InvalidArgumentException::missingParameters(['symbol', 'figi', 'isin', 'cusip']);
+        }
+
         $response = $this->client->get(
             path: '/key_executives',
             queryParams: [
@@ -617,7 +666,7 @@ readonly class Fundamentals extends TwelveDataApi
     }
 
     public function marketCapitalization(
-        string $symbol,
+        ?string $symbol = null,
         ?string $figi = null,
         ?string $isin = null,
         ?string $cusip = null,
@@ -629,6 +678,10 @@ readonly class Fundamentals extends TwelveDataApi
         ?int $page = null,
         ?int $outputsize = null,
     ): MarketCapitalization {
+        if ($symbol === null && $figi === null && $isin === null && $cusip === null) {
+            throw InvalidArgumentException::missingParameters(['symbol', 'figi', 'isin', 'cusip']);
+        }
+
         $response = $this->client->get(
             path: '/market_cap',
             queryParams: [

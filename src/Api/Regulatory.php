@@ -13,12 +13,13 @@ use MarekSkopal\TwelveData\Dto\Regulatory\InstitutionalHolders;
 use MarekSkopal\TwelveData\Dto\Regulatory\SanctionedEntities;
 use MarekSkopal\TwelveData\Dto\Regulatory\TaxInformation;
 use MarekSkopal\TwelveData\Enum\SanctionsSourceEnum;
+use MarekSkopal\TwelveData\Exception\InvalidArgumentException;
 use MarekSkopal\TwelveData\Utils\DateUtils;
 
 readonly class Regulatory extends TwelveDataApi
 {
     public function edgarFilligs(
-        string $symbol,
+        ?string $symbol = null,
         ?string $figi = null,
         ?string $isin = null,
         ?string $cusip = null,
@@ -31,6 +32,10 @@ readonly class Regulatory extends TwelveDataApi
         ?int $page = null,
         ?int $pageSize = null,
     ): EdgarFillings {
+        if ($symbol === null && $figi === null && $isin === null && $cusip === null) {
+            throw InvalidArgumentException::missingParameters(['symbol', 'figi', 'isin', 'cusip']);
+        }
+
         $response = $this->client->get(
             path: '/edgar_filings/archive',
             queryParams: [
@@ -53,7 +58,7 @@ readonly class Regulatory extends TwelveDataApi
     }
 
     public function insiderTransactions(
-        string $symbol,
+        ?string $symbol = null,
         ?string $figi = null,
         ?string $isin = null,
         ?string $cusip = null,
@@ -61,6 +66,10 @@ readonly class Regulatory extends TwelveDataApi
         ?string $micCode = null,
         ?string $country = null,
     ): InsiderTransactions {
+        if ($symbol === null && $figi === null && $isin === null && $cusip === null) {
+            throw InvalidArgumentException::missingParameters(['symbol', 'figi', 'isin', 'cusip']);
+        }
+
         $response = $this->client->get(
             path: '/insider_transactions',
             queryParams: [
@@ -78,7 +87,7 @@ readonly class Regulatory extends TwelveDataApi
     }
 
     public function institutionalHolders(
-        string $symbol,
+        ?string $symbol = null,
         ?string $figi = null,
         ?string $isin = null,
         ?string $cusip = null,
@@ -86,6 +95,10 @@ readonly class Regulatory extends TwelveDataApi
         ?string $micCode = null,
         ?string $country = null,
     ): InstitutionalHolders {
+        if ($symbol === null && $figi === null && $isin === null && $cusip === null) {
+            throw InvalidArgumentException::missingParameters(['symbol', 'figi', 'isin', 'cusip']);
+        }
+
         $response = $this->client->get(
             path: '/institutional_holders',
             queryParams: [
@@ -103,7 +116,7 @@ readonly class Regulatory extends TwelveDataApi
     }
 
     public function fundHolders(
-        string $symbol,
+        ?string $symbol = null,
         ?string $figi = null,
         ?string $isin = null,
         ?string $cusip = null,
@@ -111,6 +124,10 @@ readonly class Regulatory extends TwelveDataApi
         ?string $micCode = null,
         ?string $country = null,
     ): FundHolders {
+        if ($symbol === null && $figi === null && $isin === null && $cusip === null) {
+            throw InvalidArgumentException::missingParameters(['symbol', 'figi', 'isin', 'cusip']);
+        }
+
         $response = $this->client->get(
             path: '/fund_holders',
             queryParams: [
@@ -128,7 +145,7 @@ readonly class Regulatory extends TwelveDataApi
     }
 
     public function directHolders(
-        string $symbol,
+        ?string $symbol = null,
         ?string $figi = null,
         ?string $isin = null,
         ?string $cusip = null,
@@ -136,6 +153,10 @@ readonly class Regulatory extends TwelveDataApi
         ?string $micCode = null,
         ?string $country = null,
     ): DirectHolders {
+        if ($symbol === null && $figi === null && $isin === null && $cusip === null) {
+            throw InvalidArgumentException::missingParameters(['symbol', 'figi', 'isin', 'cusip']);
+        }
+
         $response = $this->client->get(
             path: '/direct_holders',
             queryParams: [
@@ -153,13 +174,17 @@ readonly class Regulatory extends TwelveDataApi
     }
 
     public function taxInformation(
-        string $symbol,
+        ?string $symbol = null,
         ?string $figi = null,
         ?string $isin = null,
         ?string $cusip = null,
         ?string $exchange = null,
         ?string $micCode = null,
     ): TaxInformation {
+        if ($symbol === null && $figi === null && $isin === null && $cusip === null) {
+            throw InvalidArgumentException::missingParameters(['symbol', 'figi', 'isin', 'cusip']);
+        }
+
         $response = $this->client->get(
             path: '/tax_info',
             queryParams: [

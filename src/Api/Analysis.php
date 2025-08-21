@@ -14,17 +14,22 @@ use MarekSkopal\TwelveData\Dto\Analysis\PriceTarget;
 use MarekSkopal\TwelveData\Dto\Analysis\Recommendations;
 use MarekSkopal\TwelveData\Dto\Analysis\RevenueEstimate;
 use MarekSkopal\TwelveData\Enum\RatingChangeEnum;
+use MarekSkopal\TwelveData\Exception\InvalidArgumentException;
 
 readonly class Analysis extends TwelveDataApi
 {
     public function earningsEstimate(
-        string $symbol,
+        ?string $symbol = null,
         ?string $figi = null,
         ?string $isin = null,
         ?string $cusip = null,
         ?string $exchange = null,
         ?string $country = null,
     ): EarningsEstimate {
+        if ($symbol === null && $figi === null && $isin === null && $cusip === null) {
+            throw InvalidArgumentException::missingParameters(['symbol', 'figi', 'isin', 'cusip']);
+        }
+
         $response = $this->client->get(
             path: '/earnings_estimate',
             queryParams: [
@@ -41,7 +46,7 @@ readonly class Analysis extends TwelveDataApi
     }
 
     public function revenueEstimate(
-        string $symbol,
+        ?string $symbol = null,
         ?string $figi = null,
         ?string $isin = null,
         ?string $cusip = null,
@@ -49,6 +54,10 @@ readonly class Analysis extends TwelveDataApi
         ?string $exchange = null,
         ?int $dp = null,
     ): RevenueEstimate {
+        if ($symbol === null && $figi === null && $isin === null && $cusip === null) {
+            throw InvalidArgumentException::missingParameters(['symbol', 'figi', 'isin', 'cusip']);
+        }
+
         $response = $this->client->get(
             path: '/revenue_estimate',
             queryParams: [
@@ -66,13 +75,17 @@ readonly class Analysis extends TwelveDataApi
     }
 
     public function epsTrend(
-        string $symbol,
+        ?string $symbol = null,
         ?string $figi = null,
         ?string $isin = null,
         ?string $cusip = null,
         ?string $country = null,
         ?string $exchange = null,
     ): EpsTrend {
+        if ($symbol === null && $figi === null && $isin === null && $cusip === null) {
+            throw InvalidArgumentException::missingParameters(['symbol', 'figi', 'isin', 'cusip']);
+        }
+
         $response = $this->client->get(
             path: '/eps_trend',
             queryParams: [
@@ -89,13 +102,17 @@ readonly class Analysis extends TwelveDataApi
     }
 
     public function epsRevisions(
-        string $symbol,
+        ?string $symbol = null,
         ?string $figi = null,
         ?string $isin = null,
         ?string $cusip = null,
         ?string $country = null,
         ?string $exchange = null,
     ): EpsRevisions {
+        if ($symbol === null && $figi === null && $isin === null && $cusip === null) {
+            throw InvalidArgumentException::missingParameters(['symbol', 'figi', 'isin', 'cusip']);
+        }
+
         $response = $this->client->get(
             path: '/eps_revisions',
             queryParams: [
@@ -112,13 +129,17 @@ readonly class Analysis extends TwelveDataApi
     }
 
     public function growthEstimates(
-        string $symbol,
+        ?string $symbol = null,
         ?string $figi = null,
         ?string $isin = null,
         ?string $cusip = null,
         ?string $country = null,
         ?string $exchange = null,
     ): GrowthEstimates {
+        if ($symbol === null && $figi === null && $isin === null && $cusip === null) {
+            throw InvalidArgumentException::missingParameters(['symbol', 'figi', 'isin', 'cusip']);
+        }
+
         $response = $this->client->get(
             path: '/growth_estimates',
             queryParams: [
@@ -135,13 +156,17 @@ readonly class Analysis extends TwelveDataApi
     }
 
     public function recommendations(
-        string $symbol,
+        ?string $symbol = null,
         ?string $figi = null,
         ?string $isin = null,
         ?string $cusip = null,
         ?string $country = null,
         ?string $exchange = null,
     ): Recommendations {
+        if ($symbol === null && $figi === null && $isin === null && $cusip === null) {
+            throw InvalidArgumentException::missingParameters(['symbol', 'figi', 'isin', 'cusip']);
+        }
+
         $response = $this->client->get(
             path: '/recommendations',
             queryParams: [
@@ -158,13 +183,17 @@ readonly class Analysis extends TwelveDataApi
     }
 
     public function priceTarget(
-        string $symbol,
+        ?string $symbol = null,
         ?string $figi = null,
         ?string $isin = null,
         ?string $cusip = null,
         ?string $country = null,
         ?string $exchange = null,
     ): PriceTarget {
+        if ($symbol === null && $figi === null && $isin === null && $cusip === null) {
+            throw InvalidArgumentException::missingParameters(['symbol', 'figi', 'isin', 'cusip']);
+        }
+
         $response = $this->client->get(
             path: '/price_target',
             queryParams: [
@@ -181,7 +210,7 @@ readonly class Analysis extends TwelveDataApi
     }
 
     public function analystRatingsSnapshot(
-        string $symbol,
+        ?string $symbol = null,
         ?string $figi = null,
         ?string $isin = null,
         ?string $cusip = null,
@@ -190,6 +219,10 @@ readonly class Analysis extends TwelveDataApi
         ?RatingChangeEnum $ratingChange = null,
         ?int $outputsize = null,
     ): AnalystRatingsSnapshot {
+        if ($symbol === null && $figi === null && $isin === null && $cusip === null) {
+            throw InvalidArgumentException::missingParameters(['symbol', 'figi', 'isin', 'cusip']);
+        }
+
         $response = $this->client->get(
             path: '/analyst_ratings/light',
             queryParams: [
@@ -208,7 +241,7 @@ readonly class Analysis extends TwelveDataApi
     }
 
     public function analystRatingsUsEquities(
-        string $symbol,
+        ?string $symbol = null,
         ?string $figi = null,
         ?string $isin = null,
         ?string $cusip = null,
@@ -217,6 +250,10 @@ readonly class Analysis extends TwelveDataApi
         ?RatingChangeEnum $ratingChange = null,
         ?int $outputsize = null,
     ): AnalystRatingsUsEquities {
+        if ($symbol === null && $figi === null && $isin === null && $cusip === null) {
+            throw InvalidArgumentException::missingParameters(['symbol', 'figi', 'isin', 'cusip']);
+        }
+
         $response = $this->client->get(
             path: '/analyst_ratings/light',
             queryParams: [
