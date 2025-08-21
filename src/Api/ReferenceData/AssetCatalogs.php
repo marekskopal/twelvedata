@@ -45,8 +45,8 @@ readonly class AssetCatalogs extends TwelveDataApi
                 'type' => $type,
                 'format' => $format?->value,
                 'delimiter' => $delimiter,
-                'show_plan' => $showPlan !== null ? QueryParamsUtils::booleanAsString($showPlan) : null,
-                'include_delisted' => $includeDelisted !== null ? QueryParamsUtils::booleanAsString($includeDelisted) : null,
+                'show_plan' => QueryParamsUtils::booleanAsString($showPlan),
+                'include_delisted' => QueryParamsUtils::booleanAsString($includeDelisted),
             ],
         );
 
@@ -122,8 +122,8 @@ readonly class AssetCatalogs extends TwelveDataApi
                 'country' => $country,
                 'format' => $format?->value,
                 'delimiter' => $delimiter,
-                'show_plan' => $showPlan !== null ? QueryParamsUtils::booleanAsString($showPlan) : null,
-                'include_delisted' => $includeDelisted !== null ? QueryParamsUtils::booleanAsString($includeDelisted) : null,
+                'show_plan' => QueryParamsUtils::booleanAsString($showPlan),
+                'include_delisted' => QueryParamsUtils::booleanAsString($includeDelisted),
             ],
         );
 
@@ -156,7 +156,7 @@ readonly class AssetCatalogs extends TwelveDataApi
                 'type' => $type,
                 'format' => $format?->value,
                 'delimiter' => $delimiter,
-                'include_delisted' => $includeDelisted !== null ? QueryParamsUtils::booleanAsString($includeDelisted) : null,
+                'include_delisted' => QueryParamsUtils::booleanAsString($includeDelisted),
                 'page' => $page !== null ? (string) $page : null,
                 'outputsize' => $outputsize !== null ? (string) $outputsize : null,
             ],
@@ -183,7 +183,7 @@ readonly class AssetCatalogs extends TwelveDataApi
                 'country' => $country,
                 'format' => $format?->value,
                 'delimiter' => $delimiter,
-                'include_delisted' => $showPlan !== null ? QueryParamsUtils::booleanAsString($showPlan) : null,
+                'include_delisted' => QueryParamsUtils::booleanAsString($showPlan),
                 'page' => $page !== null ? (string) $page : null,
                 'outputsize' => $outputsize !== null ? (string) $outputsize : null,
             ],
@@ -212,7 +212,7 @@ readonly class AssetCatalogs extends TwelveDataApi
                 'country' => $country,
                 'format' => $format?->value,
                 'delimiter' => $delimiter,
-                'include_delisted' => $includeDelisted !== null ? QueryParamsUtils::booleanAsString($includeDelisted) : null,
+                'include_delisted' => QueryParamsUtils::booleanAsString($includeDelisted),
             ],
         );
 

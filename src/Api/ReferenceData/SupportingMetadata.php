@@ -7,6 +7,7 @@ namespace MarekSkopal\TwelveData\Api\ReferenceData;
 use MarekSkopal\TwelveData\Api\TwelveDataApi;
 use MarekSkopal\TwelveData\Dto\ReferenceData\Countries;
 use MarekSkopal\TwelveData\Dto\ReferenceData\InstrumentType;
+use MarekSkopal\TwelveData\Dto\ReferenceData\TechnicalIndicators;
 
 readonly class SupportingMetadata extends TwelveDataApi
 {
@@ -28,5 +29,15 @@ readonly class SupportingMetadata extends TwelveDataApi
         );
 
         return InstrumentType::fromJson($response);
+    }
+
+    public function technicalIndicators(): TechnicalIndicators
+    {
+        $response = $this->client->get(
+            path: '/technical_indicators',
+            queryParams: [],
+        );
+
+        return TechnicalIndicators::fromJson($response);
     }
 }

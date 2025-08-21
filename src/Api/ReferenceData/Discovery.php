@@ -9,6 +9,7 @@ use MarekSkopal\TwelveData\Dto\ReferenceData\CrossListings;
 use MarekSkopal\TwelveData\Dto\ReferenceData\EarliestTimestamp;
 use MarekSkopal\TwelveData\Dto\ReferenceData\SymbolSearch;
 use MarekSkopal\TwelveData\Enum\IntervalEnum;
+use MarekSkopal\TwelveData\Exception\InvalidArgumentException;
 use MarekSkopal\TwelveData\Utils\QueryParamsUtils;
 
 readonly class Discovery extends TwelveDataApi
@@ -20,7 +21,7 @@ readonly class Discovery extends TwelveDataApi
             queryParams: [
                 'symbol' => $symbol,
                 'outputsize' => $outputsize !== null ? (string) $outputsize : null,
-                'show_plan' => $showPlan !== null ? QueryParamsUtils::booleanAsString($showPlan) : null,
+                'show_plan' => QueryParamsUtils::booleanAsString($showPlan),
             ],
         );
 
@@ -47,8 +48,8 @@ readonly class Discovery extends TwelveDataApi
     }
 
     public function earliestTimestamp(
-        string $symbol,
-        IntervalEnum $interval,
+        ?string $symbol = null,
+        IntervalEnum $interval = IntervalEnum::OneMinute,
         ?string $figi = null,
         ?string $isin = null,
         ?string $cusip = null,
@@ -56,6 +57,10 @@ readonly class Discovery extends TwelveDataApi
         ?string $micCode = null,
         ?string $timezone = null,
     ): EarliestTimestamp {
+        if ($symbol === null && $figi === null && $isin === null && $cusip === null) {
+            throw InvalidArgumentException::missingParameters(['symbol', 'figi', 'isin', 'cusip']);
+        }
+
         $response = $this->client->get(
             path: '/earliest_timestamp',
             queryParams: [
