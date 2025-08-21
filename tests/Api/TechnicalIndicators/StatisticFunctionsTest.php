@@ -12,6 +12,10 @@ use MarekSkopal\TwelveData\Dto\TechnicalIndicators\Meta;
 use MarekSkopal\TwelveData\Dto\TechnicalIndicators\MetaIndicator;
 use MarekSkopal\TwelveData\Dto\TechnicalIndicators\StatisticFunctions\BetaIndicator;
 use MarekSkopal\TwelveData\Dto\TechnicalIndicators\StatisticFunctions\Correlation;
+use MarekSkopal\TwelveData\Dto\TechnicalIndicators\StatisticFunctions\LinearRegression;
+use MarekSkopal\TwelveData\Dto\TechnicalIndicators\StatisticFunctions\LinearRegressionAngle;
+use MarekSkopal\TwelveData\Dto\TechnicalIndicators\StatisticFunctions\LinearRegressionIntercept;
+use MarekSkopal\TwelveData\Dto\TechnicalIndicators\StatisticFunctions\LinearRegressionSlope;
 use MarekSkopal\TwelveData\Dto\TechnicalIndicators\TechnicalIndicator;
 use MarekSkopal\TwelveData\Tests\Fixtures\Client\ClientFixture;
 use MarekSkopal\TwelveData\Utils\DateUtils;
@@ -31,6 +35,10 @@ use PHPUnit\Framework\TestCase;
 #[UsesClass(MetaIndicator::class)]
 #[UsesClass(BetaIndicator::class)]
 #[UsesClass(Correlation::class)]
+#[UsesClass(LinearRegression::class)]
+#[UsesClass(LinearRegressionAngle::class)]
+#[UsesClass(LinearRegressionIntercept::class)]
+#[UsesClass(LinearRegressionSlope::class)]
 final class StatisticFunctionsTest extends TestCase
 {
     public function testBetaIndicator(): void
@@ -50,6 +58,46 @@ final class StatisticFunctionsTest extends TestCase
         self::assertInstanceOf(
             Correlation::class,
             $statisticFunctions->correlation('AAPL')->values[0],
+        );
+    }
+
+    public function testLinearRegression(): void
+    {
+        $statisticFunctions = new StatisticFunctions(ClientFixture::createWithResponse('linear_regression.json'));
+
+        self::assertInstanceOf(
+            LinearRegression::class,
+            $statisticFunctions->linearRegression('AAPL')->values[0],
+        );
+    }
+
+    public function testLinearRegressionAngle(): void
+    {
+        $statisticFunctions = new StatisticFunctions(ClientFixture::createWithResponse('linear_regression_angle.json'));
+
+        self::assertInstanceOf(
+            LinearRegressionAngle::class,
+            $statisticFunctions->linearRegressionAngle('AAPL')->values[0],
+        );
+    }
+
+    public function testLinearRegressionIntercept(): void
+    {
+        $statisticFunctions = new StatisticFunctions(ClientFixture::createWithResponse('linear_regression_intercept.json'));
+
+        self::assertInstanceOf(
+            LinearRegressionIntercept::class,
+            $statisticFunctions->linearRegressionIntercept('AAPL')->values[0],
+        );
+    }
+
+    public function testLinearRegressionSlope(): void
+    {
+        $statisticFunctions = new StatisticFunctions(ClientFixture::createWithResponse('linear_regression_slope.json'));
+
+        self::assertInstanceOf(
+            LinearRegressionSlope::class,
+            $statisticFunctions->linearRegressionSlope('AAPL')->values[0],
         );
     }
 }
