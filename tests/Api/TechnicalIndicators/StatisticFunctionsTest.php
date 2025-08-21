@@ -16,6 +16,12 @@ use MarekSkopal\TwelveData\Dto\TechnicalIndicators\StatisticFunctions\LinearRegr
 use MarekSkopal\TwelveData\Dto\TechnicalIndicators\StatisticFunctions\LinearRegressionAngle;
 use MarekSkopal\TwelveData\Dto\TechnicalIndicators\StatisticFunctions\LinearRegressionIntercept;
 use MarekSkopal\TwelveData\Dto\TechnicalIndicators\StatisticFunctions\LinearRegressionSlope;
+use MarekSkopal\TwelveData\Dto\TechnicalIndicators\StatisticFunctions\Maximum;
+use MarekSkopal\TwelveData\Dto\TechnicalIndicators\StatisticFunctions\MaximumIndex;
+use MarekSkopal\TwelveData\Dto\TechnicalIndicators\StatisticFunctions\Minimum;
+use MarekSkopal\TwelveData\Dto\TechnicalIndicators\StatisticFunctions\MinimumAndMaximum;
+use MarekSkopal\TwelveData\Dto\TechnicalIndicators\StatisticFunctions\MinimumAndMaximumIndex;
+use MarekSkopal\TwelveData\Dto\TechnicalIndicators\StatisticFunctions\MinimumIndex;
 use MarekSkopal\TwelveData\Dto\TechnicalIndicators\TechnicalIndicator;
 use MarekSkopal\TwelveData\Tests\Fixtures\Client\ClientFixture;
 use MarekSkopal\TwelveData\Utils\DateUtils;
@@ -39,6 +45,12 @@ use PHPUnit\Framework\TestCase;
 #[UsesClass(LinearRegressionAngle::class)]
 #[UsesClass(LinearRegressionIntercept::class)]
 #[UsesClass(LinearRegressionSlope::class)]
+#[UsesClass(Maximum::class)]
+#[UsesClass(MaximumIndex::class)]
+#[UsesClass(Minimum::class)]
+#[UsesClass(MinimumIndex::class)]
+#[UsesClass(MinimumAndMaximum::class)]
+#[UsesClass(MinimumAndMaximumIndex::class)]
 final class StatisticFunctionsTest extends TestCase
 {
     public function testBetaIndicator(): void
@@ -98,6 +110,66 @@ final class StatisticFunctionsTest extends TestCase
         self::assertInstanceOf(
             LinearRegressionSlope::class,
             $statisticFunctions->linearRegressionSlope('AAPL')->values[0],
+        );
+    }
+
+    public function testMaximum(): void
+    {
+        $statisticFunctions = new StatisticFunctions(ClientFixture::createWithResponse('maximum.json'));
+
+        self::assertInstanceOf(
+            Maximum::class,
+            $statisticFunctions->maximum('AAPL')->values[0],
+        );
+    }
+
+    public function testMaximumIndex(): void
+    {
+        $statisticFunctions = new StatisticFunctions(ClientFixture::createWithResponse('maximum_index.json'));
+
+        self::assertInstanceOf(
+            MaximumIndex::class,
+            $statisticFunctions->maximumIndex('AAPL')->values[0],
+        );
+    }
+
+    public function testMinimum(): void
+    {
+        $statisticFunctions = new StatisticFunctions(ClientFixture::createWithResponse('minimum.json'));
+
+        self::assertInstanceOf(
+            Minimum::class,
+            $statisticFunctions->minimum('AAPL')->values[0],
+        );
+    }
+
+    public function testMinimumIndex(): void
+    {
+        $statisticFunctions = new StatisticFunctions(ClientFixture::createWithResponse('minimum_index.json'));
+
+        self::assertInstanceOf(
+            MinimumIndex::class,
+            $statisticFunctions->minimumIndex('AAPL')->values[0],
+        );
+    }
+
+    public function testMinimumAndMaximum(): void
+    {
+        $statisticFunctions = new StatisticFunctions(ClientFixture::createWithResponse('minimum_and_maximum.json'));
+
+        self::assertInstanceOf(
+            MinimumAndMaximum::class,
+            $statisticFunctions->minimumAndMaximum('AAPL')->values[0],
+        );
+    }
+
+    public function testMinimumAndMaximumIndex(): void
+    {
+        $statisticFunctions = new StatisticFunctions(ClientFixture::createWithResponse('minimum_and_maximum_index.json'));
+
+        self::assertInstanceOf(
+            MinimumAndMaximumIndex::class,
+            $statisticFunctions->minimumAndMaximumIndex('AAPL')->values[0],
         );
     }
 }
