@@ -14,10 +14,10 @@ namespace MarekSkopal\TwelveData\Dto\Fundamentals;
  *     operating_activities: CashFlowOperatingActivitiesType,
  *     investing_activities: CashFlowInvestingActivitiesType,
  *     financing_activities: CashFlowFinancingActivitiesType,
- *     end_cash_position: int,
- *     income_tax_paid: int,
+ *     end_cash_position: int|null,
+ *     income_tax_paid: int|null,
  *     interest_paid: int|null,
- *     free_cash_flow: int,
+ *     free_cash_flow: int|null,
  * }
  */
 readonly class CashFlowCashFlow
@@ -28,10 +28,10 @@ readonly class CashFlowCashFlow
         public CashFlowOperatingActivities $operatingActivities,
         public CashFlowInvestingActivities $investingActivities,
         public CashFlowFinancingActivities $financingActivities,
-        public int $endCashPosition,
-        public int $incomeTaxPaid,
+        public ?int $endCashPosition,
+        public ?int $incomeTaxPaid,
         public ?int $interestPaid,
-        public int $freeCashFlow,
+        public ?int $freeCashFlow,
     ) {
     }
 

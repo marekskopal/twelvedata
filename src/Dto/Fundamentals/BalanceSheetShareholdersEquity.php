@@ -6,10 +6,10 @@ namespace MarekSkopal\TwelveData\Dto\Fundamentals;
 
 /**
  * @phpstan-type BalanceSheetShareholdersEquityType array{
- *     common_stock: int,
- *     retained_earnings: int,
- *     other_shareholders_equity:int,
- *     total_shareholders_equity:int,
+ *     common_stock: int|null,
+ *     retained_earnings: int|null,
+ *     other_shareholders_equity:int|null,
+ *     total_shareholders_equity:int|null,
  *     additional_paid_in_capital:int|null,
  *     treasury_stock:int|null,
  *     minority_interest:int|null,
@@ -18,10 +18,10 @@ namespace MarekSkopal\TwelveData\Dto\Fundamentals;
 readonly class BalanceSheetShareholdersEquity
 {
     public function __construct(
-        public int $commonStock,
-        public int $retainedEarnings,
-        public int $otherShareholdersEquity,
-        public int $totalShareholdersEquity,
+        public ?int $commonStock,
+        public ?int $retainedEarnings,
+        public ?int $otherShareholdersEquity,
+        public ?int $totalShareholdersEquity,
         public ?int $additionalPaidInCapital,
         public ?int $treasuryStock,
         public ?int $minorityInterest,

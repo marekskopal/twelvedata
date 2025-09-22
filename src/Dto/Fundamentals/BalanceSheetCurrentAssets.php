@@ -6,13 +6,13 @@ namespace MarekSkopal\TwelveData\Dto\Fundamentals;
 
 /**
  * @phpstan-type BalanceSheetCurrentAssetsType array{
- *     cash: int,
- *     cash_equivalents: int,
- *     cash_and_cash_equivalents:int,
- *     other_short_term_investments:int,
- *     accounts_receivable:int,
- *     other_receivables:int,
- *     inventory:int,
+ *     cash: int|null,
+ *     cash_equivalents: int|null,
+ *     cash_and_cash_equivalents:int|null,
+ *     other_short_term_investments:int|null,
+ *     accounts_receivable:int|null,
+ *     other_receivables:int|null,
+ *     inventory:int|null,
  *     prepaid_assets:int|null,
  *     restricted_cash:int|null,
  *     assets_held_for_sale:int|null,
@@ -24,13 +24,13 @@ namespace MarekSkopal\TwelveData\Dto\Fundamentals;
 readonly class BalanceSheetCurrentAssets
 {
     public function __construct(
-        public int $cash,
-        public int $cashEquivalents,
-        public int $cashAndCashEquivalents,
-        public int $otherShortTermInvestments,
-        public int $accountsReceivable,
-        public int $otherReceivables,
-        public int $inventory,
+        public ?int $cash,
+        public ?int $cashEquivalents,
+        public ?int $cashAndCashEquivalents,
+        public ?int $otherShortTermInvestments,
+        public ?int $accountsReceivable,
+        public ?int $otherReceivables,
+        public ?int $inventory,
         public ?int $prepaidAssets,
         public ?int $restrictedCash,
         public ?int $assetsHeldForSale,
