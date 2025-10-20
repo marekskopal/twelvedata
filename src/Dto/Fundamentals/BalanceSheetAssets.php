@@ -10,7 +10,7 @@ namespace MarekSkopal\TwelveData\Dto\Fundamentals;
  * @phpstan-type BalanceSheetAssetsType array{
  *     current_assets: BalanceSheetCurrentAssetsType,
  *     non_current_assets: BalanceSheetNonCurrentAssetsType,
- *     total_assets: int,
+ *     total_assets: int|null,
  * }
  */
 readonly class BalanceSheetAssets
@@ -18,7 +18,7 @@ readonly class BalanceSheetAssets
     public function __construct(
         public BalanceSheetCurrentAssets $currentAssets,
         public BalanceSheetNonCurrentAssets $nonCurrentAssets,
-        public int $totalAssets,
+        public ?int $totalAssets,
     ) {
     }
 
