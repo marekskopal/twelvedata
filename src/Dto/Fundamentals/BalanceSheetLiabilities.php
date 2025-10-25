@@ -10,7 +10,7 @@ namespace MarekSkopal\TwelveData\Dto\Fundamentals;
  * @phpstan-type BalanceSheetLiabilitiesType array{
  *     current_liabilities: BalanceSheetCurrentLiabilitiesType,
  *     non_current_liabilities: BalanceSheetNonCurrentLiabilitiesType,
- *     total_liabilities: int,
+ *     total_liabilities: int|null,
  * }
  */
 readonly class BalanceSheetLiabilities
@@ -18,7 +18,7 @@ readonly class BalanceSheetLiabilities
     public function __construct(
         public BalanceSheetCurrentLiabilities $currentLiabilities,
         public BalanceSheetNonCurrentLiabilities $nonCurrentLiabilities,
-        public int $totalLiabilities,
+        public ?int $totalLiabilities,
     ) {
     }
 
