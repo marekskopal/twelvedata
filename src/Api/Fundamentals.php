@@ -150,8 +150,8 @@ readonly class Fundamentals extends TwelveDataApi
                 'country' => $country,
                 'start_date' => DateUtils::formatDate($startDate),
                 'end_date' => DateUtils::formatDate($endDate),
-                'outputsize' => $outputsize !== null ? (string) $outputsize : null,
-                'page' => $page !== null ? (string) $page : null,
+                'outputsize' => $outputsize,
+                'page' => $page,
             ],
         );
 
@@ -222,8 +222,8 @@ readonly class Fundamentals extends TwelveDataApi
                 'country' => $country,
                 'start_date' => DateUtils::formatDate($startDate),
                 'end_date' => DateUtils::formatDate($endDate),
-                'outputsize' => $outputsize !== null ? (string) $outputsize : null,
-                'page' => $page !== null ? (string) $page : null,
+                'outputsize' => $outputsize,
+                'page' => $page,
             ],
         );
 
@@ -269,7 +269,7 @@ readonly class Fundamentals extends TwelveDataApi
                 'outputSize' => $outputSize,
                 'format' => $format?->value,
                 'delimiter' => $delimiter,
-                'dp' => $dp !== null ? (string) $dp : null,
+                'dp' => $dp,
                 'start_date' => DateUtils::formatDate($startDate),
                 'end_date' => DateUtils::formatDate($endDate),
             ],
@@ -298,7 +298,7 @@ readonly class Fundamentals extends TwelveDataApi
                 'type' => $type,
                 'format' => $format?->value,
                 'delimiter' => $delimiter,
-                'dp' => $dp !== null ? (string) $dp : null,
+                'dp' => $dp,
                 'start_date' => DateUtils::formatDate($startDate),
                 'end_date' => DateUtils::formatDate($endDate),
             ],

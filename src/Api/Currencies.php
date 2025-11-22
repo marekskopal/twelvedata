@@ -27,7 +27,7 @@ readonly class Currencies extends TwelveDataApi
                 'date' => DateUtils::formatDate($date),
                 'format' => $format?->value,
                 'delimiter' => $delimiter,
-                'dp' => $dp !== null ? (string) $dp : null,
+                'dp' => $dp,
                 'timezone' => $timezone,
             ],
         );
@@ -48,11 +48,11 @@ readonly class Currencies extends TwelveDataApi
             path: '/currency_conversion',
             queryParams: [
                 'symbol' => $symbol,
-                'amount' => (string) $amount,
+                'amount' => $amount,
                 'date' => DateUtils::formatDate($date),
                 'format' => $format?->value,
                 'delimiter' => $delimiter,
-                'dp' => $dp !== null ? (string) $dp : null,
+                'dp' => $dp,
                 'timezone' => $timezone,
             ],
         );

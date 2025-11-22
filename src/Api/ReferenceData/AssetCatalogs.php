@@ -157,8 +157,8 @@ readonly class AssetCatalogs extends TwelveDataApi
                 'format' => $format?->value,
                 'delimiter' => $delimiter,
                 'include_delisted' => QueryParamsUtils::booleanAsString($includeDelisted),
-                'page' => $page !== null ? (string) $page : null,
-                'outputsize' => $outputsize !== null ? (string) $outputsize : null,
+                'page' => $page,
+                'outputsize' => $outputsize,
             ],
         );
 
@@ -184,8 +184,8 @@ readonly class AssetCatalogs extends TwelveDataApi
                 'format' => $format?->value,
                 'delimiter' => $delimiter,
                 'include_delisted' => QueryParamsUtils::booleanAsString($showPlan),
-                'page' => $page !== null ? (string) $page : null,
-                'outputsize' => $outputsize !== null ? (string) $outputsize : null,
+                'page' => $page,
+                'outputsize' => $outputsize,
             ],
         );
 

@@ -68,7 +68,7 @@ readonly class CoreData extends TwelveDataApi
                 'format' => $format?->value,
                 'delimiter' => $delimiter,
                 'prepost' => $prepost?->value,
-                'dp' => $dp !== null ? (string) $dp : null,
+                'dp' => $dp,
                 'order' => $order?->value,
                 'timezone' => $timezone,
                 'date' => DateUtils::formatDate($date),
@@ -170,8 +170,8 @@ readonly class CoreData extends TwelveDataApi
                 'delimiter' => $delimiter,
                 'prepost' => $prepost?->value,
                 'eod' => QueryParamsUtils::booleanAsString($eod),
-                'rolling_period' => $rollingPeriod !== null ? (string) $rollingPeriod : null,
-                'dp' => $dp !== null ? (string) $dp : null,
+                'rolling_period' => $rollingPeriod,
+                'dp' => $dp,
                 'timezone' => $timezone,
             ],
         );
@@ -211,7 +211,7 @@ readonly class CoreData extends TwelveDataApi
                 'format' => $format?->value,
                 'delimiter' => $delimiter,
                 'prepost' => $prepost?->value,
-                'dp' => $dp !== null ? (string) $dp : null,
+                'dp' => $dp,
             ],
         );
 
@@ -248,7 +248,7 @@ readonly class CoreData extends TwelveDataApi
                 'type' => $type,
                 'date' => DateUtils::formatDate($date),
                 'prepost' => $prepost?->value,
-                'dp' => $dp !== null ? (string) $dp : null,
+                'dp' => $dp,
             ],
         );
 
@@ -269,8 +269,8 @@ readonly class CoreData extends TwelveDataApi
                 'direction' => $direction?->value,
                 'outputsize' => $outputsize,
                 'country' => $country,
-                'price_greater_than' => $priceGreaterThan !== null ? (string) $priceGreaterThan : null,
-                'dp' => $dp !== null ? (string) $dp : null,
+                'price_greater_than' => $priceGreaterThan,
+                'dp' => $dp,
             ],
         );
 
