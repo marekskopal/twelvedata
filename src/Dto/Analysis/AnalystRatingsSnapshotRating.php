@@ -12,7 +12,7 @@ use DateTimeImmutable;
  *     firm: string,
  *     rating_change: string,
  *     rating_current: string,
- *     rating_prior: string,
+ *     rating_prior: string|null,
  * }
  */
 readonly class AnalystRatingsSnapshotRating
@@ -22,7 +22,7 @@ readonly class AnalystRatingsSnapshotRating
         public string $firm,
         public string $ratingChange,
         public string $ratingCurrent,
-        public string $ratingPrior,
+        public ?string $ratingPrior,
     ) {
     }
 
