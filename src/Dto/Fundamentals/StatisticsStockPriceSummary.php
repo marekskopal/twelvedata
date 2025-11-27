@@ -8,7 +8,7 @@ namespace MarekSkopal\TwelveData\Dto\Fundamentals;
  * @phpstan-type StatisticsStockPriceSummaryType array{
  *     fifty_two_week_low: float,
  *     fifty_two_week_high: float,
- *     fifty_two_week_change: float,
+ *     fifty_two_week_change: float|null,
  *     beta: float|null,
  *     day_50_ma: float,
  *     day_200_ma: float,
@@ -19,7 +19,7 @@ readonly class StatisticsStockPriceSummary
     public function __construct(
         public float $fiftyTwoWeekLow,
         public float $fiftyTwoWeekHigh,
-        public float $fiftyTwoWeekChange,
+        public ?float $fiftyTwoWeekChange,
         public ?float $beta,
         public float $day50Ma,
         public float $day200Ma,
