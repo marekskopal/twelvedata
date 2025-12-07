@@ -25,7 +25,6 @@ use MarekSkopal\TwelveData\Utils\QueryParamsUtils;
 
 readonly class CoreData extends TwelveDataApi
 {
-    /** @param list<AdjustEnum>|null $adjust */
     public function timeSeries(
         ?string $symbol = null,
         IntervalEnum $interval = IntervalEnum::OneDay,
@@ -47,7 +46,7 @@ readonly class CoreData extends TwelveDataApi
         ?DateTimeImmutable $startDate = null,
         ?DateTimeImmutable $endDate = null,
         ?bool $previousClose = null,
-        ?array $adjust = null,
+        ?AdjustEnum $adjust = null,
     ): TimeSeries {
         if ($symbol === null && $figi === null && $isin === null && $cusip === null) {
             throw InvalidArgumentException::missingParameters(['symbol', 'figi', 'isin', 'cusip']);
@@ -76,14 +75,13 @@ readonly class CoreData extends TwelveDataApi
                 'start_date' => DateUtils::formatDateTime($startDate),
                 'end_date' => DateUtils::formatDateTime($endDate),
                 'previous_close' => QueryParamsUtils::booleanAsString($previousClose),
-                'adjust' => QueryParamsUtils::enumArrayAsString($adjust),
+                'adjust' => $adjust?->value,
             ],
         );
 
         return TimeSeries::fromJson($response);
     }
 
-    /** @param list<AdjustEnum>|null $adjust */
     public function timeSeriesCross(
         string $base,
         string $quote,
@@ -100,7 +98,7 @@ readonly class CoreData extends TwelveDataApi
         ?PrepostEnum $prepost = null,
         ?DateTimeImmutable $startDate = null,
         ?DateTimeImmutable $endDate = null,
-        ?array $adjust = null,
+        ?bool $adjust = null,
         ?int $dp = null,
         ?string $timezone = null,
     ): TimeSeriesCross {
@@ -122,7 +120,7 @@ readonly class CoreData extends TwelveDataApi
                 'prepost' => $prepost?->value,
                 'start_date' => DateUtils::formatDateTime($startDate),
                 'end_date' => DateUtils::formatDateTime($endDate),
-                'adjust' => QueryParamsUtils::enumArrayAsString($adjust),
+                'adjust' => QueryParamsUtils::booleanAsString($adjust),
                 'dp' => $dp,
                 'timezone' => $timezone,
             ],
