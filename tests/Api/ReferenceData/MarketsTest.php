@@ -16,6 +16,7 @@ use MarekSkopal\TwelveData\Dto\ReferenceData\ExchangeScheduleData;
 use MarekSkopal\TwelveData\Dto\ReferenceData\ExchangeScheduleSession;
 use MarekSkopal\TwelveData\Dto\ReferenceData\ExchangesData;
 use MarekSkopal\TwelveData\Dto\ReferenceData\MarketState;
+use MarekSkopal\TwelveData\Enum\TypeEnum;
 use MarekSkopal\TwelveData\Tests\Fixtures\Client\ClientFixture;
 use MarekSkopal\TwelveData\Utils\DateUtils;
 use MarekSkopal\TwelveData\Utils\QueryParamsUtils;
@@ -45,7 +46,7 @@ final class MarketsTest extends TestCase
 
         self::assertInstanceOf(
             Exchanges::class,
-            $referenceData->exchanges('etf'),
+            $referenceData->exchanges(TypeEnum::ETF),
         );
     }
 

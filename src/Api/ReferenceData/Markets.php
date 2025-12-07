@@ -11,6 +11,7 @@ use MarekSkopal\TwelveData\Dto\ReferenceData\Exchanges;
 use MarekSkopal\TwelveData\Dto\ReferenceData\ExchangeSchedule;
 use MarekSkopal\TwelveData\Dto\ReferenceData\MarketState;
 use MarekSkopal\TwelveData\Enum\FormatEnum;
+use MarekSkopal\TwelveData\Enum\TypeEnum;
 use MarekSkopal\TwelveData\Utils\DateUtils;
 use MarekSkopal\TwelveData\Utils\QueryParamsUtils;
 
@@ -18,7 +19,7 @@ use MarekSkopal\TwelveData\Utils\QueryParamsUtils;
 readonly class Markets extends TwelveDataApi
 {
     public function exchanges(
-        ?string $type = null,
+        ?TypeEnum $type = null,
         ?string $name = null,
         ?string $code = null,
         ?string $country = null,
@@ -29,7 +30,7 @@ readonly class Markets extends TwelveDataApi
         $response = $this->client->get(
             path: '/exchanges',
             queryParams: [
-                'type' => $type,
+                'type' => $type?->value,
                 'name' => $name,
                 'code' => $code,
                 'country' => $country,

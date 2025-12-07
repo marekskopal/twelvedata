@@ -18,6 +18,7 @@ use MarekSkopal\TwelveData\Enum\IntervalEnum;
 use MarekSkopal\TwelveData\Enum\MarketMoverEnum;
 use MarekSkopal\TwelveData\Enum\OrderEnum;
 use MarekSkopal\TwelveData\Enum\PrepostEnum;
+use MarekSkopal\TwelveData\Enum\TypeEnum;
 use MarekSkopal\TwelveData\Exception\InvalidArgumentException;
 use MarekSkopal\TwelveData\Utils\DateUtils;
 use MarekSkopal\TwelveData\Utils\QueryParamsUtils;
@@ -34,7 +35,7 @@ readonly class CoreData extends TwelveDataApi
         ?string $exchange = null,
         ?string $micCode = null,
         ?string $country = null,
-        ?string $type = null,
+        ?TypeEnum $type = null,
         ?int $outputSize = null,
         ?FormatEnum $format = null,
         ?string $delimiter = null,
@@ -63,7 +64,7 @@ readonly class CoreData extends TwelveDataApi
                 'exchange' => $exchange,
                 'mic_code' => $micCode,
                 'country' => $country,
-                'type' => $type,
+                'type' => $type?->value,
                 'outputsize' => $outputSize,
                 'format' => $format?->value,
                 'delimiter' => $delimiter,
@@ -140,7 +141,7 @@ readonly class CoreData extends TwelveDataApi
         ?string $micCode = null,
         ?string $country = null,
         ?int $volumeTimePeriod = null,
-        ?string $type = null,
+        ?TypeEnum $type = null,
         ?FormatEnum $format = null,
         ?string $delimiter = null,
         ?PrepostEnum $prepost = null,
@@ -165,7 +166,7 @@ readonly class CoreData extends TwelveDataApi
                 'mic_code' => $micCode,
                 'country' => $country,
                 'volume_time_period' => $volumeTimePeriod,
-                'type' => $type,
+                'type' => $type?->value,
                 'format' => $format?->value,
                 'delimiter' => $delimiter,
                 'prepost' => $prepost?->value,
@@ -187,7 +188,7 @@ readonly class CoreData extends TwelveDataApi
         ?string $exchange = null,
         ?string $micCode = null,
         ?string $country = null,
-        ?string $type = null,
+        ?TypeEnum $type = null,
         ?FormatEnum $format = null,
         ?string $delimiter = null,
         ?PrepostEnum $prepost = null,
@@ -207,7 +208,7 @@ readonly class CoreData extends TwelveDataApi
                 'exchange' => $exchange,
                 'mic_code' => $micCode,
                 'country' => $country,
-                'type' => $type,
+                'type' => $type?->value,
                 'format' => $format?->value,
                 'delimiter' => $delimiter,
                 'prepost' => $prepost?->value,
@@ -226,7 +227,7 @@ readonly class CoreData extends TwelveDataApi
         ?string $exchange = null,
         ?string $micCode = null,
         ?string $country = null,
-        ?string $type = null,
+        ?TypeEnum $type = null,
         ?DateTimeImmutable $date = null,
         ?PrepostEnum $prepost = null,
         ?int $dp = null,
@@ -245,7 +246,7 @@ readonly class CoreData extends TwelveDataApi
                 'exchange' => $exchange,
                 'mic_code' => $micCode,
                 'country' => $country,
-                'type' => $type,
+                'type' => $type?->value,
                 'date' => DateUtils::formatDate($date),
                 'prepost' => $prepost?->value,
                 'dp' => $dp,

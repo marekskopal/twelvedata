@@ -14,6 +14,7 @@ use MarekSkopal\TwelveData\Dto\ReferenceData\Funds;
 use MarekSkopal\TwelveData\Dto\ReferenceData\Indices;
 use MarekSkopal\TwelveData\Dto\ReferenceData\Stocks;
 use MarekSkopal\TwelveData\Enum\FormatEnum;
+use MarekSkopal\TwelveData\Enum\TypeEnum;
 use MarekSkopal\TwelveData\Utils\QueryParamsUtils;
 
 readonly class AssetCatalogs extends TwelveDataApi
@@ -26,7 +27,7 @@ readonly class AssetCatalogs extends TwelveDataApi
         ?string $exchange = null,
         ?string $micCode = null,
         ?string $country = null,
-        ?string $type = null,
+        ?TypeEnum $type = null,
         ?FormatEnum $format = null,
         ?string $delimiter = null,
         ?bool $showPlan = null,
@@ -42,7 +43,7 @@ readonly class AssetCatalogs extends TwelveDataApi
                 'exchange' => $exchange,
                 'mic_code' => $micCode,
                 'country' => $country,
-                'type' => $type,
+                'type' => $type?->value,
                 'format' => $format?->value,
                 'delimiter' => $delimiter,
                 'show_plan' => QueryParamsUtils::booleanAsString($showPlan),
@@ -137,7 +138,7 @@ readonly class AssetCatalogs extends TwelveDataApi
         ?string $cusip = null,
         ?string $exchange = null,
         ?string $country = null,
-        ?string $type = null,
+        ?TypeEnum $type = null,
         ?FormatEnum $format = null,
         ?string $delimiter = null,
         ?bool $includeDelisted = null,
@@ -153,7 +154,7 @@ readonly class AssetCatalogs extends TwelveDataApi
                 'cusip' => $cusip,
                 'exchange' => $exchange,
                 'country' => $country,
-                'type' => $type,
+                'type' => $type?->value,
                 'format' => $format?->value,
                 'delimiter' => $delimiter,
                 'include_delisted' => QueryParamsUtils::booleanAsString($includeDelisted),

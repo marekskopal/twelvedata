@@ -31,6 +31,7 @@ use MarekSkopal\TwelveData\Enum\EndpointEnum;
 use MarekSkopal\TwelveData\Enum\FormatEnum;
 use MarekSkopal\TwelveData\Enum\PeriodEnum;
 use MarekSkopal\TwelveData\Enum\RangeEnum;
+use MarekSkopal\TwelveData\Enum\TypeEnum;
 use MarekSkopal\TwelveData\Exception\InvalidArgumentException;
 use MarekSkopal\TwelveData\Utils\DateUtils;
 use MarekSkopal\TwelveData\Utils\QueryParamsUtils;
@@ -241,7 +242,7 @@ readonly class Fundamentals extends TwelveDataApi
         ?string $cusip = null,
         ?string $micCode = null,
         ?string $country = null,
-        ?string $type = null,
+        ?TypeEnum $type = null,
         ?EarningsPeriodEnum $period = null,
         ?string $outputSize = null,
         ?FormatEnum $format = null,
@@ -264,7 +265,7 @@ readonly class Fundamentals extends TwelveDataApi
                 'exchange' => $exchange,
                 'mic_code' => $micCode,
                 'country' => $country,
-                'type' => $type,
+                'type' => $type?->value,
                 'period' => $period?->value,
                 'outputSize' => $outputSize,
                 'format' => $format?->value,
@@ -282,7 +283,7 @@ readonly class Fundamentals extends TwelveDataApi
         ?string $exchange = null,
         ?string $micCode = null,
         ?string $country = null,
-        ?string $type = null,
+        ?TypeEnum $type = null,
         ?FormatEnum $format = null,
         ?string $delimiter = null,
         ?int $dp = null,
@@ -295,7 +296,7 @@ readonly class Fundamentals extends TwelveDataApi
                 'exchange' => $exchange,
                 'mic_code' => $micCode,
                 'country' => $country,
-                'type' => $type,
+                'type' => $type?->value,
                 'format' => $format?->value,
                 'delimiter' => $delimiter,
                 'dp' => $dp,
