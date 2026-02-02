@@ -6,9 +6,9 @@ namespace MarekSkopal\TwelveData\Dto\Analysis;
 
 /**
  * @phpstan-type PriceTargetPriceTargetType array{
- *     high: int,
- *     median: int,
- *     low: int,
+ *     high: float,
+ *     median: float,
+ *     low: float,
  *     average: float,
  *     current: float,
  *     currency: string,
@@ -17,9 +17,9 @@ namespace MarekSkopal\TwelveData\Dto\Analysis;
 readonly class PriceTargetPriceTarget
 {
     public function __construct(
-        public int $high,
-        public int $median,
-        public int $low,
+        public float $high,
+        public float $median,
+        public float $low,
         public float $average,
         public float $current,
         public string $currency,

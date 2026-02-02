@@ -1,1 +1,1 @@
-{"meta":{"symbol":"AAPL","name":"Apple Inc.","currency":"USD","exchange_timezone":"America/New_York","exchange":"NASDAQ","mic_code":"XNGS","type":"Common Stock"},"price_target":{"high":300,"median":237,"low":175,"average":233.1073,"current":229.35001,"currency":"USD"},"status":"ok"}
+{"meta":{"symbol":"AAPL","name":"Apple Inc.","currency":"USD","exchange_timezone":"America/New_York","exchange":"NASDAQ","mic_code":"XNGS","type":"Common Stock"},"price_target":{"high":300.00,"median":237.00,"low":175.00,"average":233.1073,"current":229.35001,"currency":"USD"},"status":"ok"}
