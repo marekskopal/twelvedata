@@ -15,7 +15,7 @@ namespace MarekSkopal\TwelveData\Dto\ReferenceData;
  */
 readonly class TechnicalIndicatorsParameter
 {
-    /** @param list<string> $range */
+    /** @param list<string>|null $range */
     public function __construct(
         public int|float|string|bool $default,
         public int|float|null $maxRange,

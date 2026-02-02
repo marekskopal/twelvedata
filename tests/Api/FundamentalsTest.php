@@ -299,7 +299,7 @@ final class FundamentalsTest extends TestCase
 
         $ipoCalendar = $fundamentals->ipoCalendar();
 
-        self::assertInstanceOf(IpoCalendar::class, $ipoCalendar[array_key_first($ipoCalendar)][0]);
+        self::assertInstanceOf(IpoCalendar::class, $ipoCalendar[(string) array_key_first($ipoCalendar)][0]);
     }
 
     public function testStatistics(): void

@@ -17,7 +17,7 @@ readonly class QueryParamsUtils
         return $param === false ? 'false' : 'true';
     }
 
-    /** @param array<string> $param */
+    /** @param array<string>|null $param */
     public static function arrayAsString(?array $param): ?string
     {
         if ($param === null) {
@@ -27,7 +27,7 @@ readonly class QueryParamsUtils
         return implode(',', $param);
     }
 
-    /** @param array<BackedEnum> $param */
+    /** @param array<BackedEnum>|null $param */
     public static function enumArrayAsString(?array $param): ?string
     {
         if ($param === null) {

@@ -94,7 +94,7 @@ readonly class TwelveData
     /**
      * @param string $path
      * @param array<string, scalar|null> $queryParams
-     * @return object|array<mixed>
+     * @return object|array<mixed>|null
      */
     public function get(string $path, array $queryParams = []): object|array|null
     {
