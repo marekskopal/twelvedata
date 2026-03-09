@@ -35,7 +35,7 @@ readonly class Discovery extends TwelveDataApi
         ?string $country = null,
     ): CrossListings {
         $response = $this->client->get(
-            path: '/commodities',
+            path: '/cross_listings',
             queryParams: [
                 'symbol' => $symbol,
                 'exchange' => $exchange,
