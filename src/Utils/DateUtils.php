@@ -9,7 +9,7 @@ use DateTimeImmutable;
 readonly class DateUtils
 {
     public const string DATE_FORMAT = 'Y-m-d';
-    public const string DATETIME_FORMAT = 'Y-m-d h:i:s';
+    public const string DATETIME_FORMAT = 'Y-m-d H:i:s';
 
     public static function formatDate(?DateTimeImmutable $date): ?string
     {
