@@ -18,7 +18,7 @@ use MarekSkopal\TwelveData\Utils\DateUtils;
 
 readonly class Regulatory extends TwelveDataApi
 {
-    public function edgarFilligs(
+    public function edgarFillings(
         ?string $symbol = null,
         ?string $figi = null,
         ?string $isin = null,

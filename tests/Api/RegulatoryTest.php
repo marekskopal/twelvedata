@@ -64,7 +64,7 @@ final class RegulatoryTest extends TestCase
 
         self::assertInstanceOf(
             EdgarFillings::class,
-            $regulatory->edgarFilligs('AAPL'),
+            $regulatory->edgarFillings('AAPL'),
         );
     }
 
