@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Api\TechnicalIndicators;
 
-use MarekSkopal\TwelveData\Api\TechnicalIndictors\OverlapStudies;
+use MarekSkopal\TwelveData\Api\TechnicalIndicators\OverlapStudies;
 use MarekSkopal\TwelveData\Api\TwelveDataApi;
 use MarekSkopal\TwelveData\Client\Client;
 use MarekSkopal\TwelveData\Config\Config;

@@ -4,13 +4,13 @@ declare(strict_types=1);
 
 namespace MarekSkopal\TwelveData\Api;
 
-use MarekSkopal\TwelveData\Api\TechnicalIndictors\CycleIndicators;
-use MarekSkopal\TwelveData\Api\TechnicalIndictors\MomentumIndicators;
-use MarekSkopal\TwelveData\Api\TechnicalIndictors\OverlapStudies;
-use MarekSkopal\TwelveData\Api\TechnicalIndictors\PriceTransform;
-use MarekSkopal\TwelveData\Api\TechnicalIndictors\StatisticFunctions;
-use MarekSkopal\TwelveData\Api\TechnicalIndictors\VolatilityIndicators;
-use MarekSkopal\TwelveData\Api\TechnicalIndictors\VolumeIndicators;
+use MarekSkopal\TwelveData\Api\TechnicalIndicators\CycleIndicators;
+use MarekSkopal\TwelveData\Api\TechnicalIndicators\MomentumIndicators;
+use MarekSkopal\TwelveData\Api\TechnicalIndicators\OverlapStudies;
+use MarekSkopal\TwelveData\Api\TechnicalIndicators\PriceTransform;
+use MarekSkopal\TwelveData\Api\TechnicalIndicators\StatisticFunctions;
+use MarekSkopal\TwelveData\Api\TechnicalIndicators\VolatilityIndicators;
+use MarekSkopal\TwelveData\Api\TechnicalIndicators\VolumeIndicators;
 use MarekSkopal\TwelveData\Client\ClientInterface;
 
 readonly class TechnicalIndicators extends TwelveDataApi

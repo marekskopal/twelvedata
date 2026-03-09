@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace MarekSkopal\TwelveData\Api\TechnicalIndictors;
+namespace MarekSkopal\TwelveData\Api\TechnicalIndicators;
 
 use DateTimeImmutable;
 use MarekSkopal\TwelveData\Api\TwelveDataApi;
