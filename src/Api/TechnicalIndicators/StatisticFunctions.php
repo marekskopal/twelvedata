@@ -29,8 +29,8 @@ use MarekSkopal\TwelveData\Enum\OrderEnum;
 use MarekSkopal\TwelveData\Enum\PrepostEnum;
 use MarekSkopal\TwelveData\Enum\SeriesTypeEnum;
 use MarekSkopal\TwelveData\Enum\TypeEnum;
-use MarekSkopal\TwelveData\Exception\InvalidArgumentException;
 use MarekSkopal\TwelveData\Utils\DateUtils;
+use MarekSkopal\TwelveData\Utils\Guard;
 use MarekSkopal\TwelveData\Utils\QueryParamsUtils;
 
 readonly class StatisticFunctions extends TwelveDataApi
@@ -64,9 +64,7 @@ readonly class StatisticFunctions extends TwelveDataApi
         ?AdjustEnum $adjust = null,
     ): TechnicalIndicator
     {
-        if ($symbol === null && $figi === null && $isin === null && $cusip === null) {
-            throw InvalidArgumentException::missingParameters(['symbol', 'figi', 'isin', 'cusip']);
-        }
+        Guard::requireSymbolIdentifier($symbol, $figi, $isin, $cusip);
 
         $response = $this->client->get(
             path: '/beta',
@@ -133,9 +131,7 @@ readonly class StatisticFunctions extends TwelveDataApi
         ?AdjustEnum $adjust = null,
     ): TechnicalIndicator
     {
-        if ($symbol === null && $figi === null && $isin === null && $cusip === null) {
-            throw InvalidArgumentException::missingParameters(['symbol', 'figi', 'isin', 'cusip']);
-        }
+        Guard::requireSymbolIdentifier($symbol, $figi, $isin, $cusip);
 
         $response = $this->client->get(
             path: '/correl',
@@ -201,9 +197,7 @@ readonly class StatisticFunctions extends TwelveDataApi
         ?AdjustEnum $adjust = null,
     ): TechnicalIndicator
     {
-        if ($symbol === null && $figi === null && $isin === null && $cusip === null) {
-            throw InvalidArgumentException::missingParameters(['symbol', 'figi', 'isin', 'cusip']);
-        }
+        Guard::requireSymbolIdentifier($symbol, $figi, $isin, $cusip);
 
         $response = $this->client->get(
             path: '/linearreg',
@@ -268,9 +262,7 @@ readonly class StatisticFunctions extends TwelveDataApi
         ?AdjustEnum $adjust = null,
     ): TechnicalIndicator
     {
-        if ($symbol === null && $figi === null && $isin === null && $cusip === null) {
-            throw InvalidArgumentException::missingParameters(['symbol', 'figi', 'isin', 'cusip']);
-        }
+        Guard::requireSymbolIdentifier($symbol, $figi, $isin, $cusip);
 
         $response = $this->client->get(
             path: '/linearregangle',
@@ -335,9 +327,7 @@ readonly class StatisticFunctions extends TwelveDataApi
         ?AdjustEnum $adjust = null,
     ): TechnicalIndicator
     {
-        if ($symbol === null && $figi === null && $isin === null && $cusip === null) {
-            throw InvalidArgumentException::missingParameters(['symbol', 'figi', 'isin', 'cusip']);
-        }
+        Guard::requireSymbolIdentifier($symbol, $figi, $isin, $cusip);
 
         $response = $this->client->get(
             path: '/linearregintercept',
@@ -402,9 +392,7 @@ readonly class StatisticFunctions extends TwelveDataApi
         ?AdjustEnum $adjust = null,
     ): TechnicalIndicator
     {
-        if ($symbol === null && $figi === null && $isin === null && $cusip === null) {
-            throw InvalidArgumentException::missingParameters(['symbol', 'figi', 'isin', 'cusip']);
-        }
+        Guard::requireSymbolIdentifier($symbol, $figi, $isin, $cusip);
 
         $response = $this->client->get(
             path: '/linearregslope',
@@ -469,9 +457,7 @@ readonly class StatisticFunctions extends TwelveDataApi
         ?AdjustEnum $adjust = null,
     ): TechnicalIndicator
     {
-        if ($symbol === null && $figi === null && $isin === null && $cusip === null) {
-            throw InvalidArgumentException::missingParameters(['symbol', 'figi', 'isin', 'cusip']);
-        }
+        Guard::requireSymbolIdentifier($symbol, $figi, $isin, $cusip);
 
         $response = $this->client->get(
             path: '/max',
@@ -536,9 +522,7 @@ readonly class StatisticFunctions extends TwelveDataApi
         ?AdjustEnum $adjust = null,
     ): TechnicalIndicator
     {
-        if ($symbol === null && $figi === null && $isin === null && $cusip === null) {
-            throw InvalidArgumentException::missingParameters(['symbol', 'figi', 'isin', 'cusip']);
-        }
+        Guard::requireSymbolIdentifier($symbol, $figi, $isin, $cusip);
 
         $response = $this->client->get(
             path: '/maxindex',
@@ -603,9 +587,7 @@ readonly class StatisticFunctions extends TwelveDataApi
         ?AdjustEnum $adjust = null,
     ): TechnicalIndicator
     {
-        if ($symbol === null && $figi === null && $isin === null && $cusip === null) {
-            throw InvalidArgumentException::missingParameters(['symbol', 'figi', 'isin', 'cusip']);
-        }
+        Guard::requireSymbolIdentifier($symbol, $figi, $isin, $cusip);
 
         $response = $this->client->get(
             path: '/min',
@@ -670,9 +652,7 @@ readonly class StatisticFunctions extends TwelveDataApi
         ?AdjustEnum $adjust = null,
     ): TechnicalIndicator
     {
-        if ($symbol === null && $figi === null && $isin === null && $cusip === null) {
-            throw InvalidArgumentException::missingParameters(['symbol', 'figi', 'isin', 'cusip']);
-        }
+        Guard::requireSymbolIdentifier($symbol, $figi, $isin, $cusip);
 
         $response = $this->client->get(
             path: '/minindex',
@@ -737,9 +717,7 @@ readonly class StatisticFunctions extends TwelveDataApi
         ?AdjustEnum $adjust = null,
     ): TechnicalIndicator
     {
-        if ($symbol === null && $figi === null && $isin === null && $cusip === null) {
-            throw InvalidArgumentException::missingParameters(['symbol', 'figi', 'isin', 'cusip']);
-        }
+        Guard::requireSymbolIdentifier($symbol, $figi, $isin, $cusip);
 
         $response = $this->client->get(
             path: '/minmax',
@@ -804,9 +782,7 @@ readonly class StatisticFunctions extends TwelveDataApi
         ?AdjustEnum $adjust = null,
     ): TechnicalIndicator
     {
-        if ($symbol === null && $figi === null && $isin === null && $cusip === null) {
-            throw InvalidArgumentException::missingParameters(['symbol', 'figi', 'isin', 'cusip']);
-        }
+        Guard::requireSymbolIdentifier($symbol, $figi, $isin, $cusip);
 
         $response = $this->client->get(
             path: '/minmaxindex',
@@ -872,9 +848,7 @@ readonly class StatisticFunctions extends TwelveDataApi
         ?AdjustEnum $adjust = null,
     ): TechnicalIndicator
     {
-        if ($symbol === null && $figi === null && $isin === null && $cusip === null) {
-            throw InvalidArgumentException::missingParameters(['symbol', 'figi', 'isin', 'cusip']);
-        }
+        Guard::requireSymbolIdentifier($symbol, $figi, $isin, $cusip);
 
         $response = $this->client->get(
             path: '/stddev',
@@ -940,9 +914,7 @@ readonly class StatisticFunctions extends TwelveDataApi
         ?AdjustEnum $adjust = null,
     ): TechnicalIndicator
     {
-        if ($symbol === null && $figi === null && $isin === null && $cusip === null) {
-            throw InvalidArgumentException::missingParameters(['symbol', 'figi', 'isin', 'cusip']);
-        }
+        Guard::requireSymbolIdentifier($symbol, $figi, $isin, $cusip);
 
         $response = $this->client->get(
             path: '/tsf',
@@ -1007,9 +979,7 @@ readonly class StatisticFunctions extends TwelveDataApi
         ?AdjustEnum $adjust = null,
     ): TechnicalIndicator
     {
-        if ($symbol === null && $figi === null && $isin === null && $cusip === null) {
-            throw InvalidArgumentException::missingParameters(['symbol', 'figi', 'isin', 'cusip']);
-        }
+        Guard::requireSymbolIdentifier($symbol, $figi, $isin, $cusip);
 
         $response = $this->client->get(
             path: '/var',

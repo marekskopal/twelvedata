@@ -14,7 +14,7 @@ use MarekSkopal\TwelveData\Dto\Analysis\PriceTarget;
 use MarekSkopal\TwelveData\Dto\Analysis\Recommendations;
 use MarekSkopal\TwelveData\Dto\Analysis\RevenueEstimate;
 use MarekSkopal\TwelveData\Enum\RatingChangeEnum;
-use MarekSkopal\TwelveData\Exception\InvalidArgumentException;
+use MarekSkopal\TwelveData\Utils\Guard;
 
 readonly class Analysis extends TwelveDataApi
 {
@@ -26,9 +26,7 @@ readonly class Analysis extends TwelveDataApi
         ?string $exchange = null,
         ?string $country = null,
     ): EarningsEstimate {
-        if ($symbol === null && $figi === null && $isin === null && $cusip === null) {
-            throw InvalidArgumentException::missingParameters(['symbol', 'figi', 'isin', 'cusip']);
-        }
+        Guard::requireSymbolIdentifier($symbol, $figi, $isin, $cusip);
 
         $response = $this->client->get(
             path: '/earnings_estimate',
@@ -54,9 +52,7 @@ readonly class Analysis extends TwelveDataApi
         ?string $exchange = null,
         ?int $dp = null,
     ): RevenueEstimate {
-        if ($symbol === null && $figi === null && $isin === null && $cusip === null) {
-            throw InvalidArgumentException::missingParameters(['symbol', 'figi', 'isin', 'cusip']);
-        }
+        Guard::requireSymbolIdentifier($symbol, $figi, $isin, $cusip);
 
         $response = $this->client->get(
             path: '/revenue_estimate',
@@ -82,9 +78,7 @@ readonly class Analysis extends TwelveDataApi
         ?string $country = null,
         ?string $exchange = null,
     ): EpsTrend {
-        if ($symbol === null && $figi === null && $isin === null && $cusip === null) {
-            throw InvalidArgumentException::missingParameters(['symbol', 'figi', 'isin', 'cusip']);
-        }
+        Guard::requireSymbolIdentifier($symbol, $figi, $isin, $cusip);
 
         $response = $this->client->get(
             path: '/eps_trend',
@@ -109,9 +103,7 @@ readonly class Analysis extends TwelveDataApi
         ?string $country = null,
         ?string $exchange = null,
     ): EpsRevisions {
-        if ($symbol === null && $figi === null && $isin === null && $cusip === null) {
-            throw InvalidArgumentException::missingParameters(['symbol', 'figi', 'isin', 'cusip']);
-        }
+        Guard::requireSymbolIdentifier($symbol, $figi, $isin, $cusip);
 
         $response = $this->client->get(
             path: '/eps_revisions',
@@ -136,9 +128,7 @@ readonly class Analysis extends TwelveDataApi
         ?string $country = null,
         ?string $exchange = null,
     ): GrowthEstimates {
-        if ($symbol === null && $figi === null && $isin === null && $cusip === null) {
-            throw InvalidArgumentException::missingParameters(['symbol', 'figi', 'isin', 'cusip']);
-        }
+        Guard::requireSymbolIdentifier($symbol, $figi, $isin, $cusip);
 
         $response = $this->client->get(
             path: '/growth_estimates',
@@ -163,9 +153,7 @@ readonly class Analysis extends TwelveDataApi
         ?string $country = null,
         ?string $exchange = null,
     ): Recommendations {
-        if ($symbol === null && $figi === null && $isin === null && $cusip === null) {
-            throw InvalidArgumentException::missingParameters(['symbol', 'figi', 'isin', 'cusip']);
-        }
+        Guard::requireSymbolIdentifier($symbol, $figi, $isin, $cusip);
 
         $response = $this->client->get(
             path: '/recommendations',
@@ -190,9 +178,7 @@ readonly class Analysis extends TwelveDataApi
         ?string $country = null,
         ?string $exchange = null,
     ): PriceTarget {
-        if ($symbol === null && $figi === null && $isin === null && $cusip === null) {
-            throw InvalidArgumentException::missingParameters(['symbol', 'figi', 'isin', 'cusip']);
-        }
+        Guard::requireSymbolIdentifier($symbol, $figi, $isin, $cusip);
 
         $response = $this->client->get(
             path: '/price_target',
@@ -219,9 +205,7 @@ readonly class Analysis extends TwelveDataApi
         ?RatingChangeEnum $ratingChange = null,
         ?int $outputsize = null,
     ): AnalystRatingsSnapshot {
-        if ($symbol === null && $figi === null && $isin === null && $cusip === null) {
-            throw InvalidArgumentException::missingParameters(['symbol', 'figi', 'isin', 'cusip']);
-        }
+        Guard::requireSymbolIdentifier($symbol, $figi, $isin, $cusip);
 
         $response = $this->client->get(
             path: '/analyst_ratings/light',
@@ -250,9 +234,7 @@ readonly class Analysis extends TwelveDataApi
         ?RatingChangeEnum $ratingChange = null,
         ?int $outputsize = null,
     ): AnalystRatingsUsEquities {
-        if ($symbol === null && $figi === null && $isin === null && $cusip === null) {
-            throw InvalidArgumentException::missingParameters(['symbol', 'figi', 'isin', 'cusip']);
-        }
+        Guard::requireSymbolIdentifier($symbol, $figi, $isin, $cusip);
 
         $response = $this->client->get(
             path: '/analyst_ratings/light',

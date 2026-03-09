@@ -19,8 +19,8 @@ use MarekSkopal\TwelveData\Enum\MarketMoverEnum;
 use MarekSkopal\TwelveData\Enum\OrderEnum;
 use MarekSkopal\TwelveData\Enum\PrepostEnum;
 use MarekSkopal\TwelveData\Enum\TypeEnum;
-use MarekSkopal\TwelveData\Exception\InvalidArgumentException;
 use MarekSkopal\TwelveData\Utils\DateUtils;
+use MarekSkopal\TwelveData\Utils\Guard;
 use MarekSkopal\TwelveData\Utils\QueryParamsUtils;
 
 readonly class CoreData extends TwelveDataApi
@@ -48,9 +48,7 @@ readonly class CoreData extends TwelveDataApi
         ?bool $previousClose = null,
         ?AdjustEnum $adjust = null,
     ): TimeSeries {
-        if ($symbol === null && $figi === null && $isin === null && $cusip === null) {
-            throw InvalidArgumentException::missingParameters(['symbol', 'figi', 'isin', 'cusip']);
-        }
+        Guard::requireSymbolIdentifier($symbol, $figi, $isin, $cusip);
 
         $response = $this->client->get(
             path: '/time_series',
@@ -148,9 +146,7 @@ readonly class CoreData extends TwelveDataApi
         ?int $dp = null,
         ?string $timezone = null,
     ): Quote {
-        if ($symbol === null && $figi === null && $isin === null && $cusip === null) {
-            throw InvalidArgumentException::missingParameters(['symbol', 'figi', 'isin', 'cusip']);
-        }
+        Guard::requireSymbolIdentifier($symbol, $figi, $isin, $cusip);
 
         $response = $this->client->get(
             path: '/quote',
@@ -192,9 +188,7 @@ readonly class CoreData extends TwelveDataApi
         ?PrepostEnum $prepost = null,
         ?int $dp = null,
     ): LatestPrice {
-        if ($symbol === null && $figi === null && $isin === null && $cusip === null) {
-            throw InvalidArgumentException::missingParameters(['symbol', 'figi', 'isin', 'cusip']);
-        }
+        Guard::requireSymbolIdentifier($symbol, $figi, $isin, $cusip);
 
         $response = $this->client->get(
             path: '/price',
@@ -230,9 +224,7 @@ readonly class CoreData extends TwelveDataApi
         ?PrepostEnum $prepost = null,
         ?int $dp = null,
     ): EndOfDayPrice {
-        if ($symbol === null && $figi === null && $isin === null && $cusip === null) {
-            throw InvalidArgumentException::missingParameters(['symbol', 'figi', 'isin', 'cusip']);
-        }
+        Guard::requireSymbolIdentifier($symbol, $figi, $isin, $cusip);
 
         $response = $this->client->get(
             path: '/eod',

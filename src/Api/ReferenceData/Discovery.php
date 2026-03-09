@@ -9,7 +9,7 @@ use MarekSkopal\TwelveData\Dto\ReferenceData\CrossListings;
 use MarekSkopal\TwelveData\Dto\ReferenceData\EarliestTimestamp;
 use MarekSkopal\TwelveData\Dto\ReferenceData\SymbolSearch;
 use MarekSkopal\TwelveData\Enum\IntervalEnum;
-use MarekSkopal\TwelveData\Exception\InvalidArgumentException;
+use MarekSkopal\TwelveData\Utils\Guard;
 use MarekSkopal\TwelveData\Utils\QueryParamsUtils;
 
 readonly class Discovery extends TwelveDataApi
@@ -57,9 +57,7 @@ readonly class Discovery extends TwelveDataApi
         ?string $micCode = null,
         ?string $timezone = null,
     ): EarliestTimestamp {
-        if ($symbol === null && $figi === null && $isin === null && $cusip === null) {
-            throw InvalidArgumentException::missingParameters(['symbol', 'figi', 'isin', 'cusip']);
-        }
+        Guard::requireSymbolIdentifier($symbol, $figi, $isin, $cusip);
 
         $response = $this->client->get(
             path: '/earliest_timestamp',

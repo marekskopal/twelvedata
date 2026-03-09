@@ -36,8 +36,8 @@ use MarekSkopal\TwelveData\Enum\OrderEnum;
 use MarekSkopal\TwelveData\Enum\PrepostEnum;
 use MarekSkopal\TwelveData\Enum\SeriesTypeEnum;
 use MarekSkopal\TwelveData\Enum\TypeEnum;
-use MarekSkopal\TwelveData\Exception\InvalidArgumentException;
 use MarekSkopal\TwelveData\Utils\DateUtils;
+use MarekSkopal\TwelveData\Utils\Guard;
 use MarekSkopal\TwelveData\Utils\QueryParamsUtils;
 
 readonly class OverlapStudies extends TwelveDataApi
@@ -71,9 +71,7 @@ readonly class OverlapStudies extends TwelveDataApi
         ?bool $previousClose = null,
         ?AdjustEnum $adjust = null,
     ): TechnicalIndicator {
-        if ($symbol === null && $figi === null && $isin === null && $cusip === null) {
-            throw InvalidArgumentException::missingParameters(['symbol', 'figi', 'isin', 'cusip']);
-        }
+        Guard::requireSymbolIdentifier($symbol, $figi, $isin, $cusip);
 
         $response = $this->client->get(
             path: '/bbands',
@@ -139,9 +137,7 @@ readonly class OverlapStudies extends TwelveDataApi
         ?bool $previousClose = null,
         ?AdjustEnum $adjust = null,
     ): TechnicalIndicator {
-        if ($symbol === null && $figi === null && $isin === null && $cusip === null) {
-            throw InvalidArgumentException::missingParameters(['symbol', 'figi', 'isin', 'cusip']);
-        }
+        Guard::requireSymbolIdentifier($symbol, $figi, $isin, $cusip);
 
         $response = $this->client->get(
             path: '/dema',
@@ -205,9 +201,7 @@ readonly class OverlapStudies extends TwelveDataApi
         ?bool $previousClose = null,
         ?AdjustEnum $adjust = null,
     ): TechnicalIndicator {
-        if ($symbol === null && $figi === null && $isin === null && $cusip === null) {
-            throw InvalidArgumentException::missingParameters(['symbol', 'figi', 'isin', 'cusip']);
-        }
+        Guard::requireSymbolIdentifier($symbol, $figi, $isin, $cusip);
 
         $response = $this->client->get(
             path: '/ema',
@@ -271,9 +265,7 @@ readonly class OverlapStudies extends TwelveDataApi
         ?bool $previousClose = null,
         ?AdjustEnum $adjust = null,
     ): TechnicalIndicator {
-        if ($symbol === null && $figi === null && $isin === null && $cusip === null) {
-            throw InvalidArgumentException::missingParameters(['symbol', 'figi', 'isin', 'cusip']);
-        }
+        Guard::requireSymbolIdentifier($symbol, $figi, $isin, $cusip);
 
         $response = $this->client->get(
             path: '/ht_trendline',
@@ -340,9 +332,7 @@ readonly class OverlapStudies extends TwelveDataApi
         ?bool $previousClose = null,
         ?AdjustEnum $adjust = null,
     ): TechnicalIndicator {
-        if ($symbol === null && $figi === null && $isin === null && $cusip === null) {
-            throw InvalidArgumentException::missingParameters(['symbol', 'figi', 'isin', 'cusip']);
-        }
+        Guard::requireSymbolIdentifier($symbol, $figi, $isin, $cusip);
 
         $response = $this->client->get(
             path: '/ichimoku',
@@ -409,9 +399,7 @@ readonly class OverlapStudies extends TwelveDataApi
         ?bool $previousClose = null,
         ?AdjustEnum $adjust = null,
     ): TechnicalIndicator {
-        if ($symbol === null && $figi === null && $isin === null && $cusip === null) {
-            throw InvalidArgumentException::missingParameters(['symbol', 'figi', 'isin', 'cusip']);
-        }
+        Guard::requireSymbolIdentifier($symbol, $figi, $isin, $cusip);
 
         $response = $this->client->get(
             path: '/kama',
@@ -478,9 +466,7 @@ readonly class OverlapStudies extends TwelveDataApi
         ?bool $previousClose = null,
         ?AdjustEnum $adjust = null,
     ): TechnicalIndicator {
-        if ($symbol === null && $figi === null && $isin === null && $cusip === null) {
-            throw InvalidArgumentException::missingParameters(['symbol', 'figi', 'isin', 'cusip']);
-        }
+        Guard::requireSymbolIdentifier($symbol, $figi, $isin, $cusip);
 
         $response = $this->client->get(
             path: '/keltner',
@@ -548,9 +534,7 @@ readonly class OverlapStudies extends TwelveDataApi
         ?bool $previousClose = null,
         ?AdjustEnum $adjust = null,
     ): TechnicalIndicator {
-        if ($symbol === null && $figi === null && $isin === null && $cusip === null) {
-            throw InvalidArgumentException::missingParameters(['symbol', 'figi', 'isin', 'cusip']);
-        }
+        Guard::requireSymbolIdentifier($symbol, $figi, $isin, $cusip);
 
         $response = $this->client->get(
             path: '/ma',
@@ -616,9 +600,7 @@ readonly class OverlapStudies extends TwelveDataApi
         ?bool $previousClose = null,
         ?AdjustEnum $adjust = null,
     ): TechnicalIndicator {
-        if ($symbol === null && $figi === null && $isin === null && $cusip === null) {
-            throw InvalidArgumentException::missingParameters(['symbol', 'figi', 'isin', 'cusip']);
-        }
+        Guard::requireSymbolIdentifier($symbol, $figi, $isin, $cusip);
 
         $response = $this->client->get(
             path: '/mama',
@@ -682,9 +664,7 @@ readonly class OverlapStudies extends TwelveDataApi
         ?bool $previousClose = null,
         ?AdjustEnum $adjust = null,
     ): TechnicalIndicator {
-        if ($symbol === null && $figi === null && $isin === null && $cusip === null) {
-            throw InvalidArgumentException::missingParameters(['symbol', 'figi', 'isin', 'cusip']);
-        }
+        Guard::requireSymbolIdentifier($symbol, $figi, $isin, $cusip);
 
         $response = $this->client->get(
             path: '/mcginley_dynamic',
@@ -748,9 +728,7 @@ readonly class OverlapStudies extends TwelveDataApi
         ?bool $previousClose = null,
         ?AdjustEnum $adjust = null,
     ): TechnicalIndicator {
-        if ($symbol === null && $figi === null && $isin === null && $cusip === null) {
-            throw InvalidArgumentException::missingParameters(['symbol', 'figi', 'isin', 'cusip']);
-        }
+        Guard::requireSymbolIdentifier($symbol, $figi, $isin, $cusip);
 
         $response = $this->client->get(
             path: '/midpoint',
@@ -816,9 +794,7 @@ readonly class OverlapStudies extends TwelveDataApi
         ?bool $previousClose = null,
         ?AdjustEnum $adjust = null,
     ): TechnicalIndicator {
-        if ($symbol === null && $figi === null && $isin === null && $cusip === null) {
-            throw InvalidArgumentException::missingParameters(['symbol', 'figi', 'isin', 'cusip']);
-        }
+        Guard::requireSymbolIdentifier($symbol, $figi, $isin, $cusip);
 
         $response = $this->client->get(
             path: '/midprice',
@@ -882,9 +858,7 @@ readonly class OverlapStudies extends TwelveDataApi
         ?bool $previousClose = null,
         ?AdjustEnum $adjust = null,
     ): TechnicalIndicator {
-        if ($symbol === null && $figi === null && $isin === null && $cusip === null) {
-            throw InvalidArgumentException::missingParameters(['symbol', 'figi', 'isin', 'cusip']);
-        }
+        Guard::requireSymbolIdentifier($symbol, $figi, $isin, $cusip);
 
         $response = $this->client->get(
             path: '/pivot_points_hl',
@@ -947,9 +921,7 @@ readonly class OverlapStudies extends TwelveDataApi
         ?bool $previousClose = null,
         ?AdjustEnum $adjust = null,
     ): TechnicalIndicator {
-        if ($symbol === null && $figi === null && $isin === null && $cusip === null) {
-            throw InvalidArgumentException::missingParameters(['symbol', 'figi', 'isin', 'cusip']);
-        }
+        Guard::requireSymbolIdentifier($symbol, $figi, $isin, $cusip);
 
         $response = $this->client->get(
             path: '/sar',
@@ -1019,9 +991,7 @@ readonly class OverlapStudies extends TwelveDataApi
         ?bool $previousClose = null,
         ?AdjustEnum $adjust = null,
     ): TechnicalIndicator {
-        if ($symbol === null && $figi === null && $isin === null && $cusip === null) {
-            throw InvalidArgumentException::missingParameters(['symbol', 'figi', 'isin', 'cusip']);
-        }
+        Guard::requireSymbolIdentifier($symbol, $figi, $isin, $cusip);
 
         $response = $this->client->get(
             path: '/sar',
@@ -1091,9 +1061,7 @@ readonly class OverlapStudies extends TwelveDataApi
         ?bool $previousClose = null,
         ?AdjustEnum $adjust = null,
     ): TechnicalIndicator {
-        if ($symbol === null && $figi === null && $isin === null && $cusip === null) {
-            throw InvalidArgumentException::missingParameters(['symbol', 'figi', 'isin', 'cusip']);
-        }
+        Guard::requireSymbolIdentifier($symbol, $figi, $isin, $cusip);
 
         $response = $this->client->get(
             path: '/sma',
@@ -1158,9 +1126,7 @@ readonly class OverlapStudies extends TwelveDataApi
         ?bool $previousClose = null,
         ?AdjustEnum $adjust = null,
     ): TechnicalIndicator {
-        if ($symbol === null && $figi === null && $isin === null && $cusip === null) {
-            throw InvalidArgumentException::missingParameters(['symbol', 'figi', 'isin', 'cusip']);
-        }
+        Guard::requireSymbolIdentifier($symbol, $figi, $isin, $cusip);
 
         $response = $this->client->get(
             path: '/t3ma',
@@ -1225,9 +1191,7 @@ readonly class OverlapStudies extends TwelveDataApi
         ?bool $previousClose = null,
         ?AdjustEnum $adjust = null,
     ): TechnicalIndicator {
-        if ($symbol === null && $figi === null && $isin === null && $cusip === null) {
-            throw InvalidArgumentException::missingParameters(['symbol', 'figi', 'isin', 'cusip']);
-        }
+        Guard::requireSymbolIdentifier($symbol, $figi, $isin, $cusip);
 
         $response = $this->client->get(
             path: '/tema',
@@ -1291,9 +1255,7 @@ readonly class OverlapStudies extends TwelveDataApi
         ?bool $previousClose = null,
         ?AdjustEnum $adjust = null,
     ): TechnicalIndicator {
-        if ($symbol === null && $figi === null && $isin === null && $cusip === null) {
-            throw InvalidArgumentException::missingParameters(['symbol', 'figi', 'isin', 'cusip']);
-        }
+        Guard::requireSymbolIdentifier($symbol, $figi, $isin, $cusip);
 
         $response = $this->client->get(
             path: '/trima',
@@ -1357,9 +1319,7 @@ readonly class OverlapStudies extends TwelveDataApi
         ?bool $previousClose = null,
         ?AdjustEnum $adjust = null,
     ): TechnicalIndicator {
-        if ($symbol === null && $figi === null && $isin === null && $cusip === null) {
-            throw InvalidArgumentException::missingParameters(['symbol', 'figi', 'isin', 'cusip']);
-        }
+        Guard::requireSymbolIdentifier($symbol, $figi, $isin, $cusip);
 
         $response = $this->client->get(
             path: '/vwap',
@@ -1423,9 +1383,7 @@ readonly class OverlapStudies extends TwelveDataApi
         ?bool $previousClose = null,
         ?AdjustEnum $adjust = null,
     ): TechnicalIndicator {
-        if ($symbol === null && $figi === null && $isin === null && $cusip === null) {
-            throw InvalidArgumentException::missingParameters(['symbol', 'figi', 'isin', 'cusip']);
-        }
+        Guard::requireSymbolIdentifier($symbol, $figi, $isin, $cusip);
 
         $response = $this->client->get(
             path: '/wma',

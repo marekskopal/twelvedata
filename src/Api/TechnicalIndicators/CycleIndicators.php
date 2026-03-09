@@ -19,8 +19,8 @@ use MarekSkopal\TwelveData\Enum\OrderEnum;
 use MarekSkopal\TwelveData\Enum\PrepostEnum;
 use MarekSkopal\TwelveData\Enum\SeriesTypeEnum;
 use MarekSkopal\TwelveData\Enum\TypeEnum;
-use MarekSkopal\TwelveData\Exception\InvalidArgumentException;
 use MarekSkopal\TwelveData\Utils\DateUtils;
+use MarekSkopal\TwelveData\Utils\Guard;
 use MarekSkopal\TwelveData\Utils\QueryParamsUtils;
 
 readonly class CycleIndicators extends TwelveDataApi
@@ -52,9 +52,7 @@ readonly class CycleIndicators extends TwelveDataApi
         ?AdjustEnum $adjust = null,
     ): TechnicalIndicator
     {
-        if ($symbol === null && $figi === null && $isin === null && $cusip === null) {
-            throw InvalidArgumentException::missingParameters(['symbol', 'figi', 'isin', 'cusip']);
-        }
+        Guard::requireSymbolIdentifier($symbol, $figi, $isin, $cusip);
 
         $response = $this->client->get(
             path: '/ht_dcperiod',
@@ -117,9 +115,7 @@ readonly class CycleIndicators extends TwelveDataApi
         ?AdjustEnum $adjust = null,
     ): TechnicalIndicator
     {
-        if ($symbol === null && $figi === null && $isin === null && $cusip === null) {
-            throw InvalidArgumentException::missingParameters(['symbol', 'figi', 'isin', 'cusip']);
-        }
+        Guard::requireSymbolIdentifier($symbol, $figi, $isin, $cusip);
 
         $response = $this->client->get(
             path: '/ht_dcphase',
@@ -182,9 +178,7 @@ readonly class CycleIndicators extends TwelveDataApi
         ?AdjustEnum $adjust = null,
     ): TechnicalIndicator
     {
-        if ($symbol === null && $figi === null && $isin === null && $cusip === null) {
-            throw InvalidArgumentException::missingParameters(['symbol', 'figi', 'isin', 'cusip']);
-        }
+        Guard::requireSymbolIdentifier($symbol, $figi, $isin, $cusip);
 
         $response = $this->client->get(
             path: '/ht_phasor',
@@ -247,9 +241,7 @@ readonly class CycleIndicators extends TwelveDataApi
         ?AdjustEnum $adjust = null,
     ): TechnicalIndicator
     {
-        if ($symbol === null && $figi === null && $isin === null && $cusip === null) {
-            throw InvalidArgumentException::missingParameters(['symbol', 'figi', 'isin', 'cusip']);
-        }
+        Guard::requireSymbolIdentifier($symbol, $figi, $isin, $cusip);
 
         $response = $this->client->get(
             path: '/ht_sine',
@@ -312,9 +304,7 @@ readonly class CycleIndicators extends TwelveDataApi
         ?AdjustEnum $adjust = null,
     ): TechnicalIndicator
     {
-        if ($symbol === null && $figi === null && $isin === null && $cusip === null) {
-            throw InvalidArgumentException::missingParameters(['symbol', 'figi', 'isin', 'cusip']);
-        }
+        Guard::requireSymbolIdentifier($symbol, $figi, $isin, $cusip);
 
         $response = $this->client->get(
             path: '/ht_trendmode',

@@ -13,8 +13,8 @@ use MarekSkopal\TwelveData\Dto\Regulatory\InstitutionalHolders;
 use MarekSkopal\TwelveData\Dto\Regulatory\SanctionedEntities;
 use MarekSkopal\TwelveData\Dto\Regulatory\TaxInformation;
 use MarekSkopal\TwelveData\Enum\SanctionsSourceEnum;
-use MarekSkopal\TwelveData\Exception\InvalidArgumentException;
 use MarekSkopal\TwelveData\Utils\DateUtils;
+use MarekSkopal\TwelveData\Utils\Guard;
 
 readonly class Regulatory extends TwelveDataApi
 {
@@ -32,9 +32,7 @@ readonly class Regulatory extends TwelveDataApi
         ?int $page = null,
         ?int $pageSize = null,
     ): EdgarFillings {
-        if ($symbol === null && $figi === null && $isin === null && $cusip === null) {
-            throw InvalidArgumentException::missingParameters(['symbol', 'figi', 'isin', 'cusip']);
-        }
+        Guard::requireSymbolIdentifier($symbol, $figi, $isin, $cusip);
 
         $response = $this->client->get(
             path: '/edgar_filings/archive',
@@ -66,9 +64,7 @@ readonly class Regulatory extends TwelveDataApi
         ?string $micCode = null,
         ?string $country = null,
     ): InsiderTransactions {
-        if ($symbol === null && $figi === null && $isin === null && $cusip === null) {
-            throw InvalidArgumentException::missingParameters(['symbol', 'figi', 'isin', 'cusip']);
-        }
+        Guard::requireSymbolIdentifier($symbol, $figi, $isin, $cusip);
 
         $response = $this->client->get(
             path: '/insider_transactions',
@@ -95,9 +91,7 @@ readonly class Regulatory extends TwelveDataApi
         ?string $micCode = null,
         ?string $country = null,
     ): InstitutionalHolders {
-        if ($symbol === null && $figi === null && $isin === null && $cusip === null) {
-            throw InvalidArgumentException::missingParameters(['symbol', 'figi', 'isin', 'cusip']);
-        }
+        Guard::requireSymbolIdentifier($symbol, $figi, $isin, $cusip);
 
         $response = $this->client->get(
             path: '/institutional_holders',
@@ -124,9 +118,7 @@ readonly class Regulatory extends TwelveDataApi
         ?string $micCode = null,
         ?string $country = null,
     ): FundHolders {
-        if ($symbol === null && $figi === null && $isin === null && $cusip === null) {
-            throw InvalidArgumentException::missingParameters(['symbol', 'figi', 'isin', 'cusip']);
-        }
+        Guard::requireSymbolIdentifier($symbol, $figi, $isin, $cusip);
 
         $response = $this->client->get(
             path: '/fund_holders',
@@ -153,9 +145,7 @@ readonly class Regulatory extends TwelveDataApi
         ?string $micCode = null,
         ?string $country = null,
     ): DirectHolders {
-        if ($symbol === null && $figi === null && $isin === null && $cusip === null) {
-            throw InvalidArgumentException::missingParameters(['symbol', 'figi', 'isin', 'cusip']);
-        }
+        Guard::requireSymbolIdentifier($symbol, $figi, $isin, $cusip);
 
         $response = $this->client->get(
             path: '/direct_holders',
@@ -181,9 +171,7 @@ readonly class Regulatory extends TwelveDataApi
         ?string $exchange = null,
         ?string $micCode = null,
     ): TaxInformation {
-        if ($symbol === null && $figi === null && $isin === null && $cusip === null) {
-            throw InvalidArgumentException::missingParameters(['symbol', 'figi', 'isin', 'cusip']);
-        }
+        Guard::requireSymbolIdentifier($symbol, $figi, $isin, $cusip);
 
         $response = $this->client->get(
             path: '/tax_info',

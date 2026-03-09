@@ -32,8 +32,8 @@ use MarekSkopal\TwelveData\Enum\FormatEnum;
 use MarekSkopal\TwelveData\Enum\PeriodEnum;
 use MarekSkopal\TwelveData\Enum\RangeEnum;
 use MarekSkopal\TwelveData\Enum\TypeEnum;
-use MarekSkopal\TwelveData\Exception\InvalidArgumentException;
 use MarekSkopal\TwelveData\Utils\DateUtils;
+use MarekSkopal\TwelveData\Utils\Guard;
 use MarekSkopal\TwelveData\Utils\QueryParamsUtils;
 
 /**
@@ -68,9 +68,7 @@ readonly class Fundamentals extends TwelveDataApi
         ?string $country = null,
     ): Profile
     {
-        if ($symbol === null && $figi === null && $isin === null && $cusip === null) {
-            throw InvalidArgumentException::missingParameters(['symbol', 'figi', 'isin', 'cusip']);
-        }
+        Guard::requireSymbolIdentifier($symbol, $figi, $isin, $cusip);
 
         $response = $this->client->get(
             path: '/profile',
@@ -101,9 +99,7 @@ readonly class Fundamentals extends TwelveDataApi
         ?DateTimeImmutable $endDate = null,
         ?bool $adjust = null,
     ): Dividends {
-        if ($symbol === null && $figi === null && $isin === null && $cusip === null) {
-            throw InvalidArgumentException::missingParameters(['symbol', 'figi', 'isin', 'cusip']);
-        }
+        Guard::requireSymbolIdentifier($symbol, $figi, $isin, $cusip);
 
         $response = $this->client->get(
             path: '/dividends',
@@ -174,9 +170,7 @@ readonly class Fundamentals extends TwelveDataApi
         ?DateTimeImmutable $startDate = null,
         ?DateTimeImmutable $endDate = null,
     ): Splits {
-        if ($symbol === null && $figi === null && $isin === null && $cusip === null) {
-            throw InvalidArgumentException::missingParameters(['symbol', 'figi', 'isin', 'cusip']);
-        }
+        Guard::requireSymbolIdentifier($symbol, $figi, $isin, $cusip);
 
         $response = $this->client->get(
             path: '/splits',
@@ -251,9 +245,7 @@ readonly class Fundamentals extends TwelveDataApi
         ?DateTimeImmutable $startDate = null,
         ?DateTimeImmutable $endDate = null,
     ): Earnings {
-        if ($symbol === null && $figi === null && $isin === null && $cusip === null) {
-            throw InvalidArgumentException::missingParameters(['symbol', 'figi', 'isin', 'cusip']);
-        }
+        Guard::requireSymbolIdentifier($symbol, $figi, $isin, $cusip);
 
         $response = $this->client->get(
             path: '/earnings',
@@ -351,9 +343,7 @@ readonly class Fundamentals extends TwelveDataApi
         ?string $country = null,
     ): Statistics
     {
-        if ($symbol === null && $figi === null && $isin === null && $cusip === null) {
-            throw InvalidArgumentException::missingParameters(['symbol', 'figi', 'isin', 'cusip']);
-        }
+        Guard::requireSymbolIdentifier($symbol, $figi, $isin, $cusip);
 
         $response = $this->client->get(
             path: '/statistics',
@@ -384,9 +374,7 @@ readonly class Fundamentals extends TwelveDataApi
         ?DateTimeImmutable $endDate = null,
         ?int $outputsize = null,
     ): IncomeStatement {
-        if ($symbol === null && $figi === null && $isin === null && $cusip === null) {
-            throw InvalidArgumentException::missingParameters(['symbol', 'figi', 'isin', 'cusip']);
-        }
+        Guard::requireSymbolIdentifier($symbol, $figi, $isin, $cusip);
 
         $response = $this->client->get(
             path: '/income_statement',
@@ -421,9 +409,7 @@ readonly class Fundamentals extends TwelveDataApi
         ?DateTimeImmutable $endDate = null,
         ?int $outputsize = null,
     ): IncomeStatementConsolidated {
-        if ($symbol === null && $figi === null && $isin === null && $cusip === null) {
-            throw InvalidArgumentException::missingParameters(['symbol', 'figi', 'isin', 'cusip']);
-        }
+        Guard::requireSymbolIdentifier($symbol, $figi, $isin, $cusip);
 
         $response = $this->client->get(
             path: '/income_statement/consolidated',
@@ -458,9 +444,7 @@ readonly class Fundamentals extends TwelveDataApi
         ?DateTimeImmutable $endDate = null,
         ?int $outputsize = null,
     ): BalanceSheet {
-        if ($symbol === null && $figi === null && $isin === null && $cusip === null) {
-            throw InvalidArgumentException::missingParameters(['symbol', 'figi', 'isin', 'cusip']);
-        }
+        Guard::requireSymbolIdentifier($symbol, $figi, $isin, $cusip);
 
         $response = $this->client->get(
             path: '/balance_sheet',
@@ -495,9 +479,7 @@ readonly class Fundamentals extends TwelveDataApi
         ?DateTimeImmutable $endDate = null,
         ?int $outputsize = null,
     ): BalanceSheetConsolidated {
-        if ($symbol === null && $figi === null && $isin === null && $cusip === null) {
-            throw InvalidArgumentException::missingParameters(['symbol', 'figi', 'isin', 'cusip']);
-        }
+        Guard::requireSymbolIdentifier($symbol, $figi, $isin, $cusip);
 
         $response = $this->client->get(
             path: '/balance_sheet/consolidated',
@@ -532,9 +514,7 @@ readonly class Fundamentals extends TwelveDataApi
         ?DateTimeImmutable $endDate = null,
         ?int $outputsize = null,
     ): CashFlow {
-        if ($symbol === null && $figi === null && $isin === null && $cusip === null) {
-            throw InvalidArgumentException::missingParameters(['symbol', 'figi', 'isin', 'cusip']);
-        }
+        Guard::requireSymbolIdentifier($symbol, $figi, $isin, $cusip);
 
         $response = $this->client->get(
             path: '/cash_flow',
@@ -569,9 +549,7 @@ readonly class Fundamentals extends TwelveDataApi
         ?DateTimeImmutable $endDate = null,
         ?int $outputsize = null,
     ): CashFlowConsolidated {
-        if ($symbol === null && $figi === null && $isin === null && $cusip === null) {
-            throw InvalidArgumentException::missingParameters(['symbol', 'figi', 'isin', 'cusip']);
-        }
+        Guard::requireSymbolIdentifier($symbol, $figi, $isin, $cusip);
 
         $response = $this->client->get(
             path: '/cash_flow/consolidated',
@@ -646,9 +624,7 @@ readonly class Fundamentals extends TwelveDataApi
         ?string $micCode = null,
         ?string $country = null,
     ): KeyExecutives {
-        if ($symbol === null && $figi === null && $isin === null && $cusip === null) {
-            throw InvalidArgumentException::missingParameters(['symbol', 'figi', 'isin', 'cusip']);
-        }
+        Guard::requireSymbolIdentifier($symbol, $figi, $isin, $cusip);
 
         $response = $this->client->get(
             path: '/key_executives',
@@ -679,9 +655,7 @@ readonly class Fundamentals extends TwelveDataApi
         ?int $page = null,
         ?int $outputsize = null,
     ): MarketCapitalization {
-        if ($symbol === null && $figi === null && $isin === null && $cusip === null) {
-            throw InvalidArgumentException::missingParameters(['symbol', 'figi', 'isin', 'cusip']);
-        }
+        Guard::requireSymbolIdentifier($symbol, $figi, $isin, $cusip);
 
         $response = $this->client->get(
             path: '/market_cap',
