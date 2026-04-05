@@ -6,12 +6,12 @@ namespace MarekSkopal\TwelveData\Dto\Fundamentals;
 
 /**
  * @phpstan-type StatisticsIncomeStatementType array{
- *     revenue_ttm: int,
+ *     revenue_ttm: int|null,
  *     revenue_per_share_ttm: float|null,
  *     quarterly_revenue_growth: float|null,
- *     gross_profit_ttm: int,
- *     ebitda: int,
- *     net_income_to_common_ttm: int,
+ *     gross_profit_ttm: int|null,
+ *     ebitda: int|null,
+ *     net_income_to_common_ttm: int|null,
  *     diluted_eps_ttm: float|null,
  *     quarterly_earnings_growth_yoy: float|null,
  * }
@@ -19,29 +19,18 @@ namespace MarekSkopal\TwelveData\Dto\Fundamentals;
 readonly class StatisticsIncomeStatement
 {
     public function __construct(
-        public int $revenueTtm,
+        public ?int $revenueTtm,
         public ?float $revenuePerShareTtm,
         public ?float $quarterlyRevenueGrowth,
-        public int $grossProfitTtm,
-        public int $ebitda,
-        public int $netIncomeToCommonTtm,
+        public ?int $grossProfitTtm,
+        public ?int $ebitda,
+        public ?int $netIncomeToCommonTtm,
         public ?float $dilutedEpsTtm,
         public ?float $quarterlyEarningsGrowthYoy,
     ) {
     }
 
-    /**
-     * @param array{
-     *     revenue_ttm: int,
-     *     revenue_per_share_ttm: float|null,
-     *     quarterly_revenue_growth: float|null,
-     *     gross_profit_ttm: int,
-     *     ebitda: int,
-     *     net_income_to_common_ttm: int,
-     *     diluted_eps_ttm: float|null,
-     *     quarterly_earnings_growth_yoy: float|null,
-     *  } $data
-     */
+    /** @param StatisticsIncomeStatementType $data */
     public static function fromArray(array $data): self
     {
         return new self(
