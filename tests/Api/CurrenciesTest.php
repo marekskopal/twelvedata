@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Api;
+namespace MarekSkopal\TwelveData\Tests\Api;
 
 use MarekSkopal\TwelveData\Api\Currencies;
 use MarekSkopal\TwelveData\Api\TwelveDataApi;

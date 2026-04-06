@@ -112,7 +112,7 @@ readonly class TwelveData
     /**
      * @param string $path
      * @param array<string, scalar|null> $queryParams
-     * @return object|array<mixed>|null
+     * @return object|array<int|string, object|array<int|string, object|string|int|float|bool|null>|string|int|float|bool|null>|null
      */
     public function get(string $path, array $queryParams = []): object|array|null
     {
@@ -122,6 +122,7 @@ readonly class TwelveData
             //@phpstan-ignore-next-line return.type
             return json_decode($this->client->get($path, $queryParams), associative: false, flags: JSON_THROW_ON_ERROR);
         } catch (JsonException) {
+            // JSON decoding failed, return null
         }
 
         return null;
