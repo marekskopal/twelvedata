@@ -12,16 +12,20 @@ use MarekSkopal\TwelveData\Api\Currencies;
 use MarekSkopal\TwelveData\Api\Etfs;
 use MarekSkopal\TwelveData\Api\Fundamentals;
 use MarekSkopal\TwelveData\Api\MutualFunds;
+use MarekSkopal\TwelveData\Api\RealTimePrice;
 use MarekSkopal\TwelveData\Api\ReferenceData;
 use MarekSkopal\TwelveData\Api\Regulatory;
 use MarekSkopal\TwelveData\Api\TechnicalIndicators;
 use MarekSkopal\TwelveData\Client\Client;
 use MarekSkopal\TwelveData\Config\Config;
+use MarekSkopal\TwelveData\WebSocket\WebSocketClientInterface;
 use const JSON_THROW_ON_ERROR;
 
 readonly class TwelveData
 {
     private Client $client;
+
+    private Config $config;
 
     public ReferenceData $referenceData;
 
@@ -45,6 +49,7 @@ readonly class TwelveData
 
     public function __construct(Config $config)
     {
+        $this->config = $config;
         $this->client = new Client($config);
 
         $this->coreData = new CoreData($this->client);
@@ -107,6 +112,11 @@ readonly class TwelveData
     public function getMutualFunds(): MutualFunds
     {
         return $this->mutualFunds;
+    }
+
+    public function createRealTimePrice(WebSocketClientInterface $webSocketClient): RealTimePrice
+    {
+        return new RealTimePrice($webSocketClient, $this->config);
     }
 
     /**

@@ -34,6 +34,39 @@ $response = $twelveData->get(
 );
 ```
 
+### WebSocket Real-time Price
+
+Stream real-time price updates via WebSocket. The library ships with a built-in adapter for [phrity/websocket](https://github.com/sirn-se/websocket-php):
+
+```sh
+composer require phrity/websocket
+```
+
+```php
+use MarekSkopal\TwelveData\TwelveData;
+use MarekSkopal\TwelveData\Config\Config;
+use MarekSkopal\TwelveData\Dto\WebSocket\PriceEvent;
+use MarekSkopal\TwelveData\WebSocket\PhrityWebSocketClient;
+
+$twelveData = new TwelveData(new Config(apiKey: '<yourApiKey>'));
+$realTimePrice = $twelveData->createRealTimePrice(new PhrityWebSocketClient());
+
+$realTimePrice->connect();
+$realTimePrice->subscribe(['AAPL', 'EUR/USD', 'BTC/USD']);
+
+while ($realTimePrice->isConnected()) {
+    $event = $realTimePrice->receive();
+
+    if ($event instanceof PriceEvent) {
+        echo "{$event->symbol}: {$event->price}\n";
+    }
+}
+
+$realTimePrice->disconnect();
+```
+
+You can also use any other WebSocket library by implementing `WebSocketClientInterface`.
+
 ## Covered endpoints
 More endpoints will be covered in future versions.
 
@@ -274,7 +307,9 @@ More endpoints will be covered in future versions.
 * Complex Data ❌
 * Usage        ✅
 
-### WebSocket ❌
+### WebSocket
+
+* Real-time Price ✅
 
 ## Notice
 This is NOT an official Twelve Data library, and the authors of this library are not affiliated with Twelve Data in any way, shape or form. Twelve Data APIs and data are Copyright © 2025 Twelve Data Pte. Ltd.

@@ -24,12 +24,14 @@
         "phpstan/phpstan-phpunit": "^2.0",
         "phpstan/phpstan-strict-rules": "^2.0",
         "phpunit/phpunit": "^12.3",
+        "phrity/websocket": "^3.6",
         "shipmonk/phpstan-rules": "^4.3",
         "slevomat/coding-standard": "^8.14",
         "spatie/ray": "^1.39"
     },
     "suggest": {
         "nyholm/psr7": "PSR-7 message implementation",
+        "phrity/websocket": "WebSocket client for real-time price streaming",
         "symfony/http-client": "HTTP client"
     },
     "autoload": {
