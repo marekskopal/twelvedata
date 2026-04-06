@@ -4,6 +4,16 @@
     "description": "TwelveData API client library",
     "homepage": "https://www.fingather.com",
     "license": "MIT",
+    "keywords": [
+        "twelvedata",
+        "twelve-data",
+        "api",
+        "finance",
+        "stock",
+        "market-data",
+        "trading",
+        "php-client"
+    ],
     "authors": [
         {
             "name": "Marek Skopal",
@@ -26,13 +36,16 @@
         "phpunit/phpunit": "^12.3",
         "phrity/websocket": "^3.6",
         "shipmonk/phpstan-rules": "^4.3",
-        "slevomat/coding-standard": "^8.14",
-        "spatie/ray": "^1.39"
+        "slevomat/coding-standard": "^8.14"
     },
     "suggest": {
         "nyholm/psr7": "PSR-7 message implementation",
         "phrity/websocket": "WebSocket client for real-time price streaming",
         "symfony/http-client": "HTTP client"
+    },
+    "support": {
+        "issues": "https://github.com/marekskopal/twelvedata/issues",
+        "source": "https://github.com/marekskopal/twelvedata"
     },
     "autoload": {
         "psr-4": {

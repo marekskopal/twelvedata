@@ -101,15 +101,13 @@ $realTimePrice->disconnect();
 You can also use any other WebSocket library by implementing `WebSocketClientInterface`.
 
 ## Covered endpoints
-More endpoints will be covered in future versions.
-
 ### Core Data
 
 * Time Series          ✅
 * Time Series Cross    ✅
 * Quote                ✅
 * Latest Price         ✅
-* Edd of Day Price     ✅
+* End of Day Price     ✅
 * Market Movers        ✅
 
 ### Reference Data
@@ -192,10 +190,8 @@ More endpoints will be covered in future versions.
 ### Technical Indicators
 #### Overlap studies
 * Bollinger bands                           ✅
-* High demand                               ✅
 * Double exponential moving average         ✅
 * Exponential moving average                ✅
-* High demand                               ✅
 * Hilbert transform instantaneous trendline ✅
 * Ichimoku cloud                            ✅
 * Kaufman adaptive moving average           ✅
@@ -209,7 +205,6 @@ More endpoints will be covered in future versions.
 * Parabolic stop and reverse                ✅
 * Parabolic stop and reverse extended       ✅
 * Simple moving average                     ✅
-* High demand                               ✅
 * Triple exponential moving average T3MA    ✅
 * Triple exponential moving average TEMA    ✅
 * Triangular moving average                 ✅
@@ -218,7 +213,6 @@ More endpoints will be covered in future versions.
 
 #### Momentum indicators
 * Average directional index                       ✅
-* High demand                                     ✅
 * Average directional movement index rating       ✅
 * Absolute price oscillator                       ✅
 * Aroon indicator                                 ✅
@@ -232,7 +226,6 @@ More endpoints will be covered in future versions.
 * Directional movement index                      ✅
 * Know sure thing                                 ✅
 * Moving average convergence divergence           ✅
-* High demand                                     ✅
 * Moving average convergence divergence slope     ✅
 * Moving average convergence divergence extension ✅
 * Money flow index                                ✅
@@ -240,7 +233,6 @@ More endpoints will be covered in future versions.
 * Minus directional movement                      ✅
 * Momentum                                        ✅
 * Percent B                                       ✅
-* High demand                                     ✅
 * Plus directional indicator                      ✅
 * Plus directional movement                       ✅
 * Percentage price oscillator                     ✅
@@ -249,9 +241,7 @@ More endpoints will be covered in future versions.
 * Rate of change ratio                            ✅
 * Rate of change ratio 100                        ✅
 * Relative strength index                         ✅
-* High demand                                     ✅
 * Stochastic oscillator                           ✅
-* High demand                                     ✅
 * Stochastic fast                                 ✅
 * Stochastic relative strength index              ✅
 * Ultimate oscillator endpoint                    ✅
