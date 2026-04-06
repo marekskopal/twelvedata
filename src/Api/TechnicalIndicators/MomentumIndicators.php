@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace MarekSkopal\TwelveData\Api\TechnicalIndicators;
 
 use DateTimeImmutable;
+use MarekSkopal\TwelveData\Api\BatchableRequest;
 use MarekSkopal\TwelveData\Api\TwelveDataApi;
 use MarekSkopal\TwelveData\Dto\TechnicalIndicators\MomentumIndicators\AbsolutePriceOscillator;
 use MarekSkopal\TwelveData\Dto\TechnicalIndicators\MomentumIndicators\AroonIndicator;
@@ -54,8 +55,7 @@ use MarekSkopal\TwelveData\Utils\QueryParamsUtils;
 
 readonly class MomentumIndicators extends TwelveDataApi
 {
-    /** @return TechnicalIndicator<AverageDirectionalIndex> */
-    public function averageDirectionalIndex(
+    public function averageDirectionalIndexRequest(
         ?string $symbol = null,
         IntervalEnum $interval = IntervalEnum::OneDay,
         ?string $figi = null,
@@ -79,11 +79,10 @@ readonly class MomentumIndicators extends TwelveDataApi
         ?DateTimeImmutable $endDate = null,
         ?bool $previousClose = null,
         ?AdjustEnum $adjust = null,
-    ): TechnicalIndicator
-    {
+    ): BatchableRequest {
         Guard::requireSymbolIdentifier($symbol, $figi, $isin, $cusip);
 
-        $response = $this->client->get(
+        return new BatchableRequest(
             path: '/adx',
             queryParams: [
                 'symbol' => $symbol,
@@ -110,11 +109,124 @@ readonly class MomentumIndicators extends TwelveDataApi
                 'previous_close' => QueryParamsUtils::booleanAsString($previousClose),
                 'adjust' => $adjust?->value,
             ],
+            responseFactory: fn (string $json): TechnicalIndicator => TechnicalIndicator::fromJson(AverageDirectionalIndex::class, $json),
+        );
+    }
+
+    /** @return TechnicalIndicator<AverageDirectionalIndex> */
+    public function averageDirectionalIndex(
+        ?string $symbol = null,
+        IntervalEnum $interval = IntervalEnum::OneDay,
+        ?string $figi = null,
+        ?string $isin = null,
+        ?string $cusip = null,
+        ?string $exchange = null,
+        ?string $micCode = null,
+        ?string $country = null,
+        ?int $timePeriod = null,
+        ?TypeEnum $type = null,
+        ?int $outputSize = null,
+        ?FormatEnum $format = null,
+        ?string $delimiter = null,
+        ?PrepostEnum $prepost = null,
+        ?int $dp = null,
+        ?OrderEnum $order = null,
+        ?bool $includeOhlc = null,
+        ?string $timezone = null,
+        ?DateTimeImmutable $date = null,
+        ?DateTimeImmutable $startDate = null,
+        ?DateTimeImmutable $endDate = null,
+        ?bool $previousClose = null,
+        ?AdjustEnum $adjust = null,
+    ): TechnicalIndicator {
+        $request = $this->averageDirectionalIndexRequest(
+            $symbol,
+            $interval,
+            $figi,
+            $isin,
+            $cusip,
+            $exchange,
+            $micCode,
+            $country,
+            $timePeriod,
+            $type,
+            $outputSize,
+            $format,
+            $delimiter,
+            $prepost,
+            $dp,
+            $order,
+            $includeOhlc,
+            $timezone,
+            $date,
+            $startDate,
+            $endDate,
+            $previousClose,
+            $adjust,
         );
 
-        /** @var TechnicalIndicator<AverageDirectionalIndex> $technicalIndicator */
-        $technicalIndicator = TechnicalIndicator::fromJson(AverageDirectionalIndex::class, $response);
-        return $technicalIndicator;
+        return TechnicalIndicator::fromJson(AverageDirectionalIndex::class, $this->client->get($request->path, $request->queryParams));
+    }
+
+    public function averageDirectionalMovementIndexRatingRequest(
+        ?string $symbol = null,
+        IntervalEnum $interval = IntervalEnum::OneDay,
+        ?string $figi = null,
+        ?string $isin = null,
+        ?string $cusip = null,
+        ?string $exchange = null,
+        ?string $micCode = null,
+        ?string $country = null,
+        ?int $timePeriod = null,
+        ?TypeEnum $type = null,
+        ?int $outputSize = null,
+        ?FormatEnum $format = null,
+        ?string $delimiter = null,
+        ?PrepostEnum $prepost = null,
+        ?int $dp = null,
+        ?OrderEnum $order = null,
+        ?bool $includeOhlc = null,
+        ?string $timezone = null,
+        ?DateTimeImmutable $date = null,
+        ?DateTimeImmutable $startDate = null,
+        ?DateTimeImmutable $endDate = null,
+        ?bool $previousClose = null,
+        ?AdjustEnum $adjust = null,
+    ): BatchableRequest {
+        Guard::requireSymbolIdentifier($symbol, $figi, $isin, $cusip);
+
+        return new BatchableRequest(
+            path: '/adxr',
+            queryParams: [
+                'symbol' => $symbol,
+                'interval' => $interval->value,
+                'figi' => $figi,
+                'isin' => $isin,
+                'cusip' => $cusip,
+                'exchange' => $exchange,
+                'mic_code' => $micCode,
+                'country' => $country,
+                'time_period' => $timePeriod,
+                'type' => $type?->value,
+                'outputsize' => $outputSize,
+                'format' => $format?->value,
+                'delimiter' => $delimiter,
+                'prepost' => $prepost?->value,
+                'dp' => $dp,
+                'order' => $order?->value,
+                'include_ohlc' => QueryParamsUtils::booleanAsString($includeOhlc),
+                'timezone' => $timezone,
+                'date' => DateUtils::formatDate($date),
+                'start_date' => DateUtils::formatDate($startDate),
+                'end_date' => DateUtils::formatDate($endDate),
+                'previous_close' => QueryParamsUtils::booleanAsString($previousClose),
+                'adjust' => $adjust?->value,
+            ],
+            responseFactory: fn (string $json): TechnicalIndicator => TechnicalIndicator::fromJson(
+                AverageDirectionalMovementIndexRating::class,
+                $json,
+            ),
+        );
     }
 
     /** @return TechnicalIndicator<AverageDirectionalMovementIndexRating> */
@@ -142,12 +254,71 @@ readonly class MomentumIndicators extends TwelveDataApi
         ?DateTimeImmutable $endDate = null,
         ?bool $previousClose = null,
         ?AdjustEnum $adjust = null,
-    ): TechnicalIndicator
-    {
+    ): TechnicalIndicator {
+        $request = $this->averageDirectionalMovementIndexRatingRequest(
+            $symbol,
+            $interval,
+            $figi,
+            $isin,
+            $cusip,
+            $exchange,
+            $micCode,
+            $country,
+            $timePeriod,
+            $type,
+            $outputSize,
+            $format,
+            $delimiter,
+            $prepost,
+            $dp,
+            $order,
+            $includeOhlc,
+            $timezone,
+            $date,
+            $startDate,
+            $endDate,
+            $previousClose,
+            $adjust,
+        );
+
+        return TechnicalIndicator::fromJson(
+            AverageDirectionalMovementIndexRating::class,
+            $this->client->get($request->path, $request->queryParams),
+        );
+    }
+
+    public function absolutePriceOscillatorRequest(
+        ?string $symbol = null,
+        IntervalEnum $interval = IntervalEnum::OneDay,
+        ?string $figi = null,
+        ?string $isin = null,
+        ?string $cusip = null,
+        ?string $exchange = null,
+        ?string $micCode = null,
+        ?string $country = null,
+        ?int $fastPeriod = null,
+        ?MaTypeEnum $maType = null,
+        ?SeriesTypeEnum $seriesType = null,
+        ?int $slowPeriod = null,
+        ?TypeEnum $type = null,
+        ?int $outputSize = null,
+        ?FormatEnum $format = null,
+        ?string $delimiter = null,
+        ?PrepostEnum $prepost = null,
+        ?int $dp = null,
+        ?OrderEnum $order = null,
+        ?bool $includeOhlc = null,
+        ?string $timezone = null,
+        ?DateTimeImmutable $date = null,
+        ?DateTimeImmutable $startDate = null,
+        ?DateTimeImmutable $endDate = null,
+        ?bool $previousClose = null,
+        ?AdjustEnum $adjust = null,
+    ): BatchableRequest {
         Guard::requireSymbolIdentifier($symbol, $figi, $isin, $cusip);
 
-        $response = $this->client->get(
-            path: '/adxr',
+        return new BatchableRequest(
+            path: '/apo',
             queryParams: [
                 'symbol' => $symbol,
                 'interval' => $interval->value,
@@ -157,7 +328,10 @@ readonly class MomentumIndicators extends TwelveDataApi
                 'exchange' => $exchange,
                 'mic_code' => $micCode,
                 'country' => $country,
-                'time_period' => $timePeriod,
+                'fast_period' => $fastPeriod,
+                'ma_type' => $maType?->value,
+                'series_type' => $seriesType?->value,
+                'slow_period' => $slowPeriod,
                 'type' => $type?->value,
                 'outputsize' => $outputSize,
                 'format' => $format?->value,
@@ -173,11 +347,8 @@ readonly class MomentumIndicators extends TwelveDataApi
                 'previous_close' => QueryParamsUtils::booleanAsString($previousClose),
                 'adjust' => $adjust?->value,
             ],
+            responseFactory: fn (string $json): TechnicalIndicator => TechnicalIndicator::fromJson(AbsolutePriceOscillator::class, $json),
         );
-
-        /** @var TechnicalIndicator<AverageDirectionalMovementIndexRating> $technicalIndicator */
-        $technicalIndicator = TechnicalIndicator::fromJson(AverageDirectionalMovementIndexRating::class, $response);
-        return $technicalIndicator;
     }
 
     /** @return TechnicalIndicator<AbsolutePriceOscillator> */
@@ -208,12 +379,68 @@ readonly class MomentumIndicators extends TwelveDataApi
         ?DateTimeImmutable $endDate = null,
         ?bool $previousClose = null,
         ?AdjustEnum $adjust = null,
-    ): TechnicalIndicator
-    {
+    ): TechnicalIndicator {
+        $request = $this->absolutePriceOscillatorRequest(
+            $symbol,
+            $interval,
+            $figi,
+            $isin,
+            $cusip,
+            $exchange,
+            $micCode,
+            $country,
+            $fastPeriod,
+            $maType,
+            $seriesType,
+            $slowPeriod,
+            $type,
+            $outputSize,
+            $format,
+            $delimiter,
+            $prepost,
+            $dp,
+            $order,
+            $includeOhlc,
+            $timezone,
+            $date,
+            $startDate,
+            $endDate,
+            $previousClose,
+            $adjust,
+        );
+
+        return TechnicalIndicator::fromJson(AbsolutePriceOscillator::class, $this->client->get($request->path, $request->queryParams));
+    }
+
+    public function aroonIndicatorRequest(
+        ?string $symbol = null,
+        IntervalEnum $interval = IntervalEnum::OneDay,
+        ?string $figi = null,
+        ?string $isin = null,
+        ?string $cusip = null,
+        ?string $exchange = null,
+        ?string $micCode = null,
+        ?string $country = null,
+        ?int $timePeriod = null,
+        ?TypeEnum $type = null,
+        ?int $outputSize = null,
+        ?FormatEnum $format = null,
+        ?string $delimiter = null,
+        ?PrepostEnum $prepost = null,
+        ?int $dp = null,
+        ?OrderEnum $order = null,
+        ?bool $includeOhlc = null,
+        ?string $timezone = null,
+        ?DateTimeImmutable $date = null,
+        ?DateTimeImmutable $startDate = null,
+        ?DateTimeImmutable $endDate = null,
+        ?bool $previousClose = null,
+        ?AdjustEnum $adjust = null,
+    ): BatchableRequest {
         Guard::requireSymbolIdentifier($symbol, $figi, $isin, $cusip);
 
-        $response = $this->client->get(
-            path: '/apo',
+        return new BatchableRequest(
+            path: '/aroon',
             queryParams: [
                 'symbol' => $symbol,
                 'interval' => $interval->value,
@@ -223,10 +450,7 @@ readonly class MomentumIndicators extends TwelveDataApi
                 'exchange' => $exchange,
                 'mic_code' => $micCode,
                 'country' => $country,
-                'fast_period' => $fastPeriod,
-                'ma_type' => $maType?->value,
-                'series_type' => $seriesType?->value,
-                'slow_period' => $slowPeriod,
+                'time_period' => $timePeriod,
                 'type' => $type?->value,
                 'outputsize' => $outputSize,
                 'format' => $format?->value,
@@ -242,11 +466,8 @@ readonly class MomentumIndicators extends TwelveDataApi
                 'previous_close' => QueryParamsUtils::booleanAsString($previousClose),
                 'adjust' => $adjust?->value,
             ],
+            responseFactory: fn (string $json): TechnicalIndicator => TechnicalIndicator::fromJson(AroonIndicator::class, $json),
         );
-
-        /** @var TechnicalIndicator<AbsolutePriceOscillator> $technicalIndicator */
-        $technicalIndicator = TechnicalIndicator::fromJson(AbsolutePriceOscillator::class, $response);
-        return $technicalIndicator;
     }
 
     /** @return TechnicalIndicator<AroonIndicator> */
@@ -274,12 +495,65 @@ readonly class MomentumIndicators extends TwelveDataApi
         ?DateTimeImmutable $endDate = null,
         ?bool $previousClose = null,
         ?AdjustEnum $adjust = null,
-    ): TechnicalIndicator
-    {
+    ): TechnicalIndicator {
+        $request = $this->aroonIndicatorRequest(
+            $symbol,
+            $interval,
+            $figi,
+            $isin,
+            $cusip,
+            $exchange,
+            $micCode,
+            $country,
+            $timePeriod,
+            $type,
+            $outputSize,
+            $format,
+            $delimiter,
+            $prepost,
+            $dp,
+            $order,
+            $includeOhlc,
+            $timezone,
+            $date,
+            $startDate,
+            $endDate,
+            $previousClose,
+            $adjust,
+        );
+
+        return TechnicalIndicator::fromJson(AroonIndicator::class, $this->client->get($request->path, $request->queryParams));
+    }
+
+    public function aroonOscillatorRequest(
+        ?string $symbol = null,
+        IntervalEnum $interval = IntervalEnum::OneDay,
+        ?string $figi = null,
+        ?string $isin = null,
+        ?string $cusip = null,
+        ?string $exchange = null,
+        ?string $micCode = null,
+        ?string $country = null,
+        ?int $timePeriod = null,
+        ?TypeEnum $type = null,
+        ?int $outputSize = null,
+        ?FormatEnum $format = null,
+        ?string $delimiter = null,
+        ?PrepostEnum $prepost = null,
+        ?int $dp = null,
+        ?OrderEnum $order = null,
+        ?bool $includeOhlc = null,
+        ?string $timezone = null,
+        ?DateTimeImmutable $date = null,
+        ?DateTimeImmutable $startDate = null,
+        ?DateTimeImmutable $endDate = null,
+        ?bool $previousClose = null,
+        ?AdjustEnum $adjust = null,
+    ): BatchableRequest {
         Guard::requireSymbolIdentifier($symbol, $figi, $isin, $cusip);
 
-        $response = $this->client->get(
-            path: '/aroon',
+        return new BatchableRequest(
+            path: '/aroonosc',
             queryParams: [
                 'symbol' => $symbol,
                 'interval' => $interval->value,
@@ -305,11 +579,8 @@ readonly class MomentumIndicators extends TwelveDataApi
                 'previous_close' => QueryParamsUtils::booleanAsString($previousClose),
                 'adjust' => $adjust?->value,
             ],
+            responseFactory: fn (string $json): TechnicalIndicator => TechnicalIndicator::fromJson(AroonOscillator::class, $json),
         );
-
-        /** @var TechnicalIndicator<AroonIndicator> $technicalIndicator */
-        $technicalIndicator = TechnicalIndicator::fromJson(AroonIndicator::class, $response);
-        return $technicalIndicator;
     }
 
     /** @return TechnicalIndicator<AroonOscillator> */
@@ -337,12 +608,64 @@ readonly class MomentumIndicators extends TwelveDataApi
         ?DateTimeImmutable $endDate = null,
         ?bool $previousClose = null,
         ?AdjustEnum $adjust = null,
-    ): TechnicalIndicator
-    {
+    ): TechnicalIndicator {
+        $request = $this->aroonOscillatorRequest(
+            $symbol,
+            $interval,
+            $figi,
+            $isin,
+            $cusip,
+            $exchange,
+            $micCode,
+            $country,
+            $timePeriod,
+            $type,
+            $outputSize,
+            $format,
+            $delimiter,
+            $prepost,
+            $dp,
+            $order,
+            $includeOhlc,
+            $timezone,
+            $date,
+            $startDate,
+            $endDate,
+            $previousClose,
+            $adjust,
+        );
+
+        return TechnicalIndicator::fromJson(AroonOscillator::class, $this->client->get($request->path, $request->queryParams));
+    }
+
+    public function balanceOfPowerRequest(
+        ?string $symbol = null,
+        IntervalEnum $interval = IntervalEnum::OneDay,
+        ?string $figi = null,
+        ?string $isin = null,
+        ?string $cusip = null,
+        ?string $exchange = null,
+        ?string $micCode = null,
+        ?string $country = null,
+        ?TypeEnum $type = null,
+        ?int $outputSize = null,
+        ?FormatEnum $format = null,
+        ?string $delimiter = null,
+        ?PrepostEnum $prepost = null,
+        ?int $dp = null,
+        ?OrderEnum $order = null,
+        ?bool $includeOhlc = null,
+        ?string $timezone = null,
+        ?DateTimeImmutable $date = null,
+        ?DateTimeImmutable $startDate = null,
+        ?DateTimeImmutable $endDate = null,
+        ?bool $previousClose = null,
+        ?AdjustEnum $adjust = null,
+    ): BatchableRequest {
         Guard::requireSymbolIdentifier($symbol, $figi, $isin, $cusip);
 
-        $response = $this->client->get(
-            path: '/aroonosc',
+        return new BatchableRequest(
+            path: '/bop',
             queryParams: [
                 'symbol' => $symbol,
                 'interval' => $interval->value,
@@ -352,7 +675,6 @@ readonly class MomentumIndicators extends TwelveDataApi
                 'exchange' => $exchange,
                 'mic_code' => $micCode,
                 'country' => $country,
-                'time_period' => $timePeriod,
                 'type' => $type?->value,
                 'outputsize' => $outputSize,
                 'format' => $format?->value,
@@ -368,11 +690,8 @@ readonly class MomentumIndicators extends TwelveDataApi
                 'previous_close' => QueryParamsUtils::booleanAsString($previousClose),
                 'adjust' => $adjust?->value,
             ],
+            responseFactory: fn (string $json): TechnicalIndicator => TechnicalIndicator::fromJson(BalanceOfPower::class, $json),
         );
-
-        /** @var TechnicalIndicator<AroonOscillator> $technicalIndicator */
-        $technicalIndicator = TechnicalIndicator::fromJson(AroonOscillator::class, $response);
-        return $technicalIndicator;
     }
 
     /** @return TechnicalIndicator<BalanceOfPower> */
@@ -399,12 +718,64 @@ readonly class MomentumIndicators extends TwelveDataApi
         ?DateTimeImmutable $endDate = null,
         ?bool $previousClose = null,
         ?AdjustEnum $adjust = null,
-    ): TechnicalIndicator
-    {
+    ): TechnicalIndicator {
+        $request = $this->balanceOfPowerRequest(
+            $symbol,
+            $interval,
+            $figi,
+            $isin,
+            $cusip,
+            $exchange,
+            $micCode,
+            $country,
+            $type,
+            $outputSize,
+            $format,
+            $delimiter,
+            $prepost,
+            $dp,
+            $order,
+            $includeOhlc,
+            $timezone,
+            $date,
+            $startDate,
+            $endDate,
+            $previousClose,
+            $adjust,
+        );
+
+        return TechnicalIndicator::fromJson(BalanceOfPower::class, $this->client->get($request->path, $request->queryParams));
+    }
+
+    public function commodityChannelIndexRequest(
+        ?string $symbol = null,
+        IntervalEnum $interval = IntervalEnum::OneDay,
+        ?string $figi = null,
+        ?string $isin = null,
+        ?string $cusip = null,
+        ?string $exchange = null,
+        ?string $micCode = null,
+        ?string $country = null,
+        ?int $timePeriod = null,
+        ?TypeEnum $type = null,
+        ?int $outputSize = null,
+        ?FormatEnum $format = null,
+        ?string $delimiter = null,
+        ?PrepostEnum $prepost = null,
+        ?int $dp = null,
+        ?OrderEnum $order = null,
+        ?bool $includeOhlc = null,
+        ?string $timezone = null,
+        ?DateTimeImmutable $date = null,
+        ?DateTimeImmutable $startDate = null,
+        ?DateTimeImmutable $endDate = null,
+        ?bool $previousClose = null,
+        ?AdjustEnum $adjust = null,
+    ): BatchableRequest {
         Guard::requireSymbolIdentifier($symbol, $figi, $isin, $cusip);
 
-        $response = $this->client->get(
-            path: '/bop',
+        return new BatchableRequest(
+            path: '/cci',
             queryParams: [
                 'symbol' => $symbol,
                 'interval' => $interval->value,
@@ -414,6 +785,7 @@ readonly class MomentumIndicators extends TwelveDataApi
                 'exchange' => $exchange,
                 'mic_code' => $micCode,
                 'country' => $country,
+                'time_period' => $timePeriod,
                 'type' => $type?->value,
                 'outputsize' => $outputSize,
                 'format' => $format?->value,
@@ -429,11 +801,8 @@ readonly class MomentumIndicators extends TwelveDataApi
                 'previous_close' => QueryParamsUtils::booleanAsString($previousClose),
                 'adjust' => $adjust?->value,
             ],
+            responseFactory: fn (string $json): TechnicalIndicator => TechnicalIndicator::fromJson(CommodityChannelIndex::class, $json),
         );
-
-        /** @var TechnicalIndicator<BalanceOfPower> $technicalIndicator */
-        $technicalIndicator = TechnicalIndicator::fromJson(BalanceOfPower::class, $response);
-        return $technicalIndicator;
     }
 
     /** @return TechnicalIndicator<CommodityChannelIndex> */
@@ -461,12 +830,66 @@ readonly class MomentumIndicators extends TwelveDataApi
         ?DateTimeImmutable $endDate = null,
         ?bool $previousClose = null,
         ?AdjustEnum $adjust = null,
-    ): TechnicalIndicator
-    {
+    ): TechnicalIndicator {
+        $request = $this->commodityChannelIndexRequest(
+            $symbol,
+            $interval,
+            $figi,
+            $isin,
+            $cusip,
+            $exchange,
+            $micCode,
+            $country,
+            $timePeriod,
+            $type,
+            $outputSize,
+            $format,
+            $delimiter,
+            $prepost,
+            $dp,
+            $order,
+            $includeOhlc,
+            $timezone,
+            $date,
+            $startDate,
+            $endDate,
+            $previousClose,
+            $adjust,
+        );
+
+        return TechnicalIndicator::fromJson(CommodityChannelIndex::class, $this->client->get($request->path, $request->queryParams));
+    }
+
+    public function chandeMomentumOscillatorRequest(
+        ?string $symbol = null,
+        IntervalEnum $interval = IntervalEnum::OneDay,
+        ?string $figi = null,
+        ?string $isin = null,
+        ?string $cusip = null,
+        ?string $exchange = null,
+        ?string $micCode = null,
+        ?string $country = null,
+        ?SeriesTypeEnum $seriesType = null,
+        ?int $timePeriod = null,
+        ?TypeEnum $type = null,
+        ?int $outputSize = null,
+        ?FormatEnum $format = null,
+        ?string $delimiter = null,
+        ?PrepostEnum $prepost = null,
+        ?int $dp = null,
+        ?OrderEnum $order = null,
+        ?bool $includeOhlc = null,
+        ?string $timezone = null,
+        ?DateTimeImmutable $date = null,
+        ?DateTimeImmutable $startDate = null,
+        ?DateTimeImmutable $endDate = null,
+        ?bool $previousClose = null,
+        ?AdjustEnum $adjust = null,
+    ): BatchableRequest {
         Guard::requireSymbolIdentifier($symbol, $figi, $isin, $cusip);
 
-        $response = $this->client->get(
-            path: '/cci',
+        return new BatchableRequest(
+            path: '/cmo',
             queryParams: [
                 'symbol' => $symbol,
                 'interval' => $interval->value,
@@ -476,6 +899,7 @@ readonly class MomentumIndicators extends TwelveDataApi
                 'exchange' => $exchange,
                 'mic_code' => $micCode,
                 'country' => $country,
+                'series_type' => $seriesType?->value,
                 'time_period' => $timePeriod,
                 'type' => $type?->value,
                 'outputsize' => $outputSize,
@@ -492,11 +916,8 @@ readonly class MomentumIndicators extends TwelveDataApi
                 'previous_close' => QueryParamsUtils::booleanAsString($previousClose),
                 'adjust' => $adjust?->value,
             ],
+            responseFactory: fn (string $json): TechnicalIndicator => TechnicalIndicator::fromJson(ChandeMomentumOscillator::class, $json),
         );
-
-        /** @var TechnicalIndicator<CommodityChannelIndex> $technicalIndicator */
-        $technicalIndicator = TechnicalIndicator::fromJson(CommodityChannelIndex::class, $response);
-        return $technicalIndicator;
     }
 
     /** @return TechnicalIndicator<ChandeMomentumOscillator> */
@@ -525,12 +946,69 @@ readonly class MomentumIndicators extends TwelveDataApi
         ?DateTimeImmutable $endDate = null,
         ?bool $previousClose = null,
         ?AdjustEnum $adjust = null,
-    ): TechnicalIndicator
-    {
+    ): TechnicalIndicator {
+        $request = $this->chandeMomentumOscillatorRequest(
+            $symbol,
+            $interval,
+            $figi,
+            $isin,
+            $cusip,
+            $exchange,
+            $micCode,
+            $country,
+            $seriesType,
+            $timePeriod,
+            $type,
+            $outputSize,
+            $format,
+            $delimiter,
+            $prepost,
+            $dp,
+            $order,
+            $includeOhlc,
+            $timezone,
+            $date,
+            $startDate,
+            $endDate,
+            $previousClose,
+            $adjust,
+        );
+
+        return TechnicalIndicator::fromJson(ChandeMomentumOscillator::class, $this->client->get($request->path, $request->queryParams));
+    }
+
+    public function coppockCurveRequest(
+        ?string $symbol = null,
+        IntervalEnum $interval = IntervalEnum::OneDay,
+        ?string $figi = null,
+        ?string $isin = null,
+        ?string $cusip = null,
+        ?string $exchange = null,
+        ?string $micCode = null,
+        ?string $country = null,
+        ?int $longRocPeriod = null,
+        ?SeriesTypeEnum $seriesType = null,
+        ?int $shortRocPeriod = null,
+        ?int $wmaPeriod = null,
+        ?TypeEnum $type = null,
+        ?int $outputSize = null,
+        ?FormatEnum $format = null,
+        ?string $delimiter = null,
+        ?PrepostEnum $prepost = null,
+        ?int $dp = null,
+        ?OrderEnum $order = null,
+        ?bool $includeOhlc = null,
+        ?string $timezone = null,
+        ?DateTimeImmutable $date = null,
+        ?DateTimeImmutable $startDate = null,
+        ?DateTimeImmutable $endDate = null,
+        ?bool $previousClose = null,
+        ?AdjustEnum $adjust = null,
+    ): BatchableRequest {
         Guard::requireSymbolIdentifier($symbol, $figi, $isin, $cusip);
 
-        $response = $this->client->get(
-            path: '/cmo',
+        return new BatchableRequest(
+            path: '/coppock',
             queryParams: [
                 'symbol' => $symbol,
                 'interval' => $interval->value,
@@ -540,8 +1018,10 @@ readonly class MomentumIndicators extends TwelveDataApi
                 'exchange' => $exchange,
                 'mic_code' => $micCode,
                 'country' => $country,
+                'long_roc_period' => $longRocPeriod,
                 'series_type' => $seriesType?->value,
-                'time_period' => $timePeriod,
+                'short_roc_period' => $shortRocPeriod,
+                'wma_period' => $wmaPeriod,
                 'type' => $type?->value,
                 'outputsize' => $outputSize,
                 'format' => $format?->value,
@@ -557,11 +1037,8 @@ readonly class MomentumIndicators extends TwelveDataApi
                 'previous_close' => QueryParamsUtils::booleanAsString($previousClose),
                 'adjust' => $adjust?->value,
             ],
+            responseFactory: fn (string $json): TechnicalIndicator => TechnicalIndicator::fromJson(CoppockCurve::class, $json),
         );
-
-        /** @var TechnicalIndicator<ChandeMomentumOscillator> $technicalIndicator */
-        $technicalIndicator = TechnicalIndicator::fromJson(ChandeMomentumOscillator::class, $response);
-        return $technicalIndicator;
     }
 
     /** @return TechnicalIndicator<CoppockCurve> */
@@ -592,12 +1069,72 @@ readonly class MomentumIndicators extends TwelveDataApi
         ?DateTimeImmutable $endDate = null,
         ?bool $previousClose = null,
         ?AdjustEnum $adjust = null,
-    ): TechnicalIndicator
-    {
+    ): TechnicalIndicator {
+        $request = $this->coppockCurveRequest(
+            $symbol,
+            $interval,
+            $figi,
+            $isin,
+            $cusip,
+            $exchange,
+            $micCode,
+            $country,
+            $longRocPeriod,
+            $seriesType,
+            $shortRocPeriod,
+            $wmaPeriod,
+            $type,
+            $outputSize,
+            $format,
+            $delimiter,
+            $prepost,
+            $dp,
+            $order,
+            $includeOhlc,
+            $timezone,
+            $date,
+            $startDate,
+            $endDate,
+            $previousClose,
+            $adjust,
+        );
+
+        return TechnicalIndicator::fromJson(CoppockCurve::class, $this->client->get($request->path, $request->queryParams));
+    }
+
+    public function connorsRelativeStrengthIndexRequest(
+        ?string $symbol = null,
+        IntervalEnum $interval = IntervalEnum::OneDay,
+        ?string $figi = null,
+        ?string $isin = null,
+        ?string $cusip = null,
+        ?string $exchange = null,
+        ?string $micCode = null,
+        ?string $country = null,
+        ?int $percentRankPeriod = null,
+        ?int $rsiPeriod = null,
+        ?SeriesTypeEnum $seriesType = null,
+        ?int $upDownLength = null,
+        ?int $timePeriod = null,
+        ?TypeEnum $type = null,
+        ?int $outputSize = null,
+        ?FormatEnum $format = null,
+        ?string $delimiter = null,
+        ?PrepostEnum $prepost = null,
+        ?int $dp = null,
+        ?OrderEnum $order = null,
+        ?bool $includeOhlc = null,
+        ?string $timezone = null,
+        ?DateTimeImmutable $date = null,
+        ?DateTimeImmutable $startDate = null,
+        ?DateTimeImmutable $endDate = null,
+        ?bool $previousClose = null,
+        ?AdjustEnum $adjust = null,
+    ): BatchableRequest {
         Guard::requireSymbolIdentifier($symbol, $figi, $isin, $cusip);
 
-        $response = $this->client->get(
-            path: '/coppock',
+        return new BatchableRequest(
+            path: '/crsi',
             queryParams: [
                 'symbol' => $symbol,
                 'interval' => $interval->value,
@@ -607,10 +1144,11 @@ readonly class MomentumIndicators extends TwelveDataApi
                 'exchange' => $exchange,
                 'mic_code' => $micCode,
                 'country' => $country,
-                'long_roc_period' => $longRocPeriod,
+                'percent_rank_period' => $percentRankPeriod,
+                'rsi_period' => $rsiPeriod,
                 'series_type' => $seriesType?->value,
-                'short_roc_period' => $shortRocPeriod,
-                'wma_period' => $wmaPeriod,
+                'up_down_length' => $upDownLength,
+                'time_period' => $timePeriod,
                 'type' => $type?->value,
                 'outputsize' => $outputSize,
                 'format' => $format?->value,
@@ -626,11 +1164,11 @@ readonly class MomentumIndicators extends TwelveDataApi
                 'previous_close' => QueryParamsUtils::booleanAsString($previousClose),
                 'adjust' => $adjust?->value,
             ],
+            responseFactory: fn (string $json): TechnicalIndicator => TechnicalIndicator::fromJson(
+                ConnorsRelativeStrengthIndex::class,
+                $json,
+            ),
         );
-
-        /** @var TechnicalIndicator<CoppockCurve> $technicalIndicator */
-        $technicalIndicator = TechnicalIndicator::fromJson(CoppockCurve::class, $response);
-        return $technicalIndicator;
     }
 
     /** @return TechnicalIndicator<ConnorsRelativeStrengthIndex> */
@@ -662,12 +1200,71 @@ readonly class MomentumIndicators extends TwelveDataApi
         ?DateTimeImmutable $endDate = null,
         ?bool $previousClose = null,
         ?AdjustEnum $adjust = null,
-    ): TechnicalIndicator
-    {
+    ): TechnicalIndicator {
+        $request = $this->connorsRelativeStrengthIndexRequest(
+            $symbol,
+            $interval,
+            $figi,
+            $isin,
+            $cusip,
+            $exchange,
+            $micCode,
+            $country,
+            $percentRankPeriod,
+            $rsiPeriod,
+            $seriesType,
+            $upDownLength,
+            $timePeriod,
+            $type,
+            $outputSize,
+            $format,
+            $delimiter,
+            $prepost,
+            $dp,
+            $order,
+            $includeOhlc,
+            $timezone,
+            $date,
+            $startDate,
+            $endDate,
+            $previousClose,
+            $adjust,
+        );
+
+        return TechnicalIndicator::fromJson(ConnorsRelativeStrengthIndex::class, $this->client->get($request->path, $request->queryParams));
+    }
+
+    public function detrendedPriceOscillatorRequest(
+        ?string $symbol = null,
+        IntervalEnum $interval = IntervalEnum::OneDay,
+        ?string $figi = null,
+        ?string $isin = null,
+        ?string $cusip = null,
+        ?string $exchange = null,
+        ?string $micCode = null,
+        ?string $country = null,
+        ?SeriesTypeEnum $seriesType = null,
+        ?int $timePeriod = null,
+        ?bool $centered = null,
+        ?TypeEnum $type = null,
+        ?int $outputSize = null,
+        ?FormatEnum $format = null,
+        ?string $delimiter = null,
+        ?PrepostEnum $prepost = null,
+        ?int $dp = null,
+        ?OrderEnum $order = null,
+        ?bool $includeOhlc = null,
+        ?string $timezone = null,
+        ?DateTimeImmutable $date = null,
+        ?DateTimeImmutable $startDate = null,
+        ?DateTimeImmutable $endDate = null,
+        ?bool $previousClose = null,
+        ?AdjustEnum $adjust = null,
+    ): BatchableRequest {
         Guard::requireSymbolIdentifier($symbol, $figi, $isin, $cusip);
 
-        $response = $this->client->get(
-            path: '/crsi',
+        return new BatchableRequest(
+            path: '/dpo',
             queryParams: [
                 'symbol' => $symbol,
                 'interval' => $interval->value,
@@ -677,11 +1274,9 @@ readonly class MomentumIndicators extends TwelveDataApi
                 'exchange' => $exchange,
                 'mic_code' => $micCode,
                 'country' => $country,
-                'percent_rank_period' => $percentRankPeriod,
-                'rsi_period' => $rsiPeriod,
                 'series_type' => $seriesType?->value,
-                'up_down_length' => $upDownLength,
                 'time_period' => $timePeriod,
+                'centered' => QueryParamsUtils::booleanAsString($centered),
                 'type' => $type?->value,
                 'outputsize' => $outputSize,
                 'format' => $format?->value,
@@ -697,11 +1292,8 @@ readonly class MomentumIndicators extends TwelveDataApi
                 'previous_close' => QueryParamsUtils::booleanAsString($previousClose),
                 'adjust' => $adjust?->value,
             ],
+            responseFactory: fn (string $json): TechnicalIndicator => TechnicalIndicator::fromJson(DetrendedPriceOscillator::class, $json),
         );
-
-        /** @var TechnicalIndicator<ConnorsRelativeStrengthIndex> $technicalIndicator */
-        $technicalIndicator = TechnicalIndicator::fromJson(ConnorsRelativeStrengthIndex::class, $response);
-        return $technicalIndicator;
     }
 
     /** @return TechnicalIndicator<DetrendedPriceOscillator> */
@@ -731,12 +1323,67 @@ readonly class MomentumIndicators extends TwelveDataApi
         ?DateTimeImmutable $endDate = null,
         ?bool $previousClose = null,
         ?AdjustEnum $adjust = null,
-    ): TechnicalIndicator
-    {
+    ): TechnicalIndicator {
+        $request = $this->detrendedPriceOscillatorRequest(
+            $symbol,
+            $interval,
+            $figi,
+            $isin,
+            $cusip,
+            $exchange,
+            $micCode,
+            $country,
+            $seriesType,
+            $timePeriod,
+            $centered,
+            $type,
+            $outputSize,
+            $format,
+            $delimiter,
+            $prepost,
+            $dp,
+            $order,
+            $includeOhlc,
+            $timezone,
+            $date,
+            $startDate,
+            $endDate,
+            $previousClose,
+            $adjust,
+        );
+
+        return TechnicalIndicator::fromJson(DetrendedPriceOscillator::class, $this->client->get($request->path, $request->queryParams));
+    }
+
+    public function directionalMovementIndexRequest(
+        ?string $symbol = null,
+        IntervalEnum $interval = IntervalEnum::OneDay,
+        ?string $figi = null,
+        ?string $isin = null,
+        ?string $cusip = null,
+        ?string $exchange = null,
+        ?string $micCode = null,
+        ?string $country = null,
+        ?int $timePeriod = null,
+        ?TypeEnum $type = null,
+        ?int $outputSize = null,
+        ?FormatEnum $format = null,
+        ?string $delimiter = null,
+        ?PrepostEnum $prepost = null,
+        ?int $dp = null,
+        ?OrderEnum $order = null,
+        ?bool $includeOhlc = null,
+        ?string $timezone = null,
+        ?DateTimeImmutable $date = null,
+        ?DateTimeImmutable $startDate = null,
+        ?DateTimeImmutable $endDate = null,
+        ?bool $previousClose = null,
+        ?AdjustEnum $adjust = null,
+    ): BatchableRequest {
         Guard::requireSymbolIdentifier($symbol, $figi, $isin, $cusip);
 
-        $response = $this->client->get(
-            path: '/dpo',
+        return new BatchableRequest(
+            path: '/dx',
             queryParams: [
                 'symbol' => $symbol,
                 'interval' => $interval->value,
@@ -746,9 +1393,7 @@ readonly class MomentumIndicators extends TwelveDataApi
                 'exchange' => $exchange,
                 'mic_code' => $micCode,
                 'country' => $country,
-                'series_type' => $seriesType?->value,
                 'time_period' => $timePeriod,
-                'centered' => QueryParamsUtils::booleanAsString($centered),
                 'type' => $type?->value,
                 'outputsize' => $outputSize,
                 'format' => $format?->value,
@@ -764,11 +1409,8 @@ readonly class MomentumIndicators extends TwelveDataApi
                 'previous_close' => QueryParamsUtils::booleanAsString($previousClose),
                 'adjust' => $adjust?->value,
             ],
+            responseFactory: fn (string $json): TechnicalIndicator => TechnicalIndicator::fromJson(DirectionalMovementIndex::class, $json),
         );
-
-        /** @var TechnicalIndicator<DetrendedPriceOscillator> $technicalIndicator */
-        $technicalIndicator = TechnicalIndicator::fromJson(DetrendedPriceOscillator::class, $response);
-        return $technicalIndicator;
     }
 
     /** @return TechnicalIndicator<DirectionalMovementIndex> */
@@ -796,12 +1438,73 @@ readonly class MomentumIndicators extends TwelveDataApi
         ?DateTimeImmutable $endDate = null,
         ?bool $previousClose = null,
         ?AdjustEnum $adjust = null,
-    ): TechnicalIndicator
-    {
+    ): TechnicalIndicator {
+        $request = $this->directionalMovementIndexRequest(
+            $symbol,
+            $interval,
+            $figi,
+            $isin,
+            $cusip,
+            $exchange,
+            $micCode,
+            $country,
+            $timePeriod,
+            $type,
+            $outputSize,
+            $format,
+            $delimiter,
+            $prepost,
+            $dp,
+            $order,
+            $includeOhlc,
+            $timezone,
+            $date,
+            $startDate,
+            $endDate,
+            $previousClose,
+            $adjust,
+        );
+
+        return TechnicalIndicator::fromJson(DirectionalMovementIndex::class, $this->client->get($request->path, $request->queryParams));
+    }
+
+    public function knowSureThingRequest(
+        ?string $symbol = null,
+        IntervalEnum $interval = IntervalEnum::OneDay,
+        ?string $figi = null,
+        ?string $isin = null,
+        ?string $cusip = null,
+        ?string $exchange = null,
+        ?string $micCode = null,
+        ?string $country = null,
+        ?int $rocPeriod1 = null,
+        ?int $rocPeriod2 = null,
+        ?int $rocPeriod3 = null,
+        ?int $rocPeriod4 = null,
+        ?int $smaPeriod1 = null,
+        ?int $smaPeriod2 = null,
+        ?int $smaPeriod3 = null,
+        ?int $smaPeriod4 = null,
+        ?int $signalPeriod = null,
+        ?TypeEnum $type = null,
+        ?int $outputSize = null,
+        ?FormatEnum $format = null,
+        ?string $delimiter = null,
+        ?PrepostEnum $prepost = null,
+        ?int $dp = null,
+        ?OrderEnum $order = null,
+        ?bool $includeOhlc = null,
+        ?string $timezone = null,
+        ?DateTimeImmutable $date = null,
+        ?DateTimeImmutable $startDate = null,
+        ?DateTimeImmutable $endDate = null,
+        ?bool $previousClose = null,
+        ?AdjustEnum $adjust = null,
+    ): BatchableRequest {
         Guard::requireSymbolIdentifier($symbol, $figi, $isin, $cusip);
 
-        $response = $this->client->get(
-            path: '/dx',
+        return new BatchableRequest(
+            path: '/kst',
             queryParams: [
                 'symbol' => $symbol,
                 'interval' => $interval->value,
@@ -811,7 +1514,15 @@ readonly class MomentumIndicators extends TwelveDataApi
                 'exchange' => $exchange,
                 'mic_code' => $micCode,
                 'country' => $country,
-                'time_period' => $timePeriod,
+                'roc_period_1' => $rocPeriod1,
+                'roc_period_2' => $rocPeriod2,
+                'roc_period_3' => $rocPeriod3,
+                'roc_period_4' => $rocPeriod4,
+                'sma_period_1' => $smaPeriod1,
+                'sma_period_2' => $smaPeriod2,
+                'sma_period_3' => $smaPeriod3,
+                'sma_period_4' => $smaPeriod4,
+                'signal_period' => $signalPeriod,
                 'type' => $type?->value,
                 'outputsize' => $outputSize,
                 'format' => $format?->value,
@@ -827,11 +1538,8 @@ readonly class MomentumIndicators extends TwelveDataApi
                 'previous_close' => QueryParamsUtils::booleanAsString($previousClose),
                 'adjust' => $adjust?->value,
             ],
+            responseFactory: fn (string $json): TechnicalIndicator => TechnicalIndicator::fromJson(KnowSureThing::class, $json),
         );
-
-        /** @var TechnicalIndicator<DirectionalMovementIndex> $technicalIndicator */
-        $technicalIndicator = TechnicalIndicator::fromJson(DirectionalMovementIndex::class, $response);
-        return $technicalIndicator;
     }
 
     /** @return TechnicalIndicator<KnowSureThing> */
@@ -867,12 +1575,75 @@ readonly class MomentumIndicators extends TwelveDataApi
         ?DateTimeImmutable $endDate = null,
         ?bool $previousClose = null,
         ?AdjustEnum $adjust = null,
-    ): TechnicalIndicator
-    {
+    ): TechnicalIndicator {
+        $request = $this->knowSureThingRequest(
+            $symbol,
+            $interval,
+            $figi,
+            $isin,
+            $cusip,
+            $exchange,
+            $micCode,
+            $country,
+            $rocPeriod1,
+            $rocPeriod2,
+            $rocPeriod3,
+            $rocPeriod4,
+            $smaPeriod1,
+            $smaPeriod2,
+            $smaPeriod3,
+            $smaPeriod4,
+            $signalPeriod,
+            $type,
+            $outputSize,
+            $format,
+            $delimiter,
+            $prepost,
+            $dp,
+            $order,
+            $includeOhlc,
+            $timezone,
+            $date,
+            $startDate,
+            $endDate,
+            $previousClose,
+            $adjust,
+        );
+
+        return TechnicalIndicator::fromJson(KnowSureThing::class, $this->client->get($request->path, $request->queryParams));
+    }
+
+    public function movingAverageConvergenceDivergenceRequest(
+        ?string $symbol = null,
+        IntervalEnum $interval = IntervalEnum::OneDay,
+        ?string $figi = null,
+        ?string $isin = null,
+        ?string $cusip = null,
+        ?string $exchange = null,
+        ?string $micCode = null,
+        ?string $country = null,
+        ?int $fastPeriod = null,
+        ?int $slowPeriod = null,
+        ?int $signalPeriod = null,
+        ?TypeEnum $type = null,
+        ?int $outputSize = null,
+        ?FormatEnum $format = null,
+        ?string $delimiter = null,
+        ?PrepostEnum $prepost = null,
+        ?int $dp = null,
+        ?OrderEnum $order = null,
+        ?bool $includeOhlc = null,
+        ?string $timezone = null,
+        ?DateTimeImmutable $date = null,
+        ?DateTimeImmutable $startDate = null,
+        ?DateTimeImmutable $endDate = null,
+        ?bool $previousClose = null,
+        ?AdjustEnum $adjust = null,
+    ): BatchableRequest {
         Guard::requireSymbolIdentifier($symbol, $figi, $isin, $cusip);
 
-        $response = $this->client->get(
-            path: '/kst',
+        return new BatchableRequest(
+            path: '/macd',
             queryParams: [
                 'symbol' => $symbol,
                 'interval' => $interval->value,
@@ -882,14 +1653,8 @@ readonly class MomentumIndicators extends TwelveDataApi
                 'exchange' => $exchange,
                 'mic_code' => $micCode,
                 'country' => $country,
-                'roc_period_1' => $rocPeriod1,
-                'roc_period_2' => $rocPeriod2,
-                'roc_period_3' => $rocPeriod3,
-                'roc_period_4' => $rocPeriod4,
-                'sma_period_1' => $smaPeriod1,
-                'sma_period_2' => $smaPeriod2,
-                'sma_period_3' => $smaPeriod3,
-                'sma_period_4' => $smaPeriod4,
+                'fast_period' => $fastPeriod,
+                'slow_period' => $slowPeriod,
                 'signal_period' => $signalPeriod,
                 'type' => $type?->value,
                 'outputsize' => $outputSize,
@@ -906,11 +1671,11 @@ readonly class MomentumIndicators extends TwelveDataApi
                 'previous_close' => QueryParamsUtils::booleanAsString($previousClose),
                 'adjust' => $adjust?->value,
             ],
+            responseFactory: fn (string $json): TechnicalIndicator => TechnicalIndicator::fromJson(
+                MovingAverageConvergenceDivergence::class,
+                $json,
+            ),
         );
-
-        /** @var TechnicalIndicator<KnowSureThing> $technicalIndicator */
-        $technicalIndicator = TechnicalIndicator::fromJson(KnowSureThing::class, $response);
-        return $technicalIndicator;
     }
 
     /** @return TechnicalIndicator<MovingAverageConvergenceDivergence> */
@@ -940,12 +1705,73 @@ readonly class MomentumIndicators extends TwelveDataApi
         ?DateTimeImmutable $endDate = null,
         ?bool $previousClose = null,
         ?AdjustEnum $adjust = null,
-    ): TechnicalIndicator
-    {
+    ): TechnicalIndicator {
+        $request = $this->movingAverageConvergenceDivergenceRequest(
+            $symbol,
+            $interval,
+            $figi,
+            $isin,
+            $cusip,
+            $exchange,
+            $micCode,
+            $country,
+            $fastPeriod,
+            $slowPeriod,
+            $signalPeriod,
+            $type,
+            $outputSize,
+            $format,
+            $delimiter,
+            $prepost,
+            $dp,
+            $order,
+            $includeOhlc,
+            $timezone,
+            $date,
+            $startDate,
+            $endDate,
+            $previousClose,
+            $adjust,
+        );
+
+        return TechnicalIndicator::fromJson(
+            MovingAverageConvergenceDivergence::class,
+            $this->client->get($request->path, $request->queryParams),
+        );
+    }
+
+    public function movingAverageConvergenceDivergenceSlopeRequest(
+        ?string $symbol = null,
+        IntervalEnum $interval = IntervalEnum::OneDay,
+        ?string $figi = null,
+        ?string $isin = null,
+        ?string $cusip = null,
+        ?string $exchange = null,
+        ?string $micCode = null,
+        ?string $country = null,
+        ?int $fastPeriod = null,
+        ?int $slowPeriod = null,
+        ?int $signalPeriod = null,
+        ?int $timePeriod = null,
+        ?TypeEnum $type = null,
+        ?int $outputSize = null,
+        ?FormatEnum $format = null,
+        ?string $delimiter = null,
+        ?PrepostEnum $prepost = null,
+        ?int $dp = null,
+        ?OrderEnum $order = null,
+        ?bool $includeOhlc = null,
+        ?string $timezone = null,
+        ?DateTimeImmutable $date = null,
+        ?DateTimeImmutable $startDate = null,
+        ?DateTimeImmutable $endDate = null,
+        ?bool $previousClose = null,
+        ?AdjustEnum $adjust = null,
+    ): BatchableRequest {
         Guard::requireSymbolIdentifier($symbol, $figi, $isin, $cusip);
 
-        $response = $this->client->get(
-            path: '/macd',
+        return new BatchableRequest(
+            path: '/macd_slope',
             queryParams: [
                 'symbol' => $symbol,
                 'interval' => $interval->value,
@@ -958,6 +1784,7 @@ readonly class MomentumIndicators extends TwelveDataApi
                 'fast_period' => $fastPeriod,
                 'slow_period' => $slowPeriod,
                 'signal_period' => $signalPeriod,
+                'time_period' => $timePeriod,
                 'type' => $type?->value,
                 'outputsize' => $outputSize,
                 'format' => $format?->value,
@@ -973,11 +1800,11 @@ readonly class MomentumIndicators extends TwelveDataApi
                 'previous_close' => QueryParamsUtils::booleanAsString($previousClose),
                 'adjust' => $adjust?->value,
             ],
+            responseFactory: fn (string $json): TechnicalIndicator => TechnicalIndicator::fromJson(
+                MovingAverageConvergenceDivergenceSlope::class,
+                $json,
+            ),
         );
-
-        /** @var TechnicalIndicator<MovingAverageConvergenceDivergence> $technicalIndicator */
-        $technicalIndicator = TechnicalIndicator::fromJson(MovingAverageConvergenceDivergence::class, $response);
-        return $technicalIndicator;
     }
 
     /** @return TechnicalIndicator<MovingAverageConvergenceDivergenceSlope> */
@@ -1008,12 +1835,76 @@ readonly class MomentumIndicators extends TwelveDataApi
         ?DateTimeImmutable $endDate = null,
         ?bool $previousClose = null,
         ?AdjustEnum $adjust = null,
-    ): TechnicalIndicator
-    {
+    ): TechnicalIndicator {
+        $request = $this->movingAverageConvergenceDivergenceSlopeRequest(
+            $symbol,
+            $interval,
+            $figi,
+            $isin,
+            $cusip,
+            $exchange,
+            $micCode,
+            $country,
+            $fastPeriod,
+            $slowPeriod,
+            $signalPeriod,
+            $timePeriod,
+            $type,
+            $outputSize,
+            $format,
+            $delimiter,
+            $prepost,
+            $dp,
+            $order,
+            $includeOhlc,
+            $timezone,
+            $date,
+            $startDate,
+            $endDate,
+            $previousClose,
+            $adjust,
+        );
+
+        return TechnicalIndicator::fromJson(
+            MovingAverageConvergenceDivergenceSlope::class,
+            $this->client->get($request->path, $request->queryParams),
+        );
+    }
+
+    public function movingAverageConvergenceDivergenceExtensionRequest(
+        ?string $symbol = null,
+        IntervalEnum $interval = IntervalEnum::OneDay,
+        ?string $figi = null,
+        ?string $isin = null,
+        ?string $cusip = null,
+        ?string $exchange = null,
+        ?string $micCode = null,
+        ?string $country = null,
+        ?int $fastPeriod = null,
+        ?MaTypeEnum $fastMaType = null,
+        ?int $slowPeriod = null,
+        ?MaTypeEnum $slowMaType = null,
+        ?int $signalPeriod = null,
+        ?MaTypeEnum $signalMaType = null,
+        ?TypeEnum $type = null,
+        ?int $outputSize = null,
+        ?FormatEnum $format = null,
+        ?string $delimiter = null,
+        ?PrepostEnum $prepost = null,
+        ?int $dp = null,
+        ?OrderEnum $order = null,
+        ?bool $includeOhlc = null,
+        ?string $timezone = null,
+        ?DateTimeImmutable $date = null,
+        ?DateTimeImmutable $startDate = null,
+        ?DateTimeImmutable $endDate = null,
+        ?bool $previousClose = null,
+        ?AdjustEnum $adjust = null,
+    ): BatchableRequest {
         Guard::requireSymbolIdentifier($symbol, $figi, $isin, $cusip);
 
-        $response = $this->client->get(
-            path: '/macd_slope',
+        return new BatchableRequest(
+            path: '/macdext',
             queryParams: [
                 'symbol' => $symbol,
                 'interval' => $interval->value,
@@ -1024,9 +1915,11 @@ readonly class MomentumIndicators extends TwelveDataApi
                 'mic_code' => $micCode,
                 'country' => $country,
                 'fast_period' => $fastPeriod,
+                'fast_ma_type' => $fastMaType?->value,
                 'slow_period' => $slowPeriod,
+                'slow_ma_type' => $slowMaType?->value,
                 'signal_period' => $signalPeriod,
-                'time_period' => $timePeriod,
+                'signal_ma_type' => $signalMaType?->value,
                 'type' => $type?->value,
                 'outputsize' => $outputSize,
                 'format' => $format?->value,
@@ -1042,11 +1935,11 @@ readonly class MomentumIndicators extends TwelveDataApi
                 'previous_close' => QueryParamsUtils::booleanAsString($previousClose),
                 'adjust' => $adjust?->value,
             ],
+            responseFactory: fn (string $json): TechnicalIndicator => TechnicalIndicator::fromJson(
+                MovingAverageConvergenceDivergence::class,
+                $json,
+            ),
         );
-
-        /** @var TechnicalIndicator<MovingAverageConvergenceDivergenceSlope> $technicalIndicator */
-        $technicalIndicator = TechnicalIndicator::fromJson(MovingAverageConvergenceDivergenceSlope::class, $response);
-        return $technicalIndicator;
     }
 
     /** @return TechnicalIndicator<MovingAverageConvergenceDivergence> */
@@ -1079,12 +1972,73 @@ readonly class MomentumIndicators extends TwelveDataApi
         ?DateTimeImmutable $endDate = null,
         ?bool $previousClose = null,
         ?AdjustEnum $adjust = null,
-    ): TechnicalIndicator
-    {
+    ): TechnicalIndicator {
+        $request = $this->movingAverageConvergenceDivergenceExtensionRequest(
+            $symbol,
+            $interval,
+            $figi,
+            $isin,
+            $cusip,
+            $exchange,
+            $micCode,
+            $country,
+            $fastPeriod,
+            $fastMaType,
+            $slowPeriod,
+            $slowMaType,
+            $signalPeriod,
+            $signalMaType,
+            $type,
+            $outputSize,
+            $format,
+            $delimiter,
+            $prepost,
+            $dp,
+            $order,
+            $includeOhlc,
+            $timezone,
+            $date,
+            $startDate,
+            $endDate,
+            $previousClose,
+            $adjust,
+        );
+
+        return TechnicalIndicator::fromJson(
+            MovingAverageConvergenceDivergence::class,
+            $this->client->get($request->path, $request->queryParams),
+        );
+    }
+
+    public function moneyFlowIndexRequest(
+        ?string $symbol = null,
+        IntervalEnum $interval = IntervalEnum::OneDay,
+        ?string $figi = null,
+        ?string $isin = null,
+        ?string $cusip = null,
+        ?string $exchange = null,
+        ?string $micCode = null,
+        ?string $country = null,
+        ?int $timePeriod = null,
+        ?TypeEnum $type = null,
+        ?int $outputSize = null,
+        ?FormatEnum $format = null,
+        ?string $delimiter = null,
+        ?PrepostEnum $prepost = null,
+        ?int $dp = null,
+        ?OrderEnum $order = null,
+        ?bool $includeOhlc = null,
+        ?string $timezone = null,
+        ?DateTimeImmutable $date = null,
+        ?DateTimeImmutable $startDate = null,
+        ?DateTimeImmutable $endDate = null,
+        ?bool $previousClose = null,
+        ?AdjustEnum $adjust = null,
+    ): BatchableRequest {
         Guard::requireSymbolIdentifier($symbol, $figi, $isin, $cusip);
 
-        $response = $this->client->get(
-            path: '/macdext',
+        return new BatchableRequest(
+            path: '/mfi',
             queryParams: [
                 'symbol' => $symbol,
                 'interval' => $interval->value,
@@ -1094,12 +2048,7 @@ readonly class MomentumIndicators extends TwelveDataApi
                 'exchange' => $exchange,
                 'mic_code' => $micCode,
                 'country' => $country,
-                'fast_period' => $fastPeriod,
-                'fast_ma_type' => $fastMaType?->value,
-                'slow_period' => $slowPeriod,
-                'slow_ma_type' => $slowMaType?->value,
-                'signal_period' => $signalPeriod,
-                'signal_ma_type' => $signalMaType?->value,
+                'time_period' => $timePeriod,
                 'type' => $type?->value,
                 'outputsize' => $outputSize,
                 'format' => $format?->value,
@@ -1115,11 +2064,8 @@ readonly class MomentumIndicators extends TwelveDataApi
                 'previous_close' => QueryParamsUtils::booleanAsString($previousClose),
                 'adjust' => $adjust?->value,
             ],
+            responseFactory: fn (string $json): TechnicalIndicator => TechnicalIndicator::fromJson(MoneyFlowIndex::class, $json),
         );
-
-        /** @var TechnicalIndicator<MovingAverageConvergenceDivergence> $technicalIndicator */
-        $technicalIndicator = TechnicalIndicator::fromJson(MovingAverageConvergenceDivergence::class, $response);
-        return $technicalIndicator;
     }
 
     /** @return TechnicalIndicator<MoneyFlowIndex> */
@@ -1147,12 +2093,65 @@ readonly class MomentumIndicators extends TwelveDataApi
         ?DateTimeImmutable $endDate = null,
         ?bool $previousClose = null,
         ?AdjustEnum $adjust = null,
-    ): TechnicalIndicator
-    {
+    ): TechnicalIndicator {
+        $request = $this->moneyFlowIndexRequest(
+            $symbol,
+            $interval,
+            $figi,
+            $isin,
+            $cusip,
+            $exchange,
+            $micCode,
+            $country,
+            $timePeriod,
+            $type,
+            $outputSize,
+            $format,
+            $delimiter,
+            $prepost,
+            $dp,
+            $order,
+            $includeOhlc,
+            $timezone,
+            $date,
+            $startDate,
+            $endDate,
+            $previousClose,
+            $adjust,
+        );
+
+        return TechnicalIndicator::fromJson(MoneyFlowIndex::class, $this->client->get($request->path, $request->queryParams));
+    }
+
+    public function minusDirectionalIndicatorRequest(
+        ?string $symbol = null,
+        IntervalEnum $interval = IntervalEnum::OneDay,
+        ?string $figi = null,
+        ?string $isin = null,
+        ?string $cusip = null,
+        ?string $exchange = null,
+        ?string $micCode = null,
+        ?string $country = null,
+        ?int $timePeriod = null,
+        ?TypeEnum $type = null,
+        ?int $outputSize = null,
+        ?FormatEnum $format = null,
+        ?string $delimiter = null,
+        ?PrepostEnum $prepost = null,
+        ?int $dp = null,
+        ?OrderEnum $order = null,
+        ?bool $includeOhlc = null,
+        ?string $timezone = null,
+        ?DateTimeImmutable $date = null,
+        ?DateTimeImmutable $startDate = null,
+        ?DateTimeImmutable $endDate = null,
+        ?bool $previousClose = null,
+        ?AdjustEnum $adjust = null,
+    ): BatchableRequest {
         Guard::requireSymbolIdentifier($symbol, $figi, $isin, $cusip);
 
-        $response = $this->client->get(
-            path: '/mfi',
+        return new BatchableRequest(
+            path: '/minus_di',
             queryParams: [
                 'symbol' => $symbol,
                 'interval' => $interval->value,
@@ -1178,11 +2177,8 @@ readonly class MomentumIndicators extends TwelveDataApi
                 'previous_close' => QueryParamsUtils::booleanAsString($previousClose),
                 'adjust' => $adjust?->value,
             ],
+            responseFactory: fn (string $json): TechnicalIndicator => TechnicalIndicator::fromJson(MinusDirectionalIndicator::class, $json),
         );
-
-        /** @var TechnicalIndicator<MoneyFlowIndex> $technicalIndicator */
-        $technicalIndicator = TechnicalIndicator::fromJson(MoneyFlowIndex::class, $response);
-        return $technicalIndicator;
     }
 
     /** @return TechnicalIndicator<MinusDirectionalIndicator> */
@@ -1210,12 +2206,65 @@ readonly class MomentumIndicators extends TwelveDataApi
         ?DateTimeImmutable $endDate = null,
         ?bool $previousClose = null,
         ?AdjustEnum $adjust = null,
-    ): TechnicalIndicator
-    {
+    ): TechnicalIndicator {
+        $request = $this->minusDirectionalIndicatorRequest(
+            $symbol,
+            $interval,
+            $figi,
+            $isin,
+            $cusip,
+            $exchange,
+            $micCode,
+            $country,
+            $timePeriod,
+            $type,
+            $outputSize,
+            $format,
+            $delimiter,
+            $prepost,
+            $dp,
+            $order,
+            $includeOhlc,
+            $timezone,
+            $date,
+            $startDate,
+            $endDate,
+            $previousClose,
+            $adjust,
+        );
+
+        return TechnicalIndicator::fromJson(MinusDirectionalIndicator::class, $this->client->get($request->path, $request->queryParams));
+    }
+
+    public function minusDirectionalMovementRequest(
+        ?string $symbol = null,
+        IntervalEnum $interval = IntervalEnum::OneDay,
+        ?string $figi = null,
+        ?string $isin = null,
+        ?string $cusip = null,
+        ?string $exchange = null,
+        ?string $micCode = null,
+        ?string $country = null,
+        ?int $timePeriod = null,
+        ?TypeEnum $type = null,
+        ?int $outputSize = null,
+        ?FormatEnum $format = null,
+        ?string $delimiter = null,
+        ?PrepostEnum $prepost = null,
+        ?int $dp = null,
+        ?OrderEnum $order = null,
+        ?bool $includeOhlc = null,
+        ?string $timezone = null,
+        ?DateTimeImmutable $date = null,
+        ?DateTimeImmutable $startDate = null,
+        ?DateTimeImmutable $endDate = null,
+        ?bool $previousClose = null,
+        ?AdjustEnum $adjust = null,
+    ): BatchableRequest {
         Guard::requireSymbolIdentifier($symbol, $figi, $isin, $cusip);
 
-        $response = $this->client->get(
-            path: '/minus_di',
+        return new BatchableRequest(
+            path: '/minus_dm',
             queryParams: [
                 'symbol' => $symbol,
                 'interval' => $interval->value,
@@ -1241,11 +2290,8 @@ readonly class MomentumIndicators extends TwelveDataApi
                 'previous_close' => QueryParamsUtils::booleanAsString($previousClose),
                 'adjust' => $adjust?->value,
             ],
+            responseFactory: fn (string $json): TechnicalIndicator => TechnicalIndicator::fromJson(MinusDirectionalMovement::class, $json),
         );
-
-        /** @var TechnicalIndicator<MinusDirectionalIndicator> $technicalIndicator */
-        $technicalIndicator = TechnicalIndicator::fromJson(MinusDirectionalIndicator::class, $response);
-        return $technicalIndicator;
     }
 
     /** @return TechnicalIndicator<MinusDirectionalMovement> */
@@ -1273,12 +2319,66 @@ readonly class MomentumIndicators extends TwelveDataApi
         ?DateTimeImmutable $endDate = null,
         ?bool $previousClose = null,
         ?AdjustEnum $adjust = null,
-    ): TechnicalIndicator
-    {
+    ): TechnicalIndicator {
+        $request = $this->minusDirectionalMovementRequest(
+            $symbol,
+            $interval,
+            $figi,
+            $isin,
+            $cusip,
+            $exchange,
+            $micCode,
+            $country,
+            $timePeriod,
+            $type,
+            $outputSize,
+            $format,
+            $delimiter,
+            $prepost,
+            $dp,
+            $order,
+            $includeOhlc,
+            $timezone,
+            $date,
+            $startDate,
+            $endDate,
+            $previousClose,
+            $adjust,
+        );
+
+        return TechnicalIndicator::fromJson(MinusDirectionalMovement::class, $this->client->get($request->path, $request->queryParams));
+    }
+
+    public function momentumRequest(
+        ?string $symbol = null,
+        IntervalEnum $interval = IntervalEnum::OneDay,
+        ?string $figi = null,
+        ?string $isin = null,
+        ?string $cusip = null,
+        ?string $exchange = null,
+        ?string $micCode = null,
+        ?string $country = null,
+        ?SeriesTypeEnum $seriesType = null,
+        ?int $timePeriod = null,
+        ?TypeEnum $type = null,
+        ?int $outputSize = null,
+        ?FormatEnum $format = null,
+        ?string $delimiter = null,
+        ?PrepostEnum $prepost = null,
+        ?int $dp = null,
+        ?OrderEnum $order = null,
+        ?bool $includeOhlc = null,
+        ?string $timezone = null,
+        ?DateTimeImmutable $date = null,
+        ?DateTimeImmutable $startDate = null,
+        ?DateTimeImmutable $endDate = null,
+        ?bool $previousClose = null,
+        ?AdjustEnum $adjust = null,
+    ): BatchableRequest {
         Guard::requireSymbolIdentifier($symbol, $figi, $isin, $cusip);
 
-        $response = $this->client->get(
-            path: '/minus_dm',
+        return new BatchableRequest(
+            path: '/mom',
             queryParams: [
                 'symbol' => $symbol,
                 'interval' => $interval->value,
@@ -1288,6 +2388,7 @@ readonly class MomentumIndicators extends TwelveDataApi
                 'exchange' => $exchange,
                 'mic_code' => $micCode,
                 'country' => $country,
+                'series_type' => $seriesType?->value,
                 'time_period' => $timePeriod,
                 'type' => $type?->value,
                 'outputsize' => $outputSize,
@@ -1304,11 +2405,8 @@ readonly class MomentumIndicators extends TwelveDataApi
                 'previous_close' => QueryParamsUtils::booleanAsString($previousClose),
                 'adjust' => $adjust?->value,
             ],
+            responseFactory: fn (string $json): TechnicalIndicator => TechnicalIndicator::fromJson(Momentum::class, $json),
         );
-
-        /** @var TechnicalIndicator<MinusDirectionalMovement> $technicalIndicator */
-        $technicalIndicator = TechnicalIndicator::fromJson(MinusDirectionalMovement::class, $response);
-        return $technicalIndicator;
     }
 
     /** @return TechnicalIndicator<Momentum> */
@@ -1337,12 +2435,69 @@ readonly class MomentumIndicators extends TwelveDataApi
         ?DateTimeImmutable $endDate = null,
         ?bool $previousClose = null,
         ?AdjustEnum $adjust = null,
-    ): TechnicalIndicator
-    {
+    ): TechnicalIndicator {
+        $request = $this->momentumRequest(
+            $symbol,
+            $interval,
+            $figi,
+            $isin,
+            $cusip,
+            $exchange,
+            $micCode,
+            $country,
+            $seriesType,
+            $timePeriod,
+            $type,
+            $outputSize,
+            $format,
+            $delimiter,
+            $prepost,
+            $dp,
+            $order,
+            $includeOhlc,
+            $timezone,
+            $date,
+            $startDate,
+            $endDate,
+            $previousClose,
+            $adjust,
+        );
+
+        return TechnicalIndicator::fromJson(Momentum::class, $this->client->get($request->path, $request->queryParams));
+    }
+
+    public function percentBRequest(
+        ?string $symbol = null,
+        IntervalEnum $interval = IntervalEnum::OneDay,
+        ?string $figi = null,
+        ?string $isin = null,
+        ?string $cusip = null,
+        ?string $exchange = null,
+        ?string $micCode = null,
+        ?string $country = null,
+        ?SeriesTypeEnum $seriesType = null,
+        ?int $timePeriod = null,
+        ?float $sd = null,
+        ?MaTypeEnum $maType = null,
+        ?TypeEnum $type = null,
+        ?int $outputSize = null,
+        ?FormatEnum $format = null,
+        ?string $delimiter = null,
+        ?PrepostEnum $prepost = null,
+        ?int $dp = null,
+        ?OrderEnum $order = null,
+        ?bool $includeOhlc = null,
+        ?string $timezone = null,
+        ?DateTimeImmutable $date = null,
+        ?DateTimeImmutable $startDate = null,
+        ?DateTimeImmutable $endDate = null,
+        ?bool $previousClose = null,
+        ?AdjustEnum $adjust = null,
+    ): BatchableRequest {
         Guard::requireSymbolIdentifier($symbol, $figi, $isin, $cusip);
 
-        $response = $this->client->get(
-            path: '/mom',
+        return new BatchableRequest(
+            path: '/percent_b',
             queryParams: [
                 'symbol' => $symbol,
                 'interval' => $interval->value,
@@ -1354,6 +2509,8 @@ readonly class MomentumIndicators extends TwelveDataApi
                 'country' => $country,
                 'series_type' => $seriesType?->value,
                 'time_period' => $timePeriod,
+                'sd' => $sd,
+                'ma_type' => $maType?->value,
                 'type' => $type?->value,
                 'outputsize' => $outputSize,
                 'format' => $format?->value,
@@ -1369,11 +2526,8 @@ readonly class MomentumIndicators extends TwelveDataApi
                 'previous_close' => QueryParamsUtils::booleanAsString($previousClose),
                 'adjust' => $adjust?->value,
             ],
+            responseFactory: fn (string $json): TechnicalIndicator => TechnicalIndicator::fromJson(PercentB::class, $json),
         );
-
-        /** @var TechnicalIndicator<Momentum> $technicalIndicator */
-        $technicalIndicator = TechnicalIndicator::fromJson(Momentum::class, $response);
-        return $technicalIndicator;
     }
 
     /** @return TechnicalIndicator<PercentB> */
@@ -1404,12 +2558,68 @@ readonly class MomentumIndicators extends TwelveDataApi
         ?DateTimeImmutable $endDate = null,
         ?bool $previousClose = null,
         ?AdjustEnum $adjust = null,
-    ): TechnicalIndicator
-    {
+    ): TechnicalIndicator {
+        $request = $this->percentBRequest(
+            $symbol,
+            $interval,
+            $figi,
+            $isin,
+            $cusip,
+            $exchange,
+            $micCode,
+            $country,
+            $seriesType,
+            $timePeriod,
+            $sd,
+            $maType,
+            $type,
+            $outputSize,
+            $format,
+            $delimiter,
+            $prepost,
+            $dp,
+            $order,
+            $includeOhlc,
+            $timezone,
+            $date,
+            $startDate,
+            $endDate,
+            $previousClose,
+            $adjust,
+        );
+
+        return TechnicalIndicator::fromJson(PercentB::class, $this->client->get($request->path, $request->queryParams));
+    }
+
+    public function plusDirectionalIndicatorRequest(
+        ?string $symbol = null,
+        IntervalEnum $interval = IntervalEnum::OneDay,
+        ?string $figi = null,
+        ?string $isin = null,
+        ?string $cusip = null,
+        ?string $exchange = null,
+        ?string $micCode = null,
+        ?string $country = null,
+        ?int $timePeriod = null,
+        ?TypeEnum $type = null,
+        ?int $outputSize = null,
+        ?FormatEnum $format = null,
+        ?string $delimiter = null,
+        ?PrepostEnum $prepost = null,
+        ?int $dp = null,
+        ?OrderEnum $order = null,
+        ?bool $includeOhlc = null,
+        ?string $timezone = null,
+        ?DateTimeImmutable $date = null,
+        ?DateTimeImmutable $startDate = null,
+        ?DateTimeImmutable $endDate = null,
+        ?bool $previousClose = null,
+        ?AdjustEnum $adjust = null,
+    ): BatchableRequest {
         Guard::requireSymbolIdentifier($symbol, $figi, $isin, $cusip);
 
-        $response = $this->client->get(
-            path: '/percent_b',
+        return new BatchableRequest(
+            path: '/plus_di',
             queryParams: [
                 'symbol' => $symbol,
                 'interval' => $interval->value,
@@ -1419,10 +2629,7 @@ readonly class MomentumIndicators extends TwelveDataApi
                 'exchange' => $exchange,
                 'mic_code' => $micCode,
                 'country' => $country,
-                'series_type' => $seriesType?->value,
                 'time_period' => $timePeriod,
-                'sd' => $sd,
-                'ma_type' => $maType?->value,
                 'type' => $type?->value,
                 'outputsize' => $outputSize,
                 'format' => $format?->value,
@@ -1438,11 +2645,8 @@ readonly class MomentumIndicators extends TwelveDataApi
                 'previous_close' => QueryParamsUtils::booleanAsString($previousClose),
                 'adjust' => $adjust?->value,
             ],
+            responseFactory: fn (string $json): TechnicalIndicator => TechnicalIndicator::fromJson(PlusDirectionalIndicator::class, $json),
         );
-
-        /** @var TechnicalIndicator<PercentB> $technicalIndicator */
-        $technicalIndicator = TechnicalIndicator::fromJson(PercentB::class, $response);
-        return $technicalIndicator;
     }
 
     /** @return TechnicalIndicator<PlusDirectionalIndicator> */
@@ -1470,12 +2674,65 @@ readonly class MomentumIndicators extends TwelveDataApi
         ?DateTimeImmutable $endDate = null,
         ?bool $previousClose = null,
         ?AdjustEnum $adjust = null,
-    ): TechnicalIndicator
-    {
+    ): TechnicalIndicator {
+        $request = $this->plusDirectionalIndicatorRequest(
+            $symbol,
+            $interval,
+            $figi,
+            $isin,
+            $cusip,
+            $exchange,
+            $micCode,
+            $country,
+            $timePeriod,
+            $type,
+            $outputSize,
+            $format,
+            $delimiter,
+            $prepost,
+            $dp,
+            $order,
+            $includeOhlc,
+            $timezone,
+            $date,
+            $startDate,
+            $endDate,
+            $previousClose,
+            $adjust,
+        );
+
+        return TechnicalIndicator::fromJson(PlusDirectionalIndicator::class, $this->client->get($request->path, $request->queryParams));
+    }
+
+    public function plusDirectionalMovementRequest(
+        ?string $symbol = null,
+        IntervalEnum $interval = IntervalEnum::OneDay,
+        ?string $figi = null,
+        ?string $isin = null,
+        ?string $cusip = null,
+        ?string $exchange = null,
+        ?string $micCode = null,
+        ?string $country = null,
+        ?int $timePeriod = null,
+        ?TypeEnum $type = null,
+        ?int $outputSize = null,
+        ?FormatEnum $format = null,
+        ?string $delimiter = null,
+        ?PrepostEnum $prepost = null,
+        ?int $dp = null,
+        ?OrderEnum $order = null,
+        ?bool $includeOhlc = null,
+        ?string $timezone = null,
+        ?DateTimeImmutable $date = null,
+        ?DateTimeImmutable $startDate = null,
+        ?DateTimeImmutable $endDate = null,
+        ?bool $previousClose = null,
+        ?AdjustEnum $adjust = null,
+    ): BatchableRequest {
         Guard::requireSymbolIdentifier($symbol, $figi, $isin, $cusip);
 
-        $response = $this->client->get(
-            path: '/plus_di',
+        return new BatchableRequest(
+            path: '/plus_dm',
             queryParams: [
                 'symbol' => $symbol,
                 'interval' => $interval->value,
@@ -1501,11 +2758,8 @@ readonly class MomentumIndicators extends TwelveDataApi
                 'previous_close' => QueryParamsUtils::booleanAsString($previousClose),
                 'adjust' => $adjust?->value,
             ],
+            responseFactory: fn (string $json): TechnicalIndicator => TechnicalIndicator::fromJson(PlusDirectionalMovement::class, $json),
         );
-
-        /** @var TechnicalIndicator<PlusDirectionalIndicator> $technicalIndicator */
-        $technicalIndicator = TechnicalIndicator::fromJson(PlusDirectionalIndicator::class, $response);
-        return $technicalIndicator;
     }
 
     /** @return TechnicalIndicator<PlusDirectionalMovement> */
@@ -1533,12 +2787,68 @@ readonly class MomentumIndicators extends TwelveDataApi
         ?DateTimeImmutable $endDate = null,
         ?bool $previousClose = null,
         ?AdjustEnum $adjust = null,
-    ): TechnicalIndicator
-    {
+    ): TechnicalIndicator {
+        $request = $this->plusDirectionalMovementRequest(
+            $symbol,
+            $interval,
+            $figi,
+            $isin,
+            $cusip,
+            $exchange,
+            $micCode,
+            $country,
+            $timePeriod,
+            $type,
+            $outputSize,
+            $format,
+            $delimiter,
+            $prepost,
+            $dp,
+            $order,
+            $includeOhlc,
+            $timezone,
+            $date,
+            $startDate,
+            $endDate,
+            $previousClose,
+            $adjust,
+        );
+
+        return TechnicalIndicator::fromJson(PlusDirectionalMovement::class, $this->client->get($request->path, $request->queryParams));
+    }
+
+    public function percentagePriceOscillatorRequest(
+        ?string $symbol = null,
+        IntervalEnum $interval = IntervalEnum::OneDay,
+        ?string $figi = null,
+        ?string $isin = null,
+        ?string $cusip = null,
+        ?string $exchange = null,
+        ?string $micCode = null,
+        ?string $country = null,
+        ?int $fastPeriod = null,
+        ?MaTypeEnum $maType = null,
+        ?SeriesTypeEnum $seriesType = null,
+        ?int $slowPeriod = null,
+        ?TypeEnum $type = null,
+        ?int $outputSize = null,
+        ?FormatEnum $format = null,
+        ?string $delimiter = null,
+        ?PrepostEnum $prepost = null,
+        ?int $dp = null,
+        ?OrderEnum $order = null,
+        ?bool $includeOhlc = null,
+        ?string $timezone = null,
+        ?DateTimeImmutable $date = null,
+        ?DateTimeImmutable $startDate = null,
+        ?DateTimeImmutable $endDate = null,
+        ?bool $previousClose = null,
+        ?AdjustEnum $adjust = null,
+    ): BatchableRequest {
         Guard::requireSymbolIdentifier($symbol, $figi, $isin, $cusip);
 
-        $response = $this->client->get(
-            path: '/plus_dm',
+        return new BatchableRequest(
+            path: '/ppo',
             queryParams: [
                 'symbol' => $symbol,
                 'interval' => $interval->value,
@@ -1548,7 +2858,10 @@ readonly class MomentumIndicators extends TwelveDataApi
                 'exchange' => $exchange,
                 'mic_code' => $micCode,
                 'country' => $country,
-                'time_period' => $timePeriod,
+                'fast_period' => $fastPeriod,
+                'ma_type' => $maType?->value,
+                'series_type' => $seriesType?->value,
+                'slow_period' => $slowPeriod,
                 'type' => $type?->value,
                 'outputsize' => $outputSize,
                 'format' => $format?->value,
@@ -1564,11 +2877,8 @@ readonly class MomentumIndicators extends TwelveDataApi
                 'previous_close' => QueryParamsUtils::booleanAsString($previousClose),
                 'adjust' => $adjust?->value,
             ],
+            responseFactory: fn (string $json): TechnicalIndicator => TechnicalIndicator::fromJson(PercentagePriceOscillator::class, $json),
         );
-
-        /** @var TechnicalIndicator<PlusDirectionalMovement> $technicalIndicator */
-        $technicalIndicator = TechnicalIndicator::fromJson(PlusDirectionalMovement::class, $response);
-        return $technicalIndicator;
     }
 
     /** @return TechnicalIndicator<PercentagePriceOscillator> */
@@ -1599,12 +2909,71 @@ readonly class MomentumIndicators extends TwelveDataApi
         ?DateTimeImmutable $endDate = null,
         ?bool $previousClose = null,
         ?AdjustEnum $adjust = null,
-    ): TechnicalIndicator
-    {
+    ): TechnicalIndicator {
+        $request = $this->percentagePriceOscillatorRequest(
+            $symbol,
+            $interval,
+            $figi,
+            $isin,
+            $cusip,
+            $exchange,
+            $micCode,
+            $country,
+            $fastPeriod,
+            $maType,
+            $seriesType,
+            $slowPeriod,
+            $type,
+            $outputSize,
+            $format,
+            $delimiter,
+            $prepost,
+            $dp,
+            $order,
+            $includeOhlc,
+            $timezone,
+            $date,
+            $startDate,
+            $endDate,
+            $previousClose,
+            $adjust,
+        );
+
+        return TechnicalIndicator::fromJson(PercentagePriceOscillator::class, $this->client->get($request->path, $request->queryParams));
+    }
+
+    public function rateOfChangeRequest(
+        ?string $symbol = null,
+        IntervalEnum $interval = IntervalEnum::OneDay,
+        ?string $figi = null,
+        ?string $isin = null,
+        ?string $cusip = null,
+        ?string $exchange = null,
+        ?string $micCode = null,
+        ?string $country = null,
+        ?SeriesTypeEnum $seriesType = null,
+        ?int $timePeriod = null,
+        ?float $sd = null,
+        ?MaTypeEnum $maType = null,
+        ?TypeEnum $type = null,
+        ?int $outputSize = null,
+        ?FormatEnum $format = null,
+        ?string $delimiter = null,
+        ?PrepostEnum $prepost = null,
+        ?int $dp = null,
+        ?OrderEnum $order = null,
+        ?bool $includeOhlc = null,
+        ?string $timezone = null,
+        ?DateTimeImmutable $date = null,
+        ?DateTimeImmutable $startDate = null,
+        ?DateTimeImmutable $endDate = null,
+        ?bool $previousClose = null,
+        ?AdjustEnum $adjust = null,
+    ): BatchableRequest {
         Guard::requireSymbolIdentifier($symbol, $figi, $isin, $cusip);
 
-        $response = $this->client->get(
-            path: '/ppo',
+        return new BatchableRequest(
+            path: '/roc',
             queryParams: [
                 'symbol' => $symbol,
                 'interval' => $interval->value,
@@ -1614,10 +2983,10 @@ readonly class MomentumIndicators extends TwelveDataApi
                 'exchange' => $exchange,
                 'mic_code' => $micCode,
                 'country' => $country,
-                'fast_period' => $fastPeriod,
-                'ma_type' => $maType?->value,
                 'series_type' => $seriesType?->value,
-                'slow_period' => $slowPeriod,
+                'time_period' => $timePeriod,
+                'sd' => $sd,
+                'ma_type' => $maType?->value,
                 'type' => $type?->value,
                 'outputsize' => $outputSize,
                 'format' => $format?->value,
@@ -1633,11 +3002,8 @@ readonly class MomentumIndicators extends TwelveDataApi
                 'previous_close' => QueryParamsUtils::booleanAsString($previousClose),
                 'adjust' => $adjust?->value,
             ],
+            responseFactory: fn (string $json): TechnicalIndicator => TechnicalIndicator::fromJson(RateOfChange::class, $json),
         );
-
-        /** @var TechnicalIndicator<PercentagePriceOscillator> $technicalIndicator */
-        $technicalIndicator = TechnicalIndicator::fromJson(PercentagePriceOscillator::class, $response);
-        return $technicalIndicator;
     }
 
     /** @return TechnicalIndicator<RateOfChange> */
@@ -1668,12 +3034,71 @@ readonly class MomentumIndicators extends TwelveDataApi
         ?DateTimeImmutable $endDate = null,
         ?bool $previousClose = null,
         ?AdjustEnum $adjust = null,
-    ): TechnicalIndicator
-    {
+    ): TechnicalIndicator {
+        $request = $this->rateOfChangeRequest(
+            $symbol,
+            $interval,
+            $figi,
+            $isin,
+            $cusip,
+            $exchange,
+            $micCode,
+            $country,
+            $seriesType,
+            $timePeriod,
+            $sd,
+            $maType,
+            $type,
+            $outputSize,
+            $format,
+            $delimiter,
+            $prepost,
+            $dp,
+            $order,
+            $includeOhlc,
+            $timezone,
+            $date,
+            $startDate,
+            $endDate,
+            $previousClose,
+            $adjust,
+        );
+
+        return TechnicalIndicator::fromJson(RateOfChange::class, $this->client->get($request->path, $request->queryParams));
+    }
+
+    public function rateOfChangePercentageRequest(
+        ?string $symbol = null,
+        IntervalEnum $interval = IntervalEnum::OneDay,
+        ?string $figi = null,
+        ?string $isin = null,
+        ?string $cusip = null,
+        ?string $exchange = null,
+        ?string $micCode = null,
+        ?string $country = null,
+        ?SeriesTypeEnum $seriesType = null,
+        ?int $timePeriod = null,
+        ?float $sd = null,
+        ?MaTypeEnum $maType = null,
+        ?TypeEnum $type = null,
+        ?int $outputSize = null,
+        ?FormatEnum $format = null,
+        ?string $delimiter = null,
+        ?PrepostEnum $prepost = null,
+        ?int $dp = null,
+        ?OrderEnum $order = null,
+        ?bool $includeOhlc = null,
+        ?string $timezone = null,
+        ?DateTimeImmutable $date = null,
+        ?DateTimeImmutable $startDate = null,
+        ?DateTimeImmutable $endDate = null,
+        ?bool $previousClose = null,
+        ?AdjustEnum $adjust = null,
+    ): BatchableRequest {
         Guard::requireSymbolIdentifier($symbol, $figi, $isin, $cusip);
 
-        $response = $this->client->get(
-            path: '/roc',
+        return new BatchableRequest(
+            path: '/rocp',
             queryParams: [
                 'symbol' => $symbol,
                 'interval' => $interval->value,
@@ -1702,11 +3127,8 @@ readonly class MomentumIndicators extends TwelveDataApi
                 'previous_close' => QueryParamsUtils::booleanAsString($previousClose),
                 'adjust' => $adjust?->value,
             ],
+            responseFactory: fn (string $json): TechnicalIndicator => TechnicalIndicator::fromJson(RateOfChangePercentage::class, $json),
         );
-
-        /** @var TechnicalIndicator<RateOfChange> $technicalIndicator */
-        $technicalIndicator = TechnicalIndicator::fromJson(RateOfChange::class, $response);
-        return $technicalIndicator;
     }
 
     /** @return TechnicalIndicator<RateOfChangePercentage> */
@@ -1737,12 +3159,71 @@ readonly class MomentumIndicators extends TwelveDataApi
         ?DateTimeImmutable $endDate = null,
         ?bool $previousClose = null,
         ?AdjustEnum $adjust = null,
-    ): TechnicalIndicator
-    {
+    ): TechnicalIndicator {
+        $request = $this->rateOfChangePercentageRequest(
+            $symbol,
+            $interval,
+            $figi,
+            $isin,
+            $cusip,
+            $exchange,
+            $micCode,
+            $country,
+            $seriesType,
+            $timePeriod,
+            $sd,
+            $maType,
+            $type,
+            $outputSize,
+            $format,
+            $delimiter,
+            $prepost,
+            $dp,
+            $order,
+            $includeOhlc,
+            $timezone,
+            $date,
+            $startDate,
+            $endDate,
+            $previousClose,
+            $adjust,
+        );
+
+        return TechnicalIndicator::fromJson(RateOfChangePercentage::class, $this->client->get($request->path, $request->queryParams));
+    }
+
+    public function rateOfChangeRatioRequest(
+        ?string $symbol = null,
+        IntervalEnum $interval = IntervalEnum::OneDay,
+        ?string $figi = null,
+        ?string $isin = null,
+        ?string $cusip = null,
+        ?string $exchange = null,
+        ?string $micCode = null,
+        ?string $country = null,
+        ?SeriesTypeEnum $seriesType = null,
+        ?int $timePeriod = null,
+        ?float $sd = null,
+        ?MaTypeEnum $maType = null,
+        ?TypeEnum $type = null,
+        ?int $outputSize = null,
+        ?FormatEnum $format = null,
+        ?string $delimiter = null,
+        ?PrepostEnum $prepost = null,
+        ?int $dp = null,
+        ?OrderEnum $order = null,
+        ?bool $includeOhlc = null,
+        ?string $timezone = null,
+        ?DateTimeImmutable $date = null,
+        ?DateTimeImmutable $startDate = null,
+        ?DateTimeImmutable $endDate = null,
+        ?bool $previousClose = null,
+        ?AdjustEnum $adjust = null,
+    ): BatchableRequest {
         Guard::requireSymbolIdentifier($symbol, $figi, $isin, $cusip);
 
-        $response = $this->client->get(
-            path: '/rocp',
+        return new BatchableRequest(
+            path: '/rocr',
             queryParams: [
                 'symbol' => $symbol,
                 'interval' => $interval->value,
@@ -1771,11 +3252,8 @@ readonly class MomentumIndicators extends TwelveDataApi
                 'previous_close' => QueryParamsUtils::booleanAsString($previousClose),
                 'adjust' => $adjust?->value,
             ],
+            responseFactory: fn (string $json): TechnicalIndicator => TechnicalIndicator::fromJson(RateOfChangeRatio::class, $json),
         );
-
-        /** @var TechnicalIndicator<RateOfChangePercentage> $technicalIndicator */
-        $technicalIndicator = TechnicalIndicator::fromJson(RateOfChangePercentage::class, $response);
-        return $technicalIndicator;
     }
 
     /** @return TechnicalIndicator<RateOfChangeRatio> */
@@ -1806,12 +3284,71 @@ readonly class MomentumIndicators extends TwelveDataApi
         ?DateTimeImmutable $endDate = null,
         ?bool $previousClose = null,
         ?AdjustEnum $adjust = null,
-    ): TechnicalIndicator
-    {
+    ): TechnicalIndicator {
+        $request = $this->rateOfChangeRatioRequest(
+            $symbol,
+            $interval,
+            $figi,
+            $isin,
+            $cusip,
+            $exchange,
+            $micCode,
+            $country,
+            $seriesType,
+            $timePeriod,
+            $sd,
+            $maType,
+            $type,
+            $outputSize,
+            $format,
+            $delimiter,
+            $prepost,
+            $dp,
+            $order,
+            $includeOhlc,
+            $timezone,
+            $date,
+            $startDate,
+            $endDate,
+            $previousClose,
+            $adjust,
+        );
+
+        return TechnicalIndicator::fromJson(RateOfChangeRatio::class, $this->client->get($request->path, $request->queryParams));
+    }
+
+    public function rateOfChangeRatio100Request(
+        ?string $symbol = null,
+        IntervalEnum $interval = IntervalEnum::OneDay,
+        ?string $figi = null,
+        ?string $isin = null,
+        ?string $cusip = null,
+        ?string $exchange = null,
+        ?string $micCode = null,
+        ?string $country = null,
+        ?SeriesTypeEnum $seriesType = null,
+        ?int $timePeriod = null,
+        ?float $sd = null,
+        ?MaTypeEnum $maType = null,
+        ?TypeEnum $type = null,
+        ?int $outputSize = null,
+        ?FormatEnum $format = null,
+        ?string $delimiter = null,
+        ?PrepostEnum $prepost = null,
+        ?int $dp = null,
+        ?OrderEnum $order = null,
+        ?bool $includeOhlc = null,
+        ?string $timezone = null,
+        ?DateTimeImmutable $date = null,
+        ?DateTimeImmutable $startDate = null,
+        ?DateTimeImmutable $endDate = null,
+        ?bool $previousClose = null,
+        ?AdjustEnum $adjust = null,
+    ): BatchableRequest {
         Guard::requireSymbolIdentifier($symbol, $figi, $isin, $cusip);
 
-        $response = $this->client->get(
-            path: '/rocr',
+        return new BatchableRequest(
+            path: '/rocr100',
             queryParams: [
                 'symbol' => $symbol,
                 'interval' => $interval->value,
@@ -1840,11 +3377,8 @@ readonly class MomentumIndicators extends TwelveDataApi
                 'previous_close' => QueryParamsUtils::booleanAsString($previousClose),
                 'adjust' => $adjust?->value,
             ],
+            responseFactory: fn (string $json): TechnicalIndicator => TechnicalIndicator::fromJson(RateOfChangeRatio100::class, $json),
         );
-
-        /** @var TechnicalIndicator<RateOfChangeRatio> $technicalIndicator */
-        $technicalIndicator = TechnicalIndicator::fromJson(RateOfChangeRatio::class, $response);
-        return $technicalIndicator;
     }
 
     /** @return TechnicalIndicator<RateOfChangeRatio100> */
@@ -1875,12 +3409,69 @@ readonly class MomentumIndicators extends TwelveDataApi
         ?DateTimeImmutable $endDate = null,
         ?bool $previousClose = null,
         ?AdjustEnum $adjust = null,
-    ): TechnicalIndicator
-    {
+    ): TechnicalIndicator {
+        $request = $this->rateOfChangeRatio100Request(
+            $symbol,
+            $interval,
+            $figi,
+            $isin,
+            $cusip,
+            $exchange,
+            $micCode,
+            $country,
+            $seriesType,
+            $timePeriod,
+            $sd,
+            $maType,
+            $type,
+            $outputSize,
+            $format,
+            $delimiter,
+            $prepost,
+            $dp,
+            $order,
+            $includeOhlc,
+            $timezone,
+            $date,
+            $startDate,
+            $endDate,
+            $previousClose,
+            $adjust,
+        );
+
+        return TechnicalIndicator::fromJson(RateOfChangeRatio100::class, $this->client->get($request->path, $request->queryParams));
+    }
+
+    public function relativeStrengthIndexRequest(
+        ?string $symbol = null,
+        IntervalEnum $interval = IntervalEnum::OneDay,
+        ?string $figi = null,
+        ?string $isin = null,
+        ?string $cusip = null,
+        ?string $exchange = null,
+        ?string $micCode = null,
+        ?string $country = null,
+        ?SeriesTypeEnum $seriesType = null,
+        ?int $timePeriod = null,
+        ?TypeEnum $type = null,
+        ?int $outputSize = null,
+        ?FormatEnum $format = null,
+        ?string $delimiter = null,
+        ?PrepostEnum $prepost = null,
+        ?int $dp = null,
+        ?OrderEnum $order = null,
+        ?bool $includeOhlc = null,
+        ?string $timezone = null,
+        ?DateTimeImmutable $date = null,
+        ?DateTimeImmutable $startDate = null,
+        ?DateTimeImmutable $endDate = null,
+        ?bool $previousClose = null,
+        ?AdjustEnum $adjust = null,
+    ): BatchableRequest {
         Guard::requireSymbolIdentifier($symbol, $figi, $isin, $cusip);
 
-        $response = $this->client->get(
-            path: '/rocr100',
+        return new BatchableRequest(
+            path: '/rsi',
             queryParams: [
                 'symbol' => $symbol,
                 'interval' => $interval->value,
@@ -1892,8 +3483,6 @@ readonly class MomentumIndicators extends TwelveDataApi
                 'country' => $country,
                 'series_type' => $seriesType?->value,
                 'time_period' => $timePeriod,
-                'sd' => $sd,
-                'ma_type' => $maType?->value,
                 'type' => $type?->value,
                 'outputsize' => $outputSize,
                 'format' => $format?->value,
@@ -1909,11 +3498,8 @@ readonly class MomentumIndicators extends TwelveDataApi
                 'previous_close' => QueryParamsUtils::booleanAsString($previousClose),
                 'adjust' => $adjust?->value,
             ],
+            responseFactory: fn (string $json): TechnicalIndicator => TechnicalIndicator::fromJson(RelativeStrengthIndex::class, $json),
         );
-
-        /** @var TechnicalIndicator<RateOfChangeRatio100> $technicalIndicator */
-        $technicalIndicator = TechnicalIndicator::fromJson(RateOfChangeRatio100::class, $response);
-        return $technicalIndicator;
     }
 
     /** @return TechnicalIndicator<RelativeStrengthIndex> */
@@ -1942,12 +3528,70 @@ readonly class MomentumIndicators extends TwelveDataApi
         ?DateTimeImmutable $endDate = null,
         ?bool $previousClose = null,
         ?AdjustEnum $adjust = null,
-    ): TechnicalIndicator
-    {
+    ): TechnicalIndicator {
+        $request = $this->relativeStrengthIndexRequest(
+            $symbol,
+            $interval,
+            $figi,
+            $isin,
+            $cusip,
+            $exchange,
+            $micCode,
+            $country,
+            $seriesType,
+            $timePeriod,
+            $type,
+            $outputSize,
+            $format,
+            $delimiter,
+            $prepost,
+            $dp,
+            $order,
+            $includeOhlc,
+            $timezone,
+            $date,
+            $startDate,
+            $endDate,
+            $previousClose,
+            $adjust,
+        );
+
+        return TechnicalIndicator::fromJson(RelativeStrengthIndex::class, $this->client->get($request->path, $request->queryParams));
+    }
+
+    public function stochasticOscillatorRequest(
+        ?string $symbol = null,
+        IntervalEnum $interval = IntervalEnum::OneDay,
+        ?string $figi = null,
+        ?string $isin = null,
+        ?string $cusip = null,
+        ?string $exchange = null,
+        ?string $micCode = null,
+        ?string $country = null,
+        ?int $fastKPeriod = null,
+        ?int $slowKPeriod = null,
+        ?int $slowDPeriod = null,
+        ?MaTypeEnum $slowKmaType = null,
+        ?MaTypeEnum $slowDmaType = null,
+        ?TypeEnum $type = null,
+        ?int $outputSize = null,
+        ?FormatEnum $format = null,
+        ?string $delimiter = null,
+        ?PrepostEnum $prepost = null,
+        ?int $dp = null,
+        ?OrderEnum $order = null,
+        ?bool $includeOhlc = null,
+        ?string $timezone = null,
+        ?DateTimeImmutable $date = null,
+        ?DateTimeImmutable $startDate = null,
+        ?DateTimeImmutable $endDate = null,
+        ?bool $previousClose = null,
+        ?AdjustEnum $adjust = null,
+    ): BatchableRequest {
         Guard::requireSymbolIdentifier($symbol, $figi, $isin, $cusip);
 
-        $response = $this->client->get(
-            path: '/rsi',
+        return new BatchableRequest(
+            path: '/stoch',
             queryParams: [
                 'symbol' => $symbol,
                 'interval' => $interval->value,
@@ -1957,8 +3601,11 @@ readonly class MomentumIndicators extends TwelveDataApi
                 'exchange' => $exchange,
                 'mic_code' => $micCode,
                 'country' => $country,
-                'series_type' => $seriesType?->value,
-                'time_period' => $timePeriod,
+                'fast_k_period' => $fastKPeriod,
+                'slow_k_period' => $slowKPeriod,
+                'slow_d_period' => $slowDPeriod,
+                'slow_kma_type' => $slowKmaType?->value,
+                'slow_dma_type' => $slowDmaType?->value,
                 'type' => $type?->value,
                 'outputsize' => $outputSize,
                 'format' => $format?->value,
@@ -1974,11 +3621,8 @@ readonly class MomentumIndicators extends TwelveDataApi
                 'previous_close' => QueryParamsUtils::booleanAsString($previousClose),
                 'adjust' => $adjust?->value,
             ],
+            responseFactory: fn (string $json): TechnicalIndicator => TechnicalIndicator::fromJson(StochasticOscillator::class, $json),
         );
-
-        /** @var TechnicalIndicator<RelativeStrengthIndex> $technicalIndicator */
-        $technicalIndicator = TechnicalIndicator::fromJson(RelativeStrengthIndex::class, $response);
-        return $technicalIndicator;
     }
 
     /** @return TechnicalIndicator<StochasticOscillator> */
@@ -2010,12 +3654,71 @@ readonly class MomentumIndicators extends TwelveDataApi
         ?DateTimeImmutable $endDate = null,
         ?bool $previousClose = null,
         ?AdjustEnum $adjust = null,
-    ): TechnicalIndicator
-    {
+    ): TechnicalIndicator {
+        $request = $this->stochasticOscillatorRequest(
+            $symbol,
+            $interval,
+            $figi,
+            $isin,
+            $cusip,
+            $exchange,
+            $micCode,
+            $country,
+            $fastKPeriod,
+            $slowKPeriod,
+            $slowDPeriod,
+            $slowKmaType,
+            $slowDmaType,
+            $type,
+            $outputSize,
+            $format,
+            $delimiter,
+            $prepost,
+            $dp,
+            $order,
+            $includeOhlc,
+            $timezone,
+            $date,
+            $startDate,
+            $endDate,
+            $previousClose,
+            $adjust,
+        );
+
+        return TechnicalIndicator::fromJson(StochasticOscillator::class, $this->client->get($request->path, $request->queryParams));
+    }
+
+    public function stochasticFastRequest(
+        ?string $symbol = null,
+        IntervalEnum $interval = IntervalEnum::OneDay,
+        ?string $figi = null,
+        ?string $isin = null,
+        ?string $cusip = null,
+        ?string $exchange = null,
+        ?string $micCode = null,
+        ?string $country = null,
+        ?int $fastKPeriod = null,
+        ?int $fastDPeriod = null,
+        ?MaTypeEnum $fastDmaType = null,
+        ?TypeEnum $type = null,
+        ?int $outputSize = null,
+        ?FormatEnum $format = null,
+        ?string $delimiter = null,
+        ?PrepostEnum $prepost = null,
+        ?int $dp = null,
+        ?OrderEnum $order = null,
+        ?bool $includeOhlc = null,
+        ?string $timezone = null,
+        ?DateTimeImmutable $date = null,
+        ?DateTimeImmutable $startDate = null,
+        ?DateTimeImmutable $endDate = null,
+        ?bool $previousClose = null,
+        ?AdjustEnum $adjust = null,
+    ): BatchableRequest {
         Guard::requireSymbolIdentifier($symbol, $figi, $isin, $cusip);
 
-        $response = $this->client->get(
-            path: '/stoch',
+        return new BatchableRequest(
+            path: '/stochf',
             queryParams: [
                 'symbol' => $symbol,
                 'interval' => $interval->value,
@@ -2026,10 +3729,8 @@ readonly class MomentumIndicators extends TwelveDataApi
                 'mic_code' => $micCode,
                 'country' => $country,
                 'fast_k_period' => $fastKPeriod,
-                'slow_k_period' => $slowKPeriod,
-                'slow_d_period' => $slowDPeriod,
-                'slow_kma_type' => $slowKmaType?->value,
-                'slow_dma_type' => $slowDmaType?->value,
+                'fast_d_period' => $fastDPeriod,
+                'fast_dma_type' => $fastDmaType?->value,
                 'type' => $type?->value,
                 'outputsize' => $outputSize,
                 'format' => $format?->value,
@@ -2045,11 +3746,8 @@ readonly class MomentumIndicators extends TwelveDataApi
                 'previous_close' => QueryParamsUtils::booleanAsString($previousClose),
                 'adjust' => $adjust?->value,
             ],
+            responseFactory: fn (string $json): TechnicalIndicator => TechnicalIndicator::fromJson(StochasticFast::class, $json),
         );
-
-        /** @var TechnicalIndicator<StochasticOscillator> $technicalIndicator */
-        $technicalIndicator = TechnicalIndicator::fromJson(StochasticOscillator::class, $response);
-        return $technicalIndicator;
     }
 
     /** @return TechnicalIndicator<StochasticFast> */
@@ -2079,12 +3777,71 @@ readonly class MomentumIndicators extends TwelveDataApi
         ?DateTimeImmutable $endDate = null,
         ?bool $previousClose = null,
         ?AdjustEnum $adjust = null,
-    ): TechnicalIndicator
-    {
+    ): TechnicalIndicator {
+        $request = $this->stochasticFastRequest(
+            $symbol,
+            $interval,
+            $figi,
+            $isin,
+            $cusip,
+            $exchange,
+            $micCode,
+            $country,
+            $fastKPeriod,
+            $fastDPeriod,
+            $fastDmaType,
+            $type,
+            $outputSize,
+            $format,
+            $delimiter,
+            $prepost,
+            $dp,
+            $order,
+            $includeOhlc,
+            $timezone,
+            $date,
+            $startDate,
+            $endDate,
+            $previousClose,
+            $adjust,
+        );
+
+        return TechnicalIndicator::fromJson(StochasticFast::class, $this->client->get($request->path, $request->queryParams));
+    }
+
+    public function stochasticRelativeStrengthIndexRequest(
+        ?string $symbol = null,
+        IntervalEnum $interval = IntervalEnum::OneDay,
+        ?string $figi = null,
+        ?string $isin = null,
+        ?string $cusip = null,
+        ?string $exchange = null,
+        ?string $micCode = null,
+        ?string $country = null,
+        ?int $stochLength = null,
+        ?int $kPeriod = null,
+        ?int $dPeriod = null,
+        ?SeriesTypeEnum $seriesType = null,
+        ?int $rsiLength = null,
+        ?TypeEnum $type = null,
+        ?int $outputSize = null,
+        ?FormatEnum $format = null,
+        ?string $delimiter = null,
+        ?PrepostEnum $prepost = null,
+        ?int $dp = null,
+        ?OrderEnum $order = null,
+        ?bool $includeOhlc = null,
+        ?string $timezone = null,
+        ?DateTimeImmutable $date = null,
+        ?DateTimeImmutable $startDate = null,
+        ?DateTimeImmutable $endDate = null,
+        ?bool $previousClose = null,
+        ?AdjustEnum $adjust = null,
+    ): BatchableRequest {
         Guard::requireSymbolIdentifier($symbol, $figi, $isin, $cusip);
 
-        $response = $this->client->get(
-            path: '/stochf',
+        return new BatchableRequest(
+            path: '/stochrsi',
             queryParams: [
                 'symbol' => $symbol,
                 'interval' => $interval->value,
@@ -2094,9 +3851,11 @@ readonly class MomentumIndicators extends TwelveDataApi
                 'exchange' => $exchange,
                 'mic_code' => $micCode,
                 'country' => $country,
-                'fast_k_period' => $fastKPeriod,
-                'fast_d_period' => $fastDPeriod,
-                'fast_dma_type' => $fastDmaType?->value,
+                'stoch_length' => $stochLength,
+                'k_period' => $kPeriod,
+                'd_period' => $dPeriod,
+                'series_type' => $seriesType?->value,
+                'rsi_length' => $rsiLength,
                 'type' => $type?->value,
                 'outputsize' => $outputSize,
                 'format' => $format?->value,
@@ -2112,11 +3871,11 @@ readonly class MomentumIndicators extends TwelveDataApi
                 'previous_close' => QueryParamsUtils::booleanAsString($previousClose),
                 'adjust' => $adjust?->value,
             ],
+            responseFactory: fn (string $json): TechnicalIndicator => TechnicalIndicator::fromJson(
+                StochasticRelativeStrengthIndex::class,
+                $json,
+            ),
         );
-
-        /** @var TechnicalIndicator<StochasticFast> $technicalIndicator */
-        $technicalIndicator = TechnicalIndicator::fromJson(StochasticFast::class, $response);
-        return $technicalIndicator;
     }
 
     /** @return TechnicalIndicator<StochasticRelativeStrengthIndex> */
@@ -2148,12 +3907,75 @@ readonly class MomentumIndicators extends TwelveDataApi
         ?DateTimeImmutable $endDate = null,
         ?bool $previousClose = null,
         ?AdjustEnum $adjust = null,
-    ): TechnicalIndicator
-    {
+    ): TechnicalIndicator {
+        $request = $this->stochasticRelativeStrengthIndexRequest(
+            $symbol,
+            $interval,
+            $figi,
+            $isin,
+            $cusip,
+            $exchange,
+            $micCode,
+            $country,
+            $stochLength,
+            $kPeriod,
+            $dPeriod,
+            $seriesType,
+            $rsiLength,
+            $type,
+            $outputSize,
+            $format,
+            $delimiter,
+            $prepost,
+            $dp,
+            $order,
+            $includeOhlc,
+            $timezone,
+            $date,
+            $startDate,
+            $endDate,
+            $previousClose,
+            $adjust,
+        );
+
+        return TechnicalIndicator::fromJson(
+            StochasticRelativeStrengthIndex::class,
+            $this->client->get($request->path, $request->queryParams),
+        );
+    }
+
+    public function ultimateOscillatorEndpointRequest(
+        ?string $symbol = null,
+        IntervalEnum $interval = IntervalEnum::OneDay,
+        ?string $figi = null,
+        ?string $isin = null,
+        ?string $cusip = null,
+        ?string $exchange = null,
+        ?string $micCode = null,
+        ?string $country = null,
+        ?SeriesTypeEnum $seriesType = null,
+        ?int $timePeriod1 = null,
+        ?int $timePeriod2 = null,
+        ?int $timePeriod3 = null,
+        ?TypeEnum $type = null,
+        ?int $outputSize = null,
+        ?FormatEnum $format = null,
+        ?string $delimiter = null,
+        ?PrepostEnum $prepost = null,
+        ?int $dp = null,
+        ?OrderEnum $order = null,
+        ?bool $includeOhlc = null,
+        ?string $timezone = null,
+        ?DateTimeImmutable $date = null,
+        ?DateTimeImmutable $startDate = null,
+        ?DateTimeImmutable $endDate = null,
+        ?bool $previousClose = null,
+        ?AdjustEnum $adjust = null,
+    ): BatchableRequest {
         Guard::requireSymbolIdentifier($symbol, $figi, $isin, $cusip);
 
-        $response = $this->client->get(
-            path: '/stochrsi',
+        return new BatchableRequest(
+            path: '/ultosc',
             queryParams: [
                 'symbol' => $symbol,
                 'interval' => $interval->value,
@@ -2163,11 +3985,10 @@ readonly class MomentumIndicators extends TwelveDataApi
                 'exchange' => $exchange,
                 'mic_code' => $micCode,
                 'country' => $country,
-                'stoch_length' => $stochLength,
-                'k_period' => $kPeriod,
-                'd_period' => $dPeriod,
                 'series_type' => $seriesType?->value,
-                'rsi_length' => $rsiLength,
+                'time_period_1' => $timePeriod1,
+                'time_period_2' => $timePeriod2,
+                'time_period_3' => $timePeriod3,
                 'type' => $type?->value,
                 'outputsize' => $outputSize,
                 'format' => $format?->value,
@@ -2183,11 +4004,11 @@ readonly class MomentumIndicators extends TwelveDataApi
                 'previous_close' => QueryParamsUtils::booleanAsString($previousClose),
                 'adjust' => $adjust?->value,
             ],
+            responseFactory: fn (string $json): TechnicalIndicator => TechnicalIndicator::fromJson(
+                UltimateOscillatorEndpoint::class,
+                $json,
+            ),
         );
-
-        /** @var TechnicalIndicator<StochasticRelativeStrengthIndex> $technicalIndicator */
-        $technicalIndicator = TechnicalIndicator::fromJson(StochasticRelativeStrengthIndex::class, $response);
-        return $technicalIndicator;
     }
 
     /** @return TechnicalIndicator<UltimateOscillatorEndpoint> */
@@ -2218,12 +4039,68 @@ readonly class MomentumIndicators extends TwelveDataApi
         ?DateTimeImmutable $endDate = null,
         ?bool $previousClose = null,
         ?AdjustEnum $adjust = null,
-    ): TechnicalIndicator
-    {
+    ): TechnicalIndicator {
+        $request = $this->ultimateOscillatorEndpointRequest(
+            $symbol,
+            $interval,
+            $figi,
+            $isin,
+            $cusip,
+            $exchange,
+            $micCode,
+            $country,
+            $seriesType,
+            $timePeriod1,
+            $timePeriod2,
+            $timePeriod3,
+            $type,
+            $outputSize,
+            $format,
+            $delimiter,
+            $prepost,
+            $dp,
+            $order,
+            $includeOhlc,
+            $timezone,
+            $date,
+            $startDate,
+            $endDate,
+            $previousClose,
+            $adjust,
+        );
+
+        return TechnicalIndicator::fromJson(UltimateOscillatorEndpoint::class, $this->client->get($request->path, $request->queryParams));
+    }
+
+    public function williamsPercentRRequest(
+        ?string $symbol = null,
+        IntervalEnum $interval = IntervalEnum::OneDay,
+        ?string $figi = null,
+        ?string $isin = null,
+        ?string $cusip = null,
+        ?string $exchange = null,
+        ?string $micCode = null,
+        ?string $country = null,
+        ?int $timePeriod = null,
+        ?TypeEnum $type = null,
+        ?int $outputSize = null,
+        ?FormatEnum $format = null,
+        ?string $delimiter = null,
+        ?PrepostEnum $prepost = null,
+        ?int $dp = null,
+        ?OrderEnum $order = null,
+        ?bool $includeOhlc = null,
+        ?string $timezone = null,
+        ?DateTimeImmutable $date = null,
+        ?DateTimeImmutable $startDate = null,
+        ?DateTimeImmutable $endDate = null,
+        ?bool $previousClose = null,
+        ?AdjustEnum $adjust = null,
+    ): BatchableRequest {
         Guard::requireSymbolIdentifier($symbol, $figi, $isin, $cusip);
 
-        $response = $this->client->get(
-            path: '/ultosc',
+        return new BatchableRequest(
+            path: '/willr',
             queryParams: [
                 'symbol' => $symbol,
                 'interval' => $interval->value,
@@ -2233,10 +4110,7 @@ readonly class MomentumIndicators extends TwelveDataApi
                 'exchange' => $exchange,
                 'mic_code' => $micCode,
                 'country' => $country,
-                'series_type' => $seriesType?->value,
-                'time_period_1' => $timePeriod1,
-                'time_period_2' => $timePeriod2,
-                'time_period_3' => $timePeriod3,
+                'time_period' => $timePeriod,
                 'type' => $type?->value,
                 'outputsize' => $outputSize,
                 'format' => $format?->value,
@@ -2252,11 +4126,8 @@ readonly class MomentumIndicators extends TwelveDataApi
                 'previous_close' => QueryParamsUtils::booleanAsString($previousClose),
                 'adjust' => $adjust?->value,
             ],
+            responseFactory: fn (string $json): TechnicalIndicator => TechnicalIndicator::fromJson(WilliamsPercentR::class, $json),
         );
-
-        /** @var TechnicalIndicator<UltimateOscillatorEndpoint> $technicalIndicator */
-        $technicalIndicator = TechnicalIndicator::fromJson(UltimateOscillatorEndpoint::class, $response);
-        return $technicalIndicator;
     }
 
     /** @return TechnicalIndicator<WilliamsPercentR> */
@@ -2284,41 +4155,33 @@ readonly class MomentumIndicators extends TwelveDataApi
         ?DateTimeImmutable $endDate = null,
         ?bool $previousClose = null,
         ?AdjustEnum $adjust = null,
-    ): TechnicalIndicator
-    {
-        Guard::requireSymbolIdentifier($symbol, $figi, $isin, $cusip);
-
-        $response = $this->client->get(
-            path: '/willr',
-            queryParams: [
-                'symbol' => $symbol,
-                'interval' => $interval->value,
-                'figi' => $figi,
-                'isin' => $isin,
-                'cusip' => $cusip,
-                'exchange' => $exchange,
-                'mic_code' => $micCode,
-                'country' => $country,
-                'time_period' => $timePeriod,
-                'type' => $type?->value,
-                'outputsize' => $outputSize,
-                'format' => $format?->value,
-                'delimiter' => $delimiter,
-                'prepost' => $prepost?->value,
-                'dp' => $dp,
-                'order' => $order?->value,
-                'include_ohlc' => QueryParamsUtils::booleanAsString($includeOhlc),
-                'timezone' => $timezone,
-                'date' => DateUtils::formatDate($date),
-                'start_date' => DateUtils::formatDate($startDate),
-                'end_date' => DateUtils::formatDate($endDate),
-                'previous_close' => QueryParamsUtils::booleanAsString($previousClose),
-                'adjust' => $adjust?->value,
-            ],
+    ): TechnicalIndicator {
+        $request = $this->williamsPercentRRequest(
+            $symbol,
+            $interval,
+            $figi,
+            $isin,
+            $cusip,
+            $exchange,
+            $micCode,
+            $country,
+            $timePeriod,
+            $type,
+            $outputSize,
+            $format,
+            $delimiter,
+            $prepost,
+            $dp,
+            $order,
+            $includeOhlc,
+            $timezone,
+            $date,
+            $startDate,
+            $endDate,
+            $previousClose,
+            $adjust,
         );
 
-        /** @var TechnicalIndicator<WilliamsPercentR> $technicalIndicator */
-        $technicalIndicator = TechnicalIndicator::fromJson(WilliamsPercentR::class, $response);
-        return $technicalIndicator;
+        return TechnicalIndicator::fromJson(WilliamsPercentR::class, $this->client->get($request->path, $request->queryParams));
     }
 }

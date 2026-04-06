@@ -9,16 +9,21 @@ use MarekSkopal\TwelveData\Enum\FormatEnum;
 
 readonly class Advanced extends TwelveDataApi
 {
-    public function apiUsage(?FormatEnum $format = null, ?string $delimiter = null,): ApiUsage
+    /** @return BatchableRequest<ApiUsage> */
+    public function apiUsageRequest(?FormatEnum $format = null, ?string $delimiter = null): BatchableRequest
     {
-        $response = $this->client->get(
+        return new BatchableRequest(
             path: '/api_usage',
             queryParams: [
                 'format' => $format?->value,
                 'delimiter' => $delimiter,
             ],
+            responseFactory: ApiUsage::fromJson(...),
         );
+    }
 
-        return ApiUsage::fromJson($response);
+    public function apiUsage(?FormatEnum $format = null, ?string $delimiter = null): ApiUsage
+    {
+        return $this->apiUsageRequest($format, $delimiter)->execute($this->client);
     }
 }

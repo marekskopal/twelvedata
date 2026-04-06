@@ -12,6 +12,7 @@ use MarekSkopal\TwelveData\Exception\TooManyRequestsException;
 use Psr\Http\Message\RequestFactoryInterface;
 use Psr\Http\Message\RequestInterface;
 use Psr\Http\Message\ResponseInterface;
+use Psr\Http\Message\StreamFactoryInterface;
 
 readonly class Client implements ClientInterface
 {
@@ -21,10 +22,13 @@ readonly class Client implements ClientInterface
 
     private RequestFactoryInterface $requestFactory;
 
+    private StreamFactoryInterface $streamFactory;
+
     public function __construct(private Config $config)
     {
         $this->httpClient = Psr18ClientDiscovery::find();
         $this->requestFactory = Psr17FactoryDiscovery::findRequestFactory();
+        $this->streamFactory = Psr17FactoryDiscovery::findStreamFactory();
     }
 
     /** @param array<string, scalar|null> $queryParams */
@@ -56,6 +60,34 @@ readonly class Client implements ClientInterface
             sleep($this->config->tooManyRequestsWaitTime);
 
             return $this->get($path, $queryParams, $retryCount + 1);
+        }
+    }
+
+    public function post(string $path, string $body, int $retryCount = 0): string
+    {
+        $uri = self::BaseUri . $path;
+
+        $request = $this->requestFactory->createRequest('POST', $uri);
+
+        $request = $this->addHeaders($request);
+        $request = $request->withBody($this->streamFactory->createStream($body));
+
+        $response = $this->httpClient->sendRequest($request);
+
+        try {
+            return $this->getContents($response);
+        } catch (TooManyRequestsException $e) {
+            if (
+                $this->config->tooManyRequestsRepeat <= 0
+                || $this->config->tooManyRequestsWaitTime <= 0
+                || $retryCount >= $this->config->tooManyRequestsRepeat
+            ) {
+                throw $e;
+            }
+
+            sleep($this->config->tooManyRequestsWaitTime);
+
+            return $this->post($path, $body, $retryCount + 1);
         }
     }
 

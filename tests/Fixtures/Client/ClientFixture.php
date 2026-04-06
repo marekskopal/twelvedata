@@ -30,6 +30,11 @@ final class ClientFixture implements ClientInterface
         return $this->getResponse();
     }
 
+    public function post(string $path, string $body, int $retryCount = 0): string
+    {
+        return $this->getResponse();
+    }
+
     private function getResponse(): string
     {
         return (string) file_get_contents(__DIR__ . '/../Response/' . $this->responseFilename);

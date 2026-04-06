@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace MarekSkopal\TwelveData\Api\TechnicalIndicators;
 
 use DateTimeImmutable;
+use MarekSkopal\TwelveData\Api\BatchableRequest;
 use MarekSkopal\TwelveData\Api\TwelveDataApi;
 use MarekSkopal\TwelveData\Dto\TechnicalIndicators\PriceTransform\Addition;
 use MarekSkopal\TwelveData\Dto\TechnicalIndicators\PriceTransform\Average;
@@ -38,6 +39,67 @@ use MarekSkopal\TwelveData\Utils\QueryParamsUtils;
 
 readonly class PriceTransform extends TwelveDataApi
 {
+    public function additionRequest(
+        ?string $symbol = null,
+        IntervalEnum $interval = IntervalEnum::OneDay,
+        ?string $figi = null,
+        ?string $isin = null,
+        ?string $cusip = null,
+        ?string $exchange = null,
+        ?string $micCode = null,
+        ?string $country = null,
+        ?SeriesTypeEnum $seriesType1 = null,
+        ?SeriesTypeEnum $seriesType2 = null,
+        ?TypeEnum $type = null,
+        ?int $outputSize = null,
+        ?FormatEnum $format = null,
+        ?string $delimiter = null,
+        ?PrepostEnum $prepost = null,
+        ?int $dp = null,
+        ?OrderEnum $order = null,
+        ?bool $includeOhlc = null,
+        ?string $timezone = null,
+        ?DateTimeImmutable $date = null,
+        ?DateTimeImmutable $startDate = null,
+        ?DateTimeImmutable $endDate = null,
+        ?bool $previousClose = null,
+        ?AdjustEnum $adjust = null,
+    ): BatchableRequest
+    {
+        Guard::requireSymbolIdentifier($symbol, $figi, $isin, $cusip);
+
+        return new BatchableRequest(
+            path: '/add',
+            queryParams: [
+                'symbol' => $symbol,
+                'interval' => $interval->value,
+                'figi' => $figi,
+                'isin' => $isin,
+                'cusip' => $cusip,
+                'exchange' => $exchange,
+                'mic_code' => $micCode,
+                'country' => $country,
+                'series_type_1' => $seriesType1?->value,
+                'series_type_2' => $seriesType2?->value,
+                'type' => $type?->value,
+                'outputsize' => $outputSize,
+                'format' => $format?->value,
+                'delimiter' => $delimiter,
+                'prepost' => $prepost?->value,
+                'dp' => $dp,
+                'order' => $order?->value,
+                'include_ohlc' => QueryParamsUtils::booleanAsString($includeOhlc),
+                'timezone' => $timezone,
+                'date' => DateUtils::formatDate($date),
+                'start_date' => DateUtils::formatDate($startDate),
+                'end_date' => DateUtils::formatDate($endDate),
+                'previous_close' => QueryParamsUtils::booleanAsString($previousClose),
+                'adjust' => $adjust?->value,
+            ],
+            responseFactory: fn (string $json): TechnicalIndicator => TechnicalIndicator::fromJson(Addition::class, $json),
+        );
+    }
+
     /** @return TechnicalIndicator<Addition> */
     public function addition(
         ?string $symbol = null,
@@ -66,10 +128,67 @@ readonly class PriceTransform extends TwelveDataApi
         ?AdjustEnum $adjust = null,
     ): TechnicalIndicator
     {
+        $request = $this->additionRequest(
+            $symbol,
+            $interval,
+            $figi,
+            $isin,
+            $cusip,
+            $exchange,
+            $micCode,
+            $country,
+            $seriesType1,
+            $seriesType2,
+            $type,
+            $outputSize,
+            $format,
+            $delimiter,
+            $prepost,
+            $dp,
+            $order,
+            $includeOhlc,
+            $timezone,
+            $date,
+            $startDate,
+            $endDate,
+            $previousClose,
+            $adjust,
+        );
+
+        return TechnicalIndicator::fromJson(Addition::class, $this->client->get($request->path, $request->queryParams));
+    }
+
+    public function averageRequest(
+        ?string $symbol = null,
+        IntervalEnum $interval = IntervalEnum::OneDay,
+        ?string $figi = null,
+        ?string $isin = null,
+        ?string $cusip = null,
+        ?string $exchange = null,
+        ?string $micCode = null,
+        ?string $country = null,
+        ?SeriesTypeEnum $seriesType = null,
+        ?int $timePeriod = null,
+        ?TypeEnum $type = null,
+        ?int $outputSize = null,
+        ?FormatEnum $format = null,
+        ?string $delimiter = null,
+        ?PrepostEnum $prepost = null,
+        ?int $dp = null,
+        ?OrderEnum $order = null,
+        ?bool $includeOhlc = null,
+        ?string $timezone = null,
+        ?DateTimeImmutable $date = null,
+        ?DateTimeImmutable $startDate = null,
+        ?DateTimeImmutable $endDate = null,
+        ?bool $previousClose = null,
+        ?AdjustEnum $adjust = null,
+    ): BatchableRequest
+    {
         Guard::requireSymbolIdentifier($symbol, $figi, $isin, $cusip);
 
-        $response = $this->client->get(
-            path: '/add',
+        return new BatchableRequest(
+            path: '/avg',
             queryParams: [
                 'symbol' => $symbol,
                 'interval' => $interval->value,
@@ -79,8 +198,8 @@ readonly class PriceTransform extends TwelveDataApi
                 'exchange' => $exchange,
                 'mic_code' => $micCode,
                 'country' => $country,
-                'series_type_1' => $seriesType1?->value,
-                'series_type_2' => $seriesType2?->value,
+                'series_type' => $seriesType?->value,
+                'time_period' => $timePeriod,
                 'type' => $type?->value,
                 'outputsize' => $outputSize,
                 'format' => $format?->value,
@@ -96,11 +215,8 @@ readonly class PriceTransform extends TwelveDataApi
                 'previous_close' => QueryParamsUtils::booleanAsString($previousClose),
                 'adjust' => $adjust?->value,
             ],
+            responseFactory: fn (string $json): TechnicalIndicator => TechnicalIndicator::fromJson(Average::class, $json),
         );
-
-        /** @var TechnicalIndicator<Addition> $technicalIndicator */
-        $technicalIndicator = TechnicalIndicator::fromJson(Addition::class, $response);
-        return $technicalIndicator;
     }
 
     /** @return TechnicalIndicator<Average> */
@@ -131,10 +247,65 @@ readonly class PriceTransform extends TwelveDataApi
         ?AdjustEnum $adjust = null,
     ): TechnicalIndicator
     {
+        $request = $this->averageRequest(
+            $symbol,
+            $interval,
+            $figi,
+            $isin,
+            $cusip,
+            $exchange,
+            $micCode,
+            $country,
+            $seriesType,
+            $timePeriod,
+            $type,
+            $outputSize,
+            $format,
+            $delimiter,
+            $prepost,
+            $dp,
+            $order,
+            $includeOhlc,
+            $timezone,
+            $date,
+            $startDate,
+            $endDate,
+            $previousClose,
+            $adjust,
+        );
+
+        return TechnicalIndicator::fromJson(Average::class, $this->client->get($request->path, $request->queryParams));
+    }
+
+    public function averagePriceRequest(
+        ?string $symbol = null,
+        IntervalEnum $interval = IntervalEnum::OneDay,
+        ?string $figi = null,
+        ?string $isin = null,
+        ?string $cusip = null,
+        ?string $exchange = null,
+        ?string $micCode = null,
+        ?string $country = null,
+        ?TypeEnum $type = null,
+        ?int $outputSize = null,
+        ?FormatEnum $format = null,
+        ?string $delimiter = null,
+        ?PrepostEnum $prepost = null,
+        ?int $dp = null,
+        ?OrderEnum $order = null,
+        ?bool $includeOhlc = null,
+        ?string $timezone = null,
+        ?DateTimeImmutable $date = null,
+        ?DateTimeImmutable $startDate = null,
+        ?DateTimeImmutable $endDate = null,
+        ?bool $previousClose = null,
+        ?AdjustEnum $adjust = null,
+    ): BatchableRequest
+    {
         Guard::requireSymbolIdentifier($symbol, $figi, $isin, $cusip);
 
-        $response = $this->client->get(
-            path: '/avg',
+        return new BatchableRequest(
+            path: '/avgprice',
             queryParams: [
                 'symbol' => $symbol,
                 'interval' => $interval->value,
@@ -144,8 +315,6 @@ readonly class PriceTransform extends TwelveDataApi
                 'exchange' => $exchange,
                 'mic_code' => $micCode,
                 'country' => $country,
-                'series_type' => $seriesType?->value,
-                'time_period' => $timePeriod,
                 'type' => $type?->value,
                 'outputsize' => $outputSize,
                 'format' => $format?->value,
@@ -161,11 +330,8 @@ readonly class PriceTransform extends TwelveDataApi
                 'previous_close' => QueryParamsUtils::booleanAsString($previousClose),
                 'adjust' => $adjust?->value,
             ],
+            responseFactory: fn (string $json): TechnicalIndicator => TechnicalIndicator::fromJson(AveragePrice::class, $json),
         );
-
-        /** @var TechnicalIndicator<Average> $technicalIndicator */
-        $technicalIndicator = TechnicalIndicator::fromJson(Average::class, $response);
-        return $technicalIndicator;
     }
 
     /** @return TechnicalIndicator<AveragePrice> */
@@ -194,10 +360,64 @@ readonly class PriceTransform extends TwelveDataApi
         ?AdjustEnum $adjust = null,
     ): TechnicalIndicator
     {
+        $request = $this->averagePriceRequest(
+            $symbol,
+            $interval,
+            $figi,
+            $isin,
+            $cusip,
+            $exchange,
+            $micCode,
+            $country,
+            $type,
+            $outputSize,
+            $format,
+            $delimiter,
+            $prepost,
+            $dp,
+            $order,
+            $includeOhlc,
+            $timezone,
+            $date,
+            $startDate,
+            $endDate,
+            $previousClose,
+            $adjust,
+        );
+
+        return TechnicalIndicator::fromJson(AveragePrice::class, $this->client->get($request->path, $request->queryParams));
+    }
+
+    public function ceilingRequest(
+        ?string $symbol = null,
+        IntervalEnum $interval = IntervalEnum::OneDay,
+        ?string $figi = null,
+        ?string $isin = null,
+        ?string $cusip = null,
+        ?string $exchange = null,
+        ?string $micCode = null,
+        ?string $country = null,
+        ?SeriesTypeEnum $seriesType = null,
+        ?TypeEnum $type = null,
+        ?int $outputSize = null,
+        ?FormatEnum $format = null,
+        ?string $delimiter = null,
+        ?PrepostEnum $prepost = null,
+        ?int $dp = null,
+        ?OrderEnum $order = null,
+        ?bool $includeOhlc = null,
+        ?string $timezone = null,
+        ?DateTimeImmutable $date = null,
+        ?DateTimeImmutable $startDate = null,
+        ?DateTimeImmutable $endDate = null,
+        ?bool $previousClose = null,
+        ?AdjustEnum $adjust = null,
+    ): BatchableRequest
+    {
         Guard::requireSymbolIdentifier($symbol, $figi, $isin, $cusip);
 
-        $response = $this->client->get(
-            path: '/avgprice',
+        return new BatchableRequest(
+            path: '/ceil',
             queryParams: [
                 'symbol' => $symbol,
                 'interval' => $interval->value,
@@ -207,6 +427,7 @@ readonly class PriceTransform extends TwelveDataApi
                 'exchange' => $exchange,
                 'mic_code' => $micCode,
                 'country' => $country,
+                'series_type' => $seriesType?->value,
                 'type' => $type?->value,
                 'outputsize' => $outputSize,
                 'format' => $format?->value,
@@ -222,11 +443,8 @@ readonly class PriceTransform extends TwelveDataApi
                 'previous_close' => QueryParamsUtils::booleanAsString($previousClose),
                 'adjust' => $adjust?->value,
             ],
+            responseFactory: fn (string $json): TechnicalIndicator => TechnicalIndicator::fromJson(Ceiling::class, $json),
         );
-
-        /** @var TechnicalIndicator<AveragePrice> $technicalIndicator */
-        $technicalIndicator = TechnicalIndicator::fromJson(AveragePrice::class, $response);
-        return $technicalIndicator;
     }
 
     /** @return TechnicalIndicator<Ceiling> */
@@ -256,10 +474,66 @@ readonly class PriceTransform extends TwelveDataApi
         ?AdjustEnum $adjust = null,
     ): TechnicalIndicator
     {
+        $request = $this->ceilingRequest(
+            $symbol,
+            $interval,
+            $figi,
+            $isin,
+            $cusip,
+            $exchange,
+            $micCode,
+            $country,
+            $seriesType,
+            $type,
+            $outputSize,
+            $format,
+            $delimiter,
+            $prepost,
+            $dp,
+            $order,
+            $includeOhlc,
+            $timezone,
+            $date,
+            $startDate,
+            $endDate,
+            $previousClose,
+            $adjust,
+        );
+
+        return TechnicalIndicator::fromJson(Ceiling::class, $this->client->get($request->path, $request->queryParams));
+    }
+
+    public function divisionRequest(
+        ?string $symbol = null,
+        IntervalEnum $interval = IntervalEnum::OneDay,
+        ?string $figi = null,
+        ?string $isin = null,
+        ?string $cusip = null,
+        ?string $exchange = null,
+        ?string $micCode = null,
+        ?string $country = null,
+        ?SeriesTypeEnum $seriesType1 = null,
+        ?SeriesTypeEnum $seriesType2 = null,
+        ?TypeEnum $type = null,
+        ?int $outputSize = null,
+        ?FormatEnum $format = null,
+        ?string $delimiter = null,
+        ?PrepostEnum $prepost = null,
+        ?int $dp = null,
+        ?OrderEnum $order = null,
+        ?bool $includeOhlc = null,
+        ?string $timezone = null,
+        ?DateTimeImmutable $date = null,
+        ?DateTimeImmutable $startDate = null,
+        ?DateTimeImmutable $endDate = null,
+        ?bool $previousClose = null,
+        ?AdjustEnum $adjust = null,
+    ): BatchableRequest
+    {
         Guard::requireSymbolIdentifier($symbol, $figi, $isin, $cusip);
 
-        $response = $this->client->get(
-            path: '/ceil',
+        return new BatchableRequest(
+            path: '/div',
             queryParams: [
                 'symbol' => $symbol,
                 'interval' => $interval->value,
@@ -269,7 +543,8 @@ readonly class PriceTransform extends TwelveDataApi
                 'exchange' => $exchange,
                 'mic_code' => $micCode,
                 'country' => $country,
-                'series_type' => $seriesType?->value,
+                'series_type_1' => $seriesType1?->value,
+                'series_type_2' => $seriesType2?->value,
                 'type' => $type?->value,
                 'outputsize' => $outputSize,
                 'format' => $format?->value,
@@ -285,11 +560,8 @@ readonly class PriceTransform extends TwelveDataApi
                 'previous_close' => QueryParamsUtils::booleanAsString($previousClose),
                 'adjust' => $adjust?->value,
             ],
+            responseFactory: fn (string $json): TechnicalIndicator => TechnicalIndicator::fromJson(Division::class, $json),
         );
-
-        /** @var TechnicalIndicator<Ceiling> $technicalIndicator */
-        $technicalIndicator = TechnicalIndicator::fromJson(Ceiling::class, $response);
-        return $technicalIndicator;
     }
 
     /** @return TechnicalIndicator<Division> */
@@ -320,10 +592,66 @@ readonly class PriceTransform extends TwelveDataApi
         ?AdjustEnum $adjust = null,
     ): TechnicalIndicator
     {
+        $request = $this->divisionRequest(
+            $symbol,
+            $interval,
+            $figi,
+            $isin,
+            $cusip,
+            $exchange,
+            $micCode,
+            $country,
+            $seriesType1,
+            $seriesType2,
+            $type,
+            $outputSize,
+            $format,
+            $delimiter,
+            $prepost,
+            $dp,
+            $order,
+            $includeOhlc,
+            $timezone,
+            $date,
+            $startDate,
+            $endDate,
+            $previousClose,
+            $adjust,
+        );
+
+        return TechnicalIndicator::fromJson(Division::class, $this->client->get($request->path, $request->queryParams));
+    }
+
+    public function exponentialRequest(
+        ?string $symbol = null,
+        IntervalEnum $interval = IntervalEnum::OneDay,
+        ?string $figi = null,
+        ?string $isin = null,
+        ?string $cusip = null,
+        ?string $exchange = null,
+        ?string $micCode = null,
+        ?string $country = null,
+        ?SeriesTypeEnum $seriesType = null,
+        ?TypeEnum $type = null,
+        ?int $outputSize = null,
+        ?FormatEnum $format = null,
+        ?string $delimiter = null,
+        ?PrepostEnum $prepost = null,
+        ?int $dp = null,
+        ?OrderEnum $order = null,
+        ?bool $includeOhlc = null,
+        ?string $timezone = null,
+        ?DateTimeImmutable $date = null,
+        ?DateTimeImmutable $startDate = null,
+        ?DateTimeImmutable $endDate = null,
+        ?bool $previousClose = null,
+        ?AdjustEnum $adjust = null,
+    ): BatchableRequest
+    {
         Guard::requireSymbolIdentifier($symbol, $figi, $isin, $cusip);
 
-        $response = $this->client->get(
-            path: '/div',
+        return new BatchableRequest(
+            path: '/exp',
             queryParams: [
                 'symbol' => $symbol,
                 'interval' => $interval->value,
@@ -333,8 +661,7 @@ readonly class PriceTransform extends TwelveDataApi
                 'exchange' => $exchange,
                 'mic_code' => $micCode,
                 'country' => $country,
-                'series_type_1' => $seriesType1?->value,
-                'series_type_2' => $seriesType2?->value,
+                'series_type' => $seriesType?->value,
                 'type' => $type?->value,
                 'outputsize' => $outputSize,
                 'format' => $format?->value,
@@ -350,11 +677,8 @@ readonly class PriceTransform extends TwelveDataApi
                 'previous_close' => QueryParamsUtils::booleanAsString($previousClose),
                 'adjust' => $adjust?->value,
             ],
+            responseFactory: fn (string $json): TechnicalIndicator => TechnicalIndicator::fromJson(Exponential::class, $json),
         );
-
-        /** @var TechnicalIndicator<Division> $technicalIndicator */
-        $technicalIndicator = TechnicalIndicator::fromJson(Division::class, $response);
-        return $technicalIndicator;
     }
 
     /** @return TechnicalIndicator<Exponential> */
@@ -384,10 +708,65 @@ readonly class PriceTransform extends TwelveDataApi
         ?AdjustEnum $adjust = null,
     ): TechnicalIndicator
     {
+        $request = $this->exponentialRequest(
+            $symbol,
+            $interval,
+            $figi,
+            $isin,
+            $cusip,
+            $exchange,
+            $micCode,
+            $country,
+            $seriesType,
+            $type,
+            $outputSize,
+            $format,
+            $delimiter,
+            $prepost,
+            $dp,
+            $order,
+            $includeOhlc,
+            $timezone,
+            $date,
+            $startDate,
+            $endDate,
+            $previousClose,
+            $adjust,
+        );
+
+        return TechnicalIndicator::fromJson(Exponential::class, $this->client->get($request->path, $request->queryParams));
+    }
+
+    public function floorRequest(
+        ?string $symbol = null,
+        IntervalEnum $interval = IntervalEnum::OneDay,
+        ?string $figi = null,
+        ?string $isin = null,
+        ?string $cusip = null,
+        ?string $exchange = null,
+        ?string $micCode = null,
+        ?string $country = null,
+        ?SeriesTypeEnum $seriesType = null,
+        ?TypeEnum $type = null,
+        ?int $outputSize = null,
+        ?FormatEnum $format = null,
+        ?string $delimiter = null,
+        ?PrepostEnum $prepost = null,
+        ?int $dp = null,
+        ?OrderEnum $order = null,
+        ?bool $includeOhlc = null,
+        ?string $timezone = null,
+        ?DateTimeImmutable $date = null,
+        ?DateTimeImmutable $startDate = null,
+        ?DateTimeImmutable $endDate = null,
+        ?bool $previousClose = null,
+        ?AdjustEnum $adjust = null,
+    ): BatchableRequest
+    {
         Guard::requireSymbolIdentifier($symbol, $figi, $isin, $cusip);
 
-        $response = $this->client->get(
-            path: '/exp',
+        return new BatchableRequest(
+            path: '/floor',
             queryParams: [
                 'symbol' => $symbol,
                 'interval' => $interval->value,
@@ -413,11 +792,8 @@ readonly class PriceTransform extends TwelveDataApi
                 'previous_close' => QueryParamsUtils::booleanAsString($previousClose),
                 'adjust' => $adjust?->value,
             ],
+            responseFactory: fn (string $json): TechnicalIndicator => TechnicalIndicator::fromJson(Floor::class, $json),
         );
-
-        /** @var TechnicalIndicator<Exponential> $technicalIndicator */
-        $technicalIndicator = TechnicalIndicator::fromJson(Exponential::class, $response);
-        return $technicalIndicator;
     }
 
     /** @return TechnicalIndicator<Floor> */
@@ -447,10 +823,64 @@ readonly class PriceTransform extends TwelveDataApi
         ?AdjustEnum $adjust = null,
     ): TechnicalIndicator
     {
+        $request = $this->floorRequest(
+            $symbol,
+            $interval,
+            $figi,
+            $isin,
+            $cusip,
+            $exchange,
+            $micCode,
+            $country,
+            $seriesType,
+            $type,
+            $outputSize,
+            $format,
+            $delimiter,
+            $prepost,
+            $dp,
+            $order,
+            $includeOhlc,
+            $timezone,
+            $date,
+            $startDate,
+            $endDate,
+            $previousClose,
+            $adjust,
+        );
+
+        return TechnicalIndicator::fromJson(Floor::class, $this->client->get($request->path, $request->queryParams));
+    }
+
+    public function heikinashiCandlesRequest(
+        ?string $symbol = null,
+        IntervalEnum $interval = IntervalEnum::OneDay,
+        ?string $figi = null,
+        ?string $isin = null,
+        ?string $cusip = null,
+        ?string $exchange = null,
+        ?string $micCode = null,
+        ?string $country = null,
+        ?TypeEnum $type = null,
+        ?int $outputSize = null,
+        ?FormatEnum $format = null,
+        ?string $delimiter = null,
+        ?PrepostEnum $prepost = null,
+        ?int $dp = null,
+        ?OrderEnum $order = null,
+        ?bool $includeOhlc = null,
+        ?string $timezone = null,
+        ?DateTimeImmutable $date = null,
+        ?DateTimeImmutable $startDate = null,
+        ?DateTimeImmutable $endDate = null,
+        ?bool $previousClose = null,
+        ?AdjustEnum $adjust = null,
+    ): BatchableRequest
+    {
         Guard::requireSymbolIdentifier($symbol, $figi, $isin, $cusip);
 
-        $response = $this->client->get(
-            path: '/floor',
+        return new BatchableRequest(
+            path: '/heikinashicandles',
             queryParams: [
                 'symbol' => $symbol,
                 'interval' => $interval->value,
@@ -460,7 +890,6 @@ readonly class PriceTransform extends TwelveDataApi
                 'exchange' => $exchange,
                 'mic_code' => $micCode,
                 'country' => $country,
-                'series_type' => $seriesType?->value,
                 'type' => $type?->value,
                 'outputsize' => $outputSize,
                 'format' => $format?->value,
@@ -476,11 +905,8 @@ readonly class PriceTransform extends TwelveDataApi
                 'previous_close' => QueryParamsUtils::booleanAsString($previousClose),
                 'adjust' => $adjust?->value,
             ],
+            responseFactory: fn (string $json): TechnicalIndicator => TechnicalIndicator::fromJson(HeikinashiCandles::class, $json),
         );
-
-        /** @var TechnicalIndicator<Floor> $technicalIndicator */
-        $technicalIndicator = TechnicalIndicator::fromJson(Floor::class, $response);
-        return $technicalIndicator;
     }
 
     /** @return TechnicalIndicator<HeikinashiCandles> */
@@ -509,10 +935,63 @@ readonly class PriceTransform extends TwelveDataApi
         ?AdjustEnum $adjust = null,
     ): TechnicalIndicator
     {
+        $request = $this->heikinashiCandlesRequest(
+            $symbol,
+            $interval,
+            $figi,
+            $isin,
+            $cusip,
+            $exchange,
+            $micCode,
+            $country,
+            $type,
+            $outputSize,
+            $format,
+            $delimiter,
+            $prepost,
+            $dp,
+            $order,
+            $includeOhlc,
+            $timezone,
+            $date,
+            $startDate,
+            $endDate,
+            $previousClose,
+            $adjust,
+        );
+
+        return TechnicalIndicator::fromJson(HeikinashiCandles::class, $this->client->get($request->path, $request->queryParams));
+    }
+
+    public function highLowCloseAverageRequest(
+        ?string $symbol = null,
+        IntervalEnum $interval = IntervalEnum::OneDay,
+        ?string $figi = null,
+        ?string $isin = null,
+        ?string $cusip = null,
+        ?string $exchange = null,
+        ?string $micCode = null,
+        ?string $country = null,
+        ?TypeEnum $type = null,
+        ?int $outputSize = null,
+        ?FormatEnum $format = null,
+        ?string $delimiter = null,
+        ?PrepostEnum $prepost = null,
+        ?int $dp = null,
+        ?OrderEnum $order = null,
+        ?bool $includeOhlc = null,
+        ?string $timezone = null,
+        ?DateTimeImmutable $date = null,
+        ?DateTimeImmutable $startDate = null,
+        ?DateTimeImmutable $endDate = null,
+        ?bool $previousClose = null,
+        ?AdjustEnum $adjust = null,
+    ): BatchableRequest
+    {
         Guard::requireSymbolIdentifier($symbol, $figi, $isin, $cusip);
 
-        $response = $this->client->get(
-            path: '/heikinashicandles',
+        return new BatchableRequest(
+            path: '/hlc3',
             queryParams: [
                 'symbol' => $symbol,
                 'interval' => $interval->value,
@@ -537,11 +1016,8 @@ readonly class PriceTransform extends TwelveDataApi
                 'previous_close' => QueryParamsUtils::booleanAsString($previousClose),
                 'adjust' => $adjust?->value,
             ],
+            responseFactory: fn (string $json): TechnicalIndicator => TechnicalIndicator::fromJson(HighLowCloseAverage::class, $json),
         );
-
-        /** @var TechnicalIndicator<HeikinashiCandles> $technicalIndicator */
-        $technicalIndicator = TechnicalIndicator::fromJson(HeikinashiCandles::class, $response);
-        return $technicalIndicator;
     }
 
     /** @return TechnicalIndicator<HighLowCloseAverage> */
@@ -570,10 +1046,64 @@ readonly class PriceTransform extends TwelveDataApi
         ?AdjustEnum $adjust = null,
     ): TechnicalIndicator
     {
+        $request = $this->highLowCloseAverageRequest(
+            $symbol,
+            $interval,
+            $figi,
+            $isin,
+            $cusip,
+            $exchange,
+            $micCode,
+            $country,
+            $type,
+            $outputSize,
+            $format,
+            $delimiter,
+            $prepost,
+            $dp,
+            $order,
+            $includeOhlc,
+            $timezone,
+            $date,
+            $startDate,
+            $endDate,
+            $previousClose,
+            $adjust,
+        );
+
+        return TechnicalIndicator::fromJson(HighLowCloseAverage::class, $this->client->get($request->path, $request->queryParams));
+    }
+
+    public function naturalLogarithmRequest(
+        ?string $symbol = null,
+        IntervalEnum $interval = IntervalEnum::OneDay,
+        ?string $figi = null,
+        ?string $isin = null,
+        ?string $cusip = null,
+        ?string $exchange = null,
+        ?string $micCode = null,
+        ?string $country = null,
+        ?SeriesTypeEnum $seriesType = null,
+        ?TypeEnum $type = null,
+        ?int $outputSize = null,
+        ?FormatEnum $format = null,
+        ?string $delimiter = null,
+        ?PrepostEnum $prepost = null,
+        ?int $dp = null,
+        ?OrderEnum $order = null,
+        ?bool $includeOhlc = null,
+        ?string $timezone = null,
+        ?DateTimeImmutable $date = null,
+        ?DateTimeImmutable $startDate = null,
+        ?DateTimeImmutable $endDate = null,
+        ?bool $previousClose = null,
+        ?AdjustEnum $adjust = null,
+    ): BatchableRequest
+    {
         Guard::requireSymbolIdentifier($symbol, $figi, $isin, $cusip);
 
-        $response = $this->client->get(
-            path: '/hlc3',
+        return new BatchableRequest(
+            path: '/ln',
             queryParams: [
                 'symbol' => $symbol,
                 'interval' => $interval->value,
@@ -583,6 +1113,7 @@ readonly class PriceTransform extends TwelveDataApi
                 'exchange' => $exchange,
                 'mic_code' => $micCode,
                 'country' => $country,
+                'series_type' => $seriesType?->value,
                 'type' => $type?->value,
                 'outputsize' => $outputSize,
                 'format' => $format?->value,
@@ -598,11 +1129,8 @@ readonly class PriceTransform extends TwelveDataApi
                 'previous_close' => QueryParamsUtils::booleanAsString($previousClose),
                 'adjust' => $adjust?->value,
             ],
+            responseFactory: fn (string $json): TechnicalIndicator => TechnicalIndicator::fromJson(NaturalLogarithm::class, $json),
         );
-
-        /** @var TechnicalIndicator<HighLowCloseAverage> $technicalIndicator */
-        $technicalIndicator = TechnicalIndicator::fromJson(HighLowCloseAverage::class, $response);
-        return $technicalIndicator;
     }
 
     /** @return TechnicalIndicator<NaturalLogarithm> */
@@ -632,10 +1160,65 @@ readonly class PriceTransform extends TwelveDataApi
         ?AdjustEnum $adjust = null,
     ): TechnicalIndicator
     {
+        $request = $this->naturalLogarithmRequest(
+            $symbol,
+            $interval,
+            $figi,
+            $isin,
+            $cusip,
+            $exchange,
+            $micCode,
+            $country,
+            $seriesType,
+            $type,
+            $outputSize,
+            $format,
+            $delimiter,
+            $prepost,
+            $dp,
+            $order,
+            $includeOhlc,
+            $timezone,
+            $date,
+            $startDate,
+            $endDate,
+            $previousClose,
+            $adjust,
+        );
+
+        return TechnicalIndicator::fromJson(NaturalLogarithm::class, $this->client->get($request->path, $request->queryParams));
+    }
+
+    public function base10LogarithmRequest(
+        ?string $symbol = null,
+        IntervalEnum $interval = IntervalEnum::OneDay,
+        ?string $figi = null,
+        ?string $isin = null,
+        ?string $cusip = null,
+        ?string $exchange = null,
+        ?string $micCode = null,
+        ?string $country = null,
+        ?SeriesTypeEnum $seriesType = null,
+        ?TypeEnum $type = null,
+        ?int $outputSize = null,
+        ?FormatEnum $format = null,
+        ?string $delimiter = null,
+        ?PrepostEnum $prepost = null,
+        ?int $dp = null,
+        ?OrderEnum $order = null,
+        ?bool $includeOhlc = null,
+        ?string $timezone = null,
+        ?DateTimeImmutable $date = null,
+        ?DateTimeImmutable $startDate = null,
+        ?DateTimeImmutable $endDate = null,
+        ?bool $previousClose = null,
+        ?AdjustEnum $adjust = null,
+    ): BatchableRequest
+    {
         Guard::requireSymbolIdentifier($symbol, $figi, $isin, $cusip);
 
-        $response = $this->client->get(
-            path: '/ln',
+        return new BatchableRequest(
+            path: '/ceil',
             queryParams: [
                 'symbol' => $symbol,
                 'interval' => $interval->value,
@@ -661,11 +1244,8 @@ readonly class PriceTransform extends TwelveDataApi
                 'previous_close' => QueryParamsUtils::booleanAsString($previousClose),
                 'adjust' => $adjust?->value,
             ],
+            responseFactory: fn (string $json): TechnicalIndicator => TechnicalIndicator::fromJson(Base10Logarithm::class, $json),
         );
-
-        /** @var TechnicalIndicator<NaturalLogarithm> $technicalIndicator */
-        $technicalIndicator = TechnicalIndicator::fromJson(NaturalLogarithm::class, $response);
-        return $technicalIndicator;
     }
 
     /** @return TechnicalIndicator<Base10Logarithm> */
@@ -695,10 +1275,64 @@ readonly class PriceTransform extends TwelveDataApi
         ?AdjustEnum $adjust = null,
     ): TechnicalIndicator
     {
+        $request = $this->base10LogarithmRequest(
+            $symbol,
+            $interval,
+            $figi,
+            $isin,
+            $cusip,
+            $exchange,
+            $micCode,
+            $country,
+            $seriesType,
+            $type,
+            $outputSize,
+            $format,
+            $delimiter,
+            $prepost,
+            $dp,
+            $order,
+            $includeOhlc,
+            $timezone,
+            $date,
+            $startDate,
+            $endDate,
+            $previousClose,
+            $adjust,
+        );
+
+        return TechnicalIndicator::fromJson(Base10Logarithm::class, $this->client->get($request->path, $request->queryParams));
+    }
+
+    public function medianPriceRequest(
+        ?string $symbol = null,
+        IntervalEnum $interval = IntervalEnum::OneDay,
+        ?string $figi = null,
+        ?string $isin = null,
+        ?string $cusip = null,
+        ?string $exchange = null,
+        ?string $micCode = null,
+        ?string $country = null,
+        ?TypeEnum $type = null,
+        ?int $outputSize = null,
+        ?FormatEnum $format = null,
+        ?string $delimiter = null,
+        ?PrepostEnum $prepost = null,
+        ?int $dp = null,
+        ?OrderEnum $order = null,
+        ?bool $includeOhlc = null,
+        ?string $timezone = null,
+        ?DateTimeImmutable $date = null,
+        ?DateTimeImmutable $startDate = null,
+        ?DateTimeImmutable $endDate = null,
+        ?bool $previousClose = null,
+        ?AdjustEnum $adjust = null,
+    ): BatchableRequest
+    {
         Guard::requireSymbolIdentifier($symbol, $figi, $isin, $cusip);
 
-        $response = $this->client->get(
-            path: '/ceil',
+        return new BatchableRequest(
+            path: '/medprice',
             queryParams: [
                 'symbol' => $symbol,
                 'interval' => $interval->value,
@@ -708,7 +1342,6 @@ readonly class PriceTransform extends TwelveDataApi
                 'exchange' => $exchange,
                 'mic_code' => $micCode,
                 'country' => $country,
-                'series_type' => $seriesType?->value,
                 'type' => $type?->value,
                 'outputsize' => $outputSize,
                 'format' => $format?->value,
@@ -724,11 +1357,8 @@ readonly class PriceTransform extends TwelveDataApi
                 'previous_close' => QueryParamsUtils::booleanAsString($previousClose),
                 'adjust' => $adjust?->value,
             ],
+            responseFactory: fn (string $json): TechnicalIndicator => TechnicalIndicator::fromJson(MedianPrice::class, $json),
         );
-
-        /** @var TechnicalIndicator<Base10Logarithm> $technicalIndicator */
-        $technicalIndicator = TechnicalIndicator::fromJson(Base10Logarithm::class, $response);
-        return $technicalIndicator;
     }
 
     /** @return TechnicalIndicator<MedianPrice> */
@@ -757,10 +1387,65 @@ readonly class PriceTransform extends TwelveDataApi
         ?AdjustEnum $adjust = null,
     ): TechnicalIndicator
     {
+        $request = $this->medianPriceRequest(
+            $symbol,
+            $interval,
+            $figi,
+            $isin,
+            $cusip,
+            $exchange,
+            $micCode,
+            $country,
+            $type,
+            $outputSize,
+            $format,
+            $delimiter,
+            $prepost,
+            $dp,
+            $order,
+            $includeOhlc,
+            $timezone,
+            $date,
+            $startDate,
+            $endDate,
+            $previousClose,
+            $adjust,
+        );
+
+        return TechnicalIndicator::fromJson(MedianPrice::class, $this->client->get($request->path, $request->queryParams));
+    }
+
+    public function multiplicationRequest(
+        ?string $symbol = null,
+        IntervalEnum $interval = IntervalEnum::OneDay,
+        ?string $figi = null,
+        ?string $isin = null,
+        ?string $cusip = null,
+        ?string $exchange = null,
+        ?string $micCode = null,
+        ?string $country = null,
+        ?SeriesTypeEnum $seriesType1 = null,
+        ?SeriesTypeEnum $seriesType2 = null,
+        ?TypeEnum $type = null,
+        ?int $outputSize = null,
+        ?FormatEnum $format = null,
+        ?string $delimiter = null,
+        ?PrepostEnum $prepost = null,
+        ?int $dp = null,
+        ?OrderEnum $order = null,
+        ?bool $includeOhlc = null,
+        ?string $timezone = null,
+        ?DateTimeImmutable $date = null,
+        ?DateTimeImmutable $startDate = null,
+        ?DateTimeImmutable $endDate = null,
+        ?bool $previousClose = null,
+        ?AdjustEnum $adjust = null,
+    ): BatchableRequest
+    {
         Guard::requireSymbolIdentifier($symbol, $figi, $isin, $cusip);
 
-        $response = $this->client->get(
-            path: '/medprice',
+        return new BatchableRequest(
+            path: '/mult',
             queryParams: [
                 'symbol' => $symbol,
                 'interval' => $interval->value,
@@ -770,6 +1455,8 @@ readonly class PriceTransform extends TwelveDataApi
                 'exchange' => $exchange,
                 'mic_code' => $micCode,
                 'country' => $country,
+                'series_type_1' => $seriesType1?->value,
+                'series_type_2' => $seriesType2?->value,
                 'type' => $type?->value,
                 'outputsize' => $outputSize,
                 'format' => $format?->value,
@@ -785,11 +1472,8 @@ readonly class PriceTransform extends TwelveDataApi
                 'previous_close' => QueryParamsUtils::booleanAsString($previousClose),
                 'adjust' => $adjust?->value,
             ],
+            responseFactory: fn (string $json): TechnicalIndicator => TechnicalIndicator::fromJson(Multiplication::class, $json),
         );
-
-        /** @var TechnicalIndicator<MedianPrice> $technicalIndicator */
-        $technicalIndicator = TechnicalIndicator::fromJson(MedianPrice::class, $response);
-        return $technicalIndicator;
     }
 
     /** @return TechnicalIndicator<Multiplication> */
@@ -820,10 +1504,66 @@ readonly class PriceTransform extends TwelveDataApi
         ?AdjustEnum $adjust = null,
     ): TechnicalIndicator
     {
+        $request = $this->multiplicationRequest(
+            $symbol,
+            $interval,
+            $figi,
+            $isin,
+            $cusip,
+            $exchange,
+            $micCode,
+            $country,
+            $seriesType1,
+            $seriesType2,
+            $type,
+            $outputSize,
+            $format,
+            $delimiter,
+            $prepost,
+            $dp,
+            $order,
+            $includeOhlc,
+            $timezone,
+            $date,
+            $startDate,
+            $endDate,
+            $previousClose,
+            $adjust,
+        );
+
+        return TechnicalIndicator::fromJson(Multiplication::class, $this->client->get($request->path, $request->queryParams));
+    }
+
+    public function squareRootRequest(
+        ?string $symbol = null,
+        IntervalEnum $interval = IntervalEnum::OneDay,
+        ?string $figi = null,
+        ?string $isin = null,
+        ?string $cusip = null,
+        ?string $exchange = null,
+        ?string $micCode = null,
+        ?string $country = null,
+        ?SeriesTypeEnum $seriesType = null,
+        ?TypeEnum $type = null,
+        ?int $outputSize = null,
+        ?FormatEnum $format = null,
+        ?string $delimiter = null,
+        ?PrepostEnum $prepost = null,
+        ?int $dp = null,
+        ?OrderEnum $order = null,
+        ?bool $includeOhlc = null,
+        ?string $timezone = null,
+        ?DateTimeImmutable $date = null,
+        ?DateTimeImmutable $startDate = null,
+        ?DateTimeImmutable $endDate = null,
+        ?bool $previousClose = null,
+        ?AdjustEnum $adjust = null,
+    ): BatchableRequest
+    {
         Guard::requireSymbolIdentifier($symbol, $figi, $isin, $cusip);
 
-        $response = $this->client->get(
-            path: '/mult',
+        return new BatchableRequest(
+            path: '/sqrt',
             queryParams: [
                 'symbol' => $symbol,
                 'interval' => $interval->value,
@@ -833,8 +1573,7 @@ readonly class PriceTransform extends TwelveDataApi
                 'exchange' => $exchange,
                 'mic_code' => $micCode,
                 'country' => $country,
-                'series_type_1' => $seriesType1?->value,
-                'series_type_2' => $seriesType2?->value,
+                'series_type' => $seriesType?->value,
                 'type' => $type?->value,
                 'outputsize' => $outputSize,
                 'format' => $format?->value,
@@ -850,11 +1589,8 @@ readonly class PriceTransform extends TwelveDataApi
                 'previous_close' => QueryParamsUtils::booleanAsString($previousClose),
                 'adjust' => $adjust?->value,
             ],
+            responseFactory: fn (string $json): TechnicalIndicator => TechnicalIndicator::fromJson(SquareRoot::class, $json),
         );
-
-        /** @var TechnicalIndicator<Multiplication> $technicalIndicator */
-        $technicalIndicator = TechnicalIndicator::fromJson(Multiplication::class, $response);
-        return $technicalIndicator;
     }
 
     /** @return TechnicalIndicator<SquareRoot> */
@@ -884,10 +1620,66 @@ readonly class PriceTransform extends TwelveDataApi
         ?AdjustEnum $adjust = null,
     ): TechnicalIndicator
     {
+        $request = $this->squareRootRequest(
+            $symbol,
+            $interval,
+            $figi,
+            $isin,
+            $cusip,
+            $exchange,
+            $micCode,
+            $country,
+            $seriesType,
+            $type,
+            $outputSize,
+            $format,
+            $delimiter,
+            $prepost,
+            $dp,
+            $order,
+            $includeOhlc,
+            $timezone,
+            $date,
+            $startDate,
+            $endDate,
+            $previousClose,
+            $adjust,
+        );
+
+        return TechnicalIndicator::fromJson(SquareRoot::class, $this->client->get($request->path, $request->queryParams));
+    }
+
+    public function subtractionRequest(
+        ?string $symbol = null,
+        IntervalEnum $interval = IntervalEnum::OneDay,
+        ?string $figi = null,
+        ?string $isin = null,
+        ?string $cusip = null,
+        ?string $exchange = null,
+        ?string $micCode = null,
+        ?string $country = null,
+        ?SeriesTypeEnum $seriesType1 = null,
+        ?SeriesTypeEnum $seriesType2 = null,
+        ?TypeEnum $type = null,
+        ?int $outputSize = null,
+        ?FormatEnum $format = null,
+        ?string $delimiter = null,
+        ?PrepostEnum $prepost = null,
+        ?int $dp = null,
+        ?OrderEnum $order = null,
+        ?bool $includeOhlc = null,
+        ?string $timezone = null,
+        ?DateTimeImmutable $date = null,
+        ?DateTimeImmutable $startDate = null,
+        ?DateTimeImmutable $endDate = null,
+        ?bool $previousClose = null,
+        ?AdjustEnum $adjust = null,
+    ): BatchableRequest
+    {
         Guard::requireSymbolIdentifier($symbol, $figi, $isin, $cusip);
 
-        $response = $this->client->get(
-            path: '/sqrt',
+        return new BatchableRequest(
+            path: '/sub',
             queryParams: [
                 'symbol' => $symbol,
                 'interval' => $interval->value,
@@ -897,7 +1689,8 @@ readonly class PriceTransform extends TwelveDataApi
                 'exchange' => $exchange,
                 'mic_code' => $micCode,
                 'country' => $country,
-                'series_type' => $seriesType?->value,
+                'series_type_1' => $seriesType1?->value,
+                'series_type_2' => $seriesType2?->value,
                 'type' => $type?->value,
                 'outputsize' => $outputSize,
                 'format' => $format?->value,
@@ -913,11 +1706,8 @@ readonly class PriceTransform extends TwelveDataApi
                 'previous_close' => QueryParamsUtils::booleanAsString($previousClose),
                 'adjust' => $adjust?->value,
             ],
+            responseFactory: fn (string $json): TechnicalIndicator => TechnicalIndicator::fromJson(Subtraction::class, $json),
         );
-
-        /** @var TechnicalIndicator<SquareRoot> $technicalIndicator */
-        $technicalIndicator = TechnicalIndicator::fromJson(SquareRoot::class, $response);
-        return $technicalIndicator;
     }
 
     /** @return TechnicalIndicator<Subtraction> */
@@ -948,10 +1738,67 @@ readonly class PriceTransform extends TwelveDataApi
         ?AdjustEnum $adjust = null,
     ): TechnicalIndicator
     {
+        $request = $this->subtractionRequest(
+            $symbol,
+            $interval,
+            $figi,
+            $isin,
+            $cusip,
+            $exchange,
+            $micCode,
+            $country,
+            $seriesType1,
+            $seriesType2,
+            $type,
+            $outputSize,
+            $format,
+            $delimiter,
+            $prepost,
+            $dp,
+            $order,
+            $includeOhlc,
+            $timezone,
+            $date,
+            $startDate,
+            $endDate,
+            $previousClose,
+            $adjust,
+        );
+
+        return TechnicalIndicator::fromJson(Subtraction::class, $this->client->get($request->path, $request->queryParams));
+    }
+
+    public function summationRequest(
+        ?string $symbol = null,
+        IntervalEnum $interval = IntervalEnum::OneDay,
+        ?string $figi = null,
+        ?string $isin = null,
+        ?string $cusip = null,
+        ?string $exchange = null,
+        ?string $micCode = null,
+        ?string $country = null,
+        ?SeriesTypeEnum $seriesType = null,
+        ?int $timePeriod = null,
+        ?TypeEnum $type = null,
+        ?int $outputSize = null,
+        ?FormatEnum $format = null,
+        ?string $delimiter = null,
+        ?PrepostEnum $prepost = null,
+        ?int $dp = null,
+        ?OrderEnum $order = null,
+        ?bool $includeOhlc = null,
+        ?string $timezone = null,
+        ?DateTimeImmutable $date = null,
+        ?DateTimeImmutable $startDate = null,
+        ?DateTimeImmutable $endDate = null,
+        ?bool $previousClose = null,
+        ?AdjustEnum $adjust = null,
+    ): BatchableRequest
+    {
         Guard::requireSymbolIdentifier($symbol, $figi, $isin, $cusip);
 
-        $response = $this->client->get(
-            path: '/sub',
+        return new BatchableRequest(
+            path: '/sum',
             queryParams: [
                 'symbol' => $symbol,
                 'interval' => $interval->value,
@@ -961,8 +1808,8 @@ readonly class PriceTransform extends TwelveDataApi
                 'exchange' => $exchange,
                 'mic_code' => $micCode,
                 'country' => $country,
-                'series_type_1' => $seriesType1?->value,
-                'series_type_2' => $seriesType2?->value,
+                'series_type' => $seriesType?->value,
+                'time_period' => $timePeriod,
                 'type' => $type?->value,
                 'outputsize' => $outputSize,
                 'format' => $format?->value,
@@ -978,11 +1825,8 @@ readonly class PriceTransform extends TwelveDataApi
                 'previous_close' => QueryParamsUtils::booleanAsString($previousClose),
                 'adjust' => $adjust?->value,
             ],
+            responseFactory: fn (string $json): TechnicalIndicator => TechnicalIndicator::fromJson(Summation::class, $json),
         );
-
-        /** @var TechnicalIndicator<Subtraction> $technicalIndicator */
-        $technicalIndicator = TechnicalIndicator::fromJson(Subtraction::class, $response);
-        return $technicalIndicator;
     }
 
     /** @return TechnicalIndicator<Summation> */
@@ -1013,10 +1857,65 @@ readonly class PriceTransform extends TwelveDataApi
         ?AdjustEnum $adjust = null,
     ): TechnicalIndicator
     {
+        $request = $this->summationRequest(
+            $symbol,
+            $interval,
+            $figi,
+            $isin,
+            $cusip,
+            $exchange,
+            $micCode,
+            $country,
+            $seriesType,
+            $timePeriod,
+            $type,
+            $outputSize,
+            $format,
+            $delimiter,
+            $prepost,
+            $dp,
+            $order,
+            $includeOhlc,
+            $timezone,
+            $date,
+            $startDate,
+            $endDate,
+            $previousClose,
+            $adjust,
+        );
+
+        return TechnicalIndicator::fromJson(Summation::class, $this->client->get($request->path, $request->queryParams));
+    }
+
+    public function typicalPriceRequest(
+        ?string $symbol = null,
+        IntervalEnum $interval = IntervalEnum::OneDay,
+        ?string $figi = null,
+        ?string $isin = null,
+        ?string $cusip = null,
+        ?string $exchange = null,
+        ?string $micCode = null,
+        ?string $country = null,
+        ?TypeEnum $type = null,
+        ?int $outputSize = null,
+        ?FormatEnum $format = null,
+        ?string $delimiter = null,
+        ?PrepostEnum $prepost = null,
+        ?int $dp = null,
+        ?OrderEnum $order = null,
+        ?bool $includeOhlc = null,
+        ?string $timezone = null,
+        ?DateTimeImmutable $date = null,
+        ?DateTimeImmutable $startDate = null,
+        ?DateTimeImmutable $endDate = null,
+        ?bool $previousClose = null,
+        ?AdjustEnum $adjust = null,
+    ): BatchableRequest
+    {
         Guard::requireSymbolIdentifier($symbol, $figi, $isin, $cusip);
 
-        $response = $this->client->get(
-            path: '/sum',
+        return new BatchableRequest(
+            path: '/typprice',
             queryParams: [
                 'symbol' => $symbol,
                 'interval' => $interval->value,
@@ -1026,8 +1925,6 @@ readonly class PriceTransform extends TwelveDataApi
                 'exchange' => $exchange,
                 'mic_code' => $micCode,
                 'country' => $country,
-                'series_type' => $seriesType?->value,
-                'time_period' => $timePeriod,
                 'type' => $type?->value,
                 'outputsize' => $outputSize,
                 'format' => $format?->value,
@@ -1043,11 +1940,8 @@ readonly class PriceTransform extends TwelveDataApi
                 'previous_close' => QueryParamsUtils::booleanAsString($previousClose),
                 'adjust' => $adjust?->value,
             ],
+            responseFactory: fn (string $json): TechnicalIndicator => TechnicalIndicator::fromJson(TypicalPrice::class, $json),
         );
-
-        /** @var TechnicalIndicator<Summation> $technicalIndicator */
-        $technicalIndicator = TechnicalIndicator::fromJson(Summation::class, $response);
-        return $technicalIndicator;
     }
 
     /** @return TechnicalIndicator<TypicalPrice> */
@@ -1076,10 +1970,63 @@ readonly class PriceTransform extends TwelveDataApi
         ?AdjustEnum $adjust = null,
     ): TechnicalIndicator
     {
+        $request = $this->typicalPriceRequest(
+            $symbol,
+            $interval,
+            $figi,
+            $isin,
+            $cusip,
+            $exchange,
+            $micCode,
+            $country,
+            $type,
+            $outputSize,
+            $format,
+            $delimiter,
+            $prepost,
+            $dp,
+            $order,
+            $includeOhlc,
+            $timezone,
+            $date,
+            $startDate,
+            $endDate,
+            $previousClose,
+            $adjust,
+        );
+
+        return TechnicalIndicator::fromJson(TypicalPrice::class, $this->client->get($request->path, $request->queryParams));
+    }
+
+    public function weightedClosePriceRequest(
+        ?string $symbol = null,
+        IntervalEnum $interval = IntervalEnum::OneDay,
+        ?string $figi = null,
+        ?string $isin = null,
+        ?string $cusip = null,
+        ?string $exchange = null,
+        ?string $micCode = null,
+        ?string $country = null,
+        ?TypeEnum $type = null,
+        ?int $outputSize = null,
+        ?FormatEnum $format = null,
+        ?string $delimiter = null,
+        ?PrepostEnum $prepost = null,
+        ?int $dp = null,
+        ?OrderEnum $order = null,
+        ?bool $includeOhlc = null,
+        ?string $timezone = null,
+        ?DateTimeImmutable $date = null,
+        ?DateTimeImmutable $startDate = null,
+        ?DateTimeImmutable $endDate = null,
+        ?bool $previousClose = null,
+        ?AdjustEnum $adjust = null,
+    ): BatchableRequest
+    {
         Guard::requireSymbolIdentifier($symbol, $figi, $isin, $cusip);
 
-        $response = $this->client->get(
-            path: '/typprice',
+        return new BatchableRequest(
+            path: '/ceil',
             queryParams: [
                 'symbol' => $symbol,
                 'interval' => $interval->value,
@@ -1104,11 +2051,8 @@ readonly class PriceTransform extends TwelveDataApi
                 'previous_close' => QueryParamsUtils::booleanAsString($previousClose),
                 'adjust' => $adjust?->value,
             ],
+            responseFactory: fn (string $json): TechnicalIndicator => TechnicalIndicator::fromJson(WeightedClosePrice::class, $json),
         );
-
-        /** @var TechnicalIndicator<TypicalPrice> $technicalIndicator */
-        $technicalIndicator = TechnicalIndicator::fromJson(TypicalPrice::class, $response);
-        return $technicalIndicator;
     }
 
     /** @return TechnicalIndicator<WeightedClosePrice> */
@@ -1137,38 +2081,31 @@ readonly class PriceTransform extends TwelveDataApi
         ?AdjustEnum $adjust = null,
     ): TechnicalIndicator
     {
-        Guard::requireSymbolIdentifier($symbol, $figi, $isin, $cusip);
-
-        $response = $this->client->get(
-            path: '/ceil',
-            queryParams: [
-                'symbol' => $symbol,
-                'interval' => $interval->value,
-                'figi' => $figi,
-                'isin' => $isin,
-                'cusip' => $cusip,
-                'exchange' => $exchange,
-                'mic_code' => $micCode,
-                'country' => $country,
-                'type' => $type?->value,
-                'outputsize' => $outputSize,
-                'format' => $format?->value,
-                'delimiter' => $delimiter,
-                'prepost' => $prepost?->value,
-                'dp' => $dp,
-                'order' => $order?->value,
-                'include_ohlc' => QueryParamsUtils::booleanAsString($includeOhlc),
-                'timezone' => $timezone,
-                'date' => DateUtils::formatDate($date),
-                'start_date' => DateUtils::formatDate($startDate),
-                'end_date' => DateUtils::formatDate($endDate),
-                'previous_close' => QueryParamsUtils::booleanAsString($previousClose),
-                'adjust' => $adjust?->value,
-            ],
+        $request = $this->weightedClosePriceRequest(
+            $symbol,
+            $interval,
+            $figi,
+            $isin,
+            $cusip,
+            $exchange,
+            $micCode,
+            $country,
+            $type,
+            $outputSize,
+            $format,
+            $delimiter,
+            $prepost,
+            $dp,
+            $order,
+            $includeOhlc,
+            $timezone,
+            $date,
+            $startDate,
+            $endDate,
+            $previousClose,
+            $adjust,
         );
 
-        /** @var TechnicalIndicator<WeightedClosePrice> $technicalIndicator */
-        $technicalIndicator = TechnicalIndicator::fromJson(WeightedClosePrice::class, $response);
-        return $technicalIndicator;
+        return TechnicalIndicator::fromJson(WeightedClosePrice::class, $this->client->get($request->path, $request->queryParams));
     }
 }

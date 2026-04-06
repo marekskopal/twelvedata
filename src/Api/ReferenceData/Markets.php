@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace MarekSkopal\TwelveData\Api\ReferenceData;
 
 use DateTimeImmutable;
+use MarekSkopal\TwelveData\Api\BatchableRequest;
 use MarekSkopal\TwelveData\Api\TwelveDataApi;
 use MarekSkopal\TwelveData\Dto\ReferenceData\CryptocurrencyExchanges;
 use MarekSkopal\TwelveData\Dto\ReferenceData\Exchanges;
@@ -18,7 +19,8 @@ use MarekSkopal\TwelveData\Utils\QueryParamsUtils;
 /** @phpstan-import-type MarketStateType from MarketState */
 readonly class Markets extends TwelveDataApi
 {
-    public function exchanges(
+    /** @return BatchableRequest<Exchanges> */
+    public function exchangesRequest(
         ?TypeEnum $type = null,
         ?string $name = null,
         ?string $code = null,
@@ -26,8 +28,8 @@ readonly class Markets extends TwelveDataApi
         ?FormatEnum $format = null,
         ?string $delimiter = null,
         ?bool $showPlan = null,
-    ): Exchanges {
-        $response = $this->client->get(
+    ): BatchableRequest {
+        return new BatchableRequest(
             path: '/exchanges',
             queryParams: [
                 'type' => $type?->value,
@@ -38,9 +40,39 @@ readonly class Markets extends TwelveDataApi
                 'delimiter' => $delimiter,
                 'show_plan' => QueryParamsUtils::booleanAsString($showPlan),
             ],
+            responseFactory: Exchanges::fromJson(...),
         );
+    }
 
-        return Exchanges::fromJson($response);
+    public function exchanges(
+        ?TypeEnum $type = null,
+        ?string $name = null,
+        ?string $code = null,
+        ?string $country = null,
+        ?FormatEnum $format = null,
+        ?string $delimiter = null,
+        ?bool $showPlan = null,
+    ): Exchanges {
+        return $this->exchangesRequest($type, $name, $code, $country, $format, $delimiter, $showPlan)->execute($this->client);
+    }
+
+    /** @return BatchableRequest<ExchangeSchedule> */
+    public function exchangeScheduleRequest(
+        ?DateTimeImmutable $date = null,
+        ?string $micName = null,
+        ?string $micCode = null,
+        ?string $country = null,
+    ): BatchableRequest {
+        return new BatchableRequest(
+            path: '/exchange_schedule',
+            queryParams: [
+                'date' => DateUtils::formatDate($date),
+                'mic_name' => $micName,
+                'mic_code' => $micCode,
+                'country' => $country,
+            ],
+            responseFactory: ExchangeSchedule::fromJson(...),
+        );
     }
 
     public function exchangeSchedule(
@@ -49,30 +81,25 @@ readonly class Markets extends TwelveDataApi
         ?string $micCode = null,
         ?string $country = null,
     ): ExchangeSchedule {
-        $response = $this->client->get(
-            path: '/exchange_schedule',
-            queryParams: [
-                'date' => DateUtils::formatDate($date),
-                'mic_name' => $micName,
-                'mic_code' => $micCode,
-                'country' => $country,
-            ],
-        );
-
-        return ExchangeSchedule::fromJson($response);
+        return $this->exchangeScheduleRequest($date, $micName, $micCode, $country)->execute($this->client);
     }
 
-    public function cryptocurrencyExchanges(?FormatEnum $format = null, ?string $delimiter = null,): CryptocurrencyExchanges
+    /** @return BatchableRequest<CryptocurrencyExchanges> */
+    public function cryptocurrencyExchangesRequest(?FormatEnum $format = null, ?string $delimiter = null,): BatchableRequest
     {
-        $response = $this->client->get(
+        return new BatchableRequest(
             path: '/cryptocurrency_exchanges',
             queryParams: [
                 'format' => $format?->value,
                 'delimiter' => $delimiter,
             ],
+            responseFactory: CryptocurrencyExchanges::fromJson(...),
         );
+    }
 
-        return CryptocurrencyExchanges::fromJson($response);
+    public function cryptocurrencyExchanges(?FormatEnum $format = null, ?string $delimiter = null,): CryptocurrencyExchanges
+    {
+        return $this->cryptocurrencyExchangesRequest($format, $delimiter)->execute($this->client);
     }
 
     /** @return list<MarketState> */

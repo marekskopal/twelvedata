@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace MarekSkopal\TwelveData\Api\TechnicalIndicators;
 
 use DateTimeImmutable;
+use MarekSkopal\TwelveData\Api\BatchableRequest;
 use MarekSkopal\TwelveData\Api\TwelveDataApi;
 use MarekSkopal\TwelveData\Dto\TechnicalIndicators\OverlapStudies\BollingerBands;
 use MarekSkopal\TwelveData\Dto\TechnicalIndicators\OverlapStudies\DoubleExponentialMovingAverage;
@@ -42,8 +43,7 @@ use MarekSkopal\TwelveData\Utils\QueryParamsUtils;
 
 readonly class OverlapStudies extends TwelveDataApi
 {
-    /** @return TechnicalIndicator<BollingerBands> */
-    public function bollingerBands(
+    public function bollingerBandsRequest(
         ?string $symbol = null,
         IntervalEnum $interval = IntervalEnum::OneDay,
         ?string $figi = null,
@@ -70,10 +70,10 @@ readonly class OverlapStudies extends TwelveDataApi
         ?DateTimeImmutable $endDate = null,
         ?bool $previousClose = null,
         ?AdjustEnum $adjust = null,
-    ): TechnicalIndicator {
+    ): BatchableRequest {
         Guard::requireSymbolIdentifier($symbol, $figi, $isin, $cusip);
 
-        $response = $this->client->get(
+        return new BatchableRequest(
             path: '/bbands',
             queryParams: [
                 'symbol' => $symbol,
@@ -103,11 +103,132 @@ readonly class OverlapStudies extends TwelveDataApi
                 'previous_close' => QueryParamsUtils::booleanAsString($previousClose),
                 'adjust' => $adjust?->value,
             ],
+            responseFactory: fn (string $json): TechnicalIndicator => TechnicalIndicator::fromJson(BollingerBands::class, $json),
+        );
+    }
+
+    /** @return TechnicalIndicator<BollingerBands> */
+    public function bollingerBands(
+        ?string $symbol = null,
+        IntervalEnum $interval = IntervalEnum::OneDay,
+        ?string $figi = null,
+        ?string $isin = null,
+        ?string $cusip = null,
+        ?string $exchange = null,
+        ?string $micCode = null,
+        ?string $country = null,
+        ?MaTypeEnum $maType = null,
+        ?int $sd = null,
+        ?SeriesTypeEnum $seriesType = null,
+        ?int $timePeriod = null,
+        ?TypeEnum $type = null,
+        ?int $outputSize = null,
+        ?FormatEnum $format = null,
+        ?string $delimiter = null,
+        ?PrepostEnum $prepost = null,
+        ?int $dp = null,
+        ?OrderEnum $order = null,
+        ?bool $includeOhlc = null,
+        ?string $timezone = null,
+        ?DateTimeImmutable $date = null,
+        ?DateTimeImmutable $startDate = null,
+        ?DateTimeImmutable $endDate = null,
+        ?bool $previousClose = null,
+        ?AdjustEnum $adjust = null,
+    ): TechnicalIndicator {
+        $request = $this->bollingerBandsRequest(
+            $symbol,
+            $interval,
+            $figi,
+            $isin,
+            $cusip,
+            $exchange,
+            $micCode,
+            $country,
+            $maType,
+            $sd,
+            $seriesType,
+            $timePeriod,
+            $type,
+            $outputSize,
+            $format,
+            $delimiter,
+            $prepost,
+            $dp,
+            $order,
+            $includeOhlc,
+            $timezone,
+            $date,
+            $startDate,
+            $endDate,
+            $previousClose,
+            $adjust,
         );
 
-        /** @var TechnicalIndicator<BollingerBands> $technicalIndicator */
-        $technicalIndicator = TechnicalIndicator::fromJson(BollingerBands::class, $response);
-        return $technicalIndicator;
+        return TechnicalIndicator::fromJson(BollingerBands::class, $this->client->get($request->path, $request->queryParams));
+    }
+
+    public function doubleExponentialMovingAverageRequest(
+        ?string $symbol = null,
+        IntervalEnum $interval = IntervalEnum::OneDay,
+        ?string $figi = null,
+        ?string $isin = null,
+        ?string $cusip = null,
+        ?string $exchange = null,
+        ?string $micCode = null,
+        ?string $country = null,
+        ?SeriesTypeEnum $seriesType = null,
+        ?int $timePeriod = null,
+        ?TypeEnum $type = null,
+        ?int $outputSize = null,
+        ?FormatEnum $format = null,
+        ?string $delimiter = null,
+        ?PrepostEnum $prepost = null,
+        ?int $dp = null,
+        ?OrderEnum $order = null,
+        ?bool $includeOhlc = null,
+        ?string $timezone = null,
+        ?DateTimeImmutable $date = null,
+        ?DateTimeImmutable $startDate = null,
+        ?DateTimeImmutable $endDate = null,
+        ?bool $previousClose = null,
+        ?AdjustEnum $adjust = null,
+    ): BatchableRequest {
+        Guard::requireSymbolIdentifier($symbol, $figi, $isin, $cusip);
+
+        return new BatchableRequest(
+            path: '/dema',
+            queryParams: [
+                'symbol' => $symbol,
+                'interval' => $interval->value,
+                'figi' => $figi,
+                'isin' => $isin,
+                'cusip' => $cusip,
+                'exchange' => $exchange,
+                'mic_code' => $micCode,
+                'country' => $country,
+                'series_type' => $seriesType?->value,
+                'time_period' => $timePeriod,
+                'type' => $type?->value,
+                'outputsize' => $outputSize,
+                'format' => $format?->value,
+                'delimiter' => $delimiter,
+                'prepost' => $prepost?->value,
+                'dp' => $dp,
+                'order' => $order?->value,
+                'include_ohlc' => QueryParamsUtils::booleanAsString($includeOhlc),
+                'timezone' => $timezone,
+                'date' => DateUtils::formatDate($date),
+                'start_date' => DateUtils::formatDate($startDate),
+                'end_date' => DateUtils::formatDate($endDate),
+                'previous_close' => QueryParamsUtils::booleanAsString($previousClose),
+                'adjust' => $adjust?->value,
+            ],
+            responseFactory: fn (string $json): TechnicalIndicator => TechnicalIndicator::fromJson(
+                DoubleExponentialMovingAverage::class,
+                $json,
+            ),
+        );
     }
 
     /** @return TechnicalIndicator<DoubleExponentialMovingAverage> */
@@ -137,10 +258,69 @@ readonly class OverlapStudies extends TwelveDataApi
         ?bool $previousClose = null,
         ?AdjustEnum $adjust = null,
     ): TechnicalIndicator {
+        $request = $this->doubleExponentialMovingAverageRequest(
+            $symbol,
+            $interval,
+            $figi,
+            $isin,
+            $cusip,
+            $exchange,
+            $micCode,
+            $country,
+            $seriesType,
+            $timePeriod,
+            $type,
+            $outputSize,
+            $format,
+            $delimiter,
+            $prepost,
+            $dp,
+            $order,
+            $includeOhlc,
+            $timezone,
+            $date,
+            $startDate,
+            $endDate,
+            $previousClose,
+            $adjust,
+        );
+
+        return TechnicalIndicator::fromJson(
+            DoubleExponentialMovingAverage::class,
+            $this->client->get($request->path, $request->queryParams),
+        );
+    }
+
+    public function exponentialMovingAverageRequest(
+        ?string $symbol = null,
+        IntervalEnum $interval = IntervalEnum::OneDay,
+        ?string $figi = null,
+        ?string $isin = null,
+        ?string $cusip = null,
+        ?string $exchange = null,
+        ?string $micCode = null,
+        ?string $country = null,
+        ?SeriesTypeEnum $seriesType = null,
+        ?int $timePeriod = null,
+        ?TypeEnum $type = null,
+        ?int $outputSize = null,
+        ?FormatEnum $format = null,
+        ?string $delimiter = null,
+        ?PrepostEnum $prepost = null,
+        ?int $dp = null,
+        ?OrderEnum $order = null,
+        ?bool $includeOhlc = null,
+        ?string $timezone = null,
+        ?DateTimeImmutable $date = null,
+        ?DateTimeImmutable $startDate = null,
+        ?DateTimeImmutable $endDate = null,
+        ?bool $previousClose = null,
+        ?AdjustEnum $adjust = null,
+    ): BatchableRequest {
         Guard::requireSymbolIdentifier($symbol, $figi, $isin, $cusip);
 
-        $response = $this->client->get(
-            path: '/dema',
+        return new BatchableRequest(
+            path: '/ema',
             queryParams: [
                 'symbol' => $symbol,
                 'interval' => $interval->value,
@@ -167,11 +347,8 @@ readonly class OverlapStudies extends TwelveDataApi
                 'previous_close' => QueryParamsUtils::booleanAsString($previousClose),
                 'adjust' => $adjust?->value,
             ],
+            responseFactory: fn (string $json): TechnicalIndicator => TechnicalIndicator::fromJson(ExponentialMovingAverage::class, $json),
         );
-
-        /** @var TechnicalIndicator<DoubleExponentialMovingAverage> $technicalIndicator */
-        $technicalIndicator = TechnicalIndicator::fromJson(DoubleExponentialMovingAverage::class, $response);
-        return $technicalIndicator;
     }
 
     /** @return TechnicalIndicator<ExponentialMovingAverage> */
@@ -201,10 +378,66 @@ readonly class OverlapStudies extends TwelveDataApi
         ?bool $previousClose = null,
         ?AdjustEnum $adjust = null,
     ): TechnicalIndicator {
+        $request = $this->exponentialMovingAverageRequest(
+            $symbol,
+            $interval,
+            $figi,
+            $isin,
+            $cusip,
+            $exchange,
+            $micCode,
+            $country,
+            $seriesType,
+            $timePeriod,
+            $type,
+            $outputSize,
+            $format,
+            $delimiter,
+            $prepost,
+            $dp,
+            $order,
+            $includeOhlc,
+            $timezone,
+            $date,
+            $startDate,
+            $endDate,
+            $previousClose,
+            $adjust,
+        );
+
+        return TechnicalIndicator::fromJson(ExponentialMovingAverage::class, $this->client->get($request->path, $request->queryParams));
+    }
+
+    public function hilbertTransformInstantaneousTrendlineRequest(
+        ?string $symbol = null,
+        IntervalEnum $interval = IntervalEnum::OneDay,
+        ?string $figi = null,
+        ?string $isin = null,
+        ?string $cusip = null,
+        ?string $exchange = null,
+        ?string $micCode = null,
+        ?string $country = null,
+        ?SeriesTypeEnum $seriesType = null,
+        ?int $timePeriod = null,
+        ?TypeEnum $type = null,
+        ?int $outputSize = null,
+        ?FormatEnum $format = null,
+        ?string $delimiter = null,
+        ?PrepostEnum $prepost = null,
+        ?int $dp = null,
+        ?OrderEnum $order = null,
+        ?bool $includeOhlc = null,
+        ?string $timezone = null,
+        ?DateTimeImmutable $date = null,
+        ?DateTimeImmutable $startDate = null,
+        ?DateTimeImmutable $endDate = null,
+        ?bool $previousClose = null,
+        ?AdjustEnum $adjust = null,
+    ): BatchableRequest {
         Guard::requireSymbolIdentifier($symbol, $figi, $isin, $cusip);
 
-        $response = $this->client->get(
-            path: '/ema',
+        return new BatchableRequest(
+            path: '/ht_trendline',
             queryParams: [
                 'symbol' => $symbol,
                 'interval' => $interval->value,
@@ -231,11 +464,11 @@ readonly class OverlapStudies extends TwelveDataApi
                 'previous_close' => QueryParamsUtils::booleanAsString($previousClose),
                 'adjust' => $adjust?->value,
             ],
+            responseFactory: fn (string $json): TechnicalIndicator => TechnicalIndicator::fromJson(
+                HilbertTransformInstantaneousTrendline::class,
+                $json,
+            ),
         );
-
-        /** @var TechnicalIndicator<ExponentialMovingAverage> $technicalIndicator */
-        $technicalIndicator = TechnicalIndicator::fromJson(ExponentialMovingAverage::class, $response);
-        return $technicalIndicator;
     }
 
     /** @return TechnicalIndicator<HilbertTransformInstantaneousTrendline> */
@@ -265,10 +498,72 @@ readonly class OverlapStudies extends TwelveDataApi
         ?bool $previousClose = null,
         ?AdjustEnum $adjust = null,
     ): TechnicalIndicator {
+        $request = $this->hilbertTransformInstantaneousTrendlineRequest(
+            $symbol,
+            $interval,
+            $figi,
+            $isin,
+            $cusip,
+            $exchange,
+            $micCode,
+            $country,
+            $seriesType,
+            $timePeriod,
+            $type,
+            $outputSize,
+            $format,
+            $delimiter,
+            $prepost,
+            $dp,
+            $order,
+            $includeOhlc,
+            $timezone,
+            $date,
+            $startDate,
+            $endDate,
+            $previousClose,
+            $adjust,
+        );
+
+        return TechnicalIndicator::fromJson(
+            HilbertTransformInstantaneousTrendline::class,
+            $this->client->get($request->path, $request->queryParams),
+        );
+    }
+
+    public function ichimokuCloudRequest(
+        ?string $symbol = null,
+        IntervalEnum $interval = IntervalEnum::OneDay,
+        ?string $figi = null,
+        ?string $isin = null,
+        ?string $cusip = null,
+        ?string $exchange = null,
+        ?string $micCode = null,
+        ?string $country = null,
+        ?int $conversionLinePeriod = null,
+        ?int $baseLinePeriod = null,
+        ?int $leadingSpanBPeriod = null,
+        ?int $laggingSpanPeriod = null,
+        ?bool $includeAheadSpanPeriod = null,
+        ?TypeEnum $type = null,
+        ?int $outputSize = null,
+        ?FormatEnum $format = null,
+        ?string $delimiter = null,
+        ?PrepostEnum $prepost = null,
+        ?int $dp = null,
+        ?OrderEnum $order = null,
+        ?bool $includeOhlc = null,
+        ?string $timezone = null,
+        ?DateTimeImmutable $date = null,
+        ?DateTimeImmutable $startDate = null,
+        ?DateTimeImmutable $endDate = null,
+        ?bool $previousClose = null,
+        ?AdjustEnum $adjust = null,
+    ): BatchableRequest {
         Guard::requireSymbolIdentifier($symbol, $figi, $isin, $cusip);
 
-        $response = $this->client->get(
-            path: '/ht_trendline',
+        return new BatchableRequest(
+            path: '/ichimoku',
             queryParams: [
                 'symbol' => $symbol,
                 'interval' => $interval->value,
@@ -278,8 +573,11 @@ readonly class OverlapStudies extends TwelveDataApi
                 'exchange' => $exchange,
                 'mic_code' => $micCode,
                 'country' => $country,
-                'series_type' => $seriesType?->value,
-                'time_period' => $timePeriod,
+                'conversion_line_period' => $conversionLinePeriod,
+                'base_line_period' => $baseLinePeriod,
+                'leading_span_b_period' => $leadingSpanBPeriod,
+                'lagging_span_period' => $laggingSpanPeriod,
+                'include_ahead_span_period' => QueryParamsUtils::booleanAsString($includeAheadSpanPeriod),
                 'type' => $type?->value,
                 'outputsize' => $outputSize,
                 'format' => $format?->value,
@@ -295,11 +593,8 @@ readonly class OverlapStudies extends TwelveDataApi
                 'previous_close' => QueryParamsUtils::booleanAsString($previousClose),
                 'adjust' => $adjust?->value,
             ],
+            responseFactory: fn (string $json): TechnicalIndicator => TechnicalIndicator::fromJson(IchimokuCloud::class, $json),
         );
-
-        /** @var TechnicalIndicator<HilbertTransformInstantaneousTrendline> $technicalIndicator */
-        $technicalIndicator = TechnicalIndicator::fromJson(HilbertTransformInstantaneousTrendline::class, $response);
-        return $technicalIndicator;
     }
 
     /** @return TechnicalIndicator<IchimokuCloud> */
@@ -332,10 +627,69 @@ readonly class OverlapStudies extends TwelveDataApi
         ?bool $previousClose = null,
         ?AdjustEnum $adjust = null,
     ): TechnicalIndicator {
+        $request = $this->ichimokuCloudRequest(
+            $symbol,
+            $interval,
+            $figi,
+            $isin,
+            $cusip,
+            $exchange,
+            $micCode,
+            $country,
+            $conversionLinePeriod,
+            $baseLinePeriod,
+            $leadingSpanBPeriod,
+            $laggingSpanPeriod,
+            $includeAheadSpanPeriod,
+            $type,
+            $outputSize,
+            $format,
+            $delimiter,
+            $prepost,
+            $dp,
+            $order,
+            $includeOhlc,
+            $timezone,
+            $date,
+            $startDate,
+            $endDate,
+            $previousClose,
+            $adjust,
+        );
+
+        return TechnicalIndicator::fromJson(IchimokuCloud::class, $this->client->get($request->path, $request->queryParams));
+    }
+
+    public function kaufmanAdaptiveMovingAverageRequest(
+        ?string $symbol = null,
+        IntervalEnum $interval = IntervalEnum::OneDay,
+        ?string $figi = null,
+        ?string $isin = null,
+        ?string $cusip = null,
+        ?string $exchange = null,
+        ?string $micCode = null,
+        ?string $country = null,
+        ?SeriesTypeEnum $seriesType = null,
+        ?int $timePeriod = null,
+        ?TypeEnum $type = null,
+        ?int $outputSize = null,
+        ?FormatEnum $format = null,
+        ?string $delimiter = null,
+        ?PrepostEnum $prepost = null,
+        ?int $dp = null,
+        ?OrderEnum $order = null,
+        ?bool $includeOhlc = null,
+        ?string $timezone = null,
+        ?DateTimeImmutable $date = null,
+        ?DateTimeImmutable $startDate = null,
+        ?DateTimeImmutable $endDate = null,
+        ?bool $previousClose = null,
+        ?AdjustEnum $adjust = null,
+    ): BatchableRequest {
         Guard::requireSymbolIdentifier($symbol, $figi, $isin, $cusip);
 
-        $response = $this->client->get(
-            path: '/ichimoku',
+        return new BatchableRequest(
+            path: '/kama',
             queryParams: [
                 'symbol' => $symbol,
                 'interval' => $interval->value,
@@ -345,11 +699,8 @@ readonly class OverlapStudies extends TwelveDataApi
                 'exchange' => $exchange,
                 'mic_code' => $micCode,
                 'country' => $country,
-                'conversion_line_period' => $conversionLinePeriod,
-                'base_line_period' => $baseLinePeriod,
-                'leading_span_b_period' => $leadingSpanBPeriod,
-                'lagging_span_period' => $laggingSpanPeriod,
-                'include_ahead_span_period' => QueryParamsUtils::booleanAsString($includeAheadSpanPeriod),
+                'series_type' => $seriesType?->value,
+                'time_period' => $timePeriod,
                 'type' => $type?->value,
                 'outputsize' => $outputSize,
                 'format' => $format?->value,
@@ -365,11 +716,11 @@ readonly class OverlapStudies extends TwelveDataApi
                 'previous_close' => QueryParamsUtils::booleanAsString($previousClose),
                 'adjust' => $adjust?->value,
             ],
+            responseFactory: fn (string $json): TechnicalIndicator => TechnicalIndicator::fromJson(
+                KaufmanAdaptiveMovingAverage::class,
+                $json,
+            ),
         );
-
-        /** @var TechnicalIndicator<IchimokuCloud> $technicalIndicator */
-        $technicalIndicator = TechnicalIndicator::fromJson(IchimokuCloud::class, $response);
-        return $technicalIndicator;
     }
 
     /** @return TechnicalIndicator<KaufmanAdaptiveMovingAverage> */
@@ -399,10 +750,69 @@ readonly class OverlapStudies extends TwelveDataApi
         ?bool $previousClose = null,
         ?AdjustEnum $adjust = null,
     ): TechnicalIndicator {
+        $request = $this->kaufmanAdaptiveMovingAverageRequest(
+            $symbol,
+            $interval,
+            $figi,
+            $isin,
+            $cusip,
+            $exchange,
+            $micCode,
+            $country,
+            $seriesType,
+            $timePeriod,
+            $type,
+            $outputSize,
+            $format,
+            $delimiter,
+            $prepost,
+            $dp,
+            $order,
+            $includeOhlc,
+            $timezone,
+            $date,
+            $startDate,
+            $endDate,
+            $previousClose,
+            $adjust,
+        );
+
+        return TechnicalIndicator::fromJson(KaufmanAdaptiveMovingAverage::class, $this->client->get($request->path, $request->queryParams));
+    }
+
+    public function keltnerChannelRequest(
+        ?string $symbol = null,
+        IntervalEnum $interval = IntervalEnum::OneDay,
+        ?string $figi = null,
+        ?string $isin = null,
+        ?string $cusip = null,
+        ?string $exchange = null,
+        ?string $micCode = null,
+        ?string $country = null,
+        ?int $timePeriod = null,
+        ?int $atrTimePeriod = null,
+        ?int $multiplier = null,
+        ?SeriesTypeEnum $seriesType = null,
+        ?MaTypeEnum $maType = null,
+        ?TypeEnum $type = null,
+        ?int $outputSize = null,
+        ?FormatEnum $format = null,
+        ?string $delimiter = null,
+        ?PrepostEnum $prepost = null,
+        ?int $dp = null,
+        ?OrderEnum $order = null,
+        ?bool $includeOhlc = null,
+        ?string $timezone = null,
+        ?DateTimeImmutable $date = null,
+        ?DateTimeImmutable $startDate = null,
+        ?DateTimeImmutable $endDate = null,
+        ?bool $previousClose = null,
+        ?AdjustEnum $adjust = null,
+    ): BatchableRequest {
         Guard::requireSymbolIdentifier($symbol, $figi, $isin, $cusip);
 
-        $response = $this->client->get(
-            path: '/kama',
+        return new BatchableRequest(
+            path: '/keltner',
             queryParams: [
                 'symbol' => $symbol,
                 'interval' => $interval->value,
@@ -412,8 +822,11 @@ readonly class OverlapStudies extends TwelveDataApi
                 'exchange' => $exchange,
                 'mic_code' => $micCode,
                 'country' => $country,
-                'series_type' => $seriesType?->value,
                 'time_period' => $timePeriod,
+                'atr_time_period' => $atrTimePeriod,
+                'multiplier' => $multiplier,
+                'series_type' => $seriesType?->value,
+                'ma_type' => $maType?->value,
                 'type' => $type?->value,
                 'outputsize' => $outputSize,
                 'format' => $format?->value,
@@ -429,11 +842,8 @@ readonly class OverlapStudies extends TwelveDataApi
                 'previous_close' => QueryParamsUtils::booleanAsString($previousClose),
                 'adjust' => $adjust?->value,
             ],
+            responseFactory: fn (string $json): TechnicalIndicator => TechnicalIndicator::fromJson(KeltnerChannel::class, $json),
         );
-
-        /** @var TechnicalIndicator<KaufmanAdaptiveMovingAverage> $technicalIndicator */
-        $technicalIndicator = TechnicalIndicator::fromJson(KaufmanAdaptiveMovingAverage::class, $response);
-        return $technicalIndicator;
     }
 
     /** @return TechnicalIndicator<KeltnerChannel> */
@@ -466,10 +876,70 @@ readonly class OverlapStudies extends TwelveDataApi
         ?bool $previousClose = null,
         ?AdjustEnum $adjust = null,
     ): TechnicalIndicator {
+        $request = $this->keltnerChannelRequest(
+            $symbol,
+            $interval,
+            $figi,
+            $isin,
+            $cusip,
+            $exchange,
+            $micCode,
+            $country,
+            $timePeriod,
+            $atrTimePeriod,
+            $multiplier,
+            $seriesType,
+            $maType,
+            $type,
+            $outputSize,
+            $format,
+            $delimiter,
+            $prepost,
+            $dp,
+            $order,
+            $includeOhlc,
+            $timezone,
+            $date,
+            $startDate,
+            $endDate,
+            $previousClose,
+            $adjust,
+        );
+
+        return TechnicalIndicator::fromJson(KeltnerChannel::class, $this->client->get($request->path, $request->queryParams));
+    }
+
+    public function movingAverageRequest(
+        ?string $symbol = null,
+        IntervalEnum $interval = IntervalEnum::OneDay,
+        ?string $figi = null,
+        ?string $isin = null,
+        ?string $cusip = null,
+        ?string $exchange = null,
+        ?string $micCode = null,
+        ?string $country = null,
+        ?SeriesTypeEnum $seriesType = null,
+        ?int $timePeriod = null,
+        ?MaTypeEnum $maType = null,
+        ?TypeEnum $type = null,
+        ?int $outputSize = null,
+        ?FormatEnum $format = null,
+        ?string $delimiter = null,
+        ?PrepostEnum $prepost = null,
+        ?int $dp = null,
+        ?OrderEnum $order = null,
+        ?bool $includeOhlc = null,
+        ?string $timezone = null,
+        ?DateTimeImmutable $date = null,
+        ?DateTimeImmutable $startDate = null,
+        ?DateTimeImmutable $endDate = null,
+        ?bool $previousClose = null,
+        ?AdjustEnum $adjust = null,
+    ): BatchableRequest {
         Guard::requireSymbolIdentifier($symbol, $figi, $isin, $cusip);
 
-        $response = $this->client->get(
-            path: '/keltner',
+        return new BatchableRequest(
+            path: '/ma',
             queryParams: [
                 'symbol' => $symbol,
                 'interval' => $interval->value,
@@ -479,10 +949,8 @@ readonly class OverlapStudies extends TwelveDataApi
                 'exchange' => $exchange,
                 'mic_code' => $micCode,
                 'country' => $country,
-                'time_period' => $timePeriod,
-                'atr_time_period' => $atrTimePeriod,
-                'multiplier' => $multiplier,
                 'series_type' => $seriesType?->value,
+                'time_period' => $timePeriod,
                 'ma_type' => $maType?->value,
                 'type' => $type?->value,
                 'outputsize' => $outputSize,
@@ -499,11 +967,8 @@ readonly class OverlapStudies extends TwelveDataApi
                 'previous_close' => QueryParamsUtils::booleanAsString($previousClose),
                 'adjust' => $adjust?->value,
             ],
+            responseFactory: fn (string $json): TechnicalIndicator => TechnicalIndicator::fromJson(MovingAverage::class, $json),
         );
-
-        /** @var TechnicalIndicator<KeltnerChannel> $technicalIndicator */
-        $technicalIndicator = TechnicalIndicator::fromJson(KeltnerChannel::class, $response);
-        return $technicalIndicator;
     }
 
     /** @return TechnicalIndicator<MovingAverage> */
@@ -534,10 +999,68 @@ readonly class OverlapStudies extends TwelveDataApi
         ?bool $previousClose = null,
         ?AdjustEnum $adjust = null,
     ): TechnicalIndicator {
+        $request = $this->movingAverageRequest(
+            $symbol,
+            $interval,
+            $figi,
+            $isin,
+            $cusip,
+            $exchange,
+            $micCode,
+            $country,
+            $seriesType,
+            $timePeriod,
+            $maType,
+            $type,
+            $outputSize,
+            $format,
+            $delimiter,
+            $prepost,
+            $dp,
+            $order,
+            $includeOhlc,
+            $timezone,
+            $date,
+            $startDate,
+            $endDate,
+            $previousClose,
+            $adjust,
+        );
+
+        return TechnicalIndicator::fromJson(MovingAverage::class, $this->client->get($request->path, $request->queryParams));
+    }
+
+    public function mesaAdaptiveMovingAverageRequest(
+        ?string $symbol = null,
+        IntervalEnum $interval = IntervalEnum::OneDay,
+        ?string $figi = null,
+        ?string $isin = null,
+        ?string $cusip = null,
+        ?string $exchange = null,
+        ?string $micCode = null,
+        ?string $country = null,
+        ?SeriesTypeEnum $seriesType = null,
+        ?float $fastLimit = null,
+        ?float $slowLimit = null,
+        ?TypeEnum $type = null,
+        ?int $outputSize = null,
+        ?FormatEnum $format = null,
+        ?string $delimiter = null,
+        ?PrepostEnum $prepost = null,
+        ?int $dp = null,
+        ?OrderEnum $order = null,
+        ?bool $includeOhlc = null,
+        ?string $timezone = null,
+        ?DateTimeImmutable $date = null,
+        ?DateTimeImmutable $startDate = null,
+        ?DateTimeImmutable $endDate = null,
+        ?bool $previousClose = null,
+        ?AdjustEnum $adjust = null,
+    ): BatchableRequest {
         Guard::requireSymbolIdentifier($symbol, $figi, $isin, $cusip);
 
-        $response = $this->client->get(
-            path: '/ma',
+        return new BatchableRequest(
+            path: '/mama',
             queryParams: [
                 'symbol' => $symbol,
                 'interval' => $interval->value,
@@ -548,8 +1071,8 @@ readonly class OverlapStudies extends TwelveDataApi
                 'mic_code' => $micCode,
                 'country' => $country,
                 'series_type' => $seriesType?->value,
-                'time_period' => $timePeriod,
-                'ma_type' => $maType?->value,
+                'fast_limit' => $fastLimit,
+                'slow_limit' => $slowLimit,
                 'type' => $type?->value,
                 'outputsize' => $outputSize,
                 'format' => $format?->value,
@@ -565,11 +1088,8 @@ readonly class OverlapStudies extends TwelveDataApi
                 'previous_close' => QueryParamsUtils::booleanAsString($previousClose),
                 'adjust' => $adjust?->value,
             ],
+            responseFactory: fn (string $json): TechnicalIndicator => TechnicalIndicator::fromJson(MesaAdaptiveMovingAverage::class, $json),
         );
-
-        /** @var TechnicalIndicator<MovingAverage> $technicalIndicator */
-        $technicalIndicator = TechnicalIndicator::fromJson(MovingAverage::class, $response);
-        return $technicalIndicator;
     }
 
     /** @return TechnicalIndicator<MesaAdaptiveMovingAverage> */
@@ -600,10 +1120,66 @@ readonly class OverlapStudies extends TwelveDataApi
         ?bool $previousClose = null,
         ?AdjustEnum $adjust = null,
     ): TechnicalIndicator {
+        $request = $this->mesaAdaptiveMovingAverageRequest(
+            $symbol,
+            $interval,
+            $figi,
+            $isin,
+            $cusip,
+            $exchange,
+            $micCode,
+            $country,
+            $seriesType,
+            $fastLimit,
+            $slowLimit,
+            $type,
+            $outputSize,
+            $format,
+            $delimiter,
+            $prepost,
+            $dp,
+            $order,
+            $includeOhlc,
+            $timezone,
+            $date,
+            $startDate,
+            $endDate,
+            $previousClose,
+            $adjust,
+        );
+
+        return TechnicalIndicator::fromJson(MesaAdaptiveMovingAverage::class, $this->client->get($request->path, $request->queryParams));
+    }
+
+    public function mcGinleyDynamicIndicatorRequest(
+        ?string $symbol = null,
+        IntervalEnum $interval = IntervalEnum::OneDay,
+        ?string $figi = null,
+        ?string $isin = null,
+        ?string $cusip = null,
+        ?string $exchange = null,
+        ?string $micCode = null,
+        ?string $country = null,
+        ?int $timePeriod = null,
+        ?TypeEnum $type = null,
+        ?int $outputSize = null,
+        ?FormatEnum $format = null,
+        ?string $delimiter = null,
+        ?PrepostEnum $prepost = null,
+        ?int $dp = null,
+        ?OrderEnum $order = null,
+        ?bool $includeOhlc = null,
+        ?string $timezone = null,
+        ?DateTimeImmutable $date = null,
+        ?DateTimeImmutable $startDate = null,
+        ?DateTimeImmutable $endDate = null,
+        ?bool $previousClose = null,
+        ?AdjustEnum $adjust = null,
+    ): BatchableRequest {
         Guard::requireSymbolIdentifier($symbol, $figi, $isin, $cusip);
 
-        $response = $this->client->get(
-            path: '/mama',
+        return new BatchableRequest(
+            path: '/mcginley_dynamic',
             queryParams: [
                 'symbol' => $symbol,
                 'interval' => $interval->value,
@@ -613,9 +1189,7 @@ readonly class OverlapStudies extends TwelveDataApi
                 'exchange' => $exchange,
                 'mic_code' => $micCode,
                 'country' => $country,
-                'series_type' => $seriesType?->value,
-                'fast_limit' => $fastLimit,
-                'slow_limit' => $slowLimit,
+                'time_period' => $timePeriod,
                 'type' => $type?->value,
                 'outputsize' => $outputSize,
                 'format' => $format?->value,
@@ -631,11 +1205,8 @@ readonly class OverlapStudies extends TwelveDataApi
                 'previous_close' => QueryParamsUtils::booleanAsString($previousClose),
                 'adjust' => $adjust?->value,
             ],
+            responseFactory: fn (string $json): TechnicalIndicator => TechnicalIndicator::fromJson(McGinleyDynamicIndicator::class, $json),
         );
-
-        /** @var TechnicalIndicator<MesaAdaptiveMovingAverage> $technicalIndicator */
-        $technicalIndicator = TechnicalIndicator::fromJson(MesaAdaptiveMovingAverage::class, $response);
-        return $technicalIndicator;
     }
 
     /** @return TechnicalIndicator<McGinleyDynamicIndicator> */
@@ -664,10 +1235,66 @@ readonly class OverlapStudies extends TwelveDataApi
         ?bool $previousClose = null,
         ?AdjustEnum $adjust = null,
     ): TechnicalIndicator {
+        $request = $this->mcGinleyDynamicIndicatorRequest(
+            $symbol,
+            $interval,
+            $figi,
+            $isin,
+            $cusip,
+            $exchange,
+            $micCode,
+            $country,
+            $timePeriod,
+            $type,
+            $outputSize,
+            $format,
+            $delimiter,
+            $prepost,
+            $dp,
+            $order,
+            $includeOhlc,
+            $timezone,
+            $date,
+            $startDate,
+            $endDate,
+            $previousClose,
+            $adjust,
+        );
+
+        return TechnicalIndicator::fromJson(McGinleyDynamicIndicator::class, $this->client->get($request->path, $request->queryParams));
+    }
+
+    public function midpointRequest(
+        ?string $symbol = null,
+        IntervalEnum $interval = IntervalEnum::OneDay,
+        ?string $figi = null,
+        ?string $isin = null,
+        ?string $cusip = null,
+        ?string $exchange = null,
+        ?string $micCode = null,
+        ?string $country = null,
+        ?SeriesTypeEnum $seriesType = null,
+        ?int $timePeriod = null,
+        ?MaTypeEnum $maType = null,
+        ?TypeEnum $type = null,
+        ?int $outputSize = null,
+        ?FormatEnum $format = null,
+        ?string $delimiter = null,
+        ?PrepostEnum $prepost = null,
+        ?int $dp = null,
+        ?OrderEnum $order = null,
+        ?bool $includeOhlc = null,
+        ?string $timezone = null,
+        ?DateTimeImmutable $date = null,
+        ?DateTimeImmutable $startDate = null,
+        ?DateTimeImmutable $endDate = null,
+        ?bool $previousClose = null,
+        ?AdjustEnum $adjust = null,
+    ): BatchableRequest {
         Guard::requireSymbolIdentifier($symbol, $figi, $isin, $cusip);
 
-        $response = $this->client->get(
-            path: '/mcginley_dynamic',
+        return new BatchableRequest(
+            path: '/midpoint',
             queryParams: [
                 'symbol' => $symbol,
                 'interval' => $interval->value,
@@ -677,7 +1304,9 @@ readonly class OverlapStudies extends TwelveDataApi
                 'exchange' => $exchange,
                 'mic_code' => $micCode,
                 'country' => $country,
+                'series_type' => $seriesType?->value,
                 'time_period' => $timePeriod,
+                'ma_type' => $maType?->value,
                 'type' => $type?->value,
                 'outputsize' => $outputSize,
                 'format' => $format?->value,
@@ -693,11 +1322,8 @@ readonly class OverlapStudies extends TwelveDataApi
                 'previous_close' => QueryParamsUtils::booleanAsString($previousClose),
                 'adjust' => $adjust?->value,
             ],
+            responseFactory: fn (string $json): TechnicalIndicator => TechnicalIndicator::fromJson(Midpoint::class, $json),
         );
-
-        /** @var TechnicalIndicator<McGinleyDynamicIndicator> $technicalIndicator */
-        $technicalIndicator = TechnicalIndicator::fromJson(McGinleyDynamicIndicator::class, $response);
-        return $technicalIndicator;
     }
 
     /** @return TechnicalIndicator<Midpoint> */
@@ -728,10 +1354,68 @@ readonly class OverlapStudies extends TwelveDataApi
         ?bool $previousClose = null,
         ?AdjustEnum $adjust = null,
     ): TechnicalIndicator {
+        $request = $this->midpointRequest(
+            $symbol,
+            $interval,
+            $figi,
+            $isin,
+            $cusip,
+            $exchange,
+            $micCode,
+            $country,
+            $seriesType,
+            $timePeriod,
+            $maType,
+            $type,
+            $outputSize,
+            $format,
+            $delimiter,
+            $prepost,
+            $dp,
+            $order,
+            $includeOhlc,
+            $timezone,
+            $date,
+            $startDate,
+            $endDate,
+            $previousClose,
+            $adjust,
+        );
+
+        return TechnicalIndicator::fromJson(Midpoint::class, $this->client->get($request->path, $request->queryParams));
+    }
+
+    public function midpriceRequest(
+        ?string $symbol = null,
+        IntervalEnum $interval = IntervalEnum::OneDay,
+        ?string $figi = null,
+        ?string $isin = null,
+        ?string $cusip = null,
+        ?string $exchange = null,
+        ?string $micCode = null,
+        ?string $country = null,
+        ?SeriesTypeEnum $seriesType = null,
+        ?int $timePeriod = null,
+        ?MaTypeEnum $maType = null,
+        ?TypeEnum $type = null,
+        ?int $outputSize = null,
+        ?FormatEnum $format = null,
+        ?string $delimiter = null,
+        ?PrepostEnum $prepost = null,
+        ?int $dp = null,
+        ?OrderEnum $order = null,
+        ?bool $includeOhlc = null,
+        ?string $timezone = null,
+        ?DateTimeImmutable $date = null,
+        ?DateTimeImmutable $startDate = null,
+        ?DateTimeImmutable $endDate = null,
+        ?bool $previousClose = null,
+        ?AdjustEnum $adjust = null,
+    ): BatchableRequest {
         Guard::requireSymbolIdentifier($symbol, $figi, $isin, $cusip);
 
-        $response = $this->client->get(
-            path: '/midpoint',
+        return new BatchableRequest(
+            path: '/midprice',
             queryParams: [
                 'symbol' => $symbol,
                 'interval' => $interval->value,
@@ -759,11 +1443,8 @@ readonly class OverlapStudies extends TwelveDataApi
                 'previous_close' => QueryParamsUtils::booleanAsString($previousClose),
                 'adjust' => $adjust?->value,
             ],
+            responseFactory: fn (string $json): TechnicalIndicator => TechnicalIndicator::fromJson(Midprice::class, $json),
         );
-
-        /** @var TechnicalIndicator<Midpoint> $technicalIndicator */
-        $technicalIndicator = TechnicalIndicator::fromJson(Midpoint::class, $response);
-        return $technicalIndicator;
     }
 
     /** @return TechnicalIndicator<Midprice> */
@@ -794,10 +1475,66 @@ readonly class OverlapStudies extends TwelveDataApi
         ?bool $previousClose = null,
         ?AdjustEnum $adjust = null,
     ): TechnicalIndicator {
+        $request = $this->midpriceRequest(
+            $symbol,
+            $interval,
+            $figi,
+            $isin,
+            $cusip,
+            $exchange,
+            $micCode,
+            $country,
+            $seriesType,
+            $timePeriod,
+            $maType,
+            $type,
+            $outputSize,
+            $format,
+            $delimiter,
+            $prepost,
+            $dp,
+            $order,
+            $includeOhlc,
+            $timezone,
+            $date,
+            $startDate,
+            $endDate,
+            $previousClose,
+            $adjust,
+        );
+
+        return TechnicalIndicator::fromJson(Midprice::class, $this->client->get($request->path, $request->queryParams));
+    }
+
+    public function pivotPointsHighLowRequest(
+        ?string $symbol = null,
+        IntervalEnum $interval = IntervalEnum::OneDay,
+        ?string $figi = null,
+        ?string $isin = null,
+        ?string $cusip = null,
+        ?string $exchange = null,
+        ?string $micCode = null,
+        ?string $country = null,
+        ?int $timePeriod = null,
+        ?TypeEnum $type = null,
+        ?int $outputSize = null,
+        ?FormatEnum $format = null,
+        ?string $delimiter = null,
+        ?PrepostEnum $prepost = null,
+        ?int $dp = null,
+        ?OrderEnum $order = null,
+        ?bool $includeOhlc = null,
+        ?string $timezone = null,
+        ?DateTimeImmutable $date = null,
+        ?DateTimeImmutable $startDate = null,
+        ?DateTimeImmutable $endDate = null,
+        ?bool $previousClose = null,
+        ?AdjustEnum $adjust = null,
+    ): BatchableRequest {
         Guard::requireSymbolIdentifier($symbol, $figi, $isin, $cusip);
 
-        $response = $this->client->get(
-            path: '/midprice',
+        return new BatchableRequest(
+            path: '/pivot_points_hl',
             queryParams: [
                 'symbol' => $symbol,
                 'interval' => $interval->value,
@@ -807,9 +1544,7 @@ readonly class OverlapStudies extends TwelveDataApi
                 'exchange' => $exchange,
                 'mic_code' => $micCode,
                 'country' => $country,
-                'series_type' => $seriesType?->value,
                 'time_period' => $timePeriod,
-                'ma_type' => $maType?->value,
                 'type' => $type?->value,
                 'outputsize' => $outputSize,
                 'format' => $format?->value,
@@ -825,11 +1560,8 @@ readonly class OverlapStudies extends TwelveDataApi
                 'previous_close' => QueryParamsUtils::booleanAsString($previousClose),
                 'adjust' => $adjust?->value,
             ],
+            responseFactory: fn (string $json): TechnicalIndicator => TechnicalIndicator::fromJson(PivotPointsHighLow::class, $json),
         );
-
-        /** @var TechnicalIndicator<Midprice> $technicalIndicator */
-        $technicalIndicator = TechnicalIndicator::fromJson(Midprice::class, $response);
-        return $technicalIndicator;
     }
 
     /** @return TechnicalIndicator<PivotPointsHighLow> */
@@ -858,10 +1590,65 @@ readonly class OverlapStudies extends TwelveDataApi
         ?bool $previousClose = null,
         ?AdjustEnum $adjust = null,
     ): TechnicalIndicator {
+        $request = $this->pivotPointsHighLowRequest(
+            $symbol,
+            $interval,
+            $figi,
+            $isin,
+            $cusip,
+            $exchange,
+            $micCode,
+            $country,
+            $timePeriod,
+            $type,
+            $outputSize,
+            $format,
+            $delimiter,
+            $prepost,
+            $dp,
+            $order,
+            $includeOhlc,
+            $timezone,
+            $date,
+            $startDate,
+            $endDate,
+            $previousClose,
+            $adjust,
+        );
+
+        return TechnicalIndicator::fromJson(PivotPointsHighLow::class, $this->client->get($request->path, $request->queryParams));
+    }
+
+    public function parabolicStopAndReverseRequest(
+        ?string $symbol = null,
+        IntervalEnum $interval = IntervalEnum::OneDay,
+        ?string $figi = null,
+        ?string $isin = null,
+        ?string $cusip = null,
+        ?string $exchange = null,
+        ?string $micCode = null,
+        ?string $country = null,
+        ?float $acceleration = null,
+        ?float $maximum = null,
+        ?TypeEnum $type = null,
+        ?int $outputSize = null,
+        ?FormatEnum $format = null,
+        ?string $delimiter = null,
+        ?PrepostEnum $prepost = null,
+        ?int $dp = null,
+        ?OrderEnum $order = null,
+        ?bool $includeOhlc = null,
+        ?string $timezone = null,
+        ?DateTimeImmutable $date = null,
+        ?DateTimeImmutable $startDate = null,
+        ?DateTimeImmutable $endDate = null,
+        ?bool $previousClose = null,
+        ?AdjustEnum $adjust = null,
+    ): BatchableRequest {
         Guard::requireSymbolIdentifier($symbol, $figi, $isin, $cusip);
 
-        $response = $this->client->get(
-            path: '/pivot_points_hl',
+        return new BatchableRequest(
+            path: '/sar',
             queryParams: [
                 'symbol' => $symbol,
                 'interval' => $interval->value,
@@ -871,7 +1658,8 @@ readonly class OverlapStudies extends TwelveDataApi
                 'exchange' => $exchange,
                 'mic_code' => $micCode,
                 'country' => $country,
-                'time_period' => $timePeriod,
+                'acceleration' => $acceleration,
+                'maximum' => $maximum,
                 'type' => $type?->value,
                 'outputsize' => $outputSize,
                 'format' => $format?->value,
@@ -887,11 +1675,8 @@ readonly class OverlapStudies extends TwelveDataApi
                 'previous_close' => QueryParamsUtils::booleanAsString($previousClose),
                 'adjust' => $adjust?->value,
             ],
+            responseFactory: fn (string $json): TechnicalIndicator => TechnicalIndicator::fromJson(ParabolicStopAndReverse::class, $json),
         );
-
-        /** @var TechnicalIndicator<PivotPointsHighLow> $technicalIndicator */
-        $technicalIndicator = TechnicalIndicator::fromJson(PivotPointsHighLow::class, $response);
-        return $technicalIndicator;
     }
 
     /** @return TechnicalIndicator<ParabolicStopAndReverse> */
@@ -921,9 +1706,71 @@ readonly class OverlapStudies extends TwelveDataApi
         ?bool $previousClose = null,
         ?AdjustEnum $adjust = null,
     ): TechnicalIndicator {
+        $request = $this->parabolicStopAndReverseRequest(
+            $symbol,
+            $interval,
+            $figi,
+            $isin,
+            $cusip,
+            $exchange,
+            $micCode,
+            $country,
+            $acceleration,
+            $maximum,
+            $type,
+            $outputSize,
+            $format,
+            $delimiter,
+            $prepost,
+            $dp,
+            $order,
+            $includeOhlc,
+            $timezone,
+            $date,
+            $startDate,
+            $endDate,
+            $previousClose,
+            $adjust,
+        );
+
+        return TechnicalIndicator::fromJson(ParabolicStopAndReverse::class, $this->client->get($request->path, $request->queryParams));
+    }
+
+    public function parabolicStopAndReverseExtendedRequest(
+        ?string $symbol = null,
+        IntervalEnum $interval = IntervalEnum::OneDay,
+        ?string $figi = null,
+        ?string $isin = null,
+        ?string $cusip = null,
+        ?string $exchange = null,
+        ?string $micCode = null,
+        ?string $country = null,
+        ?float $startValue = null,
+        ?float $offsetOnReverse = null,
+        ?float $accelerationLimitLong = null,
+        ?float $accelerationLong = null,
+        ?float $accelerationMaxLong = null,
+        ?float $accelerationLimitShort = null,
+        ?float $accelerationShort = null,
+        ?float $accelerationMaxShort = null,
+        ?TypeEnum $type = null,
+        ?int $outputSize = null,
+        ?FormatEnum $format = null,
+        ?string $delimiter = null,
+        ?PrepostEnum $prepost = null,
+        ?int $dp = null,
+        ?OrderEnum $order = null,
+        ?bool $includeOhlc = null,
+        ?string $timezone = null,
+        ?DateTimeImmutable $date = null,
+        ?DateTimeImmutable $startDate = null,
+        ?DateTimeImmutable $endDate = null,
+        ?bool $previousClose = null,
+        ?AdjustEnum $adjust = null,
+    ): BatchableRequest {
         Guard::requireSymbolIdentifier($symbol, $figi, $isin, $cusip);
 
-        $response = $this->client->get(
+        return new BatchableRequest(
             path: '/sar',
             queryParams: [
                 'symbol' => $symbol,
@@ -934,8 +1781,14 @@ readonly class OverlapStudies extends TwelveDataApi
                 'exchange' => $exchange,
                 'mic_code' => $micCode,
                 'country' => $country,
-                'acceleration' => $acceleration,
-                'maximum' => $maximum,
+                'start_value' => $startValue,
+                'offset_on_reverse' => $offsetOnReverse,
+                'acceleration_limit_long' => $accelerationLimitLong,
+                'acceleration_long' => $accelerationLong,
+                'acceleration_max_long' => $accelerationMaxLong,
+                'acceleration_limit_short' => $accelerationLimitShort,
+                'acceleration_short' => $accelerationShort,
+                'acceleration_max_short' => $accelerationMaxShort,
                 'type' => $type?->value,
                 'outputsize' => $outputSize,
                 'format' => $format?->value,
@@ -951,11 +1804,11 @@ readonly class OverlapStudies extends TwelveDataApi
                 'previous_close' => QueryParamsUtils::booleanAsString($previousClose),
                 'adjust' => $adjust?->value,
             ],
+            responseFactory: fn (string $json): TechnicalIndicator => TechnicalIndicator::fromJson(
+                ParabolicStopAndReverseExtended::class,
+                $json,
+            ),
         );
-
-        /** @var TechnicalIndicator<ParabolicStopAndReverse> $technicalIndicator */
-        $technicalIndicator = TechnicalIndicator::fromJson(ParabolicStopAndReverse::class, $response);
-        return $technicalIndicator;
     }
 
     /** @return TechnicalIndicator<ParabolicStopAndReverseExtended> */
@@ -991,10 +1844,75 @@ readonly class OverlapStudies extends TwelveDataApi
         ?bool $previousClose = null,
         ?AdjustEnum $adjust = null,
     ): TechnicalIndicator {
+        $request = $this->parabolicStopAndReverseExtendedRequest(
+            $symbol,
+            $interval,
+            $figi,
+            $isin,
+            $cusip,
+            $exchange,
+            $micCode,
+            $country,
+            $startValue,
+            $offsetOnReverse,
+            $accelerationLimitLong,
+            $accelerationLong,
+            $accelerationMaxLong,
+            $accelerationLimitShort,
+            $accelerationShort,
+            $accelerationMaxShort,
+            $type,
+            $outputSize,
+            $format,
+            $delimiter,
+            $prepost,
+            $dp,
+            $order,
+            $includeOhlc,
+            $timezone,
+            $date,
+            $startDate,
+            $endDate,
+            $previousClose,
+            $adjust,
+        );
+
+        return TechnicalIndicator::fromJson(
+            ParabolicStopAndReverseExtended::class,
+            $this->client->get($request->path, $request->queryParams),
+        );
+    }
+
+    public function simpleMovingAverageRequest(
+        ?string $symbol = null,
+        IntervalEnum $interval = IntervalEnum::OneDay,
+        ?string $figi = null,
+        ?string $isin = null,
+        ?string $cusip = null,
+        ?string $exchange = null,
+        ?string $micCode = null,
+        ?string $country = null,
+        ?SeriesTypeEnum $seriesType = null,
+        ?int $timePeriod = null,
+        ?TypeEnum $type = null,
+        ?int $outputSize = null,
+        ?FormatEnum $format = null,
+        ?string $delimiter = null,
+        ?PrepostEnum $prepost = null,
+        ?int $dp = null,
+        ?OrderEnum $order = null,
+        ?bool $includeOhlc = null,
+        ?string $timezone = null,
+        ?DateTimeImmutable $date = null,
+        ?DateTimeImmutable $startDate = null,
+        ?DateTimeImmutable $endDate = null,
+        ?bool $previousClose = null,
+        ?AdjustEnum $adjust = null,
+    ): BatchableRequest {
         Guard::requireSymbolIdentifier($symbol, $figi, $isin, $cusip);
 
-        $response = $this->client->get(
-            path: '/sar',
+        return new BatchableRequest(
+            path: '/sma',
             queryParams: [
                 'symbol' => $symbol,
                 'interval' => $interval->value,
@@ -1004,14 +1922,8 @@ readonly class OverlapStudies extends TwelveDataApi
                 'exchange' => $exchange,
                 'mic_code' => $micCode,
                 'country' => $country,
-                'start_value' => $startValue,
-                'offset_on_reverse' => $offsetOnReverse,
-                'acceleration_limit_long' => $accelerationLimitLong,
-                'acceleration_long' => $accelerationLong,
-                'acceleration_max_long' => $accelerationMaxLong,
-                'acceleration_limit_short' => $accelerationLimitShort,
-                'acceleration_short' => $accelerationShort,
-                'acceleration_max_short' => $accelerationMaxShort,
+                'series_type' => $seriesType?->value,
+                'time_period' => $timePeriod,
                 'type' => $type?->value,
                 'outputsize' => $outputSize,
                 'format' => $format?->value,
@@ -1027,11 +1939,8 @@ readonly class OverlapStudies extends TwelveDataApi
                 'previous_close' => QueryParamsUtils::booleanAsString($previousClose),
                 'adjust' => $adjust?->value,
             ],
+            responseFactory: fn (string $json): TechnicalIndicator => TechnicalIndicator::fromJson(SimpleMovingAverage::class, $json),
         );
-
-        /** @var TechnicalIndicator<ParabolicStopAndReverseExtended> $technicalIndicator */
-        $technicalIndicator = TechnicalIndicator::fromJson(ParabolicStopAndReverseExtended::class, $response);
-        return $technicalIndicator;
     }
 
     /** @return TechnicalIndicator<SimpleMovingAverage> */
@@ -1061,10 +1970,67 @@ readonly class OverlapStudies extends TwelveDataApi
         ?bool $previousClose = null,
         ?AdjustEnum $adjust = null,
     ): TechnicalIndicator {
+        $request = $this->simpleMovingAverageRequest(
+            $symbol,
+            $interval,
+            $figi,
+            $isin,
+            $cusip,
+            $exchange,
+            $micCode,
+            $country,
+            $seriesType,
+            $timePeriod,
+            $type,
+            $outputSize,
+            $format,
+            $delimiter,
+            $prepost,
+            $dp,
+            $order,
+            $includeOhlc,
+            $timezone,
+            $date,
+            $startDate,
+            $endDate,
+            $previousClose,
+            $adjust,
+        );
+
+        return TechnicalIndicator::fromJson(SimpleMovingAverage::class, $this->client->get($request->path, $request->queryParams));
+    }
+
+    public function tripleExponentialMovingAverageT3MARequest(
+        ?string $symbol = null,
+        IntervalEnum $interval = IntervalEnum::OneDay,
+        ?string $figi = null,
+        ?string $isin = null,
+        ?string $cusip = null,
+        ?string $exchange = null,
+        ?string $micCode = null,
+        ?string $country = null,
+        ?SeriesTypeEnum $seriesType = null,
+        ?int $timePeriod = null,
+        ?int $vFactor = null,
+        ?TypeEnum $type = null,
+        ?int $outputSize = null,
+        ?FormatEnum $format = null,
+        ?string $delimiter = null,
+        ?PrepostEnum $prepost = null,
+        ?int $dp = null,
+        ?OrderEnum $order = null,
+        ?bool $includeOhlc = null,
+        ?string $timezone = null,
+        ?DateTimeImmutable $date = null,
+        ?DateTimeImmutable $startDate = null,
+        ?DateTimeImmutable $endDate = null,
+        ?bool $previousClose = null,
+        ?AdjustEnum $adjust = null,
+    ): BatchableRequest {
         Guard::requireSymbolIdentifier($symbol, $figi, $isin, $cusip);
 
-        $response = $this->client->get(
-            path: '/sma',
+        return new BatchableRequest(
+            path: '/t3ma',
             queryParams: [
                 'symbol' => $symbol,
                 'interval' => $interval->value,
@@ -1076,6 +2042,7 @@ readonly class OverlapStudies extends TwelveDataApi
                 'country' => $country,
                 'series_type' => $seriesType?->value,
                 'time_period' => $timePeriod,
+                'v_factor' => $vFactor,
                 'type' => $type?->value,
                 'outputsize' => $outputSize,
                 'format' => $format?->value,
@@ -1091,11 +2058,11 @@ readonly class OverlapStudies extends TwelveDataApi
                 'previous_close' => QueryParamsUtils::booleanAsString($previousClose),
                 'adjust' => $adjust?->value,
             ],
+            responseFactory: fn (string $json): TechnicalIndicator => TechnicalIndicator::fromJson(
+                TripleExponentialMovingAverageT3MA::class,
+                $json,
+            ),
         );
-
-        /** @var TechnicalIndicator<SimpleMovingAverage> $technicalIndicator */
-        $technicalIndicator = TechnicalIndicator::fromJson(SimpleMovingAverage::class, $response);
-        return $technicalIndicator;
     }
 
     /** @return TechnicalIndicator<TripleExponentialMovingAverageT3MA> */
@@ -1126,10 +2093,70 @@ readonly class OverlapStudies extends TwelveDataApi
         ?bool $previousClose = null,
         ?AdjustEnum $adjust = null,
     ): TechnicalIndicator {
+        $request = $this->tripleExponentialMovingAverageT3MARequest(
+            $symbol,
+            $interval,
+            $figi,
+            $isin,
+            $cusip,
+            $exchange,
+            $micCode,
+            $country,
+            $seriesType,
+            $timePeriod,
+            $vFactor,
+            $type,
+            $outputSize,
+            $format,
+            $delimiter,
+            $prepost,
+            $dp,
+            $order,
+            $includeOhlc,
+            $timezone,
+            $date,
+            $startDate,
+            $endDate,
+            $previousClose,
+            $adjust,
+        );
+
+        return TechnicalIndicator::fromJson(
+            TripleExponentialMovingAverageT3MA::class,
+            $this->client->get($request->path, $request->queryParams),
+        );
+    }
+
+    public function tripleExponentialMovingAverageTEMARequest(
+        ?string $symbol = null,
+        IntervalEnum $interval = IntervalEnum::OneDay,
+        ?string $figi = null,
+        ?string $isin = null,
+        ?string $cusip = null,
+        ?string $exchange = null,
+        ?string $micCode = null,
+        ?string $country = null,
+        ?SeriesTypeEnum $seriesType = null,
+        ?int $timePeriod = null,
+        ?TypeEnum $type = null,
+        ?int $outputSize = null,
+        ?FormatEnum $format = null,
+        ?string $delimiter = null,
+        ?PrepostEnum $prepost = null,
+        ?int $dp = null,
+        ?OrderEnum $order = null,
+        ?bool $includeOhlc = null,
+        ?string $timezone = null,
+        ?DateTimeImmutable $date = null,
+        ?DateTimeImmutable $startDate = null,
+        ?DateTimeImmutable $endDate = null,
+        ?bool $previousClose = null,
+        ?AdjustEnum $adjust = null,
+    ): BatchableRequest {
         Guard::requireSymbolIdentifier($symbol, $figi, $isin, $cusip);
 
-        $response = $this->client->get(
-            path: '/t3ma',
+        return new BatchableRequest(
+            path: '/tema',
             queryParams: [
                 'symbol' => $symbol,
                 'interval' => $interval->value,
@@ -1141,7 +2168,6 @@ readonly class OverlapStudies extends TwelveDataApi
                 'country' => $country,
                 'series_type' => $seriesType?->value,
                 'time_period' => $timePeriod,
-                'v_factor' => $vFactor,
                 'type' => $type?->value,
                 'outputsize' => $outputSize,
                 'format' => $format?->value,
@@ -1157,11 +2183,11 @@ readonly class OverlapStudies extends TwelveDataApi
                 'previous_close' => QueryParamsUtils::booleanAsString($previousClose),
                 'adjust' => $adjust?->value,
             ],
+            responseFactory: fn (string $json): TechnicalIndicator => TechnicalIndicator::fromJson(
+                TripleExponentialMovingAverageTEMA::class,
+                $json,
+            ),
         );
-
-        /** @var TechnicalIndicator<TripleExponentialMovingAverageT3MA> $technicalIndicator */
-        $technicalIndicator = TechnicalIndicator::fromJson(TripleExponentialMovingAverageT3MA::class, $response);
-        return $technicalIndicator;
     }
 
     /** @return TechnicalIndicator<TripleExponentialMovingAverageTEMA> */
@@ -1191,10 +2217,69 @@ readonly class OverlapStudies extends TwelveDataApi
         ?bool $previousClose = null,
         ?AdjustEnum $adjust = null,
     ): TechnicalIndicator {
+        $request = $this->tripleExponentialMovingAverageTEMARequest(
+            $symbol,
+            $interval,
+            $figi,
+            $isin,
+            $cusip,
+            $exchange,
+            $micCode,
+            $country,
+            $seriesType,
+            $timePeriod,
+            $type,
+            $outputSize,
+            $format,
+            $delimiter,
+            $prepost,
+            $dp,
+            $order,
+            $includeOhlc,
+            $timezone,
+            $date,
+            $startDate,
+            $endDate,
+            $previousClose,
+            $adjust,
+        );
+
+        return TechnicalIndicator::fromJson(
+            TripleExponentialMovingAverageTEMA::class,
+            $this->client->get($request->path, $request->queryParams),
+        );
+    }
+
+    public function triangularMovingAverageRequest(
+        ?string $symbol = null,
+        IntervalEnum $interval = IntervalEnum::OneDay,
+        ?string $figi = null,
+        ?string $isin = null,
+        ?string $cusip = null,
+        ?string $exchange = null,
+        ?string $micCode = null,
+        ?string $country = null,
+        ?SeriesTypeEnum $seriesType = null,
+        ?int $timePeriod = null,
+        ?TypeEnum $type = null,
+        ?int $outputSize = null,
+        ?FormatEnum $format = null,
+        ?string $delimiter = null,
+        ?PrepostEnum $prepost = null,
+        ?int $dp = null,
+        ?OrderEnum $order = null,
+        ?bool $includeOhlc = null,
+        ?string $timezone = null,
+        ?DateTimeImmutable $date = null,
+        ?DateTimeImmutable $startDate = null,
+        ?DateTimeImmutable $endDate = null,
+        ?bool $previousClose = null,
+        ?AdjustEnum $adjust = null,
+    ): BatchableRequest {
         Guard::requireSymbolIdentifier($symbol, $figi, $isin, $cusip);
 
-        $response = $this->client->get(
-            path: '/tema',
+        return new BatchableRequest(
+            path: '/trima',
             queryParams: [
                 'symbol' => $symbol,
                 'interval' => $interval->value,
@@ -1221,11 +2306,8 @@ readonly class OverlapStudies extends TwelveDataApi
                 'previous_close' => QueryParamsUtils::booleanAsString($previousClose),
                 'adjust' => $adjust?->value,
             ],
+            responseFactory: fn (string $json): TechnicalIndicator => TechnicalIndicator::fromJson(TriangularMovingAverage::class, $json),
         );
-
-        /** @var TechnicalIndicator<TripleExponentialMovingAverageTEMA> $technicalIndicator */
-        $technicalIndicator = TechnicalIndicator::fromJson(TripleExponentialMovingAverageTEMA::class, $response);
-        return $technicalIndicator;
     }
 
     /** @return TechnicalIndicator<TriangularMovingAverage> */
@@ -1255,10 +2337,66 @@ readonly class OverlapStudies extends TwelveDataApi
         ?bool $previousClose = null,
         ?AdjustEnum $adjust = null,
     ): TechnicalIndicator {
+        $request = $this->triangularMovingAverageRequest(
+            $symbol,
+            $interval,
+            $figi,
+            $isin,
+            $cusip,
+            $exchange,
+            $micCode,
+            $country,
+            $seriesType,
+            $timePeriod,
+            $type,
+            $outputSize,
+            $format,
+            $delimiter,
+            $prepost,
+            $dp,
+            $order,
+            $includeOhlc,
+            $timezone,
+            $date,
+            $startDate,
+            $endDate,
+            $previousClose,
+            $adjust,
+        );
+
+        return TechnicalIndicator::fromJson(TriangularMovingAverage::class, $this->client->get($request->path, $request->queryParams));
+    }
+
+    public function volumeWeightedAveragePriceRequest(
+        ?string $symbol = null,
+        IntervalEnum $interval = IntervalEnum::OneDay,
+        ?string $figi = null,
+        ?string $isin = null,
+        ?string $cusip = null,
+        ?string $exchange = null,
+        ?string $micCode = null,
+        ?string $country = null,
+        ?float $sd = null,
+        ?int $sdTimePeriod = null,
+        ?TypeEnum $type = null,
+        ?int $outputSize = null,
+        ?FormatEnum $format = null,
+        ?string $delimiter = null,
+        ?PrepostEnum $prepost = null,
+        ?int $dp = null,
+        ?OrderEnum $order = null,
+        ?bool $includeOhlc = null,
+        ?string $timezone = null,
+        ?DateTimeImmutable $date = null,
+        ?DateTimeImmutable $startDate = null,
+        ?DateTimeImmutable $endDate = null,
+        ?bool $previousClose = null,
+        ?AdjustEnum $adjust = null,
+    ): BatchableRequest {
         Guard::requireSymbolIdentifier($symbol, $figi, $isin, $cusip);
 
-        $response = $this->client->get(
-            path: '/trima',
+        return new BatchableRequest(
+            path: '/vwap',
             queryParams: [
                 'symbol' => $symbol,
                 'interval' => $interval->value,
@@ -1268,8 +2406,8 @@ readonly class OverlapStudies extends TwelveDataApi
                 'exchange' => $exchange,
                 'mic_code' => $micCode,
                 'country' => $country,
-                'series_type' => $seriesType?->value,
-                'time_period' => $timePeriod,
+                'sd' => $sd,
+                'sd_time_period' => $sdTimePeriod,
                 'type' => $type?->value,
                 'outputsize' => $outputSize,
                 'format' => $format?->value,
@@ -1285,11 +2423,11 @@ readonly class OverlapStudies extends TwelveDataApi
                 'previous_close' => QueryParamsUtils::booleanAsString($previousClose),
                 'adjust' => $adjust?->value,
             ],
+            responseFactory: fn (string $json): TechnicalIndicator => TechnicalIndicator::fromJson(
+                VolumeWeightedAveragePrice::class,
+                $json,
+            ),
         );
-
-        /** @var TechnicalIndicator<TriangularMovingAverage> $technicalIndicator */
-        $technicalIndicator = TechnicalIndicator::fromJson(TriangularMovingAverage::class, $response);
-        return $technicalIndicator;
     }
 
     /** @return TechnicalIndicator<VolumeWeightedAveragePrice> */
@@ -1319,10 +2457,66 @@ readonly class OverlapStudies extends TwelveDataApi
         ?bool $previousClose = null,
         ?AdjustEnum $adjust = null,
     ): TechnicalIndicator {
+        $request = $this->volumeWeightedAveragePriceRequest(
+            $symbol,
+            $interval,
+            $figi,
+            $isin,
+            $cusip,
+            $exchange,
+            $micCode,
+            $country,
+            $sd,
+            $sdTimePeriod,
+            $type,
+            $outputSize,
+            $format,
+            $delimiter,
+            $prepost,
+            $dp,
+            $order,
+            $includeOhlc,
+            $timezone,
+            $date,
+            $startDate,
+            $endDate,
+            $previousClose,
+            $adjust,
+        );
+
+        return TechnicalIndicator::fromJson(VolumeWeightedAveragePrice::class, $this->client->get($request->path, $request->queryParams));
+    }
+
+    public function weightedMovingAverageRequest(
+        ?string $symbol = null,
+        IntervalEnum $interval = IntervalEnum::OneDay,
+        ?string $figi = null,
+        ?string $isin = null,
+        ?string $cusip = null,
+        ?string $exchange = null,
+        ?string $micCode = null,
+        ?string $country = null,
+        ?SeriesTypeEnum $seriesType = null,
+        ?int $timePeriod = null,
+        ?TypeEnum $type = null,
+        ?int $outputSize = null,
+        ?FormatEnum $format = null,
+        ?string $delimiter = null,
+        ?PrepostEnum $prepost = null,
+        ?int $dp = null,
+        ?OrderEnum $order = null,
+        ?bool $includeOhlc = null,
+        ?string $timezone = null,
+        ?DateTimeImmutable $date = null,
+        ?DateTimeImmutable $startDate = null,
+        ?DateTimeImmutable $endDate = null,
+        ?bool $previousClose = null,
+        ?AdjustEnum $adjust = null,
+    ): BatchableRequest {
         Guard::requireSymbolIdentifier($symbol, $figi, $isin, $cusip);
 
-        $response = $this->client->get(
-            path: '/vwap',
+        return new BatchableRequest(
+            path: '/wma',
             queryParams: [
                 'symbol' => $symbol,
                 'interval' => $interval->value,
@@ -1332,8 +2526,8 @@ readonly class OverlapStudies extends TwelveDataApi
                 'exchange' => $exchange,
                 'mic_code' => $micCode,
                 'country' => $country,
-                'sd' => $sd,
-                'sd_time_period' => $sdTimePeriod,
+                'series_type' => $seriesType?->value,
+                'time_period' => $timePeriod,
                 'type' => $type?->value,
                 'outputsize' => $outputSize,
                 'format' => $format?->value,
@@ -1349,11 +2543,8 @@ readonly class OverlapStudies extends TwelveDataApi
                 'previous_close' => QueryParamsUtils::booleanAsString($previousClose),
                 'adjust' => $adjust?->value,
             ],
+            responseFactory: fn (string $json): TechnicalIndicator => TechnicalIndicator::fromJson(WeightedMovingAverage::class, $json),
         );
-
-        /** @var TechnicalIndicator<VolumeWeightedAveragePrice> $technicalIndicator */
-        $technicalIndicator = TechnicalIndicator::fromJson(VolumeWeightedAveragePrice::class, $response);
-        return $technicalIndicator;
     }
 
     /** @return TechnicalIndicator<WeightedMovingAverage> */
@@ -1383,40 +2574,33 @@ readonly class OverlapStudies extends TwelveDataApi
         ?bool $previousClose = null,
         ?AdjustEnum $adjust = null,
     ): TechnicalIndicator {
-        Guard::requireSymbolIdentifier($symbol, $figi, $isin, $cusip);
-
-        $response = $this->client->get(
-            path: '/wma',
-            queryParams: [
-                'symbol' => $symbol,
-                'interval' => $interval->value,
-                'figi' => $figi,
-                'isin' => $isin,
-                'cusip' => $cusip,
-                'exchange' => $exchange,
-                'mic_code' => $micCode,
-                'country' => $country,
-                'series_type' => $seriesType?->value,
-                'time_period' => $timePeriod,
-                'type' => $type?->value,
-                'outputsize' => $outputSize,
-                'format' => $format?->value,
-                'delimiter' => $delimiter,
-                'prepost' => $prepost?->value,
-                'dp' => $dp,
-                'order' => $order?->value,
-                'include_ohlc' => QueryParamsUtils::booleanAsString($includeOhlc),
-                'timezone' => $timezone,
-                'date' => DateUtils::formatDate($date),
-                'start_date' => DateUtils::formatDate($startDate),
-                'end_date' => DateUtils::formatDate($endDate),
-                'previous_close' => QueryParamsUtils::booleanAsString($previousClose),
-                'adjust' => $adjust?->value,
-            ],
+        $request = $this->weightedMovingAverageRequest(
+            $symbol,
+            $interval,
+            $figi,
+            $isin,
+            $cusip,
+            $exchange,
+            $micCode,
+            $country,
+            $seriesType,
+            $timePeriod,
+            $type,
+            $outputSize,
+            $format,
+            $delimiter,
+            $prepost,
+            $dp,
+            $order,
+            $includeOhlc,
+            $timezone,
+            $date,
+            $startDate,
+            $endDate,
+            $previousClose,
+            $adjust,
         );
 
-        /** @var TechnicalIndicator<WeightedMovingAverage> $technicalIndicator */
-        $technicalIndicator = TechnicalIndicator::fromJson(WeightedMovingAverage::class, $response);
-        return $technicalIndicator;
+        return TechnicalIndicator::fromJson(WeightedMovingAverage::class, $this->client->get($request->path, $request->queryParams));
     }
 }

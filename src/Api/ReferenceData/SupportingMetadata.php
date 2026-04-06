@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace MarekSkopal\TwelveData\Api\ReferenceData;
 
+use MarekSkopal\TwelveData\Api\BatchableRequest;
 use MarekSkopal\TwelveData\Api\TwelveDataApi;
 use MarekSkopal\TwelveData\Dto\ReferenceData\Countries;
 use MarekSkopal\TwelveData\Dto\ReferenceData\InstrumentType;
@@ -11,33 +12,48 @@ use MarekSkopal\TwelveData\Dto\ReferenceData\TechnicalIndicators;
 
 readonly class SupportingMetadata extends TwelveDataApi
 {
-    public function countries(): Countries
+    /** @return BatchableRequest<Countries> */
+    public function countriesRequest(): BatchableRequest
     {
-        $response = $this->client->get(
+        return new BatchableRequest(
             path: '/countries',
             queryParams: [],
+            responseFactory: Countries::fromJson(...),
         );
+    }
 
-        return Countries::fromJson($response);
+    public function countries(): Countries
+    {
+        return $this->countriesRequest()->execute($this->client);
+    }
+
+    /** @return BatchableRequest<InstrumentType> */
+    public function instrumentTypeRequest(): BatchableRequest
+    {
+        return new BatchableRequest(
+            path: '/instrument_type',
+            queryParams: [],
+            responseFactory: InstrumentType::fromJson(...),
+        );
     }
 
     public function instrumentType(): InstrumentType
     {
-        $response = $this->client->get(
-            path: '/instrument_type',
-            queryParams: [],
-        );
+        return $this->instrumentTypeRequest()->execute($this->client);
+    }
 
-        return InstrumentType::fromJson($response);
+    /** @return BatchableRequest<TechnicalIndicators> */
+    public function technicalIndicatorsRequest(): BatchableRequest
+    {
+        return new BatchableRequest(
+            path: '/technical_indicators',
+            queryParams: [],
+            responseFactory: TechnicalIndicators::fromJson(...),
+        );
     }
 
     public function technicalIndicators(): TechnicalIndicators
     {
-        $response = $this->client->get(
-            path: '/technical_indicators',
-            queryParams: [],
-        );
-
-        return TechnicalIndicators::fromJson($response);
+        return $this->technicalIndicatorsRequest()->execute($this->client);
     }
 }

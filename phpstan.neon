@@ -6,7 +6,12 @@ parameters:
        - tests
     ignoreErrors:
        -
-          identifier: varTag.type
+          identifier: return.type
+          paths:
+             - src/Api/TechnicalIndicators/*
+
+       -
+          identifier: missingType.generics
           paths:
              - src/Api/TechnicalIndicators/*
 

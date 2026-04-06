@@ -18,7 +18,8 @@ use MarekSkopal\TwelveData\Utils\Guard;
 
 readonly class Regulatory extends TwelveDataApi
 {
-    public function edgarFillings(
+    /** @return BatchableRequest<EdgarFillings> */
+    public function edgarFillingsRequest(
         ?string $symbol = null,
         ?string $figi = null,
         ?string $isin = null,
@@ -31,10 +32,10 @@ readonly class Regulatory extends TwelveDataApi
         ?DateTimeImmutable $filledTo = null,
         ?int $page = null,
         ?int $pageSize = null,
-    ): EdgarFillings {
+    ): BatchableRequest {
         Guard::requireSymbolIdentifier($symbol, $figi, $isin, $cusip);
 
-        $response = $this->client->get(
+        return new BatchableRequest(
             path: '/edgar_filings/archive',
             queryParams: [
                 'symbol' => $symbol,
@@ -50,9 +51,65 @@ readonly class Regulatory extends TwelveDataApi
                 'page' => $page,
                 'page_size' => $pageSize,
             ],
+            responseFactory: EdgarFillings::fromJson(...),
         );
+    }
 
-        return EdgarFillings::fromJson($response);
+    public function edgarFillings(
+        ?string $symbol = null,
+        ?string $figi = null,
+        ?string $isin = null,
+        ?string $cusip = null,
+        ?string $exchange = null,
+        ?string $micCode = null,
+        ?string $country = null,
+        ?string $formType = null,
+        ?DateTimeImmutable $filledFrom = null,
+        ?DateTimeImmutable $filledTo = null,
+        ?int $page = null,
+        ?int $pageSize = null,
+    ): EdgarFillings {
+        return $this->edgarFillingsRequest(
+            $symbol,
+            $figi,
+            $isin,
+            $cusip,
+            $exchange,
+            $micCode,
+            $country,
+            $formType,
+            $filledFrom,
+            $filledTo,
+            $page,
+            $pageSize,
+        )->execute($this->client);
+    }
+
+    /** @return BatchableRequest<InsiderTransactions> */
+    public function insiderTransactionsRequest(
+        ?string $symbol = null,
+        ?string $figi = null,
+        ?string $isin = null,
+        ?string $cusip = null,
+        ?string $exchange = null,
+        ?string $micCode = null,
+        ?string $country = null,
+    ): BatchableRequest {
+        Guard::requireSymbolIdentifier($symbol, $figi, $isin, $cusip);
+
+        return new BatchableRequest(
+            path: '/insider_transactions',
+            queryParams: [
+                'symbol' => $symbol,
+                'figi' => $figi,
+                'isin' => $isin,
+                'cusip' => $cusip,
+                'exchange' => $exchange,
+                'mic_code' => $micCode,
+                'country' => $country,
+            ],
+            responseFactory: InsiderTransactions::fromJson(...),
+        );
     }
 
     public function insiderTransactions(
@@ -64,10 +121,23 @@ readonly class Regulatory extends TwelveDataApi
         ?string $micCode = null,
         ?string $country = null,
     ): InsiderTransactions {
+        return $this->insiderTransactionsRequest($symbol, $figi, $isin, $cusip, $exchange, $micCode, $country)->execute($this->client);
+    }
+
+    /** @return BatchableRequest<InstitutionalHolders> */
+    public function institutionalHoldersRequest(
+        ?string $symbol = null,
+        ?string $figi = null,
+        ?string $isin = null,
+        ?string $cusip = null,
+        ?string $exchange = null,
+        ?string $micCode = null,
+        ?string $country = null,
+    ): BatchableRequest {
         Guard::requireSymbolIdentifier($symbol, $figi, $isin, $cusip);
 
-        $response = $this->client->get(
-            path: '/insider_transactions',
+        return new BatchableRequest(
+            path: '/institutional_holders',
             queryParams: [
                 'symbol' => $symbol,
                 'figi' => $figi,
@@ -77,9 +147,8 @@ readonly class Regulatory extends TwelveDataApi
                 'mic_code' => $micCode,
                 'country' => $country,
             ],
+            responseFactory: InstitutionalHolders::fromJson(...),
         );
-
-        return InsiderTransactions::fromJson($response);
     }
 
     public function institutionalHolders(
@@ -91,10 +160,23 @@ readonly class Regulatory extends TwelveDataApi
         ?string $micCode = null,
         ?string $country = null,
     ): InstitutionalHolders {
+        return $this->institutionalHoldersRequest($symbol, $figi, $isin, $cusip, $exchange, $micCode, $country)->execute($this->client);
+    }
+
+    /** @return BatchableRequest<FundHolders> */
+    public function fundHoldersRequest(
+        ?string $symbol = null,
+        ?string $figi = null,
+        ?string $isin = null,
+        ?string $cusip = null,
+        ?string $exchange = null,
+        ?string $micCode = null,
+        ?string $country = null,
+    ): BatchableRequest {
         Guard::requireSymbolIdentifier($symbol, $figi, $isin, $cusip);
 
-        $response = $this->client->get(
-            path: '/institutional_holders',
+        return new BatchableRequest(
+            path: '/fund_holders',
             queryParams: [
                 'symbol' => $symbol,
                 'figi' => $figi,
@@ -104,9 +186,8 @@ readonly class Regulatory extends TwelveDataApi
                 'mic_code' => $micCode,
                 'country' => $country,
             ],
+            responseFactory: FundHolders::fromJson(...),
         );
-
-        return InstitutionalHolders::fromJson($response);
     }
 
     public function fundHolders(
@@ -118,10 +199,23 @@ readonly class Regulatory extends TwelveDataApi
         ?string $micCode = null,
         ?string $country = null,
     ): FundHolders {
+        return $this->fundHoldersRequest($symbol, $figi, $isin, $cusip, $exchange, $micCode, $country)->execute($this->client);
+    }
+
+    /** @return BatchableRequest<DirectHolders> */
+    public function directHoldersRequest(
+        ?string $symbol = null,
+        ?string $figi = null,
+        ?string $isin = null,
+        ?string $cusip = null,
+        ?string $exchange = null,
+        ?string $micCode = null,
+        ?string $country = null,
+    ): BatchableRequest {
         Guard::requireSymbolIdentifier($symbol, $figi, $isin, $cusip);
 
-        $response = $this->client->get(
-            path: '/fund_holders',
+        return new BatchableRequest(
+            path: '/direct_holders',
             queryParams: [
                 'symbol' => $symbol,
                 'figi' => $figi,
@@ -131,9 +225,8 @@ readonly class Regulatory extends TwelveDataApi
                 'mic_code' => $micCode,
                 'country' => $country,
             ],
+            responseFactory: DirectHolders::fromJson(...),
         );
-
-        return FundHolders::fromJson($response);
     }
 
     public function directHolders(
@@ -145,10 +238,22 @@ readonly class Regulatory extends TwelveDataApi
         ?string $micCode = null,
         ?string $country = null,
     ): DirectHolders {
+        return $this->directHoldersRequest($symbol, $figi, $isin, $cusip, $exchange, $micCode, $country)->execute($this->client);
+    }
+
+    /** @return BatchableRequest<TaxInformation> */
+    public function taxInformationRequest(
+        ?string $symbol = null,
+        ?string $figi = null,
+        ?string $isin = null,
+        ?string $cusip = null,
+        ?string $exchange = null,
+        ?string $micCode = null,
+    ): BatchableRequest {
         Guard::requireSymbolIdentifier($symbol, $figi, $isin, $cusip);
 
-        $response = $this->client->get(
-            path: '/direct_holders',
+        return new BatchableRequest(
+            path: '/tax_info',
             queryParams: [
                 'symbol' => $symbol,
                 'figi' => $figi,
@@ -156,11 +261,9 @@ readonly class Regulatory extends TwelveDataApi
                 'cusip' => $cusip,
                 'exchange' => $exchange,
                 'mic_code' => $micCode,
-                'country' => $country,
             ],
+            responseFactory: TaxInformation::fromJson(...),
         );
-
-        return DirectHolders::fromJson($response);
     }
 
     public function taxInformation(
@@ -171,30 +274,21 @@ readonly class Regulatory extends TwelveDataApi
         ?string $exchange = null,
         ?string $micCode = null,
     ): TaxInformation {
-        Guard::requireSymbolIdentifier($symbol, $figi, $isin, $cusip);
+        return $this->taxInformationRequest($symbol, $figi, $isin, $cusip, $exchange, $micCode)->execute($this->client);
+    }
 
-        $response = $this->client->get(
-            path: '/tax_info',
-            queryParams: [
-                'symbol' => $symbol,
-                'figi' => $figi,
-                'isin' => $isin,
-                'cusip' => $cusip,
-                'exchange' => $exchange,
-                'mic_code' => $micCode,
-            ],
+    /** @return BatchableRequest<SanctionedEntities> */
+    public function sanctionedEntitiesRequest(SanctionsSourceEnum $source,): BatchableRequest
+    {
+        return new BatchableRequest(
+            path: '/sanctions/' . $source->value,
+            queryParams: [],
+            responseFactory: SanctionedEntities::fromJson(...),
         );
-
-        return TaxInformation::fromJson($response);
     }
 
     public function sanctionedEntities(SanctionsSourceEnum $source,): SanctionedEntities
     {
-        $response = $this->client->get(
-            path: '/sanctions/' . $source->value,
-            queryParams: [],
-        );
-
-        return SanctionedEntities::fromJson($response);
+        return $this->sanctionedEntitiesRequest($source)->execute($this->client);
     }
 }

@@ -25,7 +25,8 @@ use MarekSkopal\TwelveData\Utils\QueryParamsUtils;
 
 readonly class CoreData extends TwelveDataApi
 {
-    public function timeSeries(
+    /** @return BatchableRequest<TimeSeries> */
+    public function timeSeriesRequest(
         ?string $symbol = null,
         IntervalEnum $interval = IntervalEnum::OneDay,
         ?string $figi = null,
@@ -47,10 +48,10 @@ readonly class CoreData extends TwelveDataApi
         ?DateTimeImmutable $endDate = null,
         ?bool $previousClose = null,
         ?AdjustEnum $adjust = null,
-    ): TimeSeries {
+    ): BatchableRequest {
         Guard::requireSymbolIdentifier($symbol, $figi, $isin, $cusip);
 
-        $response = $this->client->get(
+        return new BatchableRequest(
             path: '/time_series',
             queryParams: [
                 'symbol' => $symbol,
@@ -75,9 +76,103 @@ readonly class CoreData extends TwelveDataApi
                 'previous_close' => QueryParamsUtils::booleanAsString($previousClose),
                 'adjust' => $adjust?->value,
             ],
+            responseFactory: TimeSeries::fromJson(...),
         );
+    }
 
-        return TimeSeries::fromJson($response);
+    public function timeSeries(
+        ?string $symbol = null,
+        IntervalEnum $interval = IntervalEnum::OneDay,
+        ?string $figi = null,
+        ?string $isin = null,
+        ?string $cusip = null,
+        ?string $exchange = null,
+        ?string $micCode = null,
+        ?string $country = null,
+        ?TypeEnum $type = null,
+        ?int $outputSize = null,
+        ?FormatEnum $format = null,
+        ?string $delimiter = null,
+        ?PrepostEnum $prepost = null,
+        ?int $dp = null,
+        ?OrderEnum $order = null,
+        ?string $timezone = null,
+        ?DateTimeImmutable $date = null,
+        ?DateTimeImmutable $startDate = null,
+        ?DateTimeImmutable $endDate = null,
+        ?bool $previousClose = null,
+        ?AdjustEnum $adjust = null,
+    ): TimeSeries {
+        return $this->timeSeriesRequest(
+            $symbol,
+            $interval,
+            $figi,
+            $isin,
+            $cusip,
+            $exchange,
+            $micCode,
+            $country,
+            $type,
+            $outputSize,
+            $format,
+            $delimiter,
+            $prepost,
+            $dp,
+            $order,
+            $timezone,
+            $date,
+            $startDate,
+            $endDate,
+            $previousClose,
+            $adjust,
+        )->execute($this->client);
+    }
+
+    /** @return BatchableRequest<TimeSeriesCross> */
+    public function timeSeriesCrossRequest(
+        string $base,
+        string $quote,
+        IntervalEnum $interval = IntervalEnum::OneDay,
+        ?string $baseType = null,
+        ?string $baseExchange = null,
+        ?string $baseMicCode = null,
+        ?string $quoteType = null,
+        ?string $quoteExchange = null,
+        ?string $quoteMicCode = null,
+        ?int $outputSize = null,
+        ?FormatEnum $format = null,
+        ?string $delimiter = null,
+        ?PrepostEnum $prepost = null,
+        ?DateTimeImmutable $startDate = null,
+        ?DateTimeImmutable $endDate = null,
+        ?bool $adjust = null,
+        ?int $dp = null,
+        ?string $timezone = null,
+    ): BatchableRequest {
+        return new BatchableRequest(
+            path: '/time_series/cross',
+            queryParams: [
+                'base' => $base,
+                'quote' => $quote,
+                'interval' => $interval->value,
+                'base_type' => $baseType,
+                'base_exchange' => $baseExchange,
+                'base_mic_code' => $baseMicCode,
+                'quote_type' => $quoteType,
+                'quote_exchange' => $quoteExchange,
+                'quote_mic_code' => $quoteMicCode,
+                'outputsize' => $outputSize,
+                'format' => $format?->value,
+                'delimiter' => $delimiter,
+                'prepost' => $prepost?->value,
+                'start_date' => DateUtils::formatDateTime($startDate),
+                'end_date' => DateUtils::formatDateTime($endDate),
+                'adjust' => QueryParamsUtils::booleanAsString($adjust),
+                'dp' => $dp,
+                'timezone' => $timezone,
+            ],
+            responseFactory: TimeSeriesCross::fromJson(...),
+        );
     }
 
     public function timeSeriesCross(
@@ -100,31 +195,73 @@ readonly class CoreData extends TwelveDataApi
         ?int $dp = null,
         ?string $timezone = null,
     ): TimeSeriesCross {
-        $response = $this->client->get(
-            path: '/time_series/cross',
+        return $this->timeSeriesCrossRequest(
+            $base,
+            $quote,
+            $interval,
+            $baseType,
+            $baseExchange,
+            $baseMicCode,
+            $quoteType,
+            $quoteExchange,
+            $quoteMicCode,
+            $outputSize,
+            $format,
+            $delimiter,
+            $prepost,
+            $startDate,
+            $endDate,
+            $adjust,
+            $dp,
+            $timezone,
+        )->execute($this->client);
+    }
+
+    /** @return BatchableRequest<Quote> */
+    public function quoteRequest(
+        ?string $symbol = null,
+        ?string $figi = null,
+        ?string $isin = null,
+        ?string $cusip = null,
+        ?IntervalEnum $interval = IntervalEnum::OneDay,
+        ?string $exchange = null,
+        ?string $micCode = null,
+        ?string $country = null,
+        ?int $volumeTimePeriod = null,
+        ?TypeEnum $type = null,
+        ?FormatEnum $format = null,
+        ?string $delimiter = null,
+        ?PrepostEnum $prepost = null,
+        ?bool $eod = null,
+        ?int $rollingPeriod = null,
+        ?int $dp = null,
+        ?string $timezone = null,
+    ): BatchableRequest {
+        Guard::requireSymbolIdentifier($symbol, $figi, $isin, $cusip);
+
+        return new BatchableRequest(
+            path: '/quote',
             queryParams: [
-                'base' => $base,
-                'quote' => $quote,
-                'interval' => $interval->value,
-                'base_type' => $baseType,
-                'base_exchange' => $baseExchange,
-                'base_mic_code' => $baseMicCode,
-                'quote_type' => $quoteType,
-                'quote_exchange' => $quoteExchange,
-                'quote_mic_code' => $quoteMicCode,
-                'outputsize' => $outputSize,
+                'symbol' => $symbol,
+                'figi' => $figi,
+                'isin' => $isin,
+                'cusip' => $cusip,
+                'interval' => $interval?->value,
+                'exchange' => $exchange,
+                'mic_code' => $micCode,
+                'country' => $country,
+                'volume_time_period' => $volumeTimePeriod,
+                'type' => $type?->value,
                 'format' => $format?->value,
                 'delimiter' => $delimiter,
                 'prepost' => $prepost?->value,
-                'start_date' => DateUtils::formatDateTime($startDate),
-                'end_date' => DateUtils::formatDateTime($endDate),
-                'adjust' => QueryParamsUtils::booleanAsString($adjust),
+                'eod' => QueryParamsUtils::booleanAsString($eod),
+                'rolling_period' => $rollingPeriod,
                 'dp' => $dp,
                 'timezone' => $timezone,
             ],
+            responseFactory: Quote::fromJson(...),
         );
-
-        return TimeSeriesCross::fromJson($response);
     }
 
     public function quote(
@@ -146,32 +283,62 @@ readonly class CoreData extends TwelveDataApi
         ?int $dp = null,
         ?string $timezone = null,
     ): Quote {
+        return $this->quoteRequest(
+            $symbol,
+            $figi,
+            $isin,
+            $cusip,
+            $interval,
+            $exchange,
+            $micCode,
+            $country,
+            $volumeTimePeriod,
+            $type,
+            $format,
+            $delimiter,
+            $prepost,
+            $eod,
+            $rollingPeriod,
+            $dp,
+            $timezone,
+        )->execute($this->client);
+    }
+
+    /** @return BatchableRequest<LatestPrice> */
+    public function latestPriceRequest(
+        ?string $symbol = null,
+        ?string $figi = null,
+        ?string $isin = null,
+        ?string $cusip = null,
+        ?string $exchange = null,
+        ?string $micCode = null,
+        ?string $country = null,
+        ?TypeEnum $type = null,
+        ?FormatEnum $format = null,
+        ?string $delimiter = null,
+        ?PrepostEnum $prepost = null,
+        ?int $dp = null,
+    ): BatchableRequest {
         Guard::requireSymbolIdentifier($symbol, $figi, $isin, $cusip);
 
-        $response = $this->client->get(
-            path: '/quote',
+        return new BatchableRequest(
+            path: '/price',
             queryParams: [
                 'symbol' => $symbol,
                 'figi' => $figi,
                 'isin' => $isin,
                 'cusip' => $cusip,
-                'interval' => $interval?->value,
                 'exchange' => $exchange,
                 'mic_code' => $micCode,
                 'country' => $country,
-                'volume_time_period' => $volumeTimePeriod,
                 'type' => $type?->value,
                 'format' => $format?->value,
                 'delimiter' => $delimiter,
                 'prepost' => $prepost?->value,
-                'eod' => QueryParamsUtils::booleanAsString($eod),
-                'rolling_period' => $rollingPeriod,
                 'dp' => $dp,
-                'timezone' => $timezone,
             ],
+            responseFactory: LatestPrice::fromJson(...),
         );
-
-        return Quote::fromJson($response);
     }
 
     public function latestPrice(
@@ -188,10 +355,40 @@ readonly class CoreData extends TwelveDataApi
         ?PrepostEnum $prepost = null,
         ?int $dp = null,
     ): LatestPrice {
+        return $this->latestPriceRequest(
+            $symbol,
+            $figi,
+            $isin,
+            $cusip,
+            $exchange,
+            $micCode,
+            $country,
+            $type,
+            $format,
+            $delimiter,
+            $prepost,
+            $dp,
+        )->execute($this->client);
+    }
+
+    /** @return BatchableRequest<EndOfDayPrice> */
+    public function endOfDayPriceRequest(
+        ?string $symbol = null,
+        ?string $figi = null,
+        ?string $isin = null,
+        ?string $cusip = null,
+        ?string $exchange = null,
+        ?string $micCode = null,
+        ?string $country = null,
+        ?TypeEnum $type = null,
+        ?DateTimeImmutable $date = null,
+        ?PrepostEnum $prepost = null,
+        ?int $dp = null,
+    ): BatchableRequest {
         Guard::requireSymbolIdentifier($symbol, $figi, $isin, $cusip);
 
-        $response = $this->client->get(
-            path: '/price',
+        return new BatchableRequest(
+            path: '/eod',
             queryParams: [
                 'symbol' => $symbol,
                 'figi' => $figi,
@@ -201,14 +398,12 @@ readonly class CoreData extends TwelveDataApi
                 'mic_code' => $micCode,
                 'country' => $country,
                 'type' => $type?->value,
-                'format' => $format?->value,
-                'delimiter' => $delimiter,
+                'date' => DateUtils::formatDate($date),
                 'prepost' => $prepost?->value,
                 'dp' => $dp,
             ],
+            responseFactory: EndOfDayPrice::fromJson(...),
         );
-
-        return LatestPrice::fromJson($response);
     }
 
     public function endOfDayPrice(
@@ -224,26 +419,41 @@ readonly class CoreData extends TwelveDataApi
         ?PrepostEnum $prepost = null,
         ?int $dp = null,
     ): EndOfDayPrice {
-        Guard::requireSymbolIdentifier($symbol, $figi, $isin, $cusip);
+        return $this->endOfDayPriceRequest(
+            $symbol,
+            $figi,
+            $isin,
+            $cusip,
+            $exchange,
+            $micCode,
+            $country,
+            $type,
+            $date,
+            $prepost,
+            $dp,
+        )->execute($this->client);
+    }
 
-        $response = $this->client->get(
-            path: '/eod',
+    /** @return BatchableRequest<MarketMovers> */
+    public function marketMoversRequest(
+        MarketMoverEnum $market,
+        ?DirectionEnum $direction = null,
+        ?string $outputsize = null,
+        ?string $country = null,
+        ?float $priceGreaterThan = null,
+        ?int $dp = null,
+    ): BatchableRequest {
+        return new BatchableRequest(
+            path: '/market_movers/' . $market->value,
             queryParams: [
-                'symbol' => $symbol,
-                'figi' => $figi,
-                'isin' => $isin,
-                'cusip' => $cusip,
-                'exchange' => $exchange,
-                'mic_code' => $micCode,
+                'direction' => $direction?->value,
+                'outputsize' => $outputsize,
                 'country' => $country,
-                'type' => $type?->value,
-                'date' => DateUtils::formatDate($date),
-                'prepost' => $prepost?->value,
+                'price_greater_than' => $priceGreaterThan,
                 'dp' => $dp,
             ],
+            responseFactory: MarketMovers::fromJson(...),
         );
-
-        return EndOfDayPrice::fromJson($response);
     }
 
     public function marketMovers(
@@ -254,17 +464,6 @@ readonly class CoreData extends TwelveDataApi
         ?float $priceGreaterThan = null,
         ?int $dp = null,
     ): MarketMovers {
-        $response = $this->client->get(
-            path: '/market_movers/' . $market->value,
-            queryParams: [
-                'direction' => $direction?->value,
-                'outputsize' => $outputsize,
-                'country' => $country,
-                'price_greater_than' => $priceGreaterThan,
-                'dp' => $dp,
-            ],
-        );
-
-        return MarketMovers::fromJson($response);
+        return $this->marketMoversRequest($market, $direction, $outputsize, $country, $priceGreaterThan, $dp)->execute($this->client);
     }
 }

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace MarekSkopal\TwelveData\Tests\Api;
 
+use MarekSkopal\TwelveData\Api\BatchableRequest;
 use MarekSkopal\TwelveData\Api\Fundamentals;
 use MarekSkopal\TwelveData\Api\TwelveDataApi;
 use MarekSkopal\TwelveData\Client\Client;
@@ -111,6 +112,7 @@ use PHPUnit\Framework\Attributes\UsesClass;
 use PHPUnit\Framework\TestCase;
 
 #[CoversClass(Fundamentals::class)]
+#[UsesClass(BatchableRequest::class)]
 #[UsesClass(TwelveDataApi::class)]
 #[UsesClass(Client::class)]
 #[UsesClass(Config::class)]

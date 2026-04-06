@@ -34,6 +34,39 @@ $response = $twelveData->get(
 );
 ```
 
+### Batch Requests
+
+Execute multiple API calls in a single HTTP request using the [batch endpoint](https://twelvedata.com/docs/advanced/batch-requests):
+
+```php
+use MarekSkopal\TwelveData\TwelveData;
+use MarekSkopal\TwelveData\Enum\IntervalEnum;
+
+$twelveData = new TwelveData('<yourApiKey>');
+
+// Build requests without executing them
+$requests = [
+    'ts'   => $twelveData->coreData->timeSeriesRequest(symbol: 'AAPL', interval: IntervalEnum::OneMinute),
+    'q'    => $twelveData->coreData->quoteRequest(symbol: 'TSLA'),
+    'rate' => $twelveData->currencies->exchangeRateRequest(symbol: 'USD/EUR'),
+];
+
+// Execute all requests in a single batch call
+$response = $twelveData->executeBatch($requests);
+
+// Retrieve typed results
+$timeSeries  = $response->get('ts');   // TimeSeries
+$quote       = $response->get('q');    // Quote
+$exchangeRate = $response->get('rate'); // ExchangeRate
+
+// Check for per-request errors
+if ($response->isError('ts')) {
+    $error = $response->getError('ts'); // BatchItemError
+}
+```
+
+Every API method has a `*Request()` companion (e.g. `timeSeries()` → `timeSeriesRequest()`) that returns a `BatchableRequest` which can be passed to `executeBatch()`.
+
 ### WebSocket Real-time Price
 
 Stream real-time price updates via WebSocket. The library ships with a built-in adapter for [phrity/websocket](https://github.com/sirn-se/websocket-php):
@@ -304,8 +337,8 @@ More endpoints will be covered in future versions.
 
 ### Advanced
 
-* Complex Data ❌
-* Usage        ✅
+* Batch Requests   ✅
+* Usage            ✅
 
 ### WebSocket
 

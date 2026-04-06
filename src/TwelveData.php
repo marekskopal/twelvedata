@@ -7,6 +7,8 @@ namespace MarekSkopal\TwelveData;
 use JsonException;
 use MarekSkopal\TwelveData\Api\Advanced;
 use MarekSkopal\TwelveData\Api\Analysis;
+use MarekSkopal\TwelveData\Api\BatchableRequest;
+use MarekSkopal\TwelveData\Api\BatchResponse;
 use MarekSkopal\TwelveData\Api\CoreData;
 use MarekSkopal\TwelveData\Api\Currencies;
 use MarekSkopal\TwelveData\Api\Etfs;
@@ -112,6 +114,22 @@ readonly class TwelveData
     public function getMutualFunds(): MutualFunds
     {
         return $this->mutualFunds;
+    }
+
+    /** @param array<string, BatchableRequest<object>> $requests */
+    public function executeBatch(array $requests): BatchResponse
+    {
+        $body = [];
+        foreach ($requests as $key => $request) {
+            $body[$key] = $request->getUrl();
+        }
+
+        $response = $this->client->post(
+            path: '/',
+            body: json_encode($body, JSON_THROW_ON_ERROR),
+        );
+
+        return BatchResponse::fromJson($requests, $response);
     }
 
     public function createRealTimePrice(WebSocketClientInterface $webSocketClient): RealTimePrice

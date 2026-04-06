@@ -19,7 +19,8 @@ use MarekSkopal\TwelveData\Utils\Guard;
 
 readonly class MutualFunds extends TwelveDataApi
 {
-    public function list(
+    /** @return BatchableRequest<MutualFundList> */
+    public function listRequest(
         ?string $symbol = null,
         ?string $figi = null,
         ?string $isin = null,
@@ -32,8 +33,8 @@ readonly class MutualFunds extends TwelveDataApi
         ?int $riskRating = null,
         ?int $page = null,
         ?int $outputsize = null,
-    ): MutualFundList {
-        $response = $this->client->get(
+    ): BatchableRequest {
+        return new BatchableRequest(
             path: '/mutual_funds/list',
             queryParams: [
                 'symbol' => $symbol,
@@ -49,9 +50,63 @@ readonly class MutualFunds extends TwelveDataApi
                 'page' => $page !== null ? (string) $page : null,
                 'outputsize' => $outputsize,
             ],
+            responseFactory: MutualFundList::fromJson(...),
         );
+    }
 
-        return MutualFundList::fromJson($response);
+    public function list(
+        ?string $symbol = null,
+        ?string $figi = null,
+        ?string $isin = null,
+        ?string $cusip = null,
+        ?string $cik = null,
+        ?string $country = null,
+        ?string $fundFamily = null,
+        ?string $fundType = null,
+        ?int $performanceRating = null,
+        ?int $riskRating = null,
+        ?int $page = null,
+        ?int $outputsize = null,
+    ): MutualFundList {
+        return $this->listRequest(
+            $symbol,
+            $figi,
+            $isin,
+            $cusip,
+            $cik,
+            $country,
+            $fundFamily,
+            $fundType,
+            $performanceRating,
+            $riskRating,
+            $page,
+            $outputsize,
+        )->execute($this->client);
+    }
+
+    /** @return BatchableRequest<MutualFundAllData> */
+    public function allDataRequest(
+        ?string $symbol = null,
+        ?string $figi = null,
+        ?string $isin = null,
+        ?string $cusip = null,
+        ?string $country = null,
+        ?int $dp = null,
+    ): BatchableRequest {
+        Guard::requireSymbolIdentifier($symbol, $figi, $isin, $cusip);
+
+        return new BatchableRequest(
+            path: '/mutual_funds/world',
+            queryParams: [
+                'symbol' => $symbol,
+                'figi' => $figi,
+                'isin' => $isin,
+                'cusip' => $cusip,
+                'country' => $country,
+                'dp' => $dp,
+            ],
+            responseFactory: MutualFundAllData::fromJson(...),
+        );
     }
 
     public function allData(
@@ -62,10 +117,22 @@ readonly class MutualFunds extends TwelveDataApi
         ?string $country = null,
         ?int $dp = null,
     ): MutualFundAllData {
+        return $this->allDataRequest($symbol, $figi, $isin, $cusip, $country, $dp)->execute($this->client);
+    }
+
+    /** @return BatchableRequest<MutualFundSummary> */
+    public function summaryRequest(
+        ?string $symbol = null,
+        ?string $figi = null,
+        ?string $isin = null,
+        ?string $cusip = null,
+        ?string $country = null,
+        ?int $dp = null,
+    ): BatchableRequest {
         Guard::requireSymbolIdentifier($symbol, $figi, $isin, $cusip);
 
-        $response = $this->client->get(
-            path: '/mutual_funds/world',
+        return new BatchableRequest(
+            path: '/mutual_funds/world/summary',
             queryParams: [
                 'symbol' => $symbol,
                 'figi' => $figi,
@@ -74,9 +141,8 @@ readonly class MutualFunds extends TwelveDataApi
                 'country' => $country,
                 'dp' => $dp,
             ],
+            responseFactory: MutualFundSummary::fromJson(...),
         );
-
-        return MutualFundAllData::fromJson($response);
     }
 
     public function summary(
@@ -87,10 +153,22 @@ readonly class MutualFunds extends TwelveDataApi
         ?string $country = null,
         ?int $dp = null,
     ): MutualFundSummary {
+        return $this->summaryRequest($symbol, $figi, $isin, $cusip, $country, $dp)->execute($this->client);
+    }
+
+    /** @return BatchableRequest<MutualFundPerformance> */
+    public function performanceRequest(
+        ?string $symbol = null,
+        ?string $figi = null,
+        ?string $isin = null,
+        ?string $cusip = null,
+        ?string $country = null,
+        ?int $dp = null,
+    ): BatchableRequest {
         Guard::requireSymbolIdentifier($symbol, $figi, $isin, $cusip);
 
-        $response = $this->client->get(
-            path: '/mutual_funds/world/summary',
+        return new BatchableRequest(
+            path: '/mutual_funds/world/performance',
             queryParams: [
                 'symbol' => $symbol,
                 'figi' => $figi,
@@ -99,9 +177,8 @@ readonly class MutualFunds extends TwelveDataApi
                 'country' => $country,
                 'dp' => $dp,
             ],
+            responseFactory: MutualFundPerformance::fromJson(...),
         );
-
-        return MutualFundSummary::fromJson($response);
     }
 
     public function performance(
@@ -112,10 +189,22 @@ readonly class MutualFunds extends TwelveDataApi
         ?string $country = null,
         ?int $dp = null,
     ): MutualFundPerformance {
+        return $this->performanceRequest($symbol, $figi, $isin, $cusip, $country, $dp)->execute($this->client);
+    }
+
+    /** @return BatchableRequest<MutualFundRisk> */
+    public function riskRequest(
+        ?string $symbol = null,
+        ?string $figi = null,
+        ?string $isin = null,
+        ?string $cusip = null,
+        ?string $country = null,
+        ?int $dp = null,
+    ): BatchableRequest {
         Guard::requireSymbolIdentifier($symbol, $figi, $isin, $cusip);
 
-        $response = $this->client->get(
-            path: '/mutual_funds/world/performance',
+        return new BatchableRequest(
+            path: '/mutual_funds/world/risk',
             queryParams: [
                 'symbol' => $symbol,
                 'figi' => $figi,
@@ -124,9 +213,8 @@ readonly class MutualFunds extends TwelveDataApi
                 'country' => $country,
                 'dp' => $dp,
             ],
+            responseFactory: MutualFundRisk::fromJson(...),
         );
-
-        return MutualFundPerformance::fromJson($response);
     }
 
     public function risk(
@@ -137,10 +225,22 @@ readonly class MutualFunds extends TwelveDataApi
         ?string $country = null,
         ?int $dp = null,
     ): MutualFundRisk {
+        return $this->riskRequest($symbol, $figi, $isin, $cusip, $country, $dp)->execute($this->client);
+    }
+
+    /** @return BatchableRequest<MutualFundRatings> */
+    public function ratingsRequest(
+        ?string $symbol = null,
+        ?string $figi = null,
+        ?string $isin = null,
+        ?string $cusip = null,
+        ?string $country = null,
+        ?int $dp = null,
+    ): BatchableRequest {
         Guard::requireSymbolIdentifier($symbol, $figi, $isin, $cusip);
 
-        $response = $this->client->get(
-            path: '/mutual_funds/world/risk',
+        return new BatchableRequest(
+            path: '/mutual_funds/world/ratings',
             queryParams: [
                 'symbol' => $symbol,
                 'figi' => $figi,
@@ -149,9 +249,8 @@ readonly class MutualFunds extends TwelveDataApi
                 'country' => $country,
                 'dp' => $dp,
             ],
+            responseFactory: MutualFundRatings::fromJson(...),
         );
-
-        return MutualFundRisk::fromJson($response);
     }
 
     public function ratings(
@@ -162,10 +261,22 @@ readonly class MutualFunds extends TwelveDataApi
         ?string $country = null,
         ?int $dp = null,
     ): MutualFundRatings {
+        return $this->ratingsRequest($symbol, $figi, $isin, $cusip, $country, $dp)->execute($this->client);
+    }
+
+    /** @return BatchableRequest<MutualFundComposition> */
+    public function compositionRequest(
+        ?string $symbol = null,
+        ?string $figi = null,
+        ?string $isin = null,
+        ?string $cusip = null,
+        ?string $country = null,
+        ?int $dp = null,
+    ): BatchableRequest {
         Guard::requireSymbolIdentifier($symbol, $figi, $isin, $cusip);
 
-        $response = $this->client->get(
-            path: '/mutual_funds/world/ratings',
+        return new BatchableRequest(
+            path: '/mutual_funds/world/composition',
             queryParams: [
                 'symbol' => $symbol,
                 'figi' => $figi,
@@ -174,9 +285,8 @@ readonly class MutualFunds extends TwelveDataApi
                 'country' => $country,
                 'dp' => $dp,
             ],
+            responseFactory: MutualFundComposition::fromJson(...),
         );
-
-        return MutualFundRatings::fromJson($response);
     }
 
     public function composition(
@@ -187,10 +297,22 @@ readonly class MutualFunds extends TwelveDataApi
         ?string $country = null,
         ?int $dp = null,
     ): MutualFundComposition {
+        return $this->compositionRequest($symbol, $figi, $isin, $cusip, $country, $dp)->execute($this->client);
+    }
+
+    /** @return BatchableRequest<MutualFundPurchaseInfo> */
+    public function purchaseInfoRequest(
+        ?string $symbol = null,
+        ?string $figi = null,
+        ?string $isin = null,
+        ?string $cusip = null,
+        ?string $country = null,
+        ?int $dp = null,
+    ): BatchableRequest {
         Guard::requireSymbolIdentifier($symbol, $figi, $isin, $cusip);
 
-        $response = $this->client->get(
-            path: '/mutual_funds/world/composition',
+        return new BatchableRequest(
+            path: '/mutual_funds/world/purchase_info',
             queryParams: [
                 'symbol' => $symbol,
                 'figi' => $figi,
@@ -199,9 +321,8 @@ readonly class MutualFunds extends TwelveDataApi
                 'country' => $country,
                 'dp' => $dp,
             ],
+            responseFactory: MutualFundPurchaseInfo::fromJson(...),
         );
-
-        return MutualFundComposition::fromJson($response);
     }
 
     public function purchaseInfo(
@@ -212,10 +333,22 @@ readonly class MutualFunds extends TwelveDataApi
         ?string $country = null,
         ?int $dp = null,
     ): MutualFundPurchaseInfo {
+        return $this->purchaseInfoRequest($symbol, $figi, $isin, $cusip, $country, $dp)->execute($this->client);
+    }
+
+    /** @return BatchableRequest<MutualFundSustainability> */
+    public function sustainabilityRequest(
+        ?string $symbol = null,
+        ?string $figi = null,
+        ?string $isin = null,
+        ?string $cusip = null,
+        ?string $country = null,
+        ?int $dp = null,
+    ): BatchableRequest {
         Guard::requireSymbolIdentifier($symbol, $figi, $isin, $cusip);
 
-        $response = $this->client->get(
-            path: '/mutual_funds/world/purchase_info',
+        return new BatchableRequest(
+            path: '/mutual_funds/world/sustainability',
             queryParams: [
                 'symbol' => $symbol,
                 'figi' => $figi,
@@ -224,9 +357,8 @@ readonly class MutualFunds extends TwelveDataApi
                 'country' => $country,
                 'dp' => $dp,
             ],
+            responseFactory: MutualFundSustainability::fromJson(...),
         );
-
-        return MutualFundPurchaseInfo::fromJson($response);
     }
 
     public function sustainability(
@@ -237,44 +369,40 @@ readonly class MutualFunds extends TwelveDataApi
         ?string $country = null,
         ?int $dp = null,
     ): MutualFundSustainability {
-        Guard::requireSymbolIdentifier($symbol, $figi, $isin, $cusip);
-
-        $response = $this->client->get(
-            path: '/mutual_funds/world/sustainability',
-            queryParams: [
-                'symbol' => $symbol,
-                'figi' => $figi,
-                'isin' => $isin,
-                'cusip' => $cusip,
-                'country' => $country,
-                'dp' => $dp,
-            ],
-        );
-
-        return MutualFundSustainability::fromJson($response);
+        return $this->sustainabilityRequest($symbol, $figi, $isin, $cusip, $country, $dp)->execute($this->client);
     }
 
-    public function familyList(?string $country = null): MutualFundFamilyList
+    /** @return BatchableRequest<MutualFundFamilyList> */
+    public function familyListRequest(?string $country = null): BatchableRequest
     {
-        $response = $this->client->get(
+        return new BatchableRequest(
             path: '/mutual_funds/family',
             queryParams: [
                 'country' => $country,
             ],
+            responseFactory: MutualFundFamilyList::fromJson(...),
         );
-
-        return MutualFundFamilyList::fromJson($response);
     }
 
-    public function typeList(?string $country = null): MutualFundTypeList
+    public function familyList(?string $country = null): MutualFundFamilyList
     {
-        $response = $this->client->get(
+        return $this->familyListRequest($country)->execute($this->client);
+    }
+
+    /** @return BatchableRequest<MutualFundTypeList> */
+    public function typeListRequest(?string $country = null): BatchableRequest
+    {
+        return new BatchableRequest(
             path: '/mutual_funds/type',
             queryParams: [
                 'country' => $country,
             ],
+            responseFactory: MutualFundTypeList::fromJson(...),
         );
+    }
 
-        return MutualFundTypeList::fromJson($response);
+    public function typeList(?string $country = null): MutualFundTypeList
+    {
+        return $this->typeListRequest($country)->execute($this->client);
     }
 }

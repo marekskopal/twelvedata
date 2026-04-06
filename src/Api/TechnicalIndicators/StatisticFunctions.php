@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace MarekSkopal\TwelveData\Api\TechnicalIndicators;
 
 use DateTimeImmutable;
+use MarekSkopal\TwelveData\Api\BatchableRequest;
 use MarekSkopal\TwelveData\Api\TwelveDataApi;
 use MarekSkopal\TwelveData\Dto\TechnicalIndicators\StatisticFunctions\BetaIndicator;
 use MarekSkopal\TwelveData\Dto\TechnicalIndicators\StatisticFunctions\Correlation;
@@ -35,6 +36,69 @@ use MarekSkopal\TwelveData\Utils\QueryParamsUtils;
 
 readonly class StatisticFunctions extends TwelveDataApi
 {
+    public function betaIndicatorRequest(
+        ?string $symbol = null,
+        IntervalEnum $interval = IntervalEnum::OneDay,
+        ?string $figi = null,
+        ?string $isin = null,
+        ?string $cusip = null,
+        ?string $exchange = null,
+        ?string $micCode = null,
+        ?string $country = null,
+        ?SeriesTypeEnum $seriesType1 = null,
+        ?SeriesTypeEnum $seriesType2 = null,
+        ?int $timePeriod = null,
+        ?TypeEnum $type = null,
+        ?int $outputSize = null,
+        ?FormatEnum $format = null,
+        ?string $delimiter = null,
+        ?PrepostEnum $prepost = null,
+        ?int $dp = null,
+        ?OrderEnum $order = null,
+        ?bool $includeOhlc = null,
+        ?string $timezone = null,
+        ?DateTimeImmutable $date = null,
+        ?DateTimeImmutable $startDate = null,
+        ?DateTimeImmutable $endDate = null,
+        ?bool $previousClose = null,
+        ?AdjustEnum $adjust = null,
+    ): BatchableRequest
+    {
+        Guard::requireSymbolIdentifier($symbol, $figi, $isin, $cusip);
+
+        return new BatchableRequest(
+            path: '/beta',
+            queryParams: [
+                'symbol' => $symbol,
+                'interval' => $interval->value,
+                'figi' => $figi,
+                'isin' => $isin,
+                'cusip' => $cusip,
+                'exchange' => $exchange,
+                'mic_code' => $micCode,
+                'country' => $country,
+                'series_type_1' => $seriesType1?->value,
+                'series_type_2' => $seriesType2?->value,
+                'time_period' => $timePeriod,
+                'type' => $type?->value,
+                'outputsize' => $outputSize,
+                'format' => $format?->value,
+                'delimiter' => $delimiter,
+                'prepost' => $prepost?->value,
+                'dp' => $dp,
+                'order' => $order?->value,
+                'include_ohlc' => QueryParamsUtils::booleanAsString($includeOhlc),
+                'timezone' => $timezone,
+                'date' => DateUtils::formatDate($date),
+                'start_date' => DateUtils::formatDate($startDate),
+                'end_date' => DateUtils::formatDate($endDate),
+                'previous_close' => QueryParamsUtils::booleanAsString($previousClose),
+                'adjust' => $adjust?->value,
+            ],
+            responseFactory: fn (string $json): TechnicalIndicator => TechnicalIndicator::fromJson(BetaIndicator::class, $json),
+        );
+    }
+
     /** @return TechnicalIndicator<BetaIndicator> */
     public function betaIndicator(
         ?string $symbol = null,
@@ -64,10 +128,69 @@ readonly class StatisticFunctions extends TwelveDataApi
         ?AdjustEnum $adjust = null,
     ): TechnicalIndicator
     {
+        $request = $this->betaIndicatorRequest(
+            $symbol,
+            $interval,
+            $figi,
+            $isin,
+            $cusip,
+            $exchange,
+            $micCode,
+            $country,
+            $seriesType1,
+            $seriesType2,
+            $timePeriod,
+            $type,
+            $outputSize,
+            $format,
+            $delimiter,
+            $prepost,
+            $dp,
+            $order,
+            $includeOhlc,
+            $timezone,
+            $date,
+            $startDate,
+            $endDate,
+            $previousClose,
+            $adjust,
+        );
+
+        return TechnicalIndicator::fromJson(BetaIndicator::class, $this->client->get($request->path, $request->queryParams));
+    }
+
+    public function correlationRequest(
+        ?string $symbol = null,
+        IntervalEnum $interval = IntervalEnum::OneDay,
+        ?string $figi = null,
+        ?string $isin = null,
+        ?string $cusip = null,
+        ?string $exchange = null,
+        ?string $micCode = null,
+        ?string $country = null,
+        ?SeriesTypeEnum $seriesType1 = null,
+        ?SeriesTypeEnum $seriesType2 = null,
+        ?int $timePeriod = null,
+        ?TypeEnum $type = null,
+        ?int $outputSize = null,
+        ?FormatEnum $format = null,
+        ?string $delimiter = null,
+        ?PrepostEnum $prepost = null,
+        ?int $dp = null,
+        ?OrderEnum $order = null,
+        ?bool $includeOhlc = null,
+        ?string $timezone = null,
+        ?DateTimeImmutable $date = null,
+        ?DateTimeImmutable $startDate = null,
+        ?DateTimeImmutable $endDate = null,
+        ?bool $previousClose = null,
+        ?AdjustEnum $adjust = null,
+    ): BatchableRequest
+    {
         Guard::requireSymbolIdentifier($symbol, $figi, $isin, $cusip);
 
-        $response = $this->client->get(
-            path: '/beta',
+        return new BatchableRequest(
+            path: '/correl',
             queryParams: [
                 'symbol' => $symbol,
                 'interval' => $interval->value,
@@ -95,11 +218,8 @@ readonly class StatisticFunctions extends TwelveDataApi
                 'previous_close' => QueryParamsUtils::booleanAsString($previousClose),
                 'adjust' => $adjust?->value,
             ],
+            responseFactory: fn (string $json): TechnicalIndicator => TechnicalIndicator::fromJson(Correlation::class, $json),
         );
-
-        /** @var TechnicalIndicator<BetaIndicator> $technicalIndicator */
-        $technicalIndicator = TechnicalIndicator::fromJson(BetaIndicator::class, $response);
-        return $technicalIndicator;
     }
 
     /** @return TechnicalIndicator<Correlation> */
@@ -131,10 +251,68 @@ readonly class StatisticFunctions extends TwelveDataApi
         ?AdjustEnum $adjust = null,
     ): TechnicalIndicator
     {
+        $request = $this->correlationRequest(
+            $symbol,
+            $interval,
+            $figi,
+            $isin,
+            $cusip,
+            $exchange,
+            $micCode,
+            $country,
+            $seriesType1,
+            $seriesType2,
+            $timePeriod,
+            $type,
+            $outputSize,
+            $format,
+            $delimiter,
+            $prepost,
+            $dp,
+            $order,
+            $includeOhlc,
+            $timezone,
+            $date,
+            $startDate,
+            $endDate,
+            $previousClose,
+            $adjust,
+        );
+
+        return TechnicalIndicator::fromJson(Correlation::class, $this->client->get($request->path, $request->queryParams));
+    }
+
+    public function linearRegressionRequest(
+        ?string $symbol = null,
+        IntervalEnum $interval = IntervalEnum::OneDay,
+        ?string $figi = null,
+        ?string $isin = null,
+        ?string $cusip = null,
+        ?string $exchange = null,
+        ?string $micCode = null,
+        ?string $country = null,
+        ?SeriesTypeEnum $seriesType = null,
+        ?int $timePeriod = null,
+        ?TypeEnum $type = null,
+        ?int $outputSize = null,
+        ?FormatEnum $format = null,
+        ?string $delimiter = null,
+        ?PrepostEnum $prepost = null,
+        ?int $dp = null,
+        ?OrderEnum $order = null,
+        ?bool $includeOhlc = null,
+        ?string $timezone = null,
+        ?DateTimeImmutable $date = null,
+        ?DateTimeImmutable $startDate = null,
+        ?DateTimeImmutable $endDate = null,
+        ?bool $previousClose = null,
+        ?AdjustEnum $adjust = null,
+    ): BatchableRequest
+    {
         Guard::requireSymbolIdentifier($symbol, $figi, $isin, $cusip);
 
-        $response = $this->client->get(
-            path: '/correl',
+        return new BatchableRequest(
+            path: '/linearreg',
             queryParams: [
                 'symbol' => $symbol,
                 'interval' => $interval->value,
@@ -144,8 +322,7 @@ readonly class StatisticFunctions extends TwelveDataApi
                 'exchange' => $exchange,
                 'mic_code' => $micCode,
                 'country' => $country,
-                'series_type_1' => $seriesType1?->value,
-                'series_type_2' => $seriesType2?->value,
+                'series_type' => $seriesType?->value,
                 'time_period' => $timePeriod,
                 'type' => $type?->value,
                 'outputsize' => $outputSize,
@@ -162,11 +339,8 @@ readonly class StatisticFunctions extends TwelveDataApi
                 'previous_close' => QueryParamsUtils::booleanAsString($previousClose),
                 'adjust' => $adjust?->value,
             ],
+            responseFactory: fn (string $json): TechnicalIndicator => TechnicalIndicator::fromJson(LinearRegression::class, $json),
         );
-
-        /** @var TechnicalIndicator<Correlation> $technicalIndicator */
-        $technicalIndicator = TechnicalIndicator::fromJson(Correlation::class, $response);
-        return $technicalIndicator;
     }
 
     /** @return TechnicalIndicator<LinearRegression> */
@@ -197,10 +371,67 @@ readonly class StatisticFunctions extends TwelveDataApi
         ?AdjustEnum $adjust = null,
     ): TechnicalIndicator
     {
+        $request = $this->linearRegressionRequest(
+            $symbol,
+            $interval,
+            $figi,
+            $isin,
+            $cusip,
+            $exchange,
+            $micCode,
+            $country,
+            $seriesType,
+            $timePeriod,
+            $type,
+            $outputSize,
+            $format,
+            $delimiter,
+            $prepost,
+            $dp,
+            $order,
+            $includeOhlc,
+            $timezone,
+            $date,
+            $startDate,
+            $endDate,
+            $previousClose,
+            $adjust,
+        );
+
+        return TechnicalIndicator::fromJson(LinearRegression::class, $this->client->get($request->path, $request->queryParams));
+    }
+
+    public function linearRegressionAngleRequest(
+        ?string $symbol = null,
+        IntervalEnum $interval = IntervalEnum::OneDay,
+        ?string $figi = null,
+        ?string $isin = null,
+        ?string $cusip = null,
+        ?string $exchange = null,
+        ?string $micCode = null,
+        ?string $country = null,
+        ?SeriesTypeEnum $seriesType = null,
+        ?int $timePeriod = null,
+        ?TypeEnum $type = null,
+        ?int $outputSize = null,
+        ?FormatEnum $format = null,
+        ?string $delimiter = null,
+        ?PrepostEnum $prepost = null,
+        ?int $dp = null,
+        ?OrderEnum $order = null,
+        ?bool $includeOhlc = null,
+        ?string $timezone = null,
+        ?DateTimeImmutable $date = null,
+        ?DateTimeImmutable $startDate = null,
+        ?DateTimeImmutable $endDate = null,
+        ?bool $previousClose = null,
+        ?AdjustEnum $adjust = null,
+    ): BatchableRequest
+    {
         Guard::requireSymbolIdentifier($symbol, $figi, $isin, $cusip);
 
-        $response = $this->client->get(
-            path: '/linearreg',
+        return new BatchableRequest(
+            path: '/linearregangle',
             queryParams: [
                 'symbol' => $symbol,
                 'interval' => $interval->value,
@@ -227,11 +458,8 @@ readonly class StatisticFunctions extends TwelveDataApi
                 'previous_close' => QueryParamsUtils::booleanAsString($previousClose),
                 'adjust' => $adjust?->value,
             ],
+            responseFactory: fn (string $json): TechnicalIndicator => TechnicalIndicator::fromJson(LinearRegressionAngle::class, $json),
         );
-
-        /** @var TechnicalIndicator<LinearRegression> $technicalIndicator */
-        $technicalIndicator = TechnicalIndicator::fromJson(LinearRegression::class, $response);
-        return $technicalIndicator;
     }
 
     /** @return TechnicalIndicator<LinearRegressionAngle> */
@@ -262,10 +490,67 @@ readonly class StatisticFunctions extends TwelveDataApi
         ?AdjustEnum $adjust = null,
     ): TechnicalIndicator
     {
+        $request = $this->linearRegressionAngleRequest(
+            $symbol,
+            $interval,
+            $figi,
+            $isin,
+            $cusip,
+            $exchange,
+            $micCode,
+            $country,
+            $seriesType,
+            $timePeriod,
+            $type,
+            $outputSize,
+            $format,
+            $delimiter,
+            $prepost,
+            $dp,
+            $order,
+            $includeOhlc,
+            $timezone,
+            $date,
+            $startDate,
+            $endDate,
+            $previousClose,
+            $adjust,
+        );
+
+        return TechnicalIndicator::fromJson(LinearRegressionAngle::class, $this->client->get($request->path, $request->queryParams));
+    }
+
+    public function linearRegressionInterceptRequest(
+        ?string $symbol = null,
+        IntervalEnum $interval = IntervalEnum::OneDay,
+        ?string $figi = null,
+        ?string $isin = null,
+        ?string $cusip = null,
+        ?string $exchange = null,
+        ?string $micCode = null,
+        ?string $country = null,
+        ?SeriesTypeEnum $seriesType = null,
+        ?int $timePeriod = null,
+        ?TypeEnum $type = null,
+        ?int $outputSize = null,
+        ?FormatEnum $format = null,
+        ?string $delimiter = null,
+        ?PrepostEnum $prepost = null,
+        ?int $dp = null,
+        ?OrderEnum $order = null,
+        ?bool $includeOhlc = null,
+        ?string $timezone = null,
+        ?DateTimeImmutable $date = null,
+        ?DateTimeImmutable $startDate = null,
+        ?DateTimeImmutable $endDate = null,
+        ?bool $previousClose = null,
+        ?AdjustEnum $adjust = null,
+    ): BatchableRequest
+    {
         Guard::requireSymbolIdentifier($symbol, $figi, $isin, $cusip);
 
-        $response = $this->client->get(
-            path: '/linearregangle',
+        return new BatchableRequest(
+            path: '/linearregintercept',
             queryParams: [
                 'symbol' => $symbol,
                 'interval' => $interval->value,
@@ -292,11 +577,8 @@ readonly class StatisticFunctions extends TwelveDataApi
                 'previous_close' => QueryParamsUtils::booleanAsString($previousClose),
                 'adjust' => $adjust?->value,
             ],
+            responseFactory: fn (string $json): TechnicalIndicator => TechnicalIndicator::fromJson(LinearRegressionIntercept::class, $json),
         );
-
-        /** @var TechnicalIndicator<LinearRegressionAngle> $technicalIndicator */
-        $technicalIndicator = TechnicalIndicator::fromJson(LinearRegressionAngle::class, $response);
-        return $technicalIndicator;
     }
 
     /** @return TechnicalIndicator<LinearRegressionIntercept> */
@@ -327,10 +609,67 @@ readonly class StatisticFunctions extends TwelveDataApi
         ?AdjustEnum $adjust = null,
     ): TechnicalIndicator
     {
+        $request = $this->linearRegressionInterceptRequest(
+            $symbol,
+            $interval,
+            $figi,
+            $isin,
+            $cusip,
+            $exchange,
+            $micCode,
+            $country,
+            $seriesType,
+            $timePeriod,
+            $type,
+            $outputSize,
+            $format,
+            $delimiter,
+            $prepost,
+            $dp,
+            $order,
+            $includeOhlc,
+            $timezone,
+            $date,
+            $startDate,
+            $endDate,
+            $previousClose,
+            $adjust,
+        );
+
+        return TechnicalIndicator::fromJson(LinearRegressionIntercept::class, $this->client->get($request->path, $request->queryParams));
+    }
+
+    public function linearRegressionSlopeRequest(
+        ?string $symbol = null,
+        IntervalEnum $interval = IntervalEnum::OneDay,
+        ?string $figi = null,
+        ?string $isin = null,
+        ?string $cusip = null,
+        ?string $exchange = null,
+        ?string $micCode = null,
+        ?string $country = null,
+        ?SeriesTypeEnum $seriesType = null,
+        ?int $timePeriod = null,
+        ?TypeEnum $type = null,
+        ?int $outputSize = null,
+        ?FormatEnum $format = null,
+        ?string $delimiter = null,
+        ?PrepostEnum $prepost = null,
+        ?int $dp = null,
+        ?OrderEnum $order = null,
+        ?bool $includeOhlc = null,
+        ?string $timezone = null,
+        ?DateTimeImmutable $date = null,
+        ?DateTimeImmutable $startDate = null,
+        ?DateTimeImmutable $endDate = null,
+        ?bool $previousClose = null,
+        ?AdjustEnum $adjust = null,
+    ): BatchableRequest
+    {
         Guard::requireSymbolIdentifier($symbol, $figi, $isin, $cusip);
 
-        $response = $this->client->get(
-            path: '/linearregintercept',
+        return new BatchableRequest(
+            path: '/linearregslope',
             queryParams: [
                 'symbol' => $symbol,
                 'interval' => $interval->value,
@@ -357,11 +696,8 @@ readonly class StatisticFunctions extends TwelveDataApi
                 'previous_close' => QueryParamsUtils::booleanAsString($previousClose),
                 'adjust' => $adjust?->value,
             ],
+            responseFactory: fn (string $json): TechnicalIndicator => TechnicalIndicator::fromJson(LinearRegressionSlope::class, $json),
         );
-
-        /** @var TechnicalIndicator<LinearRegressionIntercept> $technicalIndicator */
-        $technicalIndicator = TechnicalIndicator::fromJson(LinearRegressionIntercept::class, $response);
-        return $technicalIndicator;
     }
 
     /** @return TechnicalIndicator<LinearRegressionSlope> */
@@ -392,10 +728,67 @@ readonly class StatisticFunctions extends TwelveDataApi
         ?AdjustEnum $adjust = null,
     ): TechnicalIndicator
     {
+        $request = $this->linearRegressionSlopeRequest(
+            $symbol,
+            $interval,
+            $figi,
+            $isin,
+            $cusip,
+            $exchange,
+            $micCode,
+            $country,
+            $seriesType,
+            $timePeriod,
+            $type,
+            $outputSize,
+            $format,
+            $delimiter,
+            $prepost,
+            $dp,
+            $order,
+            $includeOhlc,
+            $timezone,
+            $date,
+            $startDate,
+            $endDate,
+            $previousClose,
+            $adjust,
+        );
+
+        return TechnicalIndicator::fromJson(LinearRegressionSlope::class, $this->client->get($request->path, $request->queryParams));
+    }
+
+    public function maximumRequest(
+        ?string $symbol = null,
+        IntervalEnum $interval = IntervalEnum::OneDay,
+        ?string $figi = null,
+        ?string $isin = null,
+        ?string $cusip = null,
+        ?string $exchange = null,
+        ?string $micCode = null,
+        ?string $country = null,
+        ?SeriesTypeEnum $seriesType = null,
+        ?int $timePeriod = null,
+        ?TypeEnum $type = null,
+        ?int $outputSize = null,
+        ?FormatEnum $format = null,
+        ?string $delimiter = null,
+        ?PrepostEnum $prepost = null,
+        ?int $dp = null,
+        ?OrderEnum $order = null,
+        ?bool $includeOhlc = null,
+        ?string $timezone = null,
+        ?DateTimeImmutable $date = null,
+        ?DateTimeImmutable $startDate = null,
+        ?DateTimeImmutable $endDate = null,
+        ?bool $previousClose = null,
+        ?AdjustEnum $adjust = null,
+    ): BatchableRequest
+    {
         Guard::requireSymbolIdentifier($symbol, $figi, $isin, $cusip);
 
-        $response = $this->client->get(
-            path: '/linearregslope',
+        return new BatchableRequest(
+            path: '/max',
             queryParams: [
                 'symbol' => $symbol,
                 'interval' => $interval->value,
@@ -422,11 +815,8 @@ readonly class StatisticFunctions extends TwelveDataApi
                 'previous_close' => QueryParamsUtils::booleanAsString($previousClose),
                 'adjust' => $adjust?->value,
             ],
+            responseFactory: fn (string $json): TechnicalIndicator => TechnicalIndicator::fromJson(Maximum::class, $json),
         );
-
-        /** @var TechnicalIndicator<LinearRegressionSlope> $technicalIndicator */
-        $technicalIndicator = TechnicalIndicator::fromJson(LinearRegressionSlope::class, $response);
-        return $technicalIndicator;
     }
 
     /** @return TechnicalIndicator<Maximum> */
@@ -457,10 +847,67 @@ readonly class StatisticFunctions extends TwelveDataApi
         ?AdjustEnum $adjust = null,
     ): TechnicalIndicator
     {
+        $request = $this->maximumRequest(
+            $symbol,
+            $interval,
+            $figi,
+            $isin,
+            $cusip,
+            $exchange,
+            $micCode,
+            $country,
+            $seriesType,
+            $timePeriod,
+            $type,
+            $outputSize,
+            $format,
+            $delimiter,
+            $prepost,
+            $dp,
+            $order,
+            $includeOhlc,
+            $timezone,
+            $date,
+            $startDate,
+            $endDate,
+            $previousClose,
+            $adjust,
+        );
+
+        return TechnicalIndicator::fromJson(Maximum::class, $this->client->get($request->path, $request->queryParams));
+    }
+
+    public function maximumIndexRequest(
+        ?string $symbol = null,
+        IntervalEnum $interval = IntervalEnum::OneDay,
+        ?string $figi = null,
+        ?string $isin = null,
+        ?string $cusip = null,
+        ?string $exchange = null,
+        ?string $micCode = null,
+        ?string $country = null,
+        ?SeriesTypeEnum $seriesType = null,
+        ?int $timePeriod = null,
+        ?TypeEnum $type = null,
+        ?int $outputSize = null,
+        ?FormatEnum $format = null,
+        ?string $delimiter = null,
+        ?PrepostEnum $prepost = null,
+        ?int $dp = null,
+        ?OrderEnum $order = null,
+        ?bool $includeOhlc = null,
+        ?string $timezone = null,
+        ?DateTimeImmutable $date = null,
+        ?DateTimeImmutable $startDate = null,
+        ?DateTimeImmutable $endDate = null,
+        ?bool $previousClose = null,
+        ?AdjustEnum $adjust = null,
+    ): BatchableRequest
+    {
         Guard::requireSymbolIdentifier($symbol, $figi, $isin, $cusip);
 
-        $response = $this->client->get(
-            path: '/max',
+        return new BatchableRequest(
+            path: '/maxindex',
             queryParams: [
                 'symbol' => $symbol,
                 'interval' => $interval->value,
@@ -487,11 +934,8 @@ readonly class StatisticFunctions extends TwelveDataApi
                 'previous_close' => QueryParamsUtils::booleanAsString($previousClose),
                 'adjust' => $adjust?->value,
             ],
+            responseFactory: fn (string $json): TechnicalIndicator => TechnicalIndicator::fromJson(MaximumIndex::class, $json),
         );
-
-        /** @var TechnicalIndicator<Maximum> $technicalIndicator */
-        $technicalIndicator = TechnicalIndicator::fromJson(Maximum::class, $response);
-        return $technicalIndicator;
     }
 
     /** @return TechnicalIndicator<MaximumIndex> */
@@ -522,10 +966,67 @@ readonly class StatisticFunctions extends TwelveDataApi
         ?AdjustEnum $adjust = null,
     ): TechnicalIndicator
     {
+        $request = $this->maximumIndexRequest(
+            $symbol,
+            $interval,
+            $figi,
+            $isin,
+            $cusip,
+            $exchange,
+            $micCode,
+            $country,
+            $seriesType,
+            $timePeriod,
+            $type,
+            $outputSize,
+            $format,
+            $delimiter,
+            $prepost,
+            $dp,
+            $order,
+            $includeOhlc,
+            $timezone,
+            $date,
+            $startDate,
+            $endDate,
+            $previousClose,
+            $adjust,
+        );
+
+        return TechnicalIndicator::fromJson(MaximumIndex::class, $this->client->get($request->path, $request->queryParams));
+    }
+
+    public function minimumRequest(
+        ?string $symbol = null,
+        IntervalEnum $interval = IntervalEnum::OneDay,
+        ?string $figi = null,
+        ?string $isin = null,
+        ?string $cusip = null,
+        ?string $exchange = null,
+        ?string $micCode = null,
+        ?string $country = null,
+        ?SeriesTypeEnum $seriesType = null,
+        ?int $timePeriod = null,
+        ?TypeEnum $type = null,
+        ?int $outputSize = null,
+        ?FormatEnum $format = null,
+        ?string $delimiter = null,
+        ?PrepostEnum $prepost = null,
+        ?int $dp = null,
+        ?OrderEnum $order = null,
+        ?bool $includeOhlc = null,
+        ?string $timezone = null,
+        ?DateTimeImmutable $date = null,
+        ?DateTimeImmutable $startDate = null,
+        ?DateTimeImmutable $endDate = null,
+        ?bool $previousClose = null,
+        ?AdjustEnum $adjust = null,
+    ): BatchableRequest
+    {
         Guard::requireSymbolIdentifier($symbol, $figi, $isin, $cusip);
 
-        $response = $this->client->get(
-            path: '/maxindex',
+        return new BatchableRequest(
+            path: '/min',
             queryParams: [
                 'symbol' => $symbol,
                 'interval' => $interval->value,
@@ -552,11 +1053,8 @@ readonly class StatisticFunctions extends TwelveDataApi
                 'previous_close' => QueryParamsUtils::booleanAsString($previousClose),
                 'adjust' => $adjust?->value,
             ],
+            responseFactory: fn (string $json): TechnicalIndicator => TechnicalIndicator::fromJson(Minimum::class, $json),
         );
-
-        /** @var TechnicalIndicator<MaximumIndex> $technicalIndicator */
-        $technicalIndicator = TechnicalIndicator::fromJson(MaximumIndex::class, $response);
-        return $technicalIndicator;
     }
 
     /** @return TechnicalIndicator<Minimum> */
@@ -587,10 +1085,67 @@ readonly class StatisticFunctions extends TwelveDataApi
         ?AdjustEnum $adjust = null,
     ): TechnicalIndicator
     {
+        $request = $this->minimumRequest(
+            $symbol,
+            $interval,
+            $figi,
+            $isin,
+            $cusip,
+            $exchange,
+            $micCode,
+            $country,
+            $seriesType,
+            $timePeriod,
+            $type,
+            $outputSize,
+            $format,
+            $delimiter,
+            $prepost,
+            $dp,
+            $order,
+            $includeOhlc,
+            $timezone,
+            $date,
+            $startDate,
+            $endDate,
+            $previousClose,
+            $adjust,
+        );
+
+        return TechnicalIndicator::fromJson(Minimum::class, $this->client->get($request->path, $request->queryParams));
+    }
+
+    public function minimumIndexRequest(
+        ?string $symbol = null,
+        IntervalEnum $interval = IntervalEnum::OneDay,
+        ?string $figi = null,
+        ?string $isin = null,
+        ?string $cusip = null,
+        ?string $exchange = null,
+        ?string $micCode = null,
+        ?string $country = null,
+        ?SeriesTypeEnum $seriesType = null,
+        ?int $timePeriod = null,
+        ?TypeEnum $type = null,
+        ?int $outputSize = null,
+        ?FormatEnum $format = null,
+        ?string $delimiter = null,
+        ?PrepostEnum $prepost = null,
+        ?int $dp = null,
+        ?OrderEnum $order = null,
+        ?bool $includeOhlc = null,
+        ?string $timezone = null,
+        ?DateTimeImmutable $date = null,
+        ?DateTimeImmutable $startDate = null,
+        ?DateTimeImmutable $endDate = null,
+        ?bool $previousClose = null,
+        ?AdjustEnum $adjust = null,
+    ): BatchableRequest
+    {
         Guard::requireSymbolIdentifier($symbol, $figi, $isin, $cusip);
 
-        $response = $this->client->get(
-            path: '/min',
+        return new BatchableRequest(
+            path: '/minindex',
             queryParams: [
                 'symbol' => $symbol,
                 'interval' => $interval->value,
@@ -617,11 +1172,8 @@ readonly class StatisticFunctions extends TwelveDataApi
                 'previous_close' => QueryParamsUtils::booleanAsString($previousClose),
                 'adjust' => $adjust?->value,
             ],
+            responseFactory: fn (string $json): TechnicalIndicator => TechnicalIndicator::fromJson(MinimumIndex::class, $json),
         );
-
-        /** @var TechnicalIndicator<Minimum> $technicalIndicator */
-        $technicalIndicator = TechnicalIndicator::fromJson(Minimum::class, $response);
-        return $technicalIndicator;
     }
 
     /** @return TechnicalIndicator<MinimumIndex> */
@@ -652,10 +1204,67 @@ readonly class StatisticFunctions extends TwelveDataApi
         ?AdjustEnum $adjust = null,
     ): TechnicalIndicator
     {
+        $request = $this->minimumIndexRequest(
+            $symbol,
+            $interval,
+            $figi,
+            $isin,
+            $cusip,
+            $exchange,
+            $micCode,
+            $country,
+            $seriesType,
+            $timePeriod,
+            $type,
+            $outputSize,
+            $format,
+            $delimiter,
+            $prepost,
+            $dp,
+            $order,
+            $includeOhlc,
+            $timezone,
+            $date,
+            $startDate,
+            $endDate,
+            $previousClose,
+            $adjust,
+        );
+
+        return TechnicalIndicator::fromJson(MinimumIndex::class, $this->client->get($request->path, $request->queryParams));
+    }
+
+    public function minimumAndMaximumRequest(
+        ?string $symbol = null,
+        IntervalEnum $interval = IntervalEnum::OneDay,
+        ?string $figi = null,
+        ?string $isin = null,
+        ?string $cusip = null,
+        ?string $exchange = null,
+        ?string $micCode = null,
+        ?string $country = null,
+        ?SeriesTypeEnum $seriesType = null,
+        ?int $timePeriod = null,
+        ?TypeEnum $type = null,
+        ?int $outputSize = null,
+        ?FormatEnum $format = null,
+        ?string $delimiter = null,
+        ?PrepostEnum $prepost = null,
+        ?int $dp = null,
+        ?OrderEnum $order = null,
+        ?bool $includeOhlc = null,
+        ?string $timezone = null,
+        ?DateTimeImmutable $date = null,
+        ?DateTimeImmutable $startDate = null,
+        ?DateTimeImmutable $endDate = null,
+        ?bool $previousClose = null,
+        ?AdjustEnum $adjust = null,
+    ): BatchableRequest
+    {
         Guard::requireSymbolIdentifier($symbol, $figi, $isin, $cusip);
 
-        $response = $this->client->get(
-            path: '/minindex',
+        return new BatchableRequest(
+            path: '/minmax',
             queryParams: [
                 'symbol' => $symbol,
                 'interval' => $interval->value,
@@ -682,11 +1291,8 @@ readonly class StatisticFunctions extends TwelveDataApi
                 'previous_close' => QueryParamsUtils::booleanAsString($previousClose),
                 'adjust' => $adjust?->value,
             ],
+            responseFactory: fn (string $json): TechnicalIndicator => TechnicalIndicator::fromJson(MinimumAndMaximum::class, $json),
         );
-
-        /** @var TechnicalIndicator<MinimumIndex> $technicalIndicator */
-        $technicalIndicator = TechnicalIndicator::fromJson(MinimumIndex::class, $response);
-        return $technicalIndicator;
     }
 
     /** @return TechnicalIndicator<MinimumAndMaximum> */
@@ -717,10 +1323,67 @@ readonly class StatisticFunctions extends TwelveDataApi
         ?AdjustEnum $adjust = null,
     ): TechnicalIndicator
     {
+        $request = $this->minimumAndMaximumRequest(
+            $symbol,
+            $interval,
+            $figi,
+            $isin,
+            $cusip,
+            $exchange,
+            $micCode,
+            $country,
+            $seriesType,
+            $timePeriod,
+            $type,
+            $outputSize,
+            $format,
+            $delimiter,
+            $prepost,
+            $dp,
+            $order,
+            $includeOhlc,
+            $timezone,
+            $date,
+            $startDate,
+            $endDate,
+            $previousClose,
+            $adjust,
+        );
+
+        return TechnicalIndicator::fromJson(MinimumAndMaximum::class, $this->client->get($request->path, $request->queryParams));
+    }
+
+    public function minimumAndMaximumIndexRequest(
+        ?string $symbol = null,
+        IntervalEnum $interval = IntervalEnum::OneDay,
+        ?string $figi = null,
+        ?string $isin = null,
+        ?string $cusip = null,
+        ?string $exchange = null,
+        ?string $micCode = null,
+        ?string $country = null,
+        ?SeriesTypeEnum $seriesType = null,
+        ?int $timePeriod = null,
+        ?TypeEnum $type = null,
+        ?int $outputSize = null,
+        ?FormatEnum $format = null,
+        ?string $delimiter = null,
+        ?PrepostEnum $prepost = null,
+        ?int $dp = null,
+        ?OrderEnum $order = null,
+        ?bool $includeOhlc = null,
+        ?string $timezone = null,
+        ?DateTimeImmutable $date = null,
+        ?DateTimeImmutable $startDate = null,
+        ?DateTimeImmutable $endDate = null,
+        ?bool $previousClose = null,
+        ?AdjustEnum $adjust = null,
+    ): BatchableRequest
+    {
         Guard::requireSymbolIdentifier($symbol, $figi, $isin, $cusip);
 
-        $response = $this->client->get(
-            path: '/minmax',
+        return new BatchableRequest(
+            path: '/minmaxindex',
             queryParams: [
                 'symbol' => $symbol,
                 'interval' => $interval->value,
@@ -747,11 +1410,8 @@ readonly class StatisticFunctions extends TwelveDataApi
                 'previous_close' => QueryParamsUtils::booleanAsString($previousClose),
                 'adjust' => $adjust?->value,
             ],
+            responseFactory: fn (string $json): TechnicalIndicator => TechnicalIndicator::fromJson(MinimumAndMaximumIndex::class, $json),
         );
-
-        /** @var TechnicalIndicator<MinimumAndMaximum> $technicalIndicator */
-        $technicalIndicator = TechnicalIndicator::fromJson(MinimumAndMaximum::class, $response);
-        return $technicalIndicator;
     }
 
     /** @return TechnicalIndicator<MinimumAndMaximumIndex> */
@@ -782,10 +1442,68 @@ readonly class StatisticFunctions extends TwelveDataApi
         ?AdjustEnum $adjust = null,
     ): TechnicalIndicator
     {
+        $request = $this->minimumAndMaximumIndexRequest(
+            $symbol,
+            $interval,
+            $figi,
+            $isin,
+            $cusip,
+            $exchange,
+            $micCode,
+            $country,
+            $seriesType,
+            $timePeriod,
+            $type,
+            $outputSize,
+            $format,
+            $delimiter,
+            $prepost,
+            $dp,
+            $order,
+            $includeOhlc,
+            $timezone,
+            $date,
+            $startDate,
+            $endDate,
+            $previousClose,
+            $adjust,
+        );
+
+        return TechnicalIndicator::fromJson(MinimumAndMaximumIndex::class, $this->client->get($request->path, $request->queryParams));
+    }
+
+    public function standardDeviationRequest(
+        ?string $symbol = null,
+        IntervalEnum $interval = IntervalEnum::OneDay,
+        ?string $figi = null,
+        ?string $isin = null,
+        ?string $cusip = null,
+        ?string $exchange = null,
+        ?string $micCode = null,
+        ?string $country = null,
+        ?SeriesTypeEnum $seriesType = null,
+        ?int $timePeriod = null,
+        ?float $sd = null,
+        ?TypeEnum $type = null,
+        ?int $outputSize = null,
+        ?FormatEnum $format = null,
+        ?string $delimiter = null,
+        ?PrepostEnum $prepost = null,
+        ?int $dp = null,
+        ?OrderEnum $order = null,
+        ?bool $includeOhlc = null,
+        ?string $timezone = null,
+        ?DateTimeImmutable $date = null,
+        ?DateTimeImmutable $startDate = null,
+        ?DateTimeImmutable $endDate = null,
+        ?bool $previousClose = null,
+        ?AdjustEnum $adjust = null,
+    ): BatchableRequest
+    {
         Guard::requireSymbolIdentifier($symbol, $figi, $isin, $cusip);
 
-        $response = $this->client->get(
-            path: '/minmaxindex',
+        return new BatchableRequest(
+            path: '/stddev',
             queryParams: [
                 'symbol' => $symbol,
                 'interval' => $interval->value,
@@ -797,6 +1515,7 @@ readonly class StatisticFunctions extends TwelveDataApi
                 'country' => $country,
                 'series_type' => $seriesType?->value,
                 'time_period' => $timePeriod,
+                'sd' => $sd,
                 'type' => $type?->value,
                 'outputsize' => $outputSize,
                 'format' => $format?->value,
@@ -812,11 +1531,8 @@ readonly class StatisticFunctions extends TwelveDataApi
                 'previous_close' => QueryParamsUtils::booleanAsString($previousClose),
                 'adjust' => $adjust?->value,
             ],
+            responseFactory: fn (string $json): TechnicalIndicator => TechnicalIndicator::fromJson(StandardDeviation::class, $json),
         );
-
-        /** @var TechnicalIndicator<MinimumAndMaximumIndex> $technicalIndicator */
-        $technicalIndicator = TechnicalIndicator::fromJson(MinimumAndMaximumIndex::class, $response);
-        return $technicalIndicator;
     }
 
     /** @return TechnicalIndicator<StandardDeviation> */
@@ -848,10 +1564,68 @@ readonly class StatisticFunctions extends TwelveDataApi
         ?AdjustEnum $adjust = null,
     ): TechnicalIndicator
     {
+        $request = $this->standardDeviationRequest(
+            $symbol,
+            $interval,
+            $figi,
+            $isin,
+            $cusip,
+            $exchange,
+            $micCode,
+            $country,
+            $seriesType,
+            $timePeriod,
+            $sd,
+            $type,
+            $outputSize,
+            $format,
+            $delimiter,
+            $prepost,
+            $dp,
+            $order,
+            $includeOhlc,
+            $timezone,
+            $date,
+            $startDate,
+            $endDate,
+            $previousClose,
+            $adjust,
+        );
+
+        return TechnicalIndicator::fromJson(StandardDeviation::class, $this->client->get($request->path, $request->queryParams));
+    }
+
+    public function timeSeriesForecastRequest(
+        ?string $symbol = null,
+        IntervalEnum $interval = IntervalEnum::OneDay,
+        ?string $figi = null,
+        ?string $isin = null,
+        ?string $cusip = null,
+        ?string $exchange = null,
+        ?string $micCode = null,
+        ?string $country = null,
+        ?SeriesTypeEnum $seriesType = null,
+        ?int $timePeriod = null,
+        ?TypeEnum $type = null,
+        ?int $outputSize = null,
+        ?FormatEnum $format = null,
+        ?string $delimiter = null,
+        ?PrepostEnum $prepost = null,
+        ?int $dp = null,
+        ?OrderEnum $order = null,
+        ?bool $includeOhlc = null,
+        ?string $timezone = null,
+        ?DateTimeImmutable $date = null,
+        ?DateTimeImmutable $startDate = null,
+        ?DateTimeImmutable $endDate = null,
+        ?bool $previousClose = null,
+        ?AdjustEnum $adjust = null,
+    ): BatchableRequest
+    {
         Guard::requireSymbolIdentifier($symbol, $figi, $isin, $cusip);
 
-        $response = $this->client->get(
-            path: '/stddev',
+        return new BatchableRequest(
+            path: '/tsf',
             queryParams: [
                 'symbol' => $symbol,
                 'interval' => $interval->value,
@@ -863,7 +1637,6 @@ readonly class StatisticFunctions extends TwelveDataApi
                 'country' => $country,
                 'series_type' => $seriesType?->value,
                 'time_period' => $timePeriod,
-                'sd' => $sd,
                 'type' => $type?->value,
                 'outputsize' => $outputSize,
                 'format' => $format?->value,
@@ -879,11 +1652,8 @@ readonly class StatisticFunctions extends TwelveDataApi
                 'previous_close' => QueryParamsUtils::booleanAsString($previousClose),
                 'adjust' => $adjust?->value,
             ],
+            responseFactory: fn (string $json): TechnicalIndicator => TechnicalIndicator::fromJson(TimeSeriesForecast::class, $json),
         );
-
-        /** @var TechnicalIndicator<StandardDeviation> $technicalIndicator */
-        $technicalIndicator = TechnicalIndicator::fromJson(StandardDeviation::class, $response);
-        return $technicalIndicator;
     }
 
     /** @return TechnicalIndicator<TimeSeriesForecast> */
@@ -914,10 +1684,67 @@ readonly class StatisticFunctions extends TwelveDataApi
         ?AdjustEnum $adjust = null,
     ): TechnicalIndicator
     {
+        $request = $this->timeSeriesForecastRequest(
+            $symbol,
+            $interval,
+            $figi,
+            $isin,
+            $cusip,
+            $exchange,
+            $micCode,
+            $country,
+            $seriesType,
+            $timePeriod,
+            $type,
+            $outputSize,
+            $format,
+            $delimiter,
+            $prepost,
+            $dp,
+            $order,
+            $includeOhlc,
+            $timezone,
+            $date,
+            $startDate,
+            $endDate,
+            $previousClose,
+            $adjust,
+        );
+
+        return TechnicalIndicator::fromJson(TimeSeriesForecast::class, $this->client->get($request->path, $request->queryParams));
+    }
+
+    public function varianceRequest(
+        ?string $symbol = null,
+        IntervalEnum $interval = IntervalEnum::OneDay,
+        ?string $figi = null,
+        ?string $isin = null,
+        ?string $cusip = null,
+        ?string $exchange = null,
+        ?string $micCode = null,
+        ?string $country = null,
+        ?SeriesTypeEnum $seriesType = null,
+        ?int $timePeriod = null,
+        ?TypeEnum $type = null,
+        ?int $outputSize = null,
+        ?FormatEnum $format = null,
+        ?string $delimiter = null,
+        ?PrepostEnum $prepost = null,
+        ?int $dp = null,
+        ?OrderEnum $order = null,
+        ?bool $includeOhlc = null,
+        ?string $timezone = null,
+        ?DateTimeImmutable $date = null,
+        ?DateTimeImmutable $startDate = null,
+        ?DateTimeImmutable $endDate = null,
+        ?bool $previousClose = null,
+        ?AdjustEnum $adjust = null,
+    ): BatchableRequest
+    {
         Guard::requireSymbolIdentifier($symbol, $figi, $isin, $cusip);
 
-        $response = $this->client->get(
-            path: '/tsf',
+        return new BatchableRequest(
+            path: '/var',
             queryParams: [
                 'symbol' => $symbol,
                 'interval' => $interval->value,
@@ -944,11 +1771,8 @@ readonly class StatisticFunctions extends TwelveDataApi
                 'previous_close' => QueryParamsUtils::booleanAsString($previousClose),
                 'adjust' => $adjust?->value,
             ],
+            responseFactory: fn (string $json): TechnicalIndicator => TechnicalIndicator::fromJson(Variance::class, $json),
         );
-
-        /** @var TechnicalIndicator<TimeSeriesForecast> $technicalIndicator */
-        $technicalIndicator = TechnicalIndicator::fromJson(TimeSeriesForecast::class, $response);
-        return $technicalIndicator;
     }
 
     /** @return TechnicalIndicator<Variance> */
@@ -979,40 +1803,33 @@ readonly class StatisticFunctions extends TwelveDataApi
         ?AdjustEnum $adjust = null,
     ): TechnicalIndicator
     {
-        Guard::requireSymbolIdentifier($symbol, $figi, $isin, $cusip);
-
-        $response = $this->client->get(
-            path: '/var',
-            queryParams: [
-                'symbol' => $symbol,
-                'interval' => $interval->value,
-                'figi' => $figi,
-                'isin' => $isin,
-                'cusip' => $cusip,
-                'exchange' => $exchange,
-                'mic_code' => $micCode,
-                'country' => $country,
-                'series_type' => $seriesType?->value,
-                'time_period' => $timePeriod,
-                'type' => $type?->value,
-                'outputsize' => $outputSize,
-                'format' => $format?->value,
-                'delimiter' => $delimiter,
-                'prepost' => $prepost?->value,
-                'dp' => $dp,
-                'order' => $order?->value,
-                'include_ohlc' => QueryParamsUtils::booleanAsString($includeOhlc),
-                'timezone' => $timezone,
-                'date' => DateUtils::formatDate($date),
-                'start_date' => DateUtils::formatDate($startDate),
-                'end_date' => DateUtils::formatDate($endDate),
-                'previous_close' => QueryParamsUtils::booleanAsString($previousClose),
-                'adjust' => $adjust?->value,
-            ],
+        $request = $this->varianceRequest(
+            $symbol,
+            $interval,
+            $figi,
+            $isin,
+            $cusip,
+            $exchange,
+            $micCode,
+            $country,
+            $seriesType,
+            $timePeriod,
+            $type,
+            $outputSize,
+            $format,
+            $delimiter,
+            $prepost,
+            $dp,
+            $order,
+            $includeOhlc,
+            $timezone,
+            $date,
+            $startDate,
+            $endDate,
+            $previousClose,
+            $adjust,
         );
 
-        /** @var TechnicalIndicator<Variance> $technicalIndicator */
-        $technicalIndicator = TechnicalIndicator::fromJson(Variance::class, $response);
-        return $technicalIndicator;
+        return TechnicalIndicator::fromJson(Variance::class, $this->client->get($request->path, $request->queryParams));
     }
 }

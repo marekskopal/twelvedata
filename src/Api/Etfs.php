@@ -16,7 +16,8 @@ use MarekSkopal\TwelveData\Utils\Guard;
 
 readonly class Etfs extends TwelveDataApi
 {
-    public function list(
+    /** @return BatchableRequest<EtfList> */
+    public function listRequest(
         ?string $symbol = null,
         ?string $figi = null,
         ?string $isin = null,
@@ -27,8 +28,8 @@ readonly class Etfs extends TwelveDataApi
         ?string $fundType = null,
         ?int $page = null,
         ?int $outputsize = null,
-    ): EtfList {
-        $response = $this->client->get(
+    ): BatchableRequest {
+        return new BatchableRequest(
             path: '/etfs/list',
             queryParams: [
                 'symbol' => $symbol,
@@ -42,9 +43,50 @@ readonly class Etfs extends TwelveDataApi
                 'page' => $page !== null ? (string) $page : null,
                 'outputsize' => $outputsize,
             ],
+            responseFactory: EtfList::fromJson(...),
         );
+    }
 
-        return EtfList::fromJson($response);
+    public function list(
+        ?string $symbol = null,
+        ?string $figi = null,
+        ?string $isin = null,
+        ?string $cusip = null,
+        ?string $cik = null,
+        ?string $country = null,
+        ?string $fundFamily = null,
+        ?string $fundType = null,
+        ?int $page = null,
+        ?int $outputsize = null,
+    ): EtfList {
+        return $this->listRequest($symbol, $figi, $isin, $cusip, $cik, $country, $fundFamily, $fundType, $page, $outputsize)->execute(
+            $this->client,
+        );
+    }
+
+    /** @return BatchableRequest<EtfAllData> */
+    public function allDataRequest(
+        ?string $symbol = null,
+        ?string $figi = null,
+        ?string $isin = null,
+        ?string $cusip = null,
+        ?string $country = null,
+        ?int $dp = null,
+    ): BatchableRequest {
+        Guard::requireSymbolIdentifier($symbol, $figi, $isin, $cusip);
+
+        return new BatchableRequest(
+            path: '/etfs/world',
+            queryParams: [
+                'symbol' => $symbol,
+                'figi' => $figi,
+                'isin' => $isin,
+                'cusip' => $cusip,
+                'country' => $country,
+                'dp' => $dp,
+            ],
+            responseFactory: EtfAllData::fromJson(...),
+        );
     }
 
     public function allData(
@@ -55,10 +97,22 @@ readonly class Etfs extends TwelveDataApi
         ?string $country = null,
         ?int $dp = null,
     ): EtfAllData {
+        return $this->allDataRequest($symbol, $figi, $isin, $cusip, $country, $dp)->execute($this->client);
+    }
+
+    /** @return BatchableRequest<EtfSummary> */
+    public function summaryRequest(
+        ?string $symbol = null,
+        ?string $figi = null,
+        ?string $isin = null,
+        ?string $cusip = null,
+        ?string $country = null,
+        ?int $dp = null,
+    ): BatchableRequest {
         Guard::requireSymbolIdentifier($symbol, $figi, $isin, $cusip);
 
-        $response = $this->client->get(
-            path: '/etfs/world',
+        return new BatchableRequest(
+            path: '/etfs/world/summary',
             queryParams: [
                 'symbol' => $symbol,
                 'figi' => $figi,
@@ -67,9 +121,8 @@ readonly class Etfs extends TwelveDataApi
                 'country' => $country,
                 'dp' => $dp,
             ],
+            responseFactory: EtfSummary::fromJson(...),
         );
-
-        return EtfAllData::fromJson($response);
     }
 
     public function summary(
@@ -80,10 +133,22 @@ readonly class Etfs extends TwelveDataApi
         ?string $country = null,
         ?int $dp = null,
     ): EtfSummary {
+        return $this->summaryRequest($symbol, $figi, $isin, $cusip, $country, $dp)->execute($this->client);
+    }
+
+    /** @return BatchableRequest<EtfPerformance> */
+    public function performanceRequest(
+        ?string $symbol = null,
+        ?string $figi = null,
+        ?string $isin = null,
+        ?string $cusip = null,
+        ?string $country = null,
+        ?int $dp = null,
+    ): BatchableRequest {
         Guard::requireSymbolIdentifier($symbol, $figi, $isin, $cusip);
 
-        $response = $this->client->get(
-            path: '/etfs/world/summary',
+        return new BatchableRequest(
+            path: '/etfs/world/performance',
             queryParams: [
                 'symbol' => $symbol,
                 'figi' => $figi,
@@ -92,9 +157,8 @@ readonly class Etfs extends TwelveDataApi
                 'country' => $country,
                 'dp' => $dp,
             ],
+            responseFactory: EtfPerformance::fromJson(...),
         );
-
-        return EtfSummary::fromJson($response);
     }
 
     public function performance(
@@ -105,10 +169,22 @@ readonly class Etfs extends TwelveDataApi
         ?string $country = null,
         ?int $dp = null,
     ): EtfPerformance {
+        return $this->performanceRequest($symbol, $figi, $isin, $cusip, $country, $dp)->execute($this->client);
+    }
+
+    /** @return BatchableRequest<EtfRisk> */
+    public function riskRequest(
+        ?string $symbol = null,
+        ?string $figi = null,
+        ?string $isin = null,
+        ?string $cusip = null,
+        ?string $country = null,
+        ?int $dp = null,
+    ): BatchableRequest {
         Guard::requireSymbolIdentifier($symbol, $figi, $isin, $cusip);
 
-        $response = $this->client->get(
-            path: '/etfs/world/performance',
+        return new BatchableRequest(
+            path: '/etfs/world/risk',
             queryParams: [
                 'symbol' => $symbol,
                 'figi' => $figi,
@@ -117,9 +193,8 @@ readonly class Etfs extends TwelveDataApi
                 'country' => $country,
                 'dp' => $dp,
             ],
+            responseFactory: EtfRisk::fromJson(...),
         );
-
-        return EtfPerformance::fromJson($response);
     }
 
     public function risk(
@@ -130,10 +205,22 @@ readonly class Etfs extends TwelveDataApi
         ?string $country = null,
         ?int $dp = null,
     ): EtfRisk {
+        return $this->riskRequest($symbol, $figi, $isin, $cusip, $country, $dp)->execute($this->client);
+    }
+
+    /** @return BatchableRequest<EtfComposition> */
+    public function compositionRequest(
+        ?string $symbol = null,
+        ?string $figi = null,
+        ?string $isin = null,
+        ?string $cusip = null,
+        ?string $country = null,
+        ?int $dp = null,
+    ): BatchableRequest {
         Guard::requireSymbolIdentifier($symbol, $figi, $isin, $cusip);
 
-        $response = $this->client->get(
-            path: '/etfs/world/risk',
+        return new BatchableRequest(
+            path: '/etfs/world/composition',
             queryParams: [
                 'symbol' => $symbol,
                 'figi' => $figi,
@@ -142,9 +229,8 @@ readonly class Etfs extends TwelveDataApi
                 'country' => $country,
                 'dp' => $dp,
             ],
+            responseFactory: EtfComposition::fromJson(...),
         );
-
-        return EtfRisk::fromJson($response);
     }
 
     public function composition(
@@ -155,44 +241,40 @@ readonly class Etfs extends TwelveDataApi
         ?string $country = null,
         ?int $dp = null,
     ): EtfComposition {
-        Guard::requireSymbolIdentifier($symbol, $figi, $isin, $cusip);
-
-        $response = $this->client->get(
-            path: '/etfs/world/composition',
-            queryParams: [
-                'symbol' => $symbol,
-                'figi' => $figi,
-                'isin' => $isin,
-                'cusip' => $cusip,
-                'country' => $country,
-                'dp' => $dp,
-            ],
-        );
-
-        return EtfComposition::fromJson($response);
+        return $this->compositionRequest($symbol, $figi, $isin, $cusip, $country, $dp)->execute($this->client);
     }
 
-    public function familyList(?string $country = null): EtfFamilyList
+    /** @return BatchableRequest<EtfFamilyList> */
+    public function familyListRequest(?string $country = null): BatchableRequest
     {
-        $response = $this->client->get(
+        return new BatchableRequest(
             path: '/etfs/family',
             queryParams: [
                 'country' => $country,
             ],
+            responseFactory: EtfFamilyList::fromJson(...),
         );
-
-        return EtfFamilyList::fromJson($response);
     }
 
-    public function typeList(?string $country = null): EtfTypeList
+    public function familyList(?string $country = null): EtfFamilyList
     {
-        $response = $this->client->get(
+        return $this->familyListRequest($country)->execute($this->client);
+    }
+
+    /** @return BatchableRequest<EtfTypeList> */
+    public function typeListRequest(?string $country = null): BatchableRequest
+    {
+        return new BatchableRequest(
             path: '/etfs/type',
             queryParams: [
                 'country' => $country,
             ],
+            responseFactory: EtfTypeList::fromJson(...),
         );
+    }
 
-        return EtfTypeList::fromJson($response);
+    public function typeList(?string $country = null): EtfTypeList
+    {
+        return $this->typeListRequest($country)->execute($this->client);
     }
 }

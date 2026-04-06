@@ -42,9 +42,14 @@ use MarekSkopal\TwelveData\Utils\QueryParamsUtils;
  */
 readonly class Fundamentals extends TwelveDataApi
 {
-    public function logo(string $symbol, ?string $exchange = null, ?string $micCode = null, ?string $country = null,): Logo
-    {
-        $response = $this->client->get(
+    /** @return BatchableRequest<Logo> */
+    public function logoRequest(
+        string $symbol,
+        ?string $exchange = null,
+        ?string $micCode = null,
+        ?string $country = null,
+    ): BatchableRequest {
+        return new BatchableRequest(
             path: '/logo',
             queryParams: [
                 'symbol' => $symbol,
@@ -52,12 +57,17 @@ readonly class Fundamentals extends TwelveDataApi
                 'mic_code' => $micCode,
                 'country' => $country,
             ],
+            responseFactory: Logo::fromJson(...),
         );
-
-        return Logo::fromJson($response);
     }
 
-    public function profile(
+    public function logo(string $symbol, ?string $exchange = null, ?string $micCode = null, ?string $country = null,): Logo
+    {
+        return $this->logoRequest($symbol, $exchange, $micCode, $country)->execute($this->client);
+    }
+
+    /** @return BatchableRequest<Profile> */
+    public function profileRequest(
         ?string $symbol = null,
         ?string $figi = null,
         ?string $isin = null,
@@ -65,11 +75,10 @@ readonly class Fundamentals extends TwelveDataApi
         ?string $exchange = null,
         ?string $micCode = null,
         ?string $country = null,
-    ): Profile
-    {
+    ): BatchableRequest {
         Guard::requireSymbolIdentifier($symbol, $figi, $isin, $cusip);
 
-        $response = $this->client->get(
+        return new BatchableRequest(
             path: '/profile',
             queryParams: [
                 'symbol' => $symbol,
@@ -80,9 +89,55 @@ readonly class Fundamentals extends TwelveDataApi
                 'mic_code' => $micCode,
                 'country' => $country,
             ],
+            responseFactory: Profile::fromJson(...),
         );
+    }
 
-        return Profile::fromJson($response);
+    public function profile(
+        ?string $symbol = null,
+        ?string $figi = null,
+        ?string $isin = null,
+        ?string $cusip = null,
+        ?string $exchange = null,
+        ?string $micCode = null,
+        ?string $country = null,
+    ): Profile {
+        return $this->profileRequest($symbol, $figi, $isin, $cusip, $exchange, $micCode, $country)->execute($this->client);
+    }
+
+    /** @return BatchableRequest<Dividends> */
+    public function dividendsRequest(
+        ?string $symbol = null,
+        ?string $figi = null,
+        ?string $isin = null,
+        ?string $cusip = null,
+        ?string $exchange = null,
+        ?string $micCode = null,
+        ?string $country = null,
+        ?RangeEnum $range = null,
+        ?DateTimeImmutable $startDate = null,
+        ?DateTimeImmutable $endDate = null,
+        ?bool $adjust = null,
+    ): BatchableRequest {
+        Guard::requireSymbolIdentifier($symbol, $figi, $isin, $cusip);
+
+        return new BatchableRequest(
+            path: '/dividends',
+            queryParams: [
+                'symbol' => $symbol,
+                'figi' => $figi,
+                'isin' => $isin,
+                'cusip' => $cusip,
+                'exchange' => $exchange,
+                'mic_code' => $micCode,
+                'country' => $country,
+                'range' => $range?->value,
+                'start_date' => DateUtils::formatDate($startDate),
+                'end_date' => DateUtils::formatDate($endDate),
+                'adjust' => QueryParamsUtils::booleanAsString($adjust),
+            ],
+            responseFactory: Dividends::fromJson(...),
+        );
     }
 
     public function dividends(
@@ -98,26 +153,19 @@ readonly class Fundamentals extends TwelveDataApi
         ?DateTimeImmutable $endDate = null,
         ?bool $adjust = null,
     ): Dividends {
-        Guard::requireSymbolIdentifier($symbol, $figi, $isin, $cusip);
-
-        $response = $this->client->get(
-            path: '/dividends',
-            queryParams: [
-                'symbol' => $symbol,
-                'figi' => $figi,
-                'isin' => $isin,
-                'cusip' => $cusip,
-                'exchange' => $exchange,
-                'mic_code' => $micCode,
-                'country' => $country,
-                'range' => $range?->value,
-                'start_date' => DateUtils::formatDate($startDate),
-                'end_date' => DateUtils::formatDate($endDate),
-                'adjust' => QueryParamsUtils::booleanAsString($adjust),
-            ],
-        );
-
-        return Dividends::fromJson($response);
+        return $this->dividendsRequest(
+            $symbol,
+            $figi,
+            $isin,
+            $cusip,
+            $exchange,
+            $micCode,
+            $country,
+            $range,
+            $startDate,
+            $endDate,
+            $adjust,
+        )->execute($this->client);
     }
 
     /** @return list<DividendsCalendar> */
@@ -157,7 +205,8 @@ readonly class Fundamentals extends TwelveDataApi
         return array_map(fn (array $item): DividendsCalendar => DividendsCalendar::fromArray($item), $data);
     }
 
-    public function splits(
+    /** @return BatchableRequest<Splits> */
+    public function splitsRequest(
         ?string $symbol = null,
         ?string $figi = null,
         ?string $isin = null,
@@ -168,10 +217,10 @@ readonly class Fundamentals extends TwelveDataApi
         ?RangeEnum $range = null,
         ?DateTimeImmutable $startDate = null,
         ?DateTimeImmutable $endDate = null,
-    ): Splits {
+    ): BatchableRequest {
         Guard::requireSymbolIdentifier($symbol, $figi, $isin, $cusip);
 
-        $response = $this->client->get(
+        return new BatchableRequest(
             path: '/splits',
             queryParams: [
                 'symbol' => $symbol,
@@ -185,9 +234,34 @@ readonly class Fundamentals extends TwelveDataApi
                 'start_date' => DateUtils::formatDate($startDate),
                 'end_date' => DateUtils::formatDate($endDate),
             ],
+            responseFactory: Splits::fromJson(...),
         );
+    }
 
-        return Splits::fromJson($response);
+    public function splits(
+        ?string $symbol = null,
+        ?string $figi = null,
+        ?string $isin = null,
+        ?string $cusip = null,
+        ?string $exchange = null,
+        ?string $micCode = null,
+        ?string $country = null,
+        ?RangeEnum $range = null,
+        ?DateTimeImmutable $startDate = null,
+        ?DateTimeImmutable $endDate = null,
+    ): Splits {
+        return $this->splitsRequest(
+            $symbol,
+            $figi,
+            $isin,
+            $cusip,
+            $exchange,
+            $micCode,
+            $country,
+            $range,
+            $startDate,
+            $endDate,
+        )->execute($this->client);
     }
 
     /** @return list<SplitsCalendar> */
@@ -227,7 +301,8 @@ readonly class Fundamentals extends TwelveDataApi
         return array_map(fn (array $item): SplitsCalendar => SplitsCalendar::fromArray($item), $data);
     }
 
-    public function earnings(
+    /** @return BatchableRequest<Earnings> */
+    public function earningsRequest(
         ?string $symbol = null,
         ?string $exchange = null,
         ?string $figi = null,
@@ -243,10 +318,10 @@ readonly class Fundamentals extends TwelveDataApi
         ?int $dp = null,
         ?DateTimeImmutable $startDate = null,
         ?DateTimeImmutable $endDate = null,
-    ): Earnings {
+    ): BatchableRequest {
         Guard::requireSymbolIdentifier($symbol, $figi, $isin, $cusip);
 
-        $response = $this->client->get(
+        return new BatchableRequest(
             path: '/earnings',
             queryParams: [
                 'symbol' => $symbol,
@@ -265,9 +340,73 @@ readonly class Fundamentals extends TwelveDataApi
                 'start_date' => DateUtils::formatDate($startDate),
                 'end_date' => DateUtils::formatDate($endDate),
             ],
+            responseFactory: Earnings::fromJson(...),
         );
+    }
 
-        return Earnings::fromJson($response);
+    public function earnings(
+        ?string $symbol = null,
+        ?string $exchange = null,
+        ?string $figi = null,
+        ?string $isin = null,
+        ?string $cusip = null,
+        ?string $micCode = null,
+        ?string $country = null,
+        ?TypeEnum $type = null,
+        ?EarningsPeriodEnum $period = null,
+        ?string $outputSize = null,
+        ?FormatEnum $format = null,
+        ?string $delimiter = null,
+        ?int $dp = null,
+        ?DateTimeImmutable $startDate = null,
+        ?DateTimeImmutable $endDate = null,
+    ): Earnings {
+        return $this->earningsRequest(
+            $symbol,
+            $exchange,
+            $figi,
+            $isin,
+            $cusip,
+            $micCode,
+            $country,
+            $type,
+            $period,
+            $outputSize,
+            $format,
+            $delimiter,
+            $dp,
+            $startDate,
+            $endDate,
+        )->execute($this->client);
+    }
+
+    /** @return BatchableRequest<EarningsCalendar> */
+    public function earningsCalendarRequest(
+        ?string $exchange = null,
+        ?string $micCode = null,
+        ?string $country = null,
+        ?TypeEnum $type = null,
+        ?FormatEnum $format = null,
+        ?string $delimiter = null,
+        ?int $dp = null,
+        ?DateTimeImmutable $startDate = null,
+        ?DateTimeImmutable $endDate = null,
+    ): BatchableRequest {
+        return new BatchableRequest(
+            path: '/earnings_calendar',
+            queryParams: [
+                'exchange' => $exchange,
+                'mic_code' => $micCode,
+                'country' => $country,
+                'type' => $type?->value,
+                'format' => $format?->value,
+                'delimiter' => $delimiter,
+                'dp' => $dp,
+                'start_date' => DateUtils::formatDate($startDate),
+                'end_date' => DateUtils::formatDate($endDate),
+            ],
+            responseFactory: EarningsCalendar::fromJson(...),
+        );
     }
 
     public function earningsCalendar(
@@ -281,22 +420,17 @@ readonly class Fundamentals extends TwelveDataApi
         ?DateTimeImmutable $startDate = null,
         ?DateTimeImmutable $endDate = null,
     ): EarningsCalendar {
-        $response = $this->client->get(
-            path: '/earnings_calendar',
-            queryParams: [
-                'exchange' => $exchange,
-                'mic_code' => $micCode,
-                'country' => $country,
-                'type' => $type?->value,
-                'format' => $format?->value,
-                'delimiter' => $delimiter,
-                'dp' => $dp,
-                'start_date' => DateUtils::formatDate($startDate),
-                'end_date' => DateUtils::formatDate($endDate),
-            ],
-        );
-
-        return EarningsCalendar::fromJson($response);
+        return $this->earningsCalendarRequest(
+            $exchange,
+            $micCode,
+            $country,
+            $type,
+            $format,
+            $delimiter,
+            $dp,
+            $startDate,
+            $endDate,
+        )->execute($this->client);
     }
 
     /** @return array<string, list<IpoCalendar>> */
@@ -332,7 +466,8 @@ readonly class Fundamentals extends TwelveDataApi
         return $ipoCalendar;
     }
 
-    public function statistics(
+    /** @return BatchableRequest<Statistics> */
+    public function statisticsRequest(
         ?string $symbol = null,
         ?string $figi = null,
         ?string $isin = null,
@@ -340,11 +475,10 @@ readonly class Fundamentals extends TwelveDataApi
         ?string $exchange = null,
         ?string $micCode = null,
         ?string $country = null,
-    ): Statistics
-    {
+    ): BatchableRequest {
         Guard::requireSymbolIdentifier($symbol, $figi, $isin, $cusip);
 
-        $response = $this->client->get(
+        return new BatchableRequest(
             path: '/statistics',
             queryParams: [
                 'symbol' => $symbol,
@@ -355,9 +489,55 @@ readonly class Fundamentals extends TwelveDataApi
                 'mic_code' => $micCode,
                 'country' => $country,
             ],
+            responseFactory: Statistics::fromJson(...),
         );
+    }
 
-        return Statistics::fromJson($response);
+    public function statistics(
+        ?string $symbol = null,
+        ?string $figi = null,
+        ?string $isin = null,
+        ?string $cusip = null,
+        ?string $exchange = null,
+        ?string $micCode = null,
+        ?string $country = null,
+    ): Statistics {
+        return $this->statisticsRequest($symbol, $figi, $isin, $cusip, $exchange, $micCode, $country)->execute($this->client);
+    }
+
+    /** @return BatchableRequest<IncomeStatement> */
+    public function incomeStatementRequest(
+        ?string $symbol = null,
+        ?string $figi = null,
+        ?string $isin = null,
+        ?string $cusip = null,
+        ?string $exchange = null,
+        ?string $micCode = null,
+        ?string $country = null,
+        ?PeriodEnum $period = null,
+        ?DateTimeImmutable $startDate = null,
+        ?DateTimeImmutable $endDate = null,
+        ?int $outputsize = null,
+    ): BatchableRequest {
+        Guard::requireSymbolIdentifier($symbol, $figi, $isin, $cusip);
+
+        return new BatchableRequest(
+            path: '/income_statement',
+            queryParams: [
+                'symbol' => $symbol,
+                'figi' => $figi,
+                'isin' => $isin,
+                'cusip' => $cusip,
+                'exchange' => $exchange,
+                'mic_code' => $micCode,
+                'country' => $country,
+                'period' => $period?->value,
+                'start_date' => DateUtils::formatDate($startDate),
+                'end_date' => DateUtils::formatDate($endDate),
+                'outputsize' => $outputsize,
+            ],
+            responseFactory: IncomeStatement::fromJson(...),
+        );
     }
 
     public function incomeStatement(
@@ -373,10 +553,39 @@ readonly class Fundamentals extends TwelveDataApi
         ?DateTimeImmutable $endDate = null,
         ?int $outputsize = null,
     ): IncomeStatement {
+        return $this->incomeStatementRequest(
+            $symbol,
+            $figi,
+            $isin,
+            $cusip,
+            $exchange,
+            $micCode,
+            $country,
+            $period,
+            $startDate,
+            $endDate,
+            $outputsize,
+        )->execute($this->client);
+    }
+
+    /** @return BatchableRequest<IncomeStatementConsolidated> */
+    public function incomeStatementConsolidatedRequest(
+        ?string $symbol = null,
+        ?string $figi = null,
+        ?string $isin = null,
+        ?string $cusip = null,
+        ?string $exchange = null,
+        ?string $micCode = null,
+        ?string $country = null,
+        ?PeriodEnum $period = null,
+        ?DateTimeImmutable $startDate = null,
+        ?DateTimeImmutable $endDate = null,
+        ?int $outputsize = null,
+    ): BatchableRequest {
         Guard::requireSymbolIdentifier($symbol, $figi, $isin, $cusip);
 
-        $response = $this->client->get(
-            path: '/income_statement',
+        return new BatchableRequest(
+            path: '/income_statement/consolidated',
             queryParams: [
                 'symbol' => $symbol,
                 'figi' => $figi,
@@ -390,9 +599,8 @@ readonly class Fundamentals extends TwelveDataApi
                 'end_date' => DateUtils::formatDate($endDate),
                 'outputsize' => $outputsize,
             ],
+            responseFactory: IncomeStatementConsolidated::fromJson(...),
         );
-
-        return IncomeStatement::fromJson($response);
     }
 
     public function incomeStatementConsolidated(
@@ -408,10 +616,39 @@ readonly class Fundamentals extends TwelveDataApi
         ?DateTimeImmutable $endDate = null,
         ?int $outputsize = null,
     ): IncomeStatementConsolidated {
+        return $this->incomeStatementConsolidatedRequest(
+            $symbol,
+            $figi,
+            $isin,
+            $cusip,
+            $exchange,
+            $micCode,
+            $country,
+            $period,
+            $startDate,
+            $endDate,
+            $outputsize,
+        )->execute($this->client);
+    }
+
+    /** @return BatchableRequest<BalanceSheet> */
+    public function balanceSheetRequest(
+        ?string $symbol = null,
+        ?string $figi = null,
+        ?string $isin = null,
+        ?string $cusip = null,
+        ?string $exchange = null,
+        ?string $micCode = null,
+        ?string $country = null,
+        ?PeriodEnum $period = null,
+        ?DateTimeImmutable $startDate = null,
+        ?DateTimeImmutable $endDate = null,
+        ?int $outputsize = null,
+    ): BatchableRequest {
         Guard::requireSymbolIdentifier($symbol, $figi, $isin, $cusip);
 
-        $response = $this->client->get(
-            path: '/income_statement/consolidated',
+        return new BatchableRequest(
+            path: '/balance_sheet',
             queryParams: [
                 'symbol' => $symbol,
                 'figi' => $figi,
@@ -425,9 +662,8 @@ readonly class Fundamentals extends TwelveDataApi
                 'end_date' => DateUtils::formatDate($endDate),
                 'outputsize' => $outputsize,
             ],
+            responseFactory: BalanceSheet::fromJson(...),
         );
-
-        return IncomeStatementConsolidated::fromJson($response);
     }
 
     public function balanceSheet(
@@ -443,10 +679,39 @@ readonly class Fundamentals extends TwelveDataApi
         ?DateTimeImmutable $endDate = null,
         ?int $outputsize = null,
     ): BalanceSheet {
+        return $this->balanceSheetRequest(
+            $symbol,
+            $figi,
+            $isin,
+            $cusip,
+            $exchange,
+            $micCode,
+            $country,
+            $period,
+            $startDate,
+            $endDate,
+            $outputsize,
+        )->execute($this->client);
+    }
+
+    /** @return BatchableRequest<BalanceSheetConsolidated> */
+    public function balanceSheetConsolidatedRequest(
+        ?string $symbol = null,
+        ?string $figi = null,
+        ?string $isin = null,
+        ?string $cusip = null,
+        ?string $exchange = null,
+        ?string $micCode = null,
+        ?string $country = null,
+        ?PeriodEnum $period = null,
+        ?DateTimeImmutable $startDate = null,
+        ?DateTimeImmutable $endDate = null,
+        ?int $outputsize = null,
+    ): BatchableRequest {
         Guard::requireSymbolIdentifier($symbol, $figi, $isin, $cusip);
 
-        $response = $this->client->get(
-            path: '/balance_sheet',
+        return new BatchableRequest(
+            path: '/balance_sheet/consolidated',
             queryParams: [
                 'symbol' => $symbol,
                 'figi' => $figi,
@@ -460,9 +725,8 @@ readonly class Fundamentals extends TwelveDataApi
                 'end_date' => DateUtils::formatDate($endDate),
                 'outputsize' => $outputsize,
             ],
+            responseFactory: BalanceSheetConsolidated::fromJson(...),
         );
-
-        return BalanceSheet::fromJson($response);
     }
 
     public function balanceSheetConsolidated(
@@ -478,10 +742,39 @@ readonly class Fundamentals extends TwelveDataApi
         ?DateTimeImmutable $endDate = null,
         ?int $outputsize = null,
     ): BalanceSheetConsolidated {
+        return $this->balanceSheetConsolidatedRequest(
+            $symbol,
+            $figi,
+            $isin,
+            $cusip,
+            $exchange,
+            $micCode,
+            $country,
+            $period,
+            $startDate,
+            $endDate,
+            $outputsize,
+        )->execute($this->client);
+    }
+
+    /** @return BatchableRequest<CashFlow> */
+    public function cashFlowRequest(
+        ?string $symbol = null,
+        ?string $figi = null,
+        ?string $isin = null,
+        ?string $cusip = null,
+        ?string $exchange = null,
+        ?string $micCode = null,
+        ?string $country = null,
+        ?PeriodEnum $period = null,
+        ?DateTimeImmutable $startDate = null,
+        ?DateTimeImmutable $endDate = null,
+        ?int $outputsize = null,
+    ): BatchableRequest {
         Guard::requireSymbolIdentifier($symbol, $figi, $isin, $cusip);
 
-        $response = $this->client->get(
-            path: '/balance_sheet/consolidated',
+        return new BatchableRequest(
+            path: '/cash_flow',
             queryParams: [
                 'symbol' => $symbol,
                 'figi' => $figi,
@@ -495,9 +788,8 @@ readonly class Fundamentals extends TwelveDataApi
                 'end_date' => DateUtils::formatDate($endDate),
                 'outputsize' => $outputsize,
             ],
+            responseFactory: CashFlow::fromJson(...),
         );
-
-        return BalanceSheetConsolidated::fromJson($response);
     }
 
     public function cashFlow(
@@ -513,10 +805,39 @@ readonly class Fundamentals extends TwelveDataApi
         ?DateTimeImmutable $endDate = null,
         ?int $outputsize = null,
     ): CashFlow {
+        return $this->cashFlowRequest(
+            $symbol,
+            $figi,
+            $isin,
+            $cusip,
+            $exchange,
+            $micCode,
+            $country,
+            $period,
+            $startDate,
+            $endDate,
+            $outputsize,
+        )->execute($this->client);
+    }
+
+    /** @return BatchableRequest<CashFlowConsolidated> */
+    public function cashFlowConsolidatedRequest(
+        ?string $symbol = null,
+        ?string $figi = null,
+        ?string $isin = null,
+        ?string $cusip = null,
+        ?string $exchange = null,
+        ?string $micCode = null,
+        ?string $country = null,
+        ?PeriodEnum $period = null,
+        ?DateTimeImmutable $startDate = null,
+        ?DateTimeImmutable $endDate = null,
+        ?int $outputsize = null,
+    ): BatchableRequest {
         Guard::requireSymbolIdentifier($symbol, $figi, $isin, $cusip);
 
-        $response = $this->client->get(
-            path: '/cash_flow',
+        return new BatchableRequest(
+            path: '/cash_flow/consolidated',
             queryParams: [
                 'symbol' => $symbol,
                 'figi' => $figi,
@@ -530,9 +851,8 @@ readonly class Fundamentals extends TwelveDataApi
                 'end_date' => DateUtils::formatDate($endDate),
                 'outputsize' => $outputsize,
             ],
+            responseFactory: CashFlowConsolidated::fromJson(...),
         );
-
-        return CashFlow::fromJson($response);
     }
 
     public function cashFlowConsolidated(
@@ -548,10 +868,35 @@ readonly class Fundamentals extends TwelveDataApi
         ?DateTimeImmutable $endDate = null,
         ?int $outputsize = null,
     ): CashFlowConsolidated {
+        return $this->cashFlowConsolidatedRequest(
+            $symbol,
+            $figi,
+            $isin,
+            $cusip,
+            $exchange,
+            $micCode,
+            $country,
+            $period,
+            $startDate,
+            $endDate,
+            $outputsize,
+        )->execute($this->client);
+    }
+
+    /** @return BatchableRequest<KeyExecutives> */
+    public function keyExecutivesRequest(
+        ?string $symbol = null,
+        ?string $figi = null,
+        ?string $isin = null,
+        ?string $cusip = null,
+        ?string $exchange = null,
+        ?string $micCode = null,
+        ?string $country = null,
+    ): BatchableRequest {
         Guard::requireSymbolIdentifier($symbol, $figi, $isin, $cusip);
 
-        $response = $this->client->get(
-            path: '/cash_flow/consolidated',
+        return new BatchableRequest(
+            path: '/key_executives',
             queryParams: [
                 'symbol' => $symbol,
                 'figi' => $figi,
@@ -560,14 +905,9 @@ readonly class Fundamentals extends TwelveDataApi
                 'exchange' => $exchange,
                 'mic_code' => $micCode,
                 'country' => $country,
-                'period' => $period?->value,
-                'start_date' => DateUtils::formatDate($startDate),
-                'end_date' => DateUtils::formatDate($endDate),
-                'outputsize' => $outputsize,
             ],
+            responseFactory: KeyExecutives::fromJson(...),
         );
-
-        return CashFlowConsolidated::fromJson($response);
     }
 
     public function keyExecutives(
@@ -579,10 +919,27 @@ readonly class Fundamentals extends TwelveDataApi
         ?string $micCode = null,
         ?string $country = null,
     ): KeyExecutives {
+        return $this->keyExecutivesRequest($symbol, $figi, $isin, $cusip, $exchange, $micCode, $country)->execute($this->client);
+    }
+
+    /** @return BatchableRequest<MarketCapitalization> */
+    public function marketCapitalizationRequest(
+        ?string $symbol = null,
+        ?string $figi = null,
+        ?string $isin = null,
+        ?string $cusip = null,
+        ?string $exchange = null,
+        ?string $micCode = null,
+        ?string $country = null,
+        ?DateTimeImmutable $startDate = null,
+        ?DateTimeImmutable $endDate = null,
+        ?int $page = null,
+        ?int $outputsize = null,
+    ): BatchableRequest {
         Guard::requireSymbolIdentifier($symbol, $figi, $isin, $cusip);
 
-        $response = $this->client->get(
-            path: '/key_executives',
+        return new BatchableRequest(
+            path: '/market_cap',
             queryParams: [
                 'symbol' => $symbol,
                 'figi' => $figi,
@@ -591,10 +948,13 @@ readonly class Fundamentals extends TwelveDataApi
                 'exchange' => $exchange,
                 'mic_code' => $micCode,
                 'country' => $country,
+                'start_date' => DateUtils::formatDate($startDate),
+                'end_date' => DateUtils::formatDate($endDate),
+                'page' => $page !== null ? (string) $page : null,
+                'outputsize' => $outputsize,
             ],
+            responseFactory: MarketCapitalization::fromJson(...),
         );
-
-        return KeyExecutives::fromJson($response);
     }
 
     public function marketCapitalization(
@@ -610,10 +970,39 @@ readonly class Fundamentals extends TwelveDataApi
         ?int $page = null,
         ?int $outputsize = null,
     ): MarketCapitalization {
+        return $this->marketCapitalizationRequest(
+            $symbol,
+            $figi,
+            $isin,
+            $cusip,
+            $exchange,
+            $micCode,
+            $country,
+            $startDate,
+            $endDate,
+            $page,
+            $outputsize,
+        )->execute($this->client);
+    }
+
+    /** @return BatchableRequest<PressReleases> */
+    public function pressReleasesRequest(
+        ?string $symbol = null,
+        ?string $figi = null,
+        ?string $isin = null,
+        ?string $cusip = null,
+        ?string $exchange = null,
+        ?string $micCode = null,
+        ?DateTimeImmutable $startDate = null,
+        ?DateTimeImmutable $endDate = null,
+        ?string $language = null,
+        ?string $timezone = null,
+        ?int $outputsize = null,
+    ): BatchableRequest {
         Guard::requireSymbolIdentifier($symbol, $figi, $isin, $cusip);
 
-        $response = $this->client->get(
-            path: '/market_cap',
+        return new BatchableRequest(
+            path: '/press_releases',
             queryParams: [
                 'symbol' => $symbol,
                 'figi' => $figi,
@@ -621,15 +1010,14 @@ readonly class Fundamentals extends TwelveDataApi
                 'cusip' => $cusip,
                 'exchange' => $exchange,
                 'mic_code' => $micCode,
-                'country' => $country,
                 'start_date' => DateUtils::formatDate($startDate),
                 'end_date' => DateUtils::formatDate($endDate),
-                'page' => $page !== null ? (string) $page : null,
+                'language' => $language,
+                'timezone' => $timezone,
                 'outputsize' => $outputsize,
             ],
+            responseFactory: PressReleases::fromJson(...),
         );
-
-        return MarketCapitalization::fromJson($response);
     }
 
     public function pressReleases(
@@ -645,26 +1033,45 @@ readonly class Fundamentals extends TwelveDataApi
         ?string $timezone = null,
         ?int $outputsize = null,
     ): PressReleases {
-        Guard::requireSymbolIdentifier($symbol, $figi, $isin, $cusip);
+        return $this->pressReleasesRequest(
+            $symbol,
+            $figi,
+            $isin,
+            $cusip,
+            $exchange,
+            $micCode,
+            $startDate,
+            $endDate,
+            $language,
+            $timezone,
+            $outputsize,
+        )->execute($this->client);
+    }
 
-        $response = $this->client->get(
-            path: '/press_releases',
+    /** @return BatchableRequest<LastChanges> */
+    public function lastChangesRequest(
+        EndpointEnum $endpoint,
+        ?DateTimeImmutable $startDate = null,
+        ?string $symbol = null,
+        ?string $exchange = null,
+        ?string $micCode = null,
+        ?string $country = null,
+        ?int $page = null,
+        ?int $outputsize = null,
+    ): BatchableRequest {
+        return new BatchableRequest(
+            path: '/last_change/' . $endpoint->value,
             queryParams: [
+                'start_date' => DateUtils::formatDateTime($startDate),
                 'symbol' => $symbol,
-                'figi' => $figi,
-                'isin' => $isin,
-                'cusip' => $cusip,
                 'exchange' => $exchange,
                 'mic_code' => $micCode,
-                'start_date' => DateUtils::formatDate($startDate),
-                'end_date' => DateUtils::formatDate($endDate),
-                'language' => $language,
-                'timezone' => $timezone,
+                'country' => $country,
+                'page' => $page !== null ? (string) $page : null,
                 'outputsize' => $outputsize,
             ],
+            responseFactory: LastChanges::fromJson(...),
         );
-
-        return PressReleases::fromJson($response);
     }
 
     public function lastChanges(
@@ -677,19 +1084,15 @@ readonly class Fundamentals extends TwelveDataApi
         ?int $page = null,
         ?int $outputsize = null,
     ): LastChanges {
-        $response = $this->client->get(
-            path: '/last_change/' . $endpoint->value,
-            queryParams: [
-                'start_date' => DateUtils::formatDateTime($startDate),
-                'symbol' => $symbol,
-                'exchange' => $exchange,
-                'mic_code' => $micCode,
-                'country' => $country,
-                'page' => $page !== null ? (string) $page : null,
-                'outputsize' => $outputsize,
-            ],
-        );
-
-        return LastChanges::fromJson($response);
+        return $this->lastChangesRequest(
+            $endpoint,
+            $startDate,
+            $symbol,
+            $exchange,
+            $micCode,
+            $country,
+            $page,
+            $outputsize,
+        )->execute($this->client);
     }
 }

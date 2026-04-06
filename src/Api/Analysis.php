@@ -18,17 +18,18 @@ use MarekSkopal\TwelveData\Utils\Guard;
 
 readonly class Analysis extends TwelveDataApi
 {
-    public function earningsEstimate(
+    /** @return BatchableRequest<EarningsEstimate> */
+    public function earningsEstimateRequest(
         ?string $symbol = null,
         ?string $figi = null,
         ?string $isin = null,
         ?string $cusip = null,
         ?string $exchange = null,
         ?string $country = null,
-    ): EarningsEstimate {
+    ): BatchableRequest {
         Guard::requireSymbolIdentifier($symbol, $figi, $isin, $cusip);
 
-        $response = $this->client->get(
+        return new BatchableRequest(
             path: '/earnings_estimate',
             queryParams: [
                 'symbol' => $symbol,
@@ -38,9 +39,46 @@ readonly class Analysis extends TwelveDataApi
                 'exchange' => $exchange,
                 'country' => $country,
             ],
+            responseFactory: EarningsEstimate::fromJson(...),
         );
+    }
 
-        return EarningsEstimate::fromJson($response);
+    public function earningsEstimate(
+        ?string $symbol = null,
+        ?string $figi = null,
+        ?string $isin = null,
+        ?string $cusip = null,
+        ?string $exchange = null,
+        ?string $country = null,
+    ): EarningsEstimate {
+        return $this->earningsEstimateRequest($symbol, $figi, $isin, $cusip, $exchange, $country)->execute($this->client);
+    }
+
+    /** @return BatchableRequest<RevenueEstimate> */
+    public function revenueEstimateRequest(
+        ?string $symbol = null,
+        ?string $figi = null,
+        ?string $isin = null,
+        ?string $cusip = null,
+        ?string $country = null,
+        ?string $exchange = null,
+        ?int $dp = null,
+    ): BatchableRequest {
+        Guard::requireSymbolIdentifier($symbol, $figi, $isin, $cusip);
+
+        return new BatchableRequest(
+            path: '/revenue_estimate',
+            queryParams: [
+                'symbol' => $symbol,
+                'figi' => $figi,
+                'isin' => $isin,
+                'cusip' => $cusip,
+                'country' => $country,
+                'exchange' => $exchange,
+                'dp' => $dp,
+            ],
+            responseFactory: RevenueEstimate::fromJson(...),
+        );
     }
 
     public function revenueEstimate(
@@ -52,22 +90,32 @@ readonly class Analysis extends TwelveDataApi
         ?string $exchange = null,
         ?int $dp = null,
     ): RevenueEstimate {
+        return $this->revenueEstimateRequest($symbol, $figi, $isin, $cusip, $country, $exchange, $dp)->execute($this->client);
+    }
+
+    /** @return BatchableRequest<EpsTrend> */
+    public function epsTrendRequest(
+        ?string $symbol = null,
+        ?string $figi = null,
+        ?string $isin = null,
+        ?string $cusip = null,
+        ?string $country = null,
+        ?string $exchange = null,
+    ): BatchableRequest {
         Guard::requireSymbolIdentifier($symbol, $figi, $isin, $cusip);
 
-        $response = $this->client->get(
-            path: '/revenue_estimate',
+        return new BatchableRequest(
+            path: '/eps_trend',
             queryParams: [
                 'symbol' => $symbol,
                 'figi' => $figi,
                 'isin' => $isin,
                 'cusip' => $cusip,
-                'country' => $country,
                 'exchange' => $exchange,
-                'dp' => $dp,
+                'country' => $country,
             ],
+            responseFactory: EpsTrend::fromJson(...),
         );
-
-        return RevenueEstimate::fromJson($response);
     }
 
     public function epsTrend(
@@ -78,10 +126,22 @@ readonly class Analysis extends TwelveDataApi
         ?string $country = null,
         ?string $exchange = null,
     ): EpsTrend {
+        return $this->epsTrendRequest($symbol, $figi, $isin, $cusip, $country, $exchange)->execute($this->client);
+    }
+
+    /** @return BatchableRequest<EpsRevisions> */
+    public function epsRevisionsRequest(
+        ?string $symbol = null,
+        ?string $figi = null,
+        ?string $isin = null,
+        ?string $cusip = null,
+        ?string $country = null,
+        ?string $exchange = null,
+    ): BatchableRequest {
         Guard::requireSymbolIdentifier($symbol, $figi, $isin, $cusip);
 
-        $response = $this->client->get(
-            path: '/eps_trend',
+        return new BatchableRequest(
+            path: '/eps_revisions',
             queryParams: [
                 'symbol' => $symbol,
                 'figi' => $figi,
@@ -90,9 +150,8 @@ readonly class Analysis extends TwelveDataApi
                 'exchange' => $exchange,
                 'country' => $country,
             ],
+            responseFactory: EpsRevisions::fromJson(...),
         );
-
-        return EpsTrend::fromJson($response);
     }
 
     public function epsRevisions(
@@ -103,10 +162,22 @@ readonly class Analysis extends TwelveDataApi
         ?string $country = null,
         ?string $exchange = null,
     ): EpsRevisions {
+        return $this->epsRevisionsRequest($symbol, $figi, $isin, $cusip, $country, $exchange)->execute($this->client);
+    }
+
+    /** @return BatchableRequest<GrowthEstimates> */
+    public function growthEstimatesRequest(
+        ?string $symbol = null,
+        ?string $figi = null,
+        ?string $isin = null,
+        ?string $cusip = null,
+        ?string $country = null,
+        ?string $exchange = null,
+    ): BatchableRequest {
         Guard::requireSymbolIdentifier($symbol, $figi, $isin, $cusip);
 
-        $response = $this->client->get(
-            path: '/eps_revisions',
+        return new BatchableRequest(
+            path: '/growth_estimates',
             queryParams: [
                 'symbol' => $symbol,
                 'figi' => $figi,
@@ -115,9 +186,8 @@ readonly class Analysis extends TwelveDataApi
                 'exchange' => $exchange,
                 'country' => $country,
             ],
+            responseFactory: GrowthEstimates::fromJson(...),
         );
-
-        return EpsRevisions::fromJson($response);
     }
 
     public function growthEstimates(
@@ -128,10 +198,22 @@ readonly class Analysis extends TwelveDataApi
         ?string $country = null,
         ?string $exchange = null,
     ): GrowthEstimates {
+        return $this->growthEstimatesRequest($symbol, $figi, $isin, $cusip, $country, $exchange)->execute($this->client);
+    }
+
+    /** @return BatchableRequest<Recommendations> */
+    public function recommendationsRequest(
+        ?string $symbol = null,
+        ?string $figi = null,
+        ?string $isin = null,
+        ?string $cusip = null,
+        ?string $country = null,
+        ?string $exchange = null,
+    ): BatchableRequest {
         Guard::requireSymbolIdentifier($symbol, $figi, $isin, $cusip);
 
-        $response = $this->client->get(
-            path: '/growth_estimates',
+        return new BatchableRequest(
+            path: '/recommendations',
             queryParams: [
                 'symbol' => $symbol,
                 'figi' => $figi,
@@ -140,9 +222,8 @@ readonly class Analysis extends TwelveDataApi
                 'exchange' => $exchange,
                 'country' => $country,
             ],
+            responseFactory: Recommendations::fromJson(...),
         );
-
-        return GrowthEstimates::fromJson($response);
     }
 
     public function recommendations(
@@ -153,10 +234,22 @@ readonly class Analysis extends TwelveDataApi
         ?string $country = null,
         ?string $exchange = null,
     ): Recommendations {
+        return $this->recommendationsRequest($symbol, $figi, $isin, $cusip, $country, $exchange)->execute($this->client);
+    }
+
+    /** @return BatchableRequest<PriceTarget> */
+    public function priceTargetRequest(
+        ?string $symbol = null,
+        ?string $figi = null,
+        ?string $isin = null,
+        ?string $cusip = null,
+        ?string $country = null,
+        ?string $exchange = null,
+    ): BatchableRequest {
         Guard::requireSymbolIdentifier($symbol, $figi, $isin, $cusip);
 
-        $response = $this->client->get(
-            path: '/recommendations',
+        return new BatchableRequest(
+            path: '/price_target',
             queryParams: [
                 'symbol' => $symbol,
                 'figi' => $figi,
@@ -165,9 +258,8 @@ readonly class Analysis extends TwelveDataApi
                 'exchange' => $exchange,
                 'country' => $country,
             ],
+            responseFactory: PriceTarget::fromJson(...),
         );
-
-        return Recommendations::fromJson($response);
     }
 
     public function priceTarget(
@@ -178,10 +270,24 @@ readonly class Analysis extends TwelveDataApi
         ?string $country = null,
         ?string $exchange = null,
     ): PriceTarget {
+        return $this->priceTargetRequest($symbol, $figi, $isin, $cusip, $country, $exchange)->execute($this->client);
+    }
+
+    /** @return BatchableRequest<AnalystRatingsSnapshot> */
+    public function analystRatingsSnapshotRequest(
+        ?string $symbol = null,
+        ?string $figi = null,
+        ?string $isin = null,
+        ?string $cusip = null,
+        ?string $country = null,
+        ?string $exchange = null,
+        ?RatingChangeEnum $ratingChange = null,
+        ?int $outputsize = null,
+    ): BatchableRequest {
         Guard::requireSymbolIdentifier($symbol, $figi, $isin, $cusip);
 
-        $response = $this->client->get(
-            path: '/price_target',
+        return new BatchableRequest(
+            path: '/analyst_ratings/light',
             queryParams: [
                 'symbol' => $symbol,
                 'figi' => $figi,
@@ -189,10 +295,11 @@ readonly class Analysis extends TwelveDataApi
                 'cusip' => $cusip,
                 'exchange' => $exchange,
                 'country' => $country,
+                'rating_change' => $ratingChange?->value,
+                'outputsize' => $outputsize,
             ],
+            responseFactory: AnalystRatingsSnapshot::fromJson(...),
         );
-
-        return PriceTarget::fromJson($response);
     }
 
     public function analystRatingsSnapshot(
@@ -205,9 +312,32 @@ readonly class Analysis extends TwelveDataApi
         ?RatingChangeEnum $ratingChange = null,
         ?int $outputsize = null,
     ): AnalystRatingsSnapshot {
+        return $this->analystRatingsSnapshotRequest(
+            $symbol,
+            $figi,
+            $isin,
+            $cusip,
+            $country,
+            $exchange,
+            $ratingChange,
+            $outputsize,
+        )->execute($this->client);
+    }
+
+    /** @return BatchableRequest<AnalystRatingsUsEquities> */
+    public function analystRatingsUsEquitiesRequest(
+        ?string $symbol = null,
+        ?string $figi = null,
+        ?string $isin = null,
+        ?string $cusip = null,
+        ?string $country = null,
+        ?string $exchange = null,
+        ?RatingChangeEnum $ratingChange = null,
+        ?int $outputsize = null,
+    ): BatchableRequest {
         Guard::requireSymbolIdentifier($symbol, $figi, $isin, $cusip);
 
-        $response = $this->client->get(
+        return new BatchableRequest(
             path: '/analyst_ratings/light',
             queryParams: [
                 'symbol' => $symbol,
@@ -219,9 +349,8 @@ readonly class Analysis extends TwelveDataApi
                 'rating_change' => $ratingChange?->value,
                 'outputsize' => $outputsize,
             ],
+            responseFactory: AnalystRatingsUsEquities::fromJson(...),
         );
-
-        return AnalystRatingsSnapshot::fromJson($response);
     }
 
     public function analystRatingsUsEquities(
@@ -234,22 +363,15 @@ readonly class Analysis extends TwelveDataApi
         ?RatingChangeEnum $ratingChange = null,
         ?int $outputsize = null,
     ): AnalystRatingsUsEquities {
-        Guard::requireSymbolIdentifier($symbol, $figi, $isin, $cusip);
-
-        $response = $this->client->get(
-            path: '/analyst_ratings/light',
-            queryParams: [
-                'symbol' => $symbol,
-                'figi' => $figi,
-                'isin' => $isin,
-                'cusip' => $cusip,
-                'exchange' => $exchange,
-                'country' => $country,
-                'rating_change' => $ratingChange?->value,
-                'outputsize' => $outputsize,
-            ],
-        );
-
-        return AnalystRatingsUsEquities::fromJson($response);
+        return $this->analystRatingsUsEquitiesRequest(
+            $symbol,
+            $figi,
+            $isin,
+            $cusip,
+            $country,
+            $exchange,
+            $ratingChange,
+            $outputsize,
+        )->execute($this->client);
     }
 }
