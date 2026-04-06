@@ -20,6 +20,7 @@ use MarekSkopal\TwelveData\Dto\Fundamentals\KeyExecutives;
 use MarekSkopal\TwelveData\Dto\Fundamentals\LastChanges;
 use MarekSkopal\TwelveData\Dto\Fundamentals\Logo;
 use MarekSkopal\TwelveData\Dto\Fundamentals\MarketCapitalization;
+use MarekSkopal\TwelveData\Dto\Fundamentals\PressReleases;
 use MarekSkopal\TwelveData\Dto\Fundamentals\Profile;
 use MarekSkopal\TwelveData\Dto\Fundamentals\Splits;
 use MarekSkopal\TwelveData\Dto\Fundamentals\SplitsCalendar;
@@ -629,6 +630,41 @@ readonly class Fundamentals extends TwelveDataApi
         );
 
         return MarketCapitalization::fromJson($response);
+    }
+
+    public function pressReleases(
+        ?string $symbol = null,
+        ?string $figi = null,
+        ?string $isin = null,
+        ?string $cusip = null,
+        ?string $exchange = null,
+        ?string $micCode = null,
+        ?DateTimeImmutable $startDate = null,
+        ?DateTimeImmutable $endDate = null,
+        ?string $language = null,
+        ?string $timezone = null,
+        ?int $outputsize = null,
+    ): PressReleases {
+        Guard::requireSymbolIdentifier($symbol, $figi, $isin, $cusip);
+
+        $response = $this->client->get(
+            path: '/press_releases',
+            queryParams: [
+                'symbol' => $symbol,
+                'figi' => $figi,
+                'isin' => $isin,
+                'cusip' => $cusip,
+                'exchange' => $exchange,
+                'mic_code' => $micCode,
+                'start_date' => DateUtils::formatDate($startDate),
+                'end_date' => DateUtils::formatDate($endDate),
+                'language' => $language,
+                'timezone' => $timezone,
+                'outputsize' => $outputsize,
+            ],
+        );
+
+        return PressReleases::fromJson($response);
     }
 
     public function lastChanges(

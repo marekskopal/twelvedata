@@ -81,9 +81,8 @@ use MarekSkopal\TwelveData\Dto\Fundamentals\LogoMeta;
 use MarekSkopal\TwelveData\Dto\Fundamentals\MarketCapitalization;
 use MarekSkopal\TwelveData\Dto\Fundamentals\MarketCapitalizationMarketCap;
 use MarekSkopal\TwelveData\Dto\Fundamentals\Meta;
-use MarekSkopal\TwelveData\Dto\Fundamentals\OptionsChain;
-use MarekSkopal\TwelveData\Dto\Fundamentals\OptionsChainOption;
-use MarekSkopal\TwelveData\Dto\Fundamentals\OptionsExpiration;
+use MarekSkopal\TwelveData\Dto\Fundamentals\PressRelease;
+use MarekSkopal\TwelveData\Dto\Fundamentals\PressReleases;
 use MarekSkopal\TwelveData\Dto\Fundamentals\Profile;
 use MarekSkopal\TwelveData\Dto\Fundamentals\Splits;
 use MarekSkopal\TwelveData\Dto\Fundamentals\SplitsCalendar;
@@ -190,9 +189,8 @@ use PHPUnit\Framework\TestCase;
 #[UsesClass(Logo::class)]
 #[UsesClass(LogoMeta::class)]
 #[UsesClass(Meta::class)]
-#[UsesClass(OptionsChain::class)]
-#[UsesClass(OptionsChainOption::class)]
-#[UsesClass(OptionsExpiration::class)]
+#[UsesClass(PressRelease::class)]
+#[UsesClass(PressReleases::class)]
 #[UsesClass(Profile::class)]
 #[UsesClass(Splits::class)]
 #[UsesClass(SplitsSplit::class)]
@@ -388,6 +386,16 @@ final class FundamentalsTest extends TestCase
         self::assertInstanceOf(
             MarketCapitalization::class,
             $fundamentals->marketCapitalization('AAPL'),
+        );
+    }
+
+    public function testPressReleases(): void
+    {
+        $fundamentals = new Fundamentals(ClientFixture::createDemo());
+
+        self::assertInstanceOf(
+            PressReleases::class,
+            $fundamentals->pressReleases('AAPL'),
         );
     }
 

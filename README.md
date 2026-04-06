@@ -90,6 +90,7 @@ More endpoints will be covered in future versions.
 * Cash Flow Consolidated        ✅
 * Key Executives                ✅
 * Market Capitalization         ✅
+* Press Releases                ✅
 * Last changes                  ✅
 
 ### Currencies
@@ -97,9 +98,30 @@ More endpoints will be covered in future versions.
 * Exchange Rate        ✅
 * Currency Conversion  ✅
 
-### ETFs ❌
+### ETFs
 
-### Mutual Funds ❌
+* ETFs Directory    ✅
+* ETF Full Data     ✅
+* Summary           ✅
+* Performance       ✅
+* Risk              ✅
+* Composition       ✅
+* ETFs Families     ✅
+* ETFs Types        ✅
+
+### Mutual Funds
+
+* MFs Directory     ✅
+* MF Full Data      ✅
+* Summary           ✅
+* Performance       ✅
+* Risk              ✅
+* Ratings           ✅
+* Composition       ✅
+* Purchase Info     ✅
+* Sustainability    ✅
+* MFs Families      ✅
+* MFs Types         ✅
 
 ### Technical Indicators
 #### Overlap studies

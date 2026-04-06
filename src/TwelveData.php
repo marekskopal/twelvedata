@@ -9,7 +9,9 @@ use MarekSkopal\TwelveData\Api\Advanced;
 use MarekSkopal\TwelveData\Api\Analysis;
 use MarekSkopal\TwelveData\Api\CoreData;
 use MarekSkopal\TwelveData\Api\Currencies;
+use MarekSkopal\TwelveData\Api\Etfs;
 use MarekSkopal\TwelveData\Api\Fundamentals;
+use MarekSkopal\TwelveData\Api\MutualFunds;
 use MarekSkopal\TwelveData\Api\ReferenceData;
 use MarekSkopal\TwelveData\Api\Regulatory;
 use MarekSkopal\TwelveData\Api\TechnicalIndicators;
@@ -37,6 +39,10 @@ readonly class TwelveData
 
     public Advanced $advanced;
 
+    public Etfs $etfs;
+
+    public MutualFunds $mutualFunds;
+
     public function __construct(Config $config)
     {
         $this->client = new Client($config);
@@ -49,6 +55,8 @@ readonly class TwelveData
         $this->analysis = new Analysis($this->client);
         $this->regulatory = new Regulatory($this->client);
         $this->advanced = new Advanced($this->client);
+        $this->etfs = new Etfs($this->client);
+        $this->mutualFunds = new MutualFunds($this->client);
     }
 
     public function getCoreData(): CoreData
@@ -89,6 +97,16 @@ readonly class TwelveData
     public function getAdvanced(): Advanced
     {
         return $this->advanced;
+    }
+
+    public function getEtfs(): Etfs
+    {
+        return $this->etfs;
+    }
+
+    public function getMutualFunds(): MutualFunds
+    {
+        return $this->mutualFunds;
     }
 
     /**
