@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace MarekSkopal\TwelveData\Tests\Api;
 
-use DateTimeImmutable;
 use MarekSkopal\TwelveData\Api\Fundamentals;
 use MarekSkopal\TwelveData\Api\TwelveDataApi;
 use MarekSkopal\TwelveData\Client\Client;
@@ -369,26 +368,6 @@ final class FundamentalsTest extends TestCase
         self::assertInstanceOf(
             CashFlowConsolidated::class,
             $fundamentals->cashFlowConsolidated('AAPL'),
-        );
-    }
-
-    public function testOptionsExpiration(): void
-    {
-        $fundamentals = new Fundamentals(ClientFixture::createDemo());
-
-        self::assertInstanceOf(
-            OptionsExpiration::class,
-            $fundamentals->optionsExpiration('AAPL'),
-        );
-    }
-
-    public function testOptionsChain(): void
-    {
-        $fundamentals = new Fundamentals(ClientFixture::createDemo());
-
-        self::assertInstanceOf(
-            OptionsChain::class,
-            $fundamentals->optionsChain('AAPL', expirationDate: new DateTimeImmutable('2022-01-21')),
         );
     }
 

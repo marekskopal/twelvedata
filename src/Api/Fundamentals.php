@@ -20,8 +20,6 @@ use MarekSkopal\TwelveData\Dto\Fundamentals\KeyExecutives;
 use MarekSkopal\TwelveData\Dto\Fundamentals\LastChanges;
 use MarekSkopal\TwelveData\Dto\Fundamentals\Logo;
 use MarekSkopal\TwelveData\Dto\Fundamentals\MarketCapitalization;
-use MarekSkopal\TwelveData\Dto\Fundamentals\OptionsChain;
-use MarekSkopal\TwelveData\Dto\Fundamentals\OptionsExpiration;
 use MarekSkopal\TwelveData\Dto\Fundamentals\Profile;
 use MarekSkopal\TwelveData\Dto\Fundamentals\Splits;
 use MarekSkopal\TwelveData\Dto\Fundamentals\SplitsCalendar;
@@ -569,50 +567,6 @@ readonly class Fundamentals extends TwelveDataApi
         );
 
         return CashFlowConsolidated::fromJson($response);
-    }
-
-    public function optionsExpiration(
-        string $symbol,
-        ?string $exchange = null,
-        ?string $micCode = null,
-        ?string $country = null,
-    ): OptionsExpiration {
-        $response = $this->client->get(
-            path: '/options/expiration',
-            queryParams: [
-                'symbol' => $symbol,
-                'exchange' => $exchange,
-                'mic_code' => $micCode,
-                'country' => $country,
-            ],
-        );
-
-        return OptionsExpiration::fromJson($response);
-    }
-
-    public function optionsChain(
-        string $symbol,
-        ?string $exchange = null,
-        ?string $micCode = null,
-        ?string $country = null,
-        ?DateTimeImmutable $expirationDate = null,
-        ?string $optionId = null,
-        ?string $side = null,
-    ): OptionsChain {
-        $response = $this->client->get(
-            path: '/options/chain',
-            queryParams: [
-                'symbol' => $symbol,
-                'exchange' => $exchange,
-                'mic_code' => $micCode,
-                'country' => $country,
-                'expiration_date' => DateUtils::formatDate($expirationDate),
-                'option_id' => $optionId,
-                'side' => $side,
-            ],
-        );
-
-        return OptionsChain::fromJson($response);
     }
 
     public function keyExecutives(

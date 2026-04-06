@@ -89,8 +89,6 @@ More endpoints will be covered in future versions.
 * Cash Flow                     ✅
 * Cash Flow Consolidated        ✅
 * Key Executives                ✅
-* Options Expiration            ✅
-* Options Chain                 ✅
 * Market Capitalization         ✅
 * Last changes                  ✅
 
