@@ -1,0 +1,28 @@
+# Auto detect text files and perform LF normalization
+* text=auto
+
+# PHP files
+*.php text diff=php
+
+# Documentation
+*.md text diff=markdown
+
+# Configuration
+*.json text
+*.xml text
+*.neon text
+*.lock text -diff
+
+# Shell scripts
+*.sh text eol=lf
+
+# Export ignore (excluded from archives via `git archive` / Composer installs)
+/.github        export-ignore
+/tests          export-ignore
+/.gitattributes export-ignore
+/.gitignore     export-ignore
+/CLAUDE.md      export-ignore
+/phpcs.xml      export-ignore
+/phpstan.neon   export-ignore
+/phpunit.xml    export-ignore
+/ruleset.xml    export-ignore
