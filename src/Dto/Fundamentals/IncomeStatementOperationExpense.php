@@ -6,16 +6,16 @@ namespace MarekSkopal\TwelveData\Dto\Fundamentals;
 
 /**
  * @phpstan-type IncomeStatementOperationExpenseType array{
- *     research_and_development: int,
- *     selling_general_and_administrative: int,
+ *     research_and_development: int|null,
+ *     selling_general_and_administrative: int|null,
  *     other_operating_expenses: int|null,
  * }
  */
 readonly class IncomeStatementOperationExpense
 {
     public function __construct(
-        public int $researchAndDevelopment,
-        public int $sellingGeneralAndAdministrative,
+        public ?int $researchAndDevelopment,
+        public ?int $sellingGeneralAndAdministrative,
         public ?int $otherOperatingExpenses,
     ) {
     }

@@ -313,7 +313,7 @@ final class FundamentalsTest extends TestCase
 
     public function testIncomeStatement(): void
     {
-        $fundamentals = new Fundamentals(ClientFixture::createDemo());
+        $fundamentals = new Fundamentals(ClientFixture::createWithResponse('income_statement.json'));
 
         self::assertInstanceOf(
             IncomeStatement::class,
