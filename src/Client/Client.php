@@ -9,6 +9,7 @@ use Http\Discovery\Psr18ClientDiscovery;
 use MarekSkopal\TwelveData\Config\Config;
 use MarekSkopal\TwelveData\Exception\ApiException;
 use MarekSkopal\TwelveData\Exception\TooManyRequestsException;
+use Psr\Http\Client\ClientInterface as HttpClientInterface;
 use Psr\Http\Message\RequestFactoryInterface;
 use Psr\Http\Message\RequestInterface;
 use Psr\Http\Message\ResponseInterface;
@@ -18,17 +19,21 @@ readonly class Client implements ClientInterface
 {
     private const string BaseUri = 'https://api.twelvedata.com';
 
-    private \Psr\Http\Client\ClientInterface $httpClient;
+    private HttpClientInterface $httpClient;
 
     private RequestFactoryInterface $requestFactory;
 
     private StreamFactoryInterface $streamFactory;
 
-    public function __construct(private Config $config)
-    {
-        $this->httpClient = Psr18ClientDiscovery::find();
-        $this->requestFactory = Psr17FactoryDiscovery::findRequestFactory();
-        $this->streamFactory = Psr17FactoryDiscovery::findStreamFactory();
+    public function __construct(
+        private Config $config,
+        ?HttpClientInterface $httpClient = null,
+        ?RequestFactoryInterface $requestFactory = null,
+        ?StreamFactoryInterface $streamFactory = null,
+    ) {
+        $this->httpClient = $httpClient ?? Psr18ClientDiscovery::find();
+        $this->requestFactory = $requestFactory ?? Psr17FactoryDiscovery::findRequestFactory();
+        $this->streamFactory = $streamFactory ?? Psr17FactoryDiscovery::findStreamFactory();
     }
 
     /** @param array<string, scalar|null> $queryParams */
@@ -95,8 +100,17 @@ readonly class Client implements ClientInterface
     {
         $responseContents = $response->getBody()->getContents();
 
+        $decoded = json_decode($responseContents, associative: true);
+
+        if (!is_array($decoded)) {
+            throw ApiException::fromCode(
+                $responseContents !== '' ? $responseContents : 'Internal Server Error',
+                $response->getStatusCode() !== 200 ? $response->getStatusCode() : 500,
+            );
+        }
+
         /** @var array{status?: string, code?: int, message?: string} $data */
-        $data = json_decode($responseContents, associative: true);
+        $data = $decoded;
 
         $status = $data['status'] ?? null;
 

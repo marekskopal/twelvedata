@@ -21,7 +21,7 @@ abstract class ApiException extends \Exception
             414 => new ParameterTooLongException($message),
             429 => new TooManyRequestsException($message),
             500 => new InternalServerErrorException($message),
-            default => new InternalServerErrorException($message),
+            default => new InternalServerErrorException($message, $code),
         };
     }
 }
